@@ -1,0 +1,44 @@
+title: prioriactions
+
+url: https://josesalgr.github.io/prioriactions/
+
+template:
+  params:
+    docsearch:
+      api_key: f00985ff93067595b4da97a65fe69f1a
+      index_name: prioriactions
+    bootswatch: flatly
+
+destination: docs
+
+authors:
+  José Salgado-Rojas:
+    href: https://www.researchgate.net/profile/Jose_Salgado-Rojas
+  Irlanda Ceballos-Fuentealba:
+    href: https://www.researchgate.net/profile/Irlanda_Ceballos
+  Virgilio Hermoso:
+    href: https://www.researchgate.net/profile/Virgilio_Hermoso
+  Eduardo Álvarez-Miranda:
+    href: https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda
+  Jordi Garcia-Gonzalo:
+    href: https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo
+
+reference:
+  - title: Summary
+    desc: Summary of the package
+    contents:
+      - prioriactions
+
+  - title: Create and solve problems
+    desc: Functions for creating new problems and solving them
+    contents:
+      - problem
+      - min_costs
+      - solve
+
+  - title: Class definitions and methods
+    desc: Classes and other functions
+    contents:
+      - ConservationProblem
+      - OptimizationProblem
+      - Solution

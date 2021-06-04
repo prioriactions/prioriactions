@@ -1,0 +1,270 @@
+---
+title: "Mitchell River"
+output:
+  rmarkdown::html_document:
+    self_contained: yes
+fontsize: 11pt
+documentclass: article
+vignette: >
+  %\VignetteIndexEntry{Mitchell River}
+  %\VignetteEngine{knitr::rmarkdown_notangle}
+---
+
+```{r setup, include = FALSE}
+h <- 6
+w <- 8
+is_check <- ("CheckExEnv" %in% search()) || any(c("_R_CHECK_TIMINGS_",
+             "_R_CHECK_LICENSE_") %in% names(Sys.getenv()))
+knitr::opts_chunk$set(
+  fig.align = "center", 
+  eval = !is_check,
+  collapse = TRUE,
+  comment = "#>")
+```
+
+The Mitchell River is a river located in Far North Queensland, Australia. The river rises on the Atherton Tableland about 50 kilometres (31 mi) northwest of Cairns, and flows about 750 kilometres (470 mi) northwest across Cape York Peninsula from Mareeba to the Gulf of Carpentaria.
+
+## Instance data
+
+We divided the whole catchment (71,630 km2 into 2316 sites (i.e., sub-catchments), each one included the portion of river length between two consecutive river connections. We considered four major threats to freshwater fish species in the catchment: water buffalo (Bubalis bubalis), cane toad (Bufo marinus), river flow alteration (caused by impoundments, channels for water extractions and levee banks) and grazing land use. Also, we used the modelled spatial distribution of 44 fish species in the Mitchell river catchment as our conservation features. The distribution of these element can be extracted as follows:
+
+```{r, fig.show='hold'}
+library(prioriactions)
+pu_path <- system.file("extdata/input_big/unitCost_Big.csv", package = "prioriactions")
+mitchell_pu_data <- data.table::fread(pu_path, data.table = FALSE)
+## load in feature data
+spec_path <- system.file("extdata/input_big/target_Big.csv", package = "prioriactions")
+mitchell_features_data <- data.table::fread(spec_path, data.table = FALSE)
+## load in planning unit vs feature data
+puvspr_path <- system.file("extdata/input_big/speciesDistribution_Big.csv", package = "prioriactions")
+mitchell_rij_data <- data.table::fread(puvspr_path, data.table = FALSE)
+   
+## load in the boundary data
+bound_path <- system.file("extdata/input_big/boundary_Big.csv", package = "prioriactions")
+mitchell_bound_data <- data.table::fread(bound_path, data.table = FALSE)
+## load in the threats data
+threats_path <- system.file("extdata/input_big/threatsDistribution_Big.csv", package = "prioriactions")
+mitchell_threats_data <- data.table::fread(threats_path, data.table = FALSE)
+## load in the sensibility data
+sensibility_path <- system.file("extdata/input_big/sensibility_Big.csv", package = "prioriactions")
+mitchell_sensibility_data <- data.table::fread(sensibility_path, data.table = FALSE)
+```
+
+## Spatial data
+
+The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+
+```{r, message = FALSE, fig.width = w, fig.height = h}
+library(raster)
+library(viridis)
+shp_mitchell = shapefile("data/Fish_Mitchell.shp")
+print(shp_mitchell)
+spplot(shp_mitchell, zcol = "Shape_Area", names.attr = "Area",
+      main = "Planning unit areas", col.regions = viridis(20))
+```
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold', fig.width = w*1.5, fig.height = h}
+shp_mitchell$scl_ja <- factor(shp_mitchell$scl_ja)
+shp_mitchell$nem_er <- factor(shp_mitchell$nem_er)
+spplot(shp_mitchell[c("scl_ja", "nem_er")],
+      names.attr = c("specie 1", "specie 2"),
+      as.table = TRUE,
+      main = "Species distribution",
+      colorkey = list(space = "right"), layout = c(2, 1),
+      col.regions = c("grey90", "seagreen"), )
+```
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## Minimizing the action costs
+
+Example about expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r}
+library(prioriactions)
+## Create data instance
+instance_data<- problem(
+   pu = mitchell_pu_data, features = mitchell_features_data, rij = mitchell_rij_data,
+   threats = mitchell_threats_data, sensibility = mitchell_sensibility_data,
+   bound = mitchell_bound_data
+ )
+print(instance_data)
+```
+
+Explain about model creation
+
+```{r}
+minCost_model<-min_costs(instance_data, blm=0, blm_actions=0)
+print(minCost_model)
+```
+
+The next code is giving problems...(now it's ok)
+
+```{r}
+solution <- solve(minCost_model, time_limit = 60)
+print(solution)
+```
+
+monitoring
+```{r, fig.show='hold', fig.width = w, fig.height = h}
+monitoring_vector = solution$getSolutionUnits()
+shp_mitchell$monitoring = factor(monitoring_vector$solution)
+spplot(shp_mitchell, zcol = "monitoring",
+       main = "Solution 1: units to be monitored", col.regions = c("grey90", "dodgerblue4"))
+```
+
+actions separated
+```{r, fig.show='hold', fig.width = w*1.5, fig.height = h}
+actions_vectors = solution$getSolutionActions()
+shp_mitchell$solution_threat_1 <- factor(actions_vectors$solution_threat_1)
+shp_mitchell$solution_threat_2 <- factor(actions_vectors$solution_threat_2)
+shp_mitchell$solution_threat_3 <- factor(actions_vectors$solution_threat_3)
+shp_mitchell$solution_threat_4 <- factor(actions_vectors$solution_threat_4)
+spplot(shp_mitchell[c("solution_threat_1", "solution_threat_2",
+                      "solution_threat_3", "solution_threat_4")],
+       names.attr = c("threat 1", "threat 2",
+                      "threat 3", "threat 4"),
+       as.table = TRUE,
+       main = "Actions",
+       colorkey = list(space = "right"), layout = c(2, 2),
+       col.regions = c("grey90", "dodgerblue4"))
+```
+
+actions agregated
+
+```{r, fig.show='hold', fig.width = w, fig.height = h}
+threats_amount = instance_data$getThreatsAmount()
+threats_names = instance_data$getThreatNames()
+for(i in 1:threats_amount){
+  actions_vectors[,i + 1] = ifelse(actions_vectors[,i + 1] == 1,
+                                  paste0("threat_",threats_names[i]," "),
+                                  "")
+}
+actions_vectors$solution_agregated = apply(actions_vectors[, names(actions_vectors)[grepl("solution", names(actions_vectors))]], 1, paste, collapse = "")
+actions_vectors$solution_agregated = ifelse(actions_vectors$solution_agregated == "", ifelse(monitoring_vector$solution == 1,"only monitoring", ""), actions_vectors$solution_agregated)
+shp_mitchell$actions_agregated = factor(actions_vectors$solution_agregated)
+levels(shp_mitchell$actions_agregated)[1] = "do nothing"
+spplot(shp_mitchell, zcol = "actions_agregated",
+       main = "Solution 1: actions distribution",
+       col.regions = c("grey90", viridis(nlevels(shp_mitchell$actions_agregated))))
+```
+
+## Changing connectivity units
+
+Example about expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r}
+minCost_model_high_unit_connectivity<-min_costs(instance_data, blm=1, blm_actions=0)
+print(minCost_model_high_unit_connectivity)
+```
+
+The next code is giving problems...(now it's ok)
+
+```{r}
+solution_high_unit_connectivity = solve(minCost_model_high_unit_connectivity, time_limit = 60)
+print(solution)
+```
+
+monitoring
+
+```{r, fig.show='hold', fig.width = w, fig.height = h}
+monitoring_vector = solution_high_unit_connectivity$getSolutionUnits()
+shp_mitchell$monitoring = factor(monitoring_vector$solution)
+spplot(shp_mitchell, zcol = "monitoring",
+       main = "Solution 1: units to be monitored", col.regions = c("grey90", "dodgerblue4"))
+```
+
+actions separated
+```{r, fig.show='hold', fig.width = w*1.5, fig.height = h}
+actions_vectors = solution_high_unit_connectivity$getSolutionActions()
+shp_mitchell$solution_threat_1 <- factor(actions_vectors$solution_threat_1)
+shp_mitchell$solution_threat_2 <- factor(actions_vectors$solution_threat_2)
+shp_mitchell$solution_threat_3 <- factor(actions_vectors$solution_threat_3)
+shp_mitchell$solution_threat_4 <- factor(actions_vectors$solution_threat_4)
+spplot(shp_mitchell[c("solution_threat_1", "solution_threat_2",
+                      "solution_threat_3", "solution_threat_4")],
+       names.attr = c("threat 1", "threat 2",
+                      "threat 3", "threat 4"),
+       as.table = TRUE,
+       main = "Actions",
+       colorkey = list(space = "right"), layout = c(2, 2),
+       col.regions = c("grey90", "dodgerblue4"))
+```
+
+actions agregated
+
+```{r, fig.show='hold', fig.width = w, fig.height = h}
+for(i in 1:threats_amount){
+  actions_vectors[,i + 1] = ifelse(actions_vectors[,i + 1] == 1,
+                                  paste0("threat_",threats_names[i]," "),
+                                  "")
+}
+actions_vectors$solution_agregated = apply(actions_vectors[, names(actions_vectors)[grepl("solution", names(actions_vectors))]], 1, paste, collapse = "")
+actions_vectors$solution_agregated = ifelse(actions_vectors$solution_agregated == "", ifelse(monitoring_vector$solution == 1,"only monitoring", ""), actions_vectors$solution_agregated)
+shp_mitchell$actions_agregated = factor(actions_vectors$solution_agregated)
+levels(shp_mitchell$actions_agregated)[1] = "do nothing"
+spplot(shp_mitchell, zcol = "actions_agregated",
+       main = "Solution 1: actions distribution",
+       col.regions = c("grey90", viridis(nlevels(shp_mitchell$actions_agregated))))
+```
+
+## Changing connectivity actions
+
+Example about expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r}
+minCost_model_high_action_connectivity<-min_costs(instance_data, blm=1, blm_actions=1)
+print(minCost_model_high_action_connectivity)
+```
+
+The next code is giving problems...(now it's ok)
+
+```{r}
+solution_high_action_connectivity = solve(minCost_model_high_action_connectivity, time_limit = 120)
+print(solution)
+```
+
+monitoring
+
+```{r, fig.show='hold', fig.width = w, fig.height = h}
+monitoring_vector = solution_high_action_connectivity$getSolutionUnits()
+shp_mitchell$monitoring = factor(monitoring_vector$solution)
+spplot(shp_mitchell, zcol = "monitoring",
+       main = "Solution 1: units to be monitored", col.regions = c("grey90", "dodgerblue4"))
+```
+
+actions separated
+```{r, fig.show='hold', fig.width = w*1.5, fig.height = h}
+actions_vectors = solution_high_action_connectivity$getSolutionActions()
+shp_mitchell$solution_threat_1 <- factor(actions_vectors$solution_threat_1)
+shp_mitchell$solution_threat_2 <- factor(actions_vectors$solution_threat_2)
+shp_mitchell$solution_threat_3 <- factor(actions_vectors$solution_threat_3)
+shp_mitchell$solution_threat_4 <- factor(actions_vectors$solution_threat_4)
+spplot(shp_mitchell[c("solution_threat_1", "solution_threat_2",
+                      "solution_threat_3", "solution_threat_4")],
+       names.attr = c("threat 1", "threat 2",
+                      "threat 3", "threat 4"),
+       as.table = TRUE,
+       main = "Actions",
+       colorkey = list(space = "right"), layout = c(2, 2),
+       col.regions = c("grey90", "dodgerblue4"))
+```
+
+actions agregated
+
+```{r, fig.show='hold', fig.width = w, fig.height = h}
+for(i in 1:threats_amount){
+  actions_vectors[,i + 1] = ifelse(actions_vectors[,i + 1] == 1,
+                                  paste0("threat_",threats_names[i]," "),
+                                  "")
+}
+actions_vectors$solution_agregated = apply(actions_vectors[, names(actions_vectors)[grepl("solution", names(actions_vectors))]], 1, paste, collapse = "")
+actions_vectors$solution_agregated = ifelse(actions_vectors$solution_agregated == "", ifelse(monitoring_vector$solution == 1,"only monitoring", ""), actions_vectors$solution_agregated)
+shp_mitchell$actions_agregated = factor(actions_vectors$solution_agregated)
+levels(shp_mitchell$actions_agregated)[1] = "do nothing"
+spplot(shp_mitchell, zcol = "actions_agregated",
+       main = "Solution 1: actions distribution",
+       col.regions = c("grey90", viridis(nlevels(shp_mitchell$actions_agregated))))
+```
