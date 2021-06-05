@@ -43,7 +43,7 @@ following code.
 
 ``` r
 if (!require(devtools)) install.packages("devtools")
-devtools::install_github("josesalgr/prioriactions")
+devtools::install_github("prioriactions/prioriactions")
 ```
 
 ## Usage
