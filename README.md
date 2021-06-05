@@ -38,7 +38,7 @@ quality, and a solution quality guarantee.
 ## Installation
 
 The latest development version can be installed from
-[GitHub](https://github.com/josesalgr/prioriactions/) using the
+[GitHub](https://github.com/prioriactions/prioriactions/) using the
 following code.
 
 ``` r
