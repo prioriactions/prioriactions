@@ -363,18 +363,13 @@ methods::setMethod(
       s$data$sol_actions_reduced <- threats_data
 
       ## EXTENDED
-      pu_data <- pu_data[!names(pu_data) %in% c("solution", "cost", "status")]
-      names_threats <- a$ConservationClass$getThreatNames()
 
-      for (i in names_threats) {
-        pu_data[[paste0("solution_threat_", i)]] <- c(0)
-        for (j in 1:nrow(threats_data)) {
-          if (threats_data$threats[j] == i && threats_data$solution[j] == 1) {
-            pu_data[[paste0("solution_threat_", i)]][threats_data$pu[j]] <- 1
-          }
-        }
-      }
-      s$data$sol_actions_extended <- pu_data
+      threats_data <- threats_data[names(threats_data) %in% c("pu","threats","solution")]
+      actions_extended <- reshape2::dcast(threats_data, pu~threats,value.var = "solution")
+      actions_extended[is.na(actions_extended)] <- 0
+
+      s$data$sol_actions_extended <- actions_extended
+
 
       # Creating txt output
       if(isTRUE(txt_file)){

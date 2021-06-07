@@ -181,7 +181,7 @@ Solution <- pproto(
     # )
     statusCode <- self$getStatusCode()
     gap <- self$getGap()
-    time_limit <- self$data$time_limit
+    time_limit <- self$data$timelimit
     if(statusCode == 0L){
       return(paste0("Optimal solution (according to gap tolerance: ", gap,")"))
     }

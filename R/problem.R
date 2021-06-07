@@ -406,7 +406,7 @@ methods::setMethod(
     rij$internal_species <- internal_species
 
 
-    # sensitibity
+    # sensitivity
     internal_species <- dplyr::inner_join(sensibility, features, by = c("species" = "id"))$internal_id
     sensibility$internal_species <- internal_species
 
