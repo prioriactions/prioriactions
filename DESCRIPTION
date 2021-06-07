@@ -36,7 +36,8 @@ Imports:
   purrr,
   Rsymphony,
   readr,
-  tidyverse
+  tidyverse,
+  reshape2
 Suggests: 
   knitr,
   dplyr,

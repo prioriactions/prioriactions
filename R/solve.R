@@ -142,7 +142,7 @@ methods::setMethod(
   "solve",
   signature(a = "OptimizationProblem", b = "missing"),
   function(a, b, solver = "", gap_limit = 0.0, time_limit = .Machine$integer.max, solution_limit = FALSE, cores = 2,
-           verbose = TRUE, txt_file = FALSE, ...) {
+           verbose = TRUE, txt_file = "prioriaction_output", export_log = "gurobi_log", outputs = TRUE, ...) {
     # assert that arguments are valid
     assertthat::assert_that(
       inherits(a, "OptimizationProblem"),
@@ -155,10 +155,11 @@ methods::setMethod(
       assertthat::is.count(cores),
       isTRUE(cores <= parallel::detectCores(TRUE)),
       assertthat::is.flag(verbose),
-      assertthat::is.flag(txt_file),
+      assertthat::is.flag(outputs),
+      assertthat::is.string(txt_file),
+      assertthat::is.string(export_log),
       no_extra_arguments(...)
     )
-
 
     if (requireNamespace("gurobi", quietly = TRUE)) {
       solver_default <- "gurobi"
@@ -209,6 +210,11 @@ methods::setMethod(
       params$MIPGap <- gap_limit
       # Stop condition: Time limit
       params$TimeLimit <- time_limit
+
+      #log gurobi
+      if(isTRUE(outputs)){
+        params$LogFile <- paste0(export_log,".txt")
+      }
 
       #params$SolutionLimit <- solution_limit
       # Stop condition: MIP feasible solution limit
@@ -372,8 +378,8 @@ methods::setMethod(
 
 
       # Creating txt output
-      if(isTRUE(txt_file)){
-        createtxt(s)
+      if(isTRUE(outputs)){
+        createtxt(s, name = txt_file)
       }
     }
 

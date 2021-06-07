@@ -91,7 +91,7 @@ createtxt.Solution <- function(x, name = "output_prioriactions", ...) {
 
   base::writeLines(msj_output, output_file)
 
-  base::on.exit()
+  base::on.exit(base::close(output_file))
 
   output_file
 }
