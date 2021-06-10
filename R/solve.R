@@ -90,12 +90,12 @@ NULL
 #' ## that the user has available. This example uses input files included into package.
 #'
 #' ## Load data
-#' data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensibility_data, example_bound_data)
+#' data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
 #'
 #' ## Create data instance
 #' problem_data <- problem(
 #'   pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-#'   threats = example_threats_data, sensibility = example_sensibility_data,
+#'   threats = example_threats_data, sensitivity = example_sensibility_data,
 #'   bound = example_bound_data
 #' )
 #'
@@ -142,7 +142,7 @@ methods::setMethod(
   "solve",
   signature(a = "OptimizationProblem", b = "missing"),
   function(a, b, solver = "", gap_limit = 0.0, time_limit = .Machine$integer.max, solution_limit = FALSE, cores = 2,
-           verbose = TRUE, txt_file = "prioriaction_output", export_log = "gurobi_log", outputs = TRUE, ...) {
+           verbose = TRUE, name_output_file = "prioriaction_output", name_log = "gurobi_log", output_file = TRUE, log_file = FALSE, ...) {
     # assert that arguments are valid
     assertthat::assert_that(
       inherits(a, "OptimizationProblem"),
@@ -155,9 +155,10 @@ methods::setMethod(
       assertthat::is.count(cores),
       isTRUE(cores <= parallel::detectCores(TRUE)),
       assertthat::is.flag(verbose),
-      assertthat::is.flag(outputs),
-      assertthat::is.string(txt_file),
-      assertthat::is.string(export_log),
+      assertthat::is.flag(output_file),
+      assertthat::is.flag(log_file),
+      assertthat::is.string(name_output_file),
+      assertthat::is.string(name_log),
       no_extra_arguments(...)
     )
 
@@ -189,6 +190,11 @@ methods::setMethod(
       #}
     }
 
+    #arguments
+    arg_solve <- list(gap = gap_limit, timelimit = time_limit, cores = cores, verbose = verbose,
+                      solver = solver, solution_limit = solution_limit, name_output_file = name_output_file,
+                      name_log = name_log, output_file = output_file, log_file = log_file)
+
     ## Solving
     model <- a$getDataList()
     ## Gurobi solver
@@ -212,8 +218,8 @@ methods::setMethod(
       params$TimeLimit <- time_limit
 
       #log gurobi
-      if(isTRUE(outputs)){
-        params$LogFile <- paste0(export_log,".txt")
+      if(isTRUE(log_file)){
+        params$LogFile <- paste0(name_log,".txt")
       }
 
       #params$SolutionLimit <- solution_limit
@@ -238,7 +244,7 @@ methods::setMethod(
       s <- pproto(NULL, Solution,
         data = list(
           objval = solution$objval, sol = solution$x, gap = solution$mipgap,
-          status = solution$status_code, runtime = solution$runtime, timelimit = time_limit
+          status = solution$status_code, runtime = solution$runtime, arg = arg_solve
         ),
         OptimizationClass = a
       )
@@ -296,7 +302,7 @@ methods::setMethod(
 
       s <- pproto(NULL, Solution,
         data = list(objval = solution$objval, sol = solution$solution, gap = solution$gap, status = solution$status_code,
-                    runtime = runtime_symphony, timelimit = time_limit),
+                    runtime = runtime_symphony, arg = arg_solve),
         OptimizationClass = a)
 
     } ## END IF (SYMPHONY Solver)
@@ -369,17 +375,17 @@ methods::setMethod(
       s$data$sol_actions_reduced <- threats_data
 
       ## EXTENDED
-
       threats_data <- threats_data[names(threats_data) %in% c("pu","threats","solution")]
       actions_extended <- reshape2::dcast(threats_data, pu~threats,value.var = "solution")
       actions_extended[is.na(actions_extended)] <- 0
+      actions_extended <- round(actions_extended,digits = 1)
 
       s$data$sol_actions_extended <- actions_extended
 
 
       # Creating txt output
-      if(isTRUE(outputs)){
-        createtxt(s, name = txt_file)
+      if(isTRUE(output_file)){
+        createtxt(s, name = name_output_file)
       }
     }
 

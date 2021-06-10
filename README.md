@@ -38,7 +38,7 @@ quality, and a solution quality guarantee.
 ## Installation
 
 The latest development version can be installed from
-[GitHub](https://github.com/prioriactions/prioriactions/) using the
+[GitHub](https://github.com/josesalgr/prioriactions/) using the
 following code.
 
 ``` r
@@ -56,9 +56,7 @@ with this problem, which will finally be solved using the `solver()`
 function. A detailed description of these steps is illustrated below.
 
 <center>
-
 <img src="man/figures/README_package_diagram.png" alt="hola" width=100% />
-
 </center>
 
 ## Example
@@ -87,7 +85,7 @@ Create a “data instance” that stores and validates all input data.
 ``` r
 problem_data <- problem(
                 pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-                threats = example_threats_data, sensibility = example_sensibility_data,
+                threats = example_threats_data, sensitivity = example_sensibility_data,
                 bound = example_bound_data
 )
 #> Warning: The following pu's do not contain species: 59 97 109 118 121 122 123
@@ -115,7 +113,7 @@ problem_model
 #>   model sense: minimization
 #>   dimensions:  18004, 11740, 0.658 Mb (nrow, ncol, size)
 #>   variables:   11740
-#>   building time: 0.12 sec
+#>   building time: 0.05 sec
 ```
 
 ### Step 3
@@ -123,13 +121,13 @@ problem_model
 Solve the “optimization model” using the available solvers.
 
 ``` r
-model_solution <- solve(a = problem_model, solver = "gurobi", verbose = FALSE)
+model_solution <- solve(a = problem_model, solver = "gurobi", verbose = FALSE, output_file =FALSE)
 model_solution
 #> Solution overview
 #>   objective value: 1755.42968110999
 #>   gap:  0%
 #>   status:  Optimal solution (according to gap tolerance: 0%)
-#>   runtime: 0.74 sec
+#>   runtime: 0.62 sec
 ```
 
 Finally, report and interpret the solution to the problem you are
@@ -164,18 +162,18 @@ Report the conservation actions that are suggested to be carried out
 ``` r
 solution_report03 <- model_solution$getSolutionActions()
 head(solution_report03)
-#>   id solution_threat_1 solution_threat_2 solution_threat_3 solution_threat_4
-#> 1  1                 0                 0                 0                 0
-#> 2  2                 0                 1                 1                 1
-#> 3  3                 0                 1                 0                 1
-#> 4  4                 0                 0                 0                 0
-#> 5  5                 0                 1                 0                 1
-#> 6  6                 0                 1                 0                 1
+#>   pu 1 2 3 4
+#> 1  1 0 0 0 0
+#> 2  2 0 1 1 1
+#> 3  3 0 1 0 1
+#> 4  4 0 0 0 0
+#> 5  5 0 1 0 1
+#> 6  6 0 1 0 1
 ```
 
 ## References
 
-  - Salgado-Rojas J, Álvarez-Miranda E, Hermoso V, Garcia-Gonzalo J,
+-   Salgado-Rojas J, Álvarez-Miranda E, Hermoso V, Garcia-Gonzalo J,
     Weintraub A. *A mixed integer programming approach for multi-action
     planning for threat management*. Ecological Modelling 2020;
     418:108901.  

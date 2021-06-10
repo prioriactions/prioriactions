@@ -22,249 +22,439 @@ knitr::opts_chunk$set(
   comment = "#>")
 ```
 
-The Mitchell River is a river located in Far North Queensland, Australia. The river rises on the Atherton Tableland about 50 kilometres (31 mi) northwest of Cairns, and flows about 750 kilometres (470 mi) northwest across Cape York Peninsula from Mareeba to the Gulf of Carpentaria.
+The Mitchell River is a river located in Far North Queensland, Australia. The river rises on the Atherton Tableland about 50 kilometres (31 mi) northwest of Cairns, and flows about 750 kilometres (470 mi) northwest across Cape York Peninsula from Mareeba to the Gulf of Carpentaria. we will use this case study to present some functionalities of the *prioriactions* package.
 
-## Instance data
+We started loading libraries:
 
-We divided the whole catchment (71,630 km2 into 2316 sites (i.e., sub-catchments), each one included the portion of river length between two consecutive river connections. We considered four major threats to freshwater fish species in the catchment: water buffalo (Bubalis bubalis), cane toad (Bufo marinus), river flow alteration (caused by impoundments, channels for water extractions and levee banks) and grazing land use. Also, we used the modelled spatial distribution of 44 fish species in the Mitchell river catchment as our conservation features. The distribution of these element can be extracted as follows:
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+library(prioritizr) #To use the simulate features distribution
+library(prioriactions)
+library(raster) #To plot of shapefiles
+library(tmap) #To create cool maps
+library(scales) #To standardize the value of amount
+library(reshape2) #To use the melt function
+library(sp) #To use the spplot function
+library(viridis) #To use viridis pallete
+```
+
+# Preparing data inputs
+
+We divided the whole catchment (71,630 km2 into 2316 sites (i.e., sub-catchments), each one included the portion of river length between two consecutive river connections. We considered four major threats to freshwater fish species in the catchment: water buffalo (Bubalis bubalis), cane toad (Bufo marinus), river flow alteration (caused by impoundments, channels for water extractions and levee banks) and grazing land use. Also, we used the modelled spatial distribution of 45 fish species in the Mitchell river catchment as our conservation features. The distribution of features and threats () will be simulated while the other input files a *prioriactions* will be loaded directly from the package as follows:
 
 ```{r, fig.show='hold'}
-library(prioriactions)
-pu_path <- system.file("extdata/input_big/unitCost_Big.csv", package = "prioriactions")
-mitchell_pu_data <- data.table::fread(pu_path, data.table = FALSE)
-## load in feature data
-spec_path <- system.file("extdata/input_big/target_Big.csv", package = "prioriactions")
-mitchell_features_data <- data.table::fread(spec_path, data.table = FALSE)
-## load in planning unit vs feature data
-puvspr_path <- system.file("extdata/input_big/speciesDistribution_Big.csv", package = "prioriactions")
-mitchell_rij_data <- data.table::fread(puvspr_path, data.table = FALSE)
-   
-## load in the boundary data
-bound_path <- system.file("extdata/input_big/boundary_Big.csv", package = "prioriactions")
-mitchell_bound_data <- data.table::fread(bound_path, data.table = FALSE)
-## load in the threats data
-threats_path <- system.file("extdata/input_big/threatsDistribution_Big.csv", package = "prioriactions")
-mitchell_threats_data <- data.table::fread(threats_path, data.table = FALSE)
-## load in the sensibility data
-sensibility_path <- system.file("extdata/input_big/sensibility_Big.csv", package = "prioriactions")
-mitchell_sensibility_data <- data.table::fread(sensibility_path, data.table = FALSE)
+path <- system.file("extdata/input_big/", package = "prioriactions")
+
+pu_data <- data.table::fread(paste0(path,"unitCost_Big.csv"), data.table = FALSE)
+features_data <- data.table::fread(paste0(path,"target_Big.csv"), data.table = FALSE)
+bound_data <- data.table::fread(paste0(path,"boundary_Big.csv"), data.table = FALSE)
+sensitivity_data <- data.table::fread(paste0(path,"sensibility_Big.csv"), data.table = FALSE)
 ```
 
-## Spatial data
+We load the shapefile of the case study also included as part of the package installation:
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+```{r echo=TRUE, warning=FALSE}
+#reading shapefile
+shp_mitchell = raster::shapefile(paste0(path,"Mitchell.shp"))
 
-```{r, message = FALSE, fig.width = w, fig.height = h}
-library(raster)
-library(viridis)
-shp_mitchell = shapefile("data/Fish_Mitchell.shp")
-print(shp_mitchell)
-spplot(shp_mitchell, zcol = "Shape_Area", names.attr = "Area",
-      main = "Planning unit areas", col.regions = viridis(20))
+sp::spplot(shp_mitchell, zcol = "Shape_Area", names.attr = "Area",
+      main = "Planning unit areas", col.regions = viridis::viridis(20))
 ```
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold', fig.width = w*1.5, fig.height = h}
-shp_mitchell$scl_ja <- factor(shp_mitchell$scl_ja)
-shp_mitchell$nem_er <- factor(shp_mitchell$nem_er)
-spplot(shp_mitchell[c("scl_ja", "nem_er")],
-      names.attr = c("specie 1", "specie 2"),
-      as.table = TRUE,
-      main = "Species distribution",
-      colorkey = list(space = "right"), layout = c(2, 1),
-      col.regions = c("grey90", "seagreen"), )
-```
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## Minimizing the action costs
-
-Example about expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+To model the distribution of features and threats, we use the function *simulate_species* from *prioritizr* package. Due this simulation is performed on a raster object, we rasterize the shapefile (through the *rasterize* function of the *raster* library) and then vectorize it again with the *extract* function of the same library.
 
 ```{r}
-library(prioriactions)
-## Create data instance
-instance_data<- problem(
-   pu = mitchell_pu_data, features = mitchell_features_data, rij = mitchell_rij_data,
-   threats = mitchell_threats_data, sensibility = mitchell_sensibility_data,
-   bound = mitchell_bound_data
- )
-print(instance_data)
+#We set the seed to can replicate the same simulations
+set.seed(1)
+
+#We transform the shapefile to raster with a convenient resolution for simulation
+ext <- raster::extent(shp_mitchell)
+r <- raster::raster(ext, res = 1000) 
+r <- raster::rasterize(shp_mitchell, r, field=1)
+
+#Simulation of 45 features distribution
+dist_features <- prioritizr::simulate_species(r, 45, model = 	RandomFields::RMgauss(scale = 40000))
+
+#We project the simulated rasters to shapefile
+rij_data <- raster::extract(dist_features, shp_mitchell, fun = mean)
+colnames(rij_data) <- features_data$id
 ```
 
-Explain about model creation
+In this way we obtain spatially auto correlated features distributions. Thus, for example, the distribution of simulated feature 1 is:
+
+```{r warning=FALSE}
+shp_mitchell$specie_distribution <- rij_data[,1]
+
+#Plot distribution with tmap library
+tmap::tm_shape(shp_mitchell) +
+  tmap::tm_fill("specie_distribution", pal = c("white", "seagreen")) +
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+```
+
+Instead, the distribution of simulated threat 1 is:
+
+```{r warning=FALSE}
+#Simulation of 4 threats distribution
+dist_threats <- prioritizr::simulate_species(r, 4, model = 	RandomFields::RMgauss(scale = 40000))
+
+#We project the simulated rasters to shapefile
+threats_data <- raster::extract(dist_threats, shp_mitchell, fun = mean)
+colnames(threats_data) <- 1:4
+
+shp_mitchell$threat_distribution <- threats_data[,1]
+
+#Plot distribution with tmap library
+tmap::tm_shape(shp_mitchell) +
+  tmap::tm_fill("threat_distribution", pal = c("white", "red4")) +
+  tmap::tm_borders(col="black", lwd = 0.5)
+```
+
+## 1) Model with presence / absence of threats and features
+
+For the first prioritization exercise, we transform the amount data to values 0 and 1 for both features distribution and threats. In the case of features, a threshold of 0.5 was set, that is, if the value of the amount is equal to or greater than 0.5, it is considered that the features is present at the site. Instead, a threat is considered present if it has any non-zero amount value.
+
+```{r warning=FALSE}
+#Modifying continuous to binary amount data of features
+rij_data_binary <- ifelse(rij_data > 0.5, 1, 0)
+shp_mitchell$feature_distribution <- rij_data_binary[,1]
+
+#Modifying continuous to binary amount data of threats
+threats_data_binary <- ifelse(threats_data > 0.0, 1, 0)
+
+#Plot example of feature distribution with tmap library
+tmap::tm_shape(shp_mitchell) +
+  tmap::tm_fill("feature_distribution", pal = c("white", "seagreen"), labels = c("0", "1"), breaks = c(0,1,2)) +
+  tmap::tm_borders(col="black", lwd = 0.5)
+```
+
+Then, we create the features and threat distribution inputs in the corresponding format that will be used by the *prioriactions* package. Also, we modify the *features_data* to set the target of each feature at 15%.
 
 ```{r}
-minCost_model<-min_costs(instance_data, blm=0, blm_actions=0)
-print(minCost_model)
+#Feature distribution data-------------------------------------
+#We get the extended matrix of distribution data for both cases, set the specific col names and we are left with only positive values
+rij_data_binary_large <- reshape2::melt(rij_data_binary)
+colnames(rij_data_binary_large) <- c("pu", "species", "amount")
+rij_data_binary_large <- rij_data_binary_large[rij_data_binary_large$amount > 0, ]
+
+#threat distribution data-------------------------------------
+threats_data_binary_large <- reshape2::melt(threats_data_binary)
+colnames(threats_data_binary_large) <- c("pu", "threats", "amount")
+threats_data_binary_large <- threats_data_binary_large[threats_data_binary_large$amount > 0, ]
+threats_data_binary_large$cost <- 1
+threats_data_binary_large$status <- 0
+
+#features data-------------------------------------
+features_data$target <- colSums(rij_data_binary)*0.15
+
 ```
 
-The next code is giving problems...(now it's ok)
+## Base model
+
+The base model considers the prioritization of conservation actions using the presence / absence of features and threats. In addition, a target has been set for all features of 15% of their representatives in the basin. The model, for its part, does not consider spatial requirements to the actions (*blm* and *blm_actions* parameters equal to 0. Furthermore, there is no attempt to optimize that planning actions occur within the same planning units (i.e., the *curve* parameter is equal to 1). The solver was configured to stop when a gap of at least 5% is achieved (0% meaning that at least one of the optimal solutions has been found).
 
 ```{r}
-solution <- solve(minCost_model, time_limit = 60)
-print(solution)
+input_data.base <- prioriactions::problem(
+  pu = pu_data, features = features_data, rij = rij_data_binary_large,
+  threats = threats_data_binary_large, sensitivity = sensitivity_data,
+  bound = bound_data
+)
+model.base <- prioriactions::min_costs(input_data.base, blm = 0, blm_actions = 0, curve = 1)
+solution.base <- prioriactions::solve(model.base, gap_limit = 0.2, verbose = TRUE, output_file = FALSE)
+```
+Note that we have achieved a gap of 0.24% and a objective value of 1265. To obtain the distribution of conservation actions we use the *getSolutionActions()* function, while that to obtain the vector of sites that are incorporated into the conservation plan we use the *getSolutionUnits()* function. Note that planning units may be selected just for adding connectivity to the plan without taking action within these sites.
+
+```{r warning=FALSE}
+#Getting unit distribution selected
+solution_units.base <- solution.base$getSolutionUnits()
+
+#Assign solution to shapefile field to plot it
+shp_mitchell$sol.base <-  solution_units.base$solution
+
+#Plot of action 1 distribution
+tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("sol.base", pal = c("white", "gray40"), labels = c("0", "1"), breaks = c(0,1,2)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
 ```
 
-monitoring
-```{r, fig.show='hold', fig.width = w, fig.height = h}
-monitoring_vector = solution$getSolutionUnits()
-shp_mitchell$monitoring = factor(monitoring_vector$solution)
-spplot(shp_mitchell, zcol = "monitoring",
-       main = "Solution 1: units to be monitored", col.regions = c("grey90", "dodgerblue4"))
+Whereas, if we want to obtain the actions to be carried out within the sites:
+
+```{r warning=FALSE}
+#Getting action distribution
+solution_actions.base <- solution.base$getSolutionActions()
+
+#Assign solution to shapefile field to plot it
+shp_mitchell$action_1.base <-  solution_actions.base$`1`
+shp_mitchell$action_2.base <-  solution_actions.base$`2`
+shp_mitchell$action_3.base <-  solution_actions.base$`3`
+shp_mitchell$action_4.base <-  solution_actions.base$`4`
+
+#Actions plots
+plot_action1.base <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("action_1.base", pal = c("white", "dodgerblue4"), labels = c("0", "1"), breaks = c(0,1,2)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+plot_action2.base <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("action_2.base", pal = c("white", "dodgerblue4"), labels = c("0", "1"), breaks = c(0,1,2)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+plot_action3.base <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("action_3.base", pal = c("white", "dodgerblue4"), labels = c("0", "1"), breaks = c(0,1,2)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+plot_action4.base <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("action_4.base", pal = c("white", "dodgerblue4"), labels = c("0", "1"), breaks = c(0,1,2)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+tmap::tmap_arrange(plot_action1.base , plot_action2.base , plot_action3.base , plot_action4.base)
+
 ```
 
-actions separated
-```{r, fig.show='hold', fig.width = w*1.5, fig.height = h}
-actions_vectors = solution$getSolutionActions()
-shp_mitchell$solution_threat_1 <- factor(actions_vectors$solution_threat_1)
-shp_mitchell$solution_threat_2 <- factor(actions_vectors$solution_threat_2)
-shp_mitchell$solution_threat_3 <- factor(actions_vectors$solution_threat_3)
-shp_mitchell$solution_threat_4 <- factor(actions_vectors$solution_threat_4)
-spplot(shp_mitchell[c("solution_threat_1", "solution_threat_2",
-                      "solution_threat_3", "solution_threat_4")],
-       names.attr = c("threat 1", "threat 2",
-                      "threat 3", "threat 4"),
-       as.table = TRUE,
-       main = "Actions",
-       colorkey = list(space = "right"), layout = c(2, 2),
-       col.regions = c("grey90", "dodgerblue4"))
+Or the distribution of the sum of the actions (higher density of actions):
+  
+```{r warning=FALSE}
+shp_mitchell$sum_actions.base <-  solution_units.base$solution + solution_actions.base$`1` + solution_actions.base$`2` + solution_actions.base$`3` + solution_actions.base$`4`
+
+#Plot som of actions with tmap library
+plot.base <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("sum_actions.base", palette="viridis", labels = c("do nothing", "pu selected without actions", "one action", "two actions", "three actions", "four actions"), breaks = c(0,1,2,3,4,5,6)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+plot.base
 ```
+The results of this base model will be compared with the subsequent models generated.
 
-actions agregated
+## Model with different *curve* param
 
-```{r, fig.show='hold', fig.width = w, fig.height = h}
-threats_amount = instance_data$getThreatsAmount()
-threats_names = instance_data$getThreatNames()
-for(i in 1:threats_amount){
-  actions_vectors[,i + 1] = ifelse(actions_vectors[,i + 1] == 1,
-                                  paste0("threat_",threats_names[i]," "),
-                                  "")
-}
-actions_vectors$solution_agregated = apply(actions_vectors[, names(actions_vectors)[grepl("solution", names(actions_vectors))]], 1, paste, collapse = "")
-actions_vectors$solution_agregated = ifelse(actions_vectors$solution_agregated == "", ifelse(monitoring_vector$solution == 1,"only monitoring", ""), actions_vectors$solution_agregated)
-shp_mitchell$actions_agregated = factor(actions_vectors$solution_agregated)
-levels(shp_mitchell$actions_agregated)[1] = "do nothing"
-spplot(shp_mitchell, zcol = "actions_agregated",
-       main = "Solution 1: actions distribution",
-       col.regions = c("grey90", viridis(nlevels(shp_mitchell$actions_agregated))))
-```
-
-## Changing connectivity units
-
-Example about expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+This model differs from the previous one in that it tries to group conservation actions within the selected sites as part of the management plan (through a non-linear relationship in the calculation of benefits). The latter is done by adding a value other than 1 to the *curve* parameter. Where: (1) indicates that there is a linear relationship between the quotient between the actions carried out with respect to the possible actions to be carried out with respect to the benefit obtained by a characteristic. (2) indicates a quadratic relationship between these values, and (3) a cubic relationship. In simple terms, the cubic relationship further penalizes not performing all conservation actions at a site for a particular feature.
 
 ```{r}
-minCost_model_high_unit_connectivity<-min_costs(instance_data, blm=1, blm_actions=0)
-print(minCost_model_high_unit_connectivity)
+input_data.curve <- prioriactions::problem(
+  pu = pu_data, features = features_data, rij = rij_data_binary_large,
+  threats = threats_data_binary_large, sensitivity = sensitivity_data,
+  bound = bound_data
+)
+model.curve <- prioriactions::min_costs(input_data.curve, blm = 0, blm_actions = 0, curve = 3)
+solution.curve <- prioriactions::solve(model.curve, gap_limit = 0.2, verbose = TRUE, output_file = FALSE)
 ```
 
-The next code is giving problems...(now it's ok)
+Note that the new model increased its dimensions compared to the previous one (from 11580 variables and 2361 constraints to 207844 variables and 160925 constraints), and therefore, increasing its resolution complexity. In this way, we obtain a value of the objective function of 1497 (greater than the previous one) with a quality of 4.48%.
+
+```{r warning=FALSE}
+#Getting unit distribution selected
+solution_units.curve <- solution.curve$getSolutionUnits()
+
+#Getting action distribution
+solution_actions.curve <- solution.curve$getSolutionActions()
+
+#Assign solution to shapefile field to plot it
+shp_mitchell$action_1.curve <-  solution_actions.curve$`1`
+shp_mitchell$action_2.curve <-  solution_actions.curve$`2`
+shp_mitchell$action_3.curve <-  solution_actions.curve$`3`
+shp_mitchell$action_4.curve <-  solution_actions.curve$`4`
+
+shp_mitchell$sum_actions.curve <-  solution_units.curve$solution + solution_actions.curve$`1` + solution_actions.curve$`2` + solution_actions.curve$`3` + solution_actions.curve$`4`
+
+#Plot som of actions with tmap library
+plot.curve <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("sum_actions.curve", palette="viridis", labels = c("do nothing", "pu selected without actions", "one action", "two actions", "three actions", "four actions"), breaks = c(0,1,2,3,4,5,6)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+#Comparative with base model solution
+tmap::tmap_arrange(plot.base, plot.curve)
+
+```
+Thus, we can notice that there are a greater number of sites with a higher density of actions with respect to the previous model (for example, a greater number of units painted yellow).
+
+## Model with spatial requirements
+
+To add spatial requirements to the model, there are two key parameters: *blm* which works in the same way as the parameter of the same name in *marxan*, which tries to minimize fragmentation between the selected planning units (i.e. regardless if conservation actions are carried out within them). Next we will see what happens when this parameter is relevant in the creation of the model.
+  
+```{r}
+input_data.spatial_req<- prioriactions::problem(
+  pu = pu_data, features = features_data, rij = rij_data_binary_large,
+  threats = threats_data_binary_large, sensitivity = sensitivity_data,
+  bound = bound_data
+)
+model.spatial_req <- prioriactions::min_costs(input_data.spatial_req, blm = 10, blm_actions = 0, curve = 1)
+solution.spatial_req <- prioriactions::solve(model.spatial_req, gap_limit = 0.2, verbose = TRUE, output_file = FALSE)
+```
+In the same way as what happened in the previous model, it is naturally inferred that the spatial requirement implies higher costs in the management plan, as well as a model with greater computational complexity to resolve.
+
+```{r warning=FALSE}
+#Getting unit distribution selected
+solution_units.spatial_req <- solution.spatial_req$getSolutionUnits()
+
+#Getting action distribution
+solution_actions.spatial_req<- solution.spatial_req$getSolutionActions()
+
+#Assign solution to shapefile field to plot it
+shp_mitchell$action_1.spatial_req <-  solution_actions.spatial_req$`1`
+shp_mitchell$action_2.spatial_req <-  solution_actions.spatial_req$`2`
+shp_mitchell$action_3.spatial_req <-  solution_actions.spatial_req$`3`
+shp_mitchell$action_4.spatial_req <-  solution_actions.spatial_req$`4`
+
+shp_mitchell$sum_actions.spatial_req <-  solution_units.spatial_req$solution + solution_actions.spatial_req$`1` + solution_actions.spatial_req$`2` + solution_actions.spatial_req$`3` + solution_actions.spatial_req$`4`
+
+#Plot som of actions with tmap library
+plot.spatial_req <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("sum_actions.spatial_req", palette="viridis", labels = c("do nothing", "pu selected without actions", "one action", "two actions", "three actions", "four actions"), breaks = c(0,1,2,3,4,5,6)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+#Comparative with base model solution
+tmap::tmap_arrange(plot.base, plot.spatial_req)
+
+```
+As seen, minimizing fragmentation produced a more closely related conservation plan compared to the base model.
+
+Another parameter to take into account is the *blm_actions* that adds the minimization of fragmentation between conservation actions, this means that it tries to spatially bring the management actions closer together and therefore, independently achieve a management plan as well related. 
 
 ```{r}
-solution_high_unit_connectivity = solve(minCost_model_high_unit_connectivity, time_limit = 60)
-print(solution)
+input_data.spatial_req_actions<- prioriactions::problem(
+  pu = pu_data, features = features_data, rij = rij_data_binary_large,
+  threats = threats_data_binary_large, sensitivity = sensitivity_data,
+  bound = bound_data
+)
+model.spatial_req_actions <- prioriactions::min_costs(input_data.spatial_req_actions, blm = 0, blm_actions = 10, curve = 1)
+solution.spatial_req_actions <- prioriactions::solve(model.spatial_req_actions, gap_limit = 0.2, verbose = TRUE, output_file = FALSE)
+```
+The effect of incorporating this parameter (*blm_actions*) can be seen better in the action distributions:
+
+```{r warning=FALSE}
+#Getting unit distribution selected
+solution_units.spatial_req_actions <- solution.spatial_req_actions$getSolutionUnits()
+
+#Getting action distribution
+solution_actions.spatial_req_actions<- solution.spatial_req_actions$getSolutionActions()
+
+#Assign solution to shapefile field to plot it
+shp_mitchell$action_1.spatial_req_actions <-  solution_actions.spatial_req_actions$`1`
+shp_mitchell$action_2.spatial_req_actions <-  solution_actions.spatial_req_actions$`2`
+shp_mitchell$action_3.spatial_req_actions <-  solution_actions.spatial_req_actions$`3`
+shp_mitchell$action_4.spatial_req_actions <-  solution_actions.spatial_req_actions$`4`
+
+#Actions plots
+plot_action1.spatial_req_actions <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("action_1.spatial_req_actions", pal = c("white", "dodgerblue4"), labels = c("0", "1"), breaks = c(0,1,2)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+plot_action2.spatial_req_actions <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("action_2.spatial_req_actions", pal = c("white", "dodgerblue4"), labels = c("0", "1"), breaks = c(0,1,2)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+plot_action3.spatial_req_actions <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("action_3.spatial_req_actions", pal = c("white", "dodgerblue4"), labels = c("0", "1"), breaks = c(0,1,2)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+plot_action4.spatial_req_actions <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("action_4.spatial_req_actions", pal = c("white", "dodgerblue4"), labels = c("0", "1"), breaks = c(0,1,2)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+tmap::tmap_arrange(plot_action1.spatial_req_actions , plot_action2.spatial_req_actions , plot_action3.spatial_req_actions , plot_action4.spatial_req_actions)
 ```
 
-monitoring
+## 2) Model with continuous amount of threats and presence / absence of features
 
-```{r, fig.show='hold', fig.width = w, fig.height = h}
-monitoring_vector = solution_high_unit_connectivity$getSolutionUnits()
-shp_mitchell$monitoring = factor(monitoring_vector$solution)
-spplot(shp_mitchell, zcol = "monitoring",
-       main = "Solution 1: units to be monitored", col.regions = c("grey90", "dodgerblue4"))
-```
-
-actions separated
-```{r, fig.show='hold', fig.width = w*1.5, fig.height = h}
-actions_vectors = solution_high_unit_connectivity$getSolutionActions()
-shp_mitchell$solution_threat_1 <- factor(actions_vectors$solution_threat_1)
-shp_mitchell$solution_threat_2 <- factor(actions_vectors$solution_threat_2)
-shp_mitchell$solution_threat_3 <- factor(actions_vectors$solution_threat_3)
-shp_mitchell$solution_threat_4 <- factor(actions_vectors$solution_threat_4)
-spplot(shp_mitchell[c("solution_threat_1", "solution_threat_2",
-                      "solution_threat_3", "solution_threat_4")],
-       names.attr = c("threat 1", "threat 2",
-                      "threat 3", "threat 4"),
-       as.table = TRUE,
-       main = "Actions",
-       colorkey = list(space = "right"), layout = c(2, 2),
-       col.regions = c("grey90", "dodgerblue4"))
-```
-
-actions agregated
-
-```{r, fig.show='hold', fig.width = w, fig.height = h}
-for(i in 1:threats_amount){
-  actions_vectors[,i + 1] = ifelse(actions_vectors[,i + 1] == 1,
-                                  paste0("threat_",threats_names[i]," "),
-                                  "")
-}
-actions_vectors$solution_agregated = apply(actions_vectors[, names(actions_vectors)[grepl("solution", names(actions_vectors))]], 1, paste, collapse = "")
-actions_vectors$solution_agregated = ifelse(actions_vectors$solution_agregated == "", ifelse(monitoring_vector$solution == 1,"only monitoring", ""), actions_vectors$solution_agregated)
-shp_mitchell$actions_agregated = factor(actions_vectors$solution_agregated)
-levels(shp_mitchell$actions_agregated)[1] = "do nothing"
-spplot(shp_mitchell, zcol = "actions_agregated",
-       main = "Solution 1: actions distribution",
-       col.regions = c("grey90", viridis(nlevels(shp_mitchell$actions_agregated))))
-```
-
-## Changing connectivity actions
-
-Example about expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+An interesting comparison is how the use of continuous threat intensities influences solutions with respect to the use of binary threat presence / absence data. To do this, we change the column *amount* for the original output from the simulation of threat distribution, without performing a previous filter, i.e.,
 
 ```{r}
-minCost_model_high_action_connectivity<-min_costs(instance_data, blm=1, blm_actions=1)
-print(minCost_model_high_action_connectivity)
+#We get the extended matrix of distribution data for both cases, set the specific col names and we are left with only positive values
+
+#threat distribution data-------------------------------------
+threats_data_large <- reshape2::melt(threats_data)
+colnames(threats_data_large) <- c("pu", "threats", "amount")
+threats_data_large <- threats_data_large[threats_data_large$amount > 0, ]
+threats_data_large$cost <- 1
+threats_data_large$status <- 0
 ```
 
-The next code is giving problems...(now it's ok)
+Thus, the new model is build as follow:
 
 ```{r}
-solution_high_action_connectivity = solve(minCost_model_high_action_connectivity, time_limit = 120)
-print(solution)
+input_data.threat_cont <- prioriactions::problem(
+  pu = pu_data, features = features_data, rij = rij_data_binary_large,
+  threats = threats_data_large, sensitivity = sensitivity_data,
+  bound = bound_data
+)
+model.threat_cont<- prioriactions::min_costs(input_data.threat_cont, blm = 0, blm_actions = 0, curve = 1)
+solution.threat_cont <- prioriactions::solve(model.threat_cont, gap_limit = 0.2, verbose = TRUE, output_file = FALSE)
 ```
 
-monitoring
+```{r warning=FALSE}
+#Getting unit distribution selected
+solution_units.threat_cont <- solution.threat_cont$getSolutionUnits()
 
-```{r, fig.show='hold', fig.width = w, fig.height = h}
-monitoring_vector = solution_high_action_connectivity$getSolutionUnits()
-shp_mitchell$monitoring = factor(monitoring_vector$solution)
-spplot(shp_mitchell, zcol = "monitoring",
-       main = "Solution 1: units to be monitored", col.regions = c("grey90", "dodgerblue4"))
+#Getting action distribution
+solution_actions.threat_cont <- solution.threat_cont$getSolutionActions()
+
+#Assign solution to shapefile field to plot it
+shp_mitchell$action_1.threat_cont <-  solution_actions.threat_cont$`1`
+shp_mitchell$action_2.threat_cont <-  solution_actions.threat_cont$`2`
+shp_mitchell$action_3.threat_cont <-  solution_actions.threat_cont$`3`
+shp_mitchell$action_4.threat_cont <-  solution_actions.threat_cont$`4`
+
+shp_mitchell$sum_actions.threat_cont <-  solution_units.threat_cont$solution + solution_actions.threat_cont$`1` + solution_actions.threat_cont$`2` + solution_actions.threat_cont$`3` + solution_actions.threat_cont$`4`
+
+#Plot som of actions with tmap library
+plot.threat_cont <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("sum_actions.threat_cont", palette="viridis", labels = c("do nothing", "pu selected without actions", "one action", "two actions", "three actions", "four actions"), breaks = c(0,1,2,3,4,5,6)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+#Comparative with base model solution
+tmap::tmap_arrange(plot.base, plot.threat_cont)
+
 ```
 
-actions separated
-```{r, fig.show='hold', fig.width = w*1.5, fig.height = h}
-actions_vectors = solution_high_action_connectivity$getSolutionActions()
-shp_mitchell$solution_threat_1 <- factor(actions_vectors$solution_threat_1)
-shp_mitchell$solution_threat_2 <- factor(actions_vectors$solution_threat_2)
-shp_mitchell$solution_threat_3 <- factor(actions_vectors$solution_threat_3)
-shp_mitchell$solution_threat_4 <- factor(actions_vectors$solution_threat_4)
-spplot(shp_mitchell[c("solution_threat_1", "solution_threat_2",
-                      "solution_threat_3", "solution_threat_4")],
-       names.attr = c("threat 1", "threat 2",
-                      "threat 3", "threat 4"),
-       as.table = TRUE,
-       main = "Actions",
-       colorkey = list(space = "right"), layout = c(2, 2),
-       col.regions = c("grey90", "dodgerblue4"))
+
+## 3) Model with continuous amount of threats and features
+
+The more general model allows us to work with continuous data on intensity of species and threats. For this, the same procedure is carried out on the data done in the previous step, but now with the *amount* column of the features. Also, it is necessary to update the *target* column from the *features_data* file.
+
+```{r}
+#Feature distribution data-------------------------------------
+
+rij_data_large <- reshape2::melt(rij_data)
+colnames(rij_data_large) <- c("pu", "species", "amount")
+rij_data_large <- rij_data_large[rij_data_large$amount > 0, ]
+
+#features data-------------------------------------
+features_data$target <- colSums(rij_data)*0.15
+
 ```
 
-actions agregated
+Thus, the new model is build as follow:
 
-```{r, fig.show='hold', fig.width = w, fig.height = h}
-for(i in 1:threats_amount){
-  actions_vectors[,i + 1] = ifelse(actions_vectors[,i + 1] == 1,
-                                  paste0("threat_",threats_names[i]," "),
-                                  "")
-}
-actions_vectors$solution_agregated = apply(actions_vectors[, names(actions_vectors)[grepl("solution", names(actions_vectors))]], 1, paste, collapse = "")
-actions_vectors$solution_agregated = ifelse(actions_vectors$solution_agregated == "", ifelse(monitoring_vector$solution == 1,"only monitoring", ""), actions_vectors$solution_agregated)
-shp_mitchell$actions_agregated = factor(actions_vectors$solution_agregated)
-levels(shp_mitchell$actions_agregated)[1] = "do nothing"
-spplot(shp_mitchell, zcol = "actions_agregated",
-       main = "Solution 1: actions distribution",
-       col.regions = c("grey90", viridis(nlevels(shp_mitchell$actions_agregated))))
+```{r}
+input_data.feature_cont <- prioriactions::problem(
+  pu = pu_data, features = features_data, rij = rij_data_large,
+  threats = threats_data_large, sensitivity = sensitivity_data,
+  bound = bound_data
+)
+model.feature_cont<- prioriactions::min_costs(input_data.feature_cont, blm = 0, blm_actions = 0, curve = 1)
+solution.feature_cont <- prioriactions::solve(model.feature_cont, gap_limit = 0.2, verbose = TRUE, output_file = FALSE)
+```
+
+```{r warning=FALSE}
+#Getting unit distribution selected
+solution_units.feature_cont <- solution.feature_cont$getSolutionUnits()
+
+#Getting action distribution
+solution_actions.feature_cont <- solution.feature_cont$getSolutionActions()
+
+#Assign solution to shapefile field to plot it
+shp_mitchell$action_1.feature_cont <-  solution_actions.feature_cont$`1`
+shp_mitchell$action_2.feature_cont <-  solution_actions.feature_cont$`2`
+shp_mitchell$action_3.feature_cont <-  solution_actions.feature_cont$`3`
+shp_mitchell$action_4.feature_cont <-  solution_actions.feature_cont$`4`
+
+shp_mitchell$sum_actions.feature_cont <-  solution_units.feature_cont$solution + solution_actions.feature_cont$`1` + solution_actions.feature_cont$`2` + solution_actions.feature_cont$`3` + solution_actions.feature_cont$`4`
+
+#Plot sum of actions with tmap library
+plot.feature_cont <- tmap::tm_shape(shp_mitchell) + 
+  tmap::tm_fill("sum_actions.feature_cont", palette="viridis", labels = c("do nothing", "pu selected without actions", "one action", "two actions", "three actions", "four actions"), breaks = c(0,1,2,3,4,5,6)) + 
+  tmap::tm_borders(col="black", lwd = 0.5)
+
+#Comparative with base model solution
+tmap::tmap_arrange(plot.base, plot.feature_cont)
+
 ```

@@ -71,12 +71,12 @@ NULL
 #' ## This example uses input files included into package.
 #'
 #' ## Load data
-#' data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensibility_data, example_bound_data)
+#' data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
 #'
 #' ## Create data instance
 #' problem_data <- problem(
 #'   pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-#'   threats = example_threats_data, sensibility = example_sensibility_data,
+#'   threats = example_threats_data, sensitivity = example_sensibility_data,
 #'   bound = example_bound_data
 #' )
 #'
@@ -164,14 +164,14 @@ min_costs.ConservationProblem <- function(x, blm = 0, blm_actions = 0, curve = 3
   pu <- x$getData("pu")
   rij <- x$getData("rij")
   threats <- x$getData("threats")
-  sensibility <- x$getData("sensibility")
+  sensitivity <- x$getData("sensitivity")
   bound <- x$getData("bound")
 
   pu <- pu[, c("internal_id", "cost", "status")]
   features <- features[, c("internal_id", "target")]
   rij <- rij[, c("internal_pu", "internal_species", "amount")]
   threats <- threats[, c("internal_pu", "threats", "amount", "cost", "status")]
-  sensibility <- sensibility[, c("internal_species", "threats", "amount")]
+  sensitivity <- sensitivity[, c("internal_species", "threats", "amount")]
 
   if (!is.null(bound) && (abs(blm) > 1e-50 || abs(blm_actions) > 1e-50)) {
     bound <- bound[, c("internal_id1", "internal_id2", "boundary")]
@@ -185,11 +185,11 @@ min_costs.ConservationProblem <- function(x, blm = 0, blm_actions = 0, curve = 3
   }
   settings_Data <- list(beta1 = blm, beta2 = blm_actions, exponent = curve, segments = segments)
 
-  # MAMP_model(features, pu, bound, rij, threats, sensibility, settings_Data, x)
+  # MAMP_model(features, pu, bound, rij, threats, sensitivity, settings_Data, x)
 
   problemData <- methods::new(OptimizationProblemRcpp)
 
-  rcpp_test <- problemData$Create_new_optimization_problem(features, pu, bound, rij, threats, sensibility, settings_Data)
+  rcpp_test <- problemData$Create_new_optimization_problem(features, pu, bound, rij, threats, sensitivity, settings_Data)
 
   rcpp_test$A <- Matrix::sparseMatrix(i = rcpp_test$A_i + 1, j = rcpp_test$A_j + 1, x = rcpp_test$A_x)
 

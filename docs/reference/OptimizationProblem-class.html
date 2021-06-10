@@ -88,7 +88,7 @@ methods for obtaining model information. It is created used models functions
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -110,9 +110,6 @@ methods for obtaining model information. It is created used models functions
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/AmountMitchell.html">Prueba amount con Mitchell</a>
-    </li>
     <li>
       <a href="../articles/MitchellRiver.html">Mitchell River</a>
     </li>
@@ -210,12 +207,13 @@ methods for obtaining model information. It is created used models functions
     <pre class="examples"><span class='r-in'><span class='co'>## Examples of how to use the methods of a OptimizationProblem class object.</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Load data</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_rij_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensibility_data</span>, <span class='va'>example_bound_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_rij_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensitivity_data</span>, <span class='va'>example_bound_data</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_sensitivity_data’ not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
 <span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='problem.html'>problem</a></span><span class='op'>(</span></span>
 <span class='r-in'>  pu <span class='op'>=</span> <span class='va'>example_pu_data</span>, features <span class='op'>=</span> <span class='va'>example_features_data</span>, rij <span class='op'>=</span> <span class='va'>example_rij_data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, sensibility <span class='op'>=</span> <span class='va'>example_sensibility_data</span>,</span>
+<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>example_sensibility_data</span>,</span>
 <span class='r-in'>  bound <span class='op'>=</span> <span class='va'>example_bound_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The following pu's do not contain species: 59 97 109 118 121 122 123 127 129 134 136 139 141 142 146 166 167 185 194 195 196 198 211 230</span>

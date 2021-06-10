@@ -44,12 +44,12 @@ NULL
 #' ## Examples of how to use the methods of a Solution class object.
 #'
 #' ## Load data
-#' data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensibility_data, example_bound_data)
+#' data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
 #'
 #' ## Create data instance
 #' problem_data <- problem(
 #'   pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-#'   threats = example_threats_data, sensibility = example_sensibility_data,
+#'   threats = example_threats_data, sensitivity = example_sensibility_data,
 #'   bound = example_bound_data
 #' )
 #'
@@ -129,13 +129,13 @@ Solution <- pproto(
     features <- self$OptimizationClass$ConservationClass$getData("features")
     rij <- self$OptimizationClass$ConservationClass$getData("rij")
     number_species <- self$OptimizationClass$ConservationClass$getFeatureAmount()
-    sensibility <- self$OptimizationClass$ConservationClass$getData("sensibility")
+    sensitivity <- self$OptimizationClass$ConservationClass$getData("sensitivity")
     threats <- self$OptimizationClass$ConservationClass$getData("threats")
 
     benefits <- c(rep(0.0,number_species))
     for (i in 1:number_species) {
       pu_per_specie <- rij$internal_pu[which(rij$internal_species == features$internal_id[i])]
-      threats_per_specie <- sensibility$threats[which(sensibility$internal_species == features$internal_id[i])]
+      threats_per_specie <- sensitivity$threats[which(sensitivity$internal_species == features$internal_id[i])]
 
       for (j in pu_per_specie) {
         threats_per_unit <- threats$threats[which(threats$internal_pu == j)]
@@ -144,9 +144,11 @@ Solution <- pproto(
         if (length(threats_against_specie_in_unit) != 0) {
           counter_specie <- 0.0
           for (k in threats_against_specie_in_unit){
-            counter_specie <- counter_specie + sol_action[j,k+1]
+            row_threats <- which(threats$internal_pu == j & threats$threats == k)
+            counter_specie <- counter_specie + sol_action[j,k+1] * threats$amount[row_threats]
           }
-          benefits[i]<-benefits[i]+(counter_specie/length(threats_against_specie_in_unit))
+          row_rij_amount <- which(rij$internal_pu == j & rij$internal_species == i)
+          benefits[i]<-benefits[i]+(counter_specie * rij$amount[row_rij_amount]/length(threats_against_specie_in_unit))
         }
         else {
           benefits[i]<-benefits[i]+sol_unit$solution[j]
@@ -181,7 +183,7 @@ Solution <- pproto(
     # )
     statusCode <- self$getStatusCode()
     gap <- self$getGap()
-    time_limit <- self$data$timelimit
+    time_limit <- self$data$arg$timelimit
     if(statusCode == 0L){
       return(paste0("Optimal solution (according to gap tolerance: ", gap,")"))
     }

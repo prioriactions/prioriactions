@@ -4,9 +4,9 @@
 \alias{problem}
 \title{Multi-action conservation planning problem}
 \usage{
-problem(pu, features, rij, threats, sensibility, ...)
+problem(pu, features, rij, threats, sensitivity, ...)
 
-\S4method{problem}{data.frame}(pu, features, rij, threats, sensibility, bound = NULL)
+\S4method{problem}{data.frame}(pu, features, rij, threats, sensitivity, bound = NULL)
 }
 \arguments{
 \item{pu}{Object of class \code{\link{data.frame}} that specifies the planning units
@@ -55,9 +55,9 @@ The description of the columns is listed below.
    \item{\code{"status"}}{\code{integer} indicating if each action should not be locked in the solution (0) or if it should be \emph{locked-in} (2) or \emph{locked-out} (3) of the solution. This column is \strong{optional}.}
    }}
 
-\item{sensibility}{Object of class \code{\link{data.frame}} that specifies the species-threats sensibility,
+\item{sensitivity}{Object of class \code{\link{data.frame}} that specifies the species-threats sensitivity,
 i.e., which threats affect the persistence of endangered conservation features (e.g., species).
-\strong{It is recommended not to include cases where there is no species-threats sensibility
+\strong{It is recommended not to include cases where there is no species-threats sensitivity
 (avoid rows with \code{"amount"} equal to 0). Instead, it is recommended to omit these cases completely
 from the \code{\link{data.frame}}, for efficiency reasons.}
 The description of the columns is listed below.
@@ -122,10 +122,10 @@ threats_path <- system.file("extdata/input/threats.dat", package = "prioriaction
 threats_data <- data.table::fread(threats_path, data.table = FALSE)
 head(threats_data)
 
-## Load in the sensibility data
-sensibility_path <- system.file("extdata/input/sensibility.dat", package = "prioriactions")
-sensibility_data <- data.table::fread(sensibility_path, data.table = FALSE)
-head(sensibility_data)
+## Load in the sensitivity data
+sensitivity_path <- system.file("extdata/input/sensibility.dat", package = "prioriactions")
+sensitivity_data <- data.table::fread(sensitivity_path, data.table = FALSE)
+head(sensitivity_data)
 
 ## Load in the boundary data
 bound_path <- system.file("extdata/input/bound.dat", package = "prioriactions")
@@ -135,7 +135,7 @@ head(bound_data)
 ## Create data instance
 problem_data <- problem(
   pu = pu_data, features = spec_data, rij = puvspr_data,
-  threats = threats_data, sensibility = sensibility_data,
+  threats = threats_data, sensitivity = sensitivity_data,
   bound = bound_data
 )
 

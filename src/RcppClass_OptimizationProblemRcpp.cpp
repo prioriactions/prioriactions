@@ -742,7 +742,7 @@
       if(vector_ActionAmount[i] != 0){
         //std::string varX = variableX(pu_threats_data[i], id_threats_data[i]);
         //VariablesNames.push_back(varX);
-        if(boundarySize != 0){
+        if(boundarySize != 0 && beta2 != 0){
           double connectivityCoeffAgreggate = 0;
           for(int j = 0; j < numberUnits; j++){
             if(matrix_cv(index_id_corrected,j) != 0 && index_id_corrected != j){
@@ -793,7 +793,7 @@
     int break_Y = this->_C.size();
 
     //int contador = 0;
-    if(boundarySize != 0){
+    if(boundarySize != 0 && beta1 != 0){
       arma::sp_mat z = matrix_cv.t();
 
       for(arma::sp_mat::const_iterator it = z.begin(); it != z.end(); ++it) {
@@ -1202,7 +1202,9 @@
 
                 if(index_id_corrected == i  && index_k_corrected == subset_Ki_Ks[k]){
                   posX = break_X + i_threats;
-                  coeff = (double) (vector_ActionAmount[i_threats])/benefit_den;
+
+                  //Rcout << "i: " << i << ", s: " << subset_Si[s] << ", value = " << SpeciesDistribution[i][subset_Si[s]] <<"\n";
+                  coeff = (double) (vector_ActionAmount[i_threats] * SpeciesDistribution[i][subset_Si[s]])/benefit_den;
                   break;
                 }
               }
@@ -1558,7 +1560,7 @@
           if(index_id_corrected == i  && index_k_corrected == subset_Ki_Ks[k]){
             //Rcout << "i: "<< i + 1 <<", k:"<< subset_Ki_Ks[k] + 1 <<", s: "<< subset_Si[s] + 1 << ", n=" << countervariablesB << ", index: "<<i_threats << "\n";
             posX = break_X + i_threats;
-            coeff = (double) (vector_ActionAmount[i_threats])/benefit_den;
+            coeff = (double) (vector_ActionAmount[i_threats] * SpeciesDistribution[i][s])/benefit_den;
             break;
           }
         }

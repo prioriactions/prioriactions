@@ -1,6 +1,6 @@
 Package: prioriactions
 Type: Package
-Version: 0.1.1
+Version: 0.1.2
 Title: Multi-action conservation planning in R             
 Description: The prioriactions R package uses a mixed integer mathematical programming (MIP)
         approach for building and solving multi-action conservation planning problems, 

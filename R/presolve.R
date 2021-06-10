@@ -41,13 +41,13 @@ presolve.ConservationProblem <- function(x, objective = "min costs", curve = 3, 
     else {
       ## Evaluating the factibility (locked out in actions)
       number_species <- x$getFeatureAmount()
-      sensibility <- x$getData("sensibility")
+      sensitivity <- x$getData("sensitivity")
       threats <- x$getData("threats")
 
       for (i in 1:number_species) {
         counter_specie <- 0
         pu_per_specie <- rij_free$pu[which(rij_free$species == features$id[i])]
-        threats_per_specie <- sensibility$threats[which(sensibility$species == features$id[i])]
+        threats_per_specie <- sensitivity$threats[which(sensitivity$species == features$id[i])]
 
         for (j in pu_per_specie) {
           threats_per_unit <- threats$threats[which(threats$pu == j)]

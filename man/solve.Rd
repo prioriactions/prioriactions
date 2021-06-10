@@ -13,7 +13,10 @@
   solution_limit = FALSE,
   cores = 2,
   verbose = TRUE,
-  txt_file = FALSE,
+  name_output_file = "prioriaction_output",
+  name_log = "gurobi_log",
+  output_file = TRUE,
+  log_file = FALSE,
   ...
 )
 }
@@ -101,12 +104,12 @@ The solvers supported by the \code{\link{solve}} function are
 ## that the user has available. This example uses input files included into package.
 
 ## Load data
-data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensibility_data, example_bound_data)
+data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
 
 ## Create data instance
 problem_data <- problem(
   pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-  threats = example_threats_data, sensibility = example_sensibility_data,
+  threats = example_threats_data, sensitivity = example_sensibility_data,
   bound = example_bound_data
 )
 

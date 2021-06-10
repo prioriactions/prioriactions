@@ -56,9 +56,9 @@ NULL
 #'    \item{\code{"status"}}{\code{integer} indicating if each action should not be locked in the solution (0) or if it should be \emph{locked-in} (2) or \emph{locked-out} (3) of the solution. This column is \strong{optional}.}
 #'    }
 #'
-#' @param sensibility Object of class \code{\link{data.frame}} that specifies the species-threats sensibility,
+#' @param sensitivity Object of class \code{\link{data.frame}} that specifies the species-threats sensitivity,
 #' i.e., which threats affect the persistence of endangered conservation features (e.g., species).
-#' \strong{It is recommended not to include cases where there is no species-threats sensibility
+#' \strong{It is recommended not to include cases where there is no species-threats sensitivity
 #' (avoid rows with \code{"amount"} equal to 0). Instead, it is recommended to omit these cases completely
 #' from the \code{\link{data.frame}}, for efficiency reasons.}
 #' The description of the columns is listed below.
@@ -119,10 +119,10 @@ NULL
 #' threats_data <- data.table::fread(threats_path, data.table = FALSE)
 #' head(threats_data)
 #'
-#' ## Load in the sensibility data
-#' sensibility_path <- system.file("extdata/input/sensibility.dat", package = "prioriactions")
-#' sensibility_data <- data.table::fread(sensibility_path, data.table = FALSE)
-#' head(sensibility_data)
+#' ## Load in the sensitivity data
+#' sensitivity_path <- system.file("extdata/input/sensibility.dat", package = "prioriactions")
+#' sensitivity_data <- data.table::fread(sensitivity_path, data.table = FALSE)
+#' head(sensitivity_data)
 #'
 #' ## Load in the boundary data
 #' bound_path <- system.file("extdata/input/bound.dat", package = "prioriactions")
@@ -132,7 +132,7 @@ NULL
 #' ## Create data instance
 #' problem_data <- problem(
 #'   pu = pu_data, features = spec_data, rij = puvspr_data,
-#'   threats = threats_data, sensibility = sensibility_data,
+#'   threats = threats_data, sensitivity = sensitivity_data,
 #'   bound = bound_data
 #' )
 #'
@@ -147,20 +147,20 @@ NULL
 #'
 #' @export
 methods::setGeneric("problem",
-                    signature = methods::signature("pu", "features", "rij", "threats", "sensibility"),
-                    function(pu, features, rij, threats, sensibility, ...) standardGeneric("problem")
+                    signature = methods::signature("pu", "features", "rij", "threats", "sensitivity"),
+                    function(pu, features, rij, threats, sensitivity, ...) standardGeneric("problem")
 )
 
 #' @name problem
-#' @usage \S4method{problem}{data.frame}(pu, features, rij, threats, sensibility, bound = NULL)
+#' @usage \S4method{problem}{data.frame}(pu, features, rij, threats, sensitivity, bound = NULL)
 #' @rdname problem
 methods::setMethod(
   "problem",
   methods::signature(
     pu = "data.frame", features = "data.frame", rij = "data.frame",
-    threats = "data.frame", sensibility = "data.frame"
+    threats = "data.frame", sensitivity = "data.frame"
   ),
-  function(pu, features, rij, threats, sensibility, bound = NULL, ...) {
+  function(pu, features, rij, threats, sensitivity, bound = NULL, ...) {
     # This is an exact copy of the prioritizr code ------------
 
     # assert arguments are valid
@@ -301,21 +301,21 @@ methods::setMethod(
     #   threats$locked_out <- FALSE
     # }
 
-    ## sensibility
+    ## sensitivity
     assertthat::assert_that(
-      inherits(sensibility, "data.frame"),
-      assertthat::has_name(sensibility, "species"),
-      assertthat::has_name(sensibility, "threats"),
-      assertthat::has_name(sensibility, "amount"),
-      nrow(sensibility) > 0,
-      is.numeric(sensibility$species),
-      is.numeric(sensibility$threats),
-      is.numeric(sensibility$amount),
-      assertthat::noNA(sensibility$species),
-      assertthat::noNA(sensibility$threats),
-      assertthat::noNA(sensibility$amount),
-      all(sensibility$species %in% features$id),
-      all(sensibility$threats %in% threats$threats)
+      inherits(sensitivity, "data.frame"),
+      assertthat::has_name(sensitivity, "species"),
+      assertthat::has_name(sensitivity, "threats"),
+      assertthat::has_name(sensitivity, "amount"),
+      nrow(sensitivity) > 0,
+      is.numeric(sensitivity$species),
+      is.numeric(sensitivity$threats),
+      is.numeric(sensitivity$amount),
+      assertthat::noNA(sensitivity$species),
+      assertthat::noNA(sensitivity$threats),
+      assertthat::noNA(sensitivity$amount),
+      all(sensitivity$species %in% features$id),
+      all(sensitivity$threats %in% threats$threats)
     )
 
 
@@ -370,12 +370,12 @@ methods::setMethod(
       warning(paste0("The following species are not represented: ", paste(dif_features, collapse = " ")), call. = FALSE)
     }
 
-    dif_threats <- setdiff(unique(features$id), unique(sensibility$species))
+    dif_threats <- setdiff(unique(features$id), unique(sensitivity$species))
     if (length(dif_threats) != 0L) {
       warning(paste0("The following species are not threatened: ", paste(dif_threats, collapse = " ")), call. = FALSE)
     }
 
-    dif_threats <- setdiff(unique(threats$threats), unique(sensibility$threats))
+    dif_threats <- setdiff(unique(threats$threats), unique(sensitivity$threats))
     if (length(dif_threats) != 0L) {
       warning(paste0("The following threats are not dangerous to any species: ", paste(dif_threats, collapse = " ")), call. = FALSE)
     }
@@ -407,8 +407,8 @@ methods::setMethod(
 
 
     # sensitivity
-    internal_species <- dplyr::inner_join(sensibility, features, by = c("species" = "id"))$internal_id
-    sensibility$internal_species <- internal_species
+    internal_species <- dplyr::inner_join(sensitivity, features, by = c("species" = "id"))$internal_id
+    sensitivity$internal_species <- internal_species
 
     # threats
     internal_id <- dplyr::inner_join(threats, pu, by = c("pu" = "id"))$internal_id
@@ -420,7 +420,7 @@ methods::setMethod(
     pproto(NULL, ConservationProblem,
            data = list(
              pu = pu, features = features, rij = rij, threats = threats,
-             sensibility = sensibility, bound = bound
+             sensitivity = sensitivity, bound = bound
            )
     )
   }

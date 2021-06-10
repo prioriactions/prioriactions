@@ -73,12 +73,12 @@ Create an optimization model for the multi-action conservation
 ## This example uses input files included into package.
 
 ## Load data
-data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensibility_data, example_bound_data)
+data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
 
 ## Create data instance
 problem_data <- problem(
   pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-  threats = example_threats_data, sensibility = example_sensibility_data,
+  threats = example_threats_data, sensitivity = example_sensibility_data,
   bound = example_bound_data
 )
 

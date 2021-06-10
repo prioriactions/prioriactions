@@ -95,7 +95,7 @@ This function requires the Rsymphony package, the
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -117,9 +117,6 @@ This function requires the Rsymphony package, the
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/AmountMitchell.html">Prueba amount con Mitchell</a>
-    </li>
     <li>
       <a href="../articles/MitchellRiver.html">Mitchell River</a>
     </li>
@@ -183,7 +180,10 @@ This function requires the Rsymphony package, the
   solution_limit <span class='op'>=</span> <span class='cn'>FALSE</span>,
   cores <span class='op'>=</span> <span class='fl'>2</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  txt_file <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  name_output_file <span class='op'>=</span> <span class='st'>"prioriaction_output"</span>,
+  name_log <span class='op'>=</span> <span class='st'>"gurobi_log"</span>,
+  output_file <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  log_file <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -284,12 +284,13 @@ information is displayed while solving the optimization model
 <span class='r-in'><span class='co'>## that the user has available. This example uses input files included into package.</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Load data</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_rij_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensibility_data</span>, <span class='va'>example_bound_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_rij_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensitivity_data</span>, <span class='va'>example_bound_data</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ü¾Œ¦”¼ü¾Œƒ ¼ü¾Žƒ¤¼example_sensitivity_dataü¾Œ¦”¼ü¾Œƒ ¼ü¾Ž“¤¼ not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
 <span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='problem.html'>problem</a></span><span class='op'>(</span></span>
 <span class='r-in'>  pu <span class='op'>=</span> <span class='va'>example_pu_data</span>, features <span class='op'>=</span> <span class='va'>example_features_data</span>, rij <span class='op'>=</span> <span class='va'>example_rij_data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, sensibility <span class='op'>=</span> <span class='va'>example_sensibility_data</span>,</span>
+<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>example_sensibility_data</span>,</span>
 <span class='r-in'>  bound <span class='op'>=</span> <span class='va'>example_bound_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The following pu's do not contain species: 59 97 109 118 121 122 123 127 129 134 136 139 141 142 146 166 167 185 194 195 196 198 211 230</span>
@@ -305,7 +306,7 @@ information is displayed while solving the optimization model
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   objective value: 1755.42968110999</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   gap:  0%</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   status:  Optimal solution (according to gap tolerance: 0%)</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 0.6 sec</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 0.61 sec</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Solve the optimization model using the Gurobi solver</span></span>
 <span class='r-in'><span class='co'>## NOTE: The Gurobi solver must be previously installed and must have a valid license!</span></span>
@@ -387,7 +388,7 @@ information is displayed while solving the optimization model
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   objective value: 1755.42968111</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   gap:  0%</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   status:  Optimal solution (according to gap tolerance: 0%)</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 6.94 sec</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 6.91 sec</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Solution summary</span></span>
 <span class='r-in'><span class='fu'><a href='print.html'>print</a></span><span class='op'>(</span><span class='va'>model_solution</span><span class='op'>)</span></span>
@@ -395,7 +396,7 @@ information is displayed while solving the optimization model
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   objective value: 1755.42968111</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   gap:  0%</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   status:  Optimal solution (according to gap tolerance: 0%)</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 6.94 sec</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 6.91 sec</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Report the solution to the problem you are working on:</span></span>
 <span class='r-in'><span class='co'>## (i) total cost of the conservation plan;</span></span>
@@ -419,13 +420,13 @@ information is displayed while solving the optimization model
 <span class='r-in'><span class='co'>## and not carried out (value 0) within the conservation plan.</span></span>
 <span class='r-in'><span class='va'>solution_report03</span> <span class='op'>&lt;-</span> <span class='va'>model_solution</span><span class='op'>$</span><span class='fu'>getSolutionActions</span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>solution_report03</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   id solution_threat_1 solution_threat_2 solution_threat_3 solution_threat_4</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1                 0                 0                 0                 0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2                 0                 1                 1                 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  3                 0                 1                 0                 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  4                 0                 0                 0                 0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  5                 0                 1                 0                 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  6                 0                 1                 0                 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   pu 1 2 3 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1 0 0 0 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2 0 1 1 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  3 0 1 0 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  4 0 0 0 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  5 0 1 0 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  6 0 1 0 1</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

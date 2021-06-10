@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -107,9 +107,6 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/AmountMitchell.html">Prueba amount con Mitchell</a>
-    </li>
     <li>
       <a href="../articles/MitchellRiver.html">Mitchell River</a>
     </li>
@@ -149,17 +146,30 @@
       <small>Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="version-011" class="section level1">
+    <div id="prioriactions-012" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.2">
+<a href="#prioriactions-012" class="anchor"></a>prioriactions 0.1.2</h1>
+<ul>
+<li>Update <em>Mitchel River</em> vignette.</li>
+<li>Add three new parameters to the function <code><a href="../reference/solve.html">solve()</a></code>; <em>name_output_file</em> is the name of the main output that is exported only if the <em>output_file</em> parameter is TRUE, and <em>name_log</em> is the name of the solver log (only using gurobi solver) that is exported only if the <em>log_file</em> parameter is TRUE.</li>
+<li>Fix <code>getSolutionActions()</code> and <code>getSolutionUnits()</code> functions of the <code>solution</code> object. Now these round the values assigned to each variable to the integer nearest.</li>
+<li>Fix <code>benefit()</code> function of the <code>solution</code> object. Now the calculation considers the amount of features and threats other than 1 and 0.</li>
+<li>Update <code>OptimizationProblemRcpp.cpp</code> file. Now the models considers the amount of features and threats other than 1 and 0.</li>
+<li>Fix typo that named files and variables <em>sensibility</em> instead of <em>sensitivity</em>. All documentation was updated.</li>
+<li>Fix issue where the <code>createtxt()</code> function did not close the export file correctly.</li>
+</ul>
+</div>
+    <div id="prioriactions-011" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.1">
-<a href="#version-011" class="anchor"></a>Version 0.1.1</h1>
+<a href="#prioriactions-011" class="anchor"></a>prioriactions 0.1.1</h1>
 <ul>
 <li>Rcpp implementation working.</li>
 <li>Fix internals id’s for the proper functioning of the model creation.</li>
 </ul>
 </div>
-    <div id="version-010" class="section level1">
+    <div id="prioriactions-010" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.0">
-<a href="#version-010" class="anchor"></a>Version 0.1.0</h1>
+<a href="#prioriactions-010" class="anchor"></a>prioriactions 0.1.0</h1>
 <ul>
 <li>Initial package version.</li>
 </ul>
