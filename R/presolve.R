@@ -26,23 +26,27 @@ presolve.ConservationProblem <- function(x, objective = "min costs", curve = 3, 
   assertthat::assert_that(inherits(x, "ConservationProblem"))
 
   if (objective == "min costs") {
-    ## Evaluating the factibility (locked out in pu's)
+
+    ## Evaluating the feasibility (locked out in pu's)
+
     features <- x$getData("features")
-    rij <- x$getData("rij")
+    dist_features <- x$getData("dist_features")
     pu <- x$getData("pu")
 
     locked_out_units <- pu$id[c(which(pu$status == 3))]
-    rij_free <- subset(rij, !pu %in% c(locked_out_units))
-    summary_species <- stats::aggregate(. ~ species, rij_free, FUN = sum)
+    dist_features_free <- subset(dist_features, !pu %in% c(locked_out_units))
+    summary_species <- stats::aggregate(. ~ species, dist_features_free, FUN = sum)
 
     if (!all(summary_species$amount >= features$target)) {
-      stop("Infeasible model \n There is not enough representativeness to achieve the targets required \n Possible cause: Too many units locked",call.=FALSE)
+      features_below_target <- which(summary_species$amount < features$target)
+      warning(paste0("Infeasible model \n There is not enough representativeness to achieve the targets required of following features: ", paste(features_below_target, collapse = " ")),call.=FALSE)
+
     }
     else {
-      ## Evaluating the factibility (locked out in actions)
+      ## Evaluating the feasibility (locked out in threats)
       number_species <- x$getFeatureAmount()
       sensitivity <- x$getData("sensitivity")
-      threats <- x$getData("threats")
+      threats <- x$getData("dist_threats")
 
       for (i in 1:number_species) {
         counter_specie <- 0

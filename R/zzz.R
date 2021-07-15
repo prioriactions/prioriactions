@@ -3,7 +3,7 @@
 
 # Rcpp::loadModule("OptimizationProblem_module", TRUE)
 # Rcpp::loadModule("MAMPDatamodule", TRUE)
-Rcpp::loadModule("OptimizationProblemRcppmodule", TRUE)
+# Rcpp::loadModule("OptimizationProblemRcppmodule", TRUE)
 
 .onUnload <- function(libpath) {
   library.dynam.unload("prioriactions", libpath)

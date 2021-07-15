@@ -6,15 +6,125 @@
 
 using namespace Rcpp;
 
-
-RcppExport SEXP _rcpp_module_boot_OptimizationProblemRcppmodule();
-
-static const R_CallMethodDef CallEntries[] = {
-    {"_rcpp_module_boot_OptimizationProblemRcppmodule", (DL_FUNC) &_rcpp_module_boot_OptimizationProblemRcppmodule, 0},
-    {NULL, NULL, 0}
-};
-
-RcppExport void R_init_prioriactions(DllInfo *dll) {
-    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
-    R_useDynamicSymbols(dll, FALSE);
+// rcpp_new_optimization_problem
+SEXP rcpp_new_optimization_problem(std::size_t nrow, std::size_t ncol, std::size_t ncell);
+RcppExport SEXP _prioriactions_rcpp_new_optimization_problem(SEXP nrowSEXP, SEXP ncolSEXP, SEXP ncellSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::size_t >::type nrow(nrowSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type ncol(ncolSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type ncell(ncellSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_new_optimization_problem(nrow, ncol, ncell));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_optimization_problem_as_list
+Rcpp::List rcpp_optimization_problem_as_list(SEXP x);
+RcppExport SEXP _prioriactions_rcpp_optimization_problem_as_list(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_optimization_problem_as_list(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_get_optimization_problem_ncol
+std::size_t rcpp_get_optimization_problem_ncol(SEXP x);
+RcppExport SEXP _prioriactions_rcpp_get_optimization_problem_ncol(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_get_optimization_problem_ncol(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_get_optimization_problem_nrow
+std::size_t rcpp_get_optimization_problem_nrow(SEXP x);
+RcppExport SEXP _prioriactions_rcpp_get_optimization_problem_nrow(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_get_optimization_problem_nrow(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_get_optimization_problem_ncell
+std::size_t rcpp_get_optimization_problem_ncell(SEXP x);
+RcppExport SEXP _prioriactions_rcpp_get_optimization_problem_ncell(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_get_optimization_problem_ncell(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_get_optimization_problem_A
+Rcpp::List rcpp_get_optimization_problem_A(SEXP x);
+RcppExport SEXP _prioriactions_rcpp_get_optimization_problem_A(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_get_optimization_problem_A(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_constraint_benefit
+bool rcpp_constraint_benefit(SEXP x, DataFrame pu_data, DataFrame features_data, DataFrame dist_features_data, DataFrame threats_data, DataFrame dist_threats_data, DataFrame sensitivity_data, int curve, int segments);
+RcppExport SEXP _prioriactions_rcpp_constraint_benefit(SEXP xSEXP, SEXP pu_dataSEXP, SEXP features_dataSEXP, SEXP dist_features_dataSEXP, SEXP threats_dataSEXP, SEXP dist_threats_dataSEXP, SEXP sensitivity_dataSEXP, SEXP curveSEXP, SEXP segmentsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type pu_data(pu_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type features_data(features_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type dist_features_data(dist_features_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type threats_data(threats_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type dist_threats_data(dist_threats_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type sensitivity_data(sensitivity_dataSEXP);
+    Rcpp::traits::input_parameter< int >::type curve(curveSEXP);
+    Rcpp::traits::input_parameter< int >::type segments(segmentsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_constraint_benefit(x, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, curve, segments));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_min_set
+Rcpp::List rcpp_min_set(SEXP x, DataFrame features_data, DataFrame pu_data, DataFrame bound_data, DataFrame dist_features_data, DataFrame dist_threats_data, DataFrame sensitivity_data, DataFrame threats_data, List settings_Data);
+RcppExport SEXP _prioriactions_rcpp_min_set(SEXP xSEXP, SEXP features_dataSEXP, SEXP pu_dataSEXP, SEXP bound_dataSEXP, SEXP dist_features_dataSEXP, SEXP dist_threats_dataSEXP, SEXP sensitivity_dataSEXP, SEXP threats_dataSEXP, SEXP settings_DataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type features_data(features_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type pu_data(pu_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type bound_data(bound_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type dist_features_data(dist_features_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type dist_threats_data(dist_threats_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type sensitivity_data(sensitivity_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type threats_data(threats_dataSEXP);
+    Rcpp::traits::input_parameter< List >::type settings_Data(settings_DataSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_min_set(x, features_data, pu_data, bound_data, dist_features_data, dist_threats_data, sensitivity_data, threats_data, settings_Data));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_objective_min_set
+bool rcpp_objective_min_set(SEXP x, DataFrame pu_data, DataFrame threats_data, DataFrame dist_threats_data, DataFrame boundary_data, double blm);
+RcppExport SEXP _prioriactions_rcpp_objective_min_set(SEXP xSEXP, SEXP pu_dataSEXP, SEXP threats_dataSEXP, SEXP dist_threats_dataSEXP, SEXP boundary_dataSEXP, SEXP blmSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type pu_data(pu_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type threats_data(threats_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type dist_threats_data(dist_threats_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type boundary_data(boundary_dataSEXP);
+    Rcpp::traits::input_parameter< double >::type blm(blmSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_objective_min_set(x, pu_data, threats_data, dist_threats_data, boundary_data, blm));
+    return rcpp_result_gen;
+END_RCPP
 }

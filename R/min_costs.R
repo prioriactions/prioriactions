@@ -1,5 +1,5 @@
-#' @include presolve.R MAMP_model.R
-#' @import Matrix
+#' @include presolve.R
+#' @import Matrix Rcpp
 NULL
 
 #' @title min_costs
@@ -71,17 +71,17 @@ NULL
 #' ## This example uses input files included into package.
 #'
 #' ## Load data
-#' data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
+#' data(example_pu_data, example_features_data, example_dist_features_data, example_dist_threats_data, example_threats_data, example_sensitivity_data, example_bound_data)
 #'
 #' ## Create data instance
 #' problem_data <- problem(
-#'   pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-#'   threats = example_threats_data, sensitivity = example_sensibility_data,
+#'   pu = example_pu_data, features = example_features_data, dist_features = example_dist_features_data,
+#'   threats = example_threats_data, dist_threats = example_dist_threats_data, sensitivity = example_sensitivity_data,
 #'   bound = example_bound_data
 #' )
 #'
 #' ## Create optimization model
-#' problem_model <- min_costs(x = problem_data, blm = 1, blm_actions = 1)
+#' problem_model <- min_costs(x = problem_data, blm = 1)
 #'
 #' ## Model summary
 #' print(problem_model)
@@ -106,34 +106,55 @@ min_costs.default <- function(x, ...) {
 #' @rdname min_costs
 #' @method min_costs ConservationProblem
 #' @export
-min_costs.ConservationProblem <- function(x, blm = 0, blm_actions = 0, curve = 3, segments = 3, ...) {
+min_costs.ConservationProblem <- function(x, blm = 0, curve = 3, segments = 3, ...) {
   # assert that arguments are valid
   assertthat::assert_that(
     inherits(x, "ConservationProblem"),
     no_extra_arguments(...)
   )
 
+  ## Getting data
+
+  pu <- x$getData("pu")
+  features <- x$getData("features")
+  dist_features <- x$getData("dist_features")
+  threats <- x$getData("threats")
+  dist_threats <- x$getData("dist_threats")
+  sensitivity <- x$getData("sensitivity")
+  boundary <- x$getData("boundary")
+
+  pu <- pu[, c("internal_id", "cost", "status")]
+  features <- features[, c("internal_id", "target")]
+  dist_features <- dist_features[, c("internal_pu", "internal_species", "amount")]
+  threats <- threats[, c("internal_id", "blm_actions")]
+  dist_threats <- dist_threats[, c("internal_pu", "internal_threats", "amount", "cost", "status")]
+  sensitivity <- sensitivity[, c("internal_species", "internal_threats", "a", "b", "c", "d")]
+
+  if (!is.null(boundary)) {
+    boundary <- boundary[, c("internal_id1", "internal_id2", "boundary")]
+  }
+
   ##bound
   assertthat::assert_that(assertthat::is.scalar(blm), is.finite(blm))
-  if (abs(blm) <= 1e-10 && !is.null(x$getData("bound"))) {
+
+  if (abs(blm) <= 1e-10 && !is.null(boundary)) {
     warning("The blm argument was set to 0, so the boundary data has no effect",call.=FALSE)
   }
 
-  assertthat::assert_that(assertthat::is.scalar(blm_actions), is.finite(blm_actions))
-  if (abs(blm_actions) <= 1e-10 && !is.null(x$getData("bound"))) {
-    warning("The blm_actions argument was set to 0, so the boundary data has no effect",call.=FALSE)
-  }
-
   ## blm
-  assertthat::assert_that(assertthat::is.scalar(blm), is.finite(blm))
-  if (abs(blm) > 1e-50 && is.null(x$getData("bound"))) {
+  if (abs(blm) > 1e-50 && is.null(x$getData("boundary"))) {
     warning("No boundary data supplied so the blm argument has no effect",call.=FALSE)
   }
 
+  assertthat::assert_that(all(is.finite(threats$blm_actions)))
+
+  if (all(threats$blm_actions <= 1e-10) && !is.null(boundary)) {
+    warning("The blm_actions argument was set to 0, so the boundary data has no effect",call.=FALSE)
+  }
+
   ## blm_actions
-  assertthat::assert_that(assertthat::is.scalar(blm_actions), is.finite(blm_actions))
-  if (abs(blm_actions) > 1e-50 && is.null(x$getData("bound"))) {
-    warning("No boundary data supplied so the blm_actions argument has no effect",call.=FALSE)
+  if (any(threats$blm_actions > 1e-10) && is.null(boundary)) {
+    warning("No boundary data supplied so the blm_actions arguments has no effect",call.=FALSE)
   }
 
   ## curve
@@ -141,6 +162,16 @@ min_costs.ConservationProblem <- function(x, blm = 0, blm_actions = 0, curve = 3
   if (!curve %in% c(1, 2, 3)) {
     stop("invalid curve type")
   }
+  else if(curve == 1){
+    segments = 1
+  }
+
+  if(any(dist_threats$amount != 1) && curve != 1){
+    warning("The curve argument was set to 1 because at least one threat amount is not equal to 1", call.=FALSE)
+    curve = 1
+    segments = 1
+  }
+
 
   ## segments
   assertthat::assert_that(assertthat::is.scalar(segments), is.finite(segments))
@@ -158,42 +189,24 @@ min_costs.ConservationProblem <- function(x, blm = 0, blm_actions = 0, curve = 3
 
 
   ## Presolve
-  presolve(x, objective = "min costs", curve)
+  #presolve(x, objective = "min costs", curve)
 
-  ## Creating the MAMP model
-  pu <- x$getData("pu")
-  rij <- x$getData("rij")
-  threats <- x$getData("threats")
-  sensitivity <- x$getData("sensitivity")
-  bound <- x$getData("bound")
 
-  pu <- pu[, c("internal_id", "cost", "status")]
-  features <- features[, c("internal_id", "target")]
-  rij <- rij[, c("internal_pu", "internal_species", "amount")]
-  threats <- threats[, c("internal_pu", "threats", "amount", "cost", "status")]
-  sensitivity <- sensitivity[, c("internal_species", "threats", "amount")]
 
-  if (!is.null(bound) && (abs(blm) > 1e-50 || abs(blm_actions) > 1e-50)) {
-    bound <- bound[, c("internal_id1", "internal_id2", "boundary")]
-  }
-  else{
-    bound <- NULL
-  }
+  settings_Data <- list(beta1 = blm, beta2 = 0, exponent = curve, segments = segments)
 
-  if(curve == 1){
-    segments = 1
-  }
-  settings_Data <- list(beta1 = blm, beta2 = blm_actions, exponent = curve, segments = segments)
+  op <- rcpp_new_optimization_problem()
 
-  # MAMP_model(features, pu, bound, rij, threats, sensitivity, settings_Data, x)
+  #rcpp_objective_min_set(op, pu, threats, dist_threats, boundary, blm)
 
-  problemData <- methods::new(OptimizationProblemRcpp)
-
-  rcpp_test <- problemData$Create_new_optimization_problem(features, pu, bound, rij, threats, sensitivity, settings_Data)
+  rcpp_test <- rcpp_min_set(op, features, pu, boundary, dist_features, dist_threats, sensitivity, threats, settings_Data)
 
   rcpp_test$A <- Matrix::sparseMatrix(i = rcpp_test$A_i + 1, j = rcpp_test$A_j + 1, x = rcpp_test$A_x)
+  #a <- rcpp_optimization_problem_as_list(op)
+  #return(a)
 
   # create OptimizationProblem object
+
   pproto(NULL, OptimizationProblem,
     data = list(
       obj = rcpp_test$C, rhs = rcpp_test$Rhs, sense = rcpp_test$Sense, vtype = rcpp_test$Type,
@@ -202,4 +215,5 @@ min_costs.ConservationProblem <- function(x, blm = 0, blm_actions = 0, curve = 3
     ),
     ConservationClass = x
   )
+
 }

@@ -10,7 +10,7 @@ min_costs(x, ...)
 
 \method{min_costs}{default}(x, ...)
 
-\method{min_costs}{ConservationProblem}(x, blm = 0, blm_actions = 0, curve = 3, segments = 3, ...)
+\method{min_costs}{ConservationProblem}(x, blm = 0, curve = 3, segments = 3, ...)
 }
 \arguments{
 \item{x}{Object of class \code{\link{ConservationProblem-class}} that
@@ -25,10 +25,6 @@ only has an effect when the \code{\link{bound}} argument of
 \code{\link{problem}} function is a \code{data.frame} object. \strong{The
 default argument is zero}.}
 
-\item{blm_actions}{A \code{numeric} value that indicates the penalty factor
-associated to the spatial fragmentation of actions. \strong{The default
-argument is zero}.}
-
 \item{curve}{An \code{integer} value that selects the type of continuous
 curve that will represent the expression (linear or non-linear) associated
 with a specific constraint in this model. Therefore, the curve can
@@ -42,6 +38,10 @@ in charge of approximating the non-linear expression contained in a
 specific constraint of this model. \strong{The default argument is 3 and it
 is not recommended to change this value unless you have advanced knowledge
 of the linearization of mathematical model}.}
+
+\item{blm_actions}{A \code{numeric} value that indicates the penalty factor
+associated to the spatial fragmentation of actions. \strong{The default
+argument is zero}.}
 }
 \value{
 An object of class \code{\link{OptimizationProblem-class}}.
@@ -73,17 +73,17 @@ Create an optimization model for the multi-action conservation
 ## This example uses input files included into package.
 
 ## Load data
-data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
+data(example_pu_data, example_features_data, example_dist_features_data, example_dist_threats_data, example_threats_data, example_sensitivity_data, example_bound_data)
 
 ## Create data instance
 problem_data <- problem(
-  pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-  threats = example_threats_data, sensitivity = example_sensibility_data,
+  pu = example_pu_data, features = example_features_data, dist_features = example_dist_features_data,
+  threats = example_threats_data, dist_threats = example_dist_threats_data, sensitivity = example_sensitivity_data,
   bound = example_bound_data
 )
 
 ## Create optimization model
-problem_model <- min_costs(x = problem_data, blm = 1, blm_actions = 1)
+problem_model <- min_costs(x = problem_data, blm = 1)
 
 ## Model summary
 print(problem_model)

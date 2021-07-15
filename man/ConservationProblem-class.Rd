@@ -25,7 +25,7 @@ instance information. It is created using the \code{\link{problem}} function.
   object stored in the \code{data} field with the corresponding \code{name}.
   The argument \code{name} indicates the name of arguments of the
   \code{problem} function ("pu", "features", "rij", "threats", "sensitivity"
-  or "bound").}
+  or "boundary").}
 
   \item{$getFeatureAmount( )}{return \code{integer} number of features.}
 
@@ -55,18 +55,16 @@ instance information. It is created using the \code{\link{problem}} function.
 ## Examples of how to use the methods of a ConservationProblem class object.
 
 ## Load data
-data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
+data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_boundary_data)
 
 ## Create data instance
 problem_data <- problem(
-  pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-  threats = example_threats_data, sensitivity = example_sensibility_data,
-  bound = example_bound_data
+  pu = example_pu_data, features = example_features_data, dist_features = example_dist_features__data,
+  threats = example_threats_data, dist_therats = example_dist_threats_data, sensitivity = example_sensibility_data,
+  boundary = example_boundary_data
 )
 
 ## Use class methods
-problem_data$getActionsAmount()
-
 problem_data$getData("features")
 
 problem_data$getFeatureAmount()

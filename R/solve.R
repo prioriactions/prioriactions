@@ -369,8 +369,8 @@ methods::setMethod(
 
       ## REDUCED
       actions <- a$ConservationClass$getActionsAmount()
-      threats_data <- a$ConservationClass$getData("threats")
-      threats_data <- threats_data[!names(threats_data) %in% c("internal_pu")]
+      threats_data <- a$ConservationClass$getData("dist_threats")
+      threats_data <- threats_data[!names(threats_data) %in% c("internal_pu", "internal_threats")]
       threats_data$solution <- s$data$sol[(pus + 1):(pus + actions)]
       s$data$sol_actions_reduced <- threats_data
 
