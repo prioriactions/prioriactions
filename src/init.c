@@ -17,6 +17,7 @@ extern SEXP _prioriactions_rcpp_get_optimization_problem_A(SEXP);
 extern SEXP _prioriactions_rcpp_min_set(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _prioriactions_rcpp_objective_min_set(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _prioriactions_rcpp_constraint_benefit(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _prioriactions_rcpp_instance_calculate_benefit(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
   {"_prioriactions_rcpp_new_optimization_problem", (DL_FUNC) &_prioriactions_rcpp_new_optimization_problem, 3},
@@ -28,6 +29,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"_prioriactions_rcpp_min_set", (DL_FUNC) &_prioriactions_rcpp_min_set, 8},
   {"_prioriactions_rcpp_objective_min_set", (DL_FUNC) &_prioriactions_rcpp_objective_min_set, 5},
   {"_prioriactions_rcpp_constraint_benefit", (DL_FUNC) &_prioriactions_rcpp_constraint_benefit, 9},
+  {"_prioriactions_rcpp_instance_calculate_benefit", (DL_FUNC) &_prioriactions_rcpp_instance_calculate_benefit, 6},
   {NULL, NULL, 0}
 };
 

@@ -29,6 +29,10 @@ rcpp_constraint_benefit <- function(x, pu_data, features_data, dist_features_dat
     .Call(`_prioriactions_rcpp_constraint_benefit`, x, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, curve, segments)
 }
 
+rcpp_instance_calculate_benefit <- function(pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data) {
+    .Call(`_prioriactions_rcpp_instance_calculate_benefit`, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data)
+}
+
 rcpp_min_set <- function(x, features_data, pu_data, bound_data, dist_features_data, dist_threats_data, sensitivity_data, threats_data, settings_Data) {
     .Call(`_prioriactions_rcpp_min_set`, x, features_data, pu_data, bound_data, dist_features_data, dist_threats_data, sensitivity_data, threats_data, settings_Data)
 }

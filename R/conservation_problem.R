@@ -181,5 +181,11 @@ ConservationProblem <- pproto(
     } else {
       stop("threats data is of an unrecognized class")
     }
+  },
+  getBenefitInformation = function(self) {
+    a <- rcpp_instance_calculate_benefit(self$data$pu, self$data$features,
+                                         self$data$dist_features, self$data$threats,
+                                         self$data$dist_threats, self$data$sensitivity)
+    return(a)
   }
 )

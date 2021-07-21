@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // rcpp_new_optimization_problem
 SEXP rcpp_new_optimization_problem(std::size_t nrow, std::size_t ncol, std::size_t ncell);
 RcppExport SEXP _prioriactions_rcpp_new_optimization_problem(SEXP nrowSEXP, SEXP ncolSEXP, SEXP ncellSEXP) {
@@ -90,6 +95,22 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type curve(curveSEXP);
     Rcpp::traits::input_parameter< int >::type segments(segmentsSEXP);
     rcpp_result_gen = Rcpp::wrap(rcpp_constraint_benefit(x, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, curve, segments));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_instance_calculate_benefit
+DataFrame rcpp_instance_calculate_benefit(DataFrame pu_data, DataFrame features_data, DataFrame dist_features_data, DataFrame threats_data, DataFrame dist_threats_data, DataFrame sensitivity_data);
+RcppExport SEXP _prioriactions_rcpp_instance_calculate_benefit(SEXP pu_dataSEXP, SEXP features_dataSEXP, SEXP dist_features_dataSEXP, SEXP threats_dataSEXP, SEXP dist_threats_dataSEXP, SEXP sensitivity_dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame >::type pu_data(pu_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type features_data(features_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type dist_features_data(dist_features_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type threats_data(threats_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type dist_threats_data(dist_threats_dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type sensitivity_data(sensitivity_dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_instance_calculate_benefit(pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data));
     return rcpp_result_gen;
 END_RCPP
 }
