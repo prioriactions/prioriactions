@@ -3,15 +3,15 @@
 #include "OptimizationProblem.h"
 
 // [[Rcpp::export]]
-bool rcpp_constraint_benefit(SEXP x,
-                            DataFrame pu_data,
-                            DataFrame features_data,
-                            DataFrame dist_features_data,
-                            DataFrame threats_data,
-                            DataFrame dist_threats_data,
-                            DataFrame sensitivity_data,
-                            int curve,
-                            int segments){
+bool rcpp_constraint_benefit_recovery(SEXP x,
+                             DataFrame pu_data,
+                             DataFrame features_data,
+                             DataFrame dist_features_data,
+                             DataFrame threats_data,
+                             DataFrame dist_threats_data,
+                             DataFrame sensitivity_data,
+                             int curve,
+                             int segments){
 
   // initialization
   Rcpp::XPtr<OptimizationProblem> op = Rcpp::as<Rcpp::XPtr<OptimizationProblem>>(x);
@@ -155,21 +155,12 @@ bool rcpp_constraint_benefit(SEXP x,
             op->_A_i.push_back(row_constraint);
             op->_A_j.push_back(col_action);
             op->_A_x.push_back(-1*(response_coef_variable * alpha)/sum_alpha);
-
-            // w_i
-            op->_A_i.push_back(row_constraint);
-            op->_A_j.push_back(pu_id);
-            op->_A_x.push_back(-1*(response_coef_constant * alpha)/sum_alpha);
           }
         }
       }
 
       if(sum_alpha == 0.0){
 
-        //z variables
-        op->_A_i.push_back(row_constraint);
-        op->_A_j.push_back(pu_id);
-        op->_A_x.push_back(-1);
       }
 
       row_constraint = row_constraint + 1;

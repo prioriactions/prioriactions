@@ -183,7 +183,7 @@ ConservationProblem <- pproto(
     }
   },
   getBenefitInformation = function(self) {
-    a <- rcpp_instance_calculate_benefit(self$data$pu, self$data$features,
+    a <- rcpp_stats_calculate_benefit(self$data$pu, self$data$features,
                                          self$data$dist_features, self$data$threats,
                                          self$data$dist_threats, self$data$sensitivity)
     return(a)

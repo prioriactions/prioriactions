@@ -25,19 +25,31 @@ rcpp_get_optimization_problem_A <- function(x) {
     .Call(`_prioriactions_rcpp_get_optimization_problem_A`, x)
 }
 
+rcpp_constraint_activation <- function(x, pu_data, threats_data, dist_threats_data) {
+    .Call(`_prioriactions_rcpp_constraint_activation`, x, pu_data, threats_data, dist_threats_data)
+}
+
 rcpp_constraint_benefit <- function(x, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, curve, segments) {
     .Call(`_prioriactions_rcpp_constraint_benefit`, x, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, curve, segments)
 }
 
-rcpp_instance_calculate_benefit <- function(pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data) {
-    .Call(`_prioriactions_rcpp_instance_calculate_benefit`, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data)
+rcpp_constraint_benefit_recovery <- function(x, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, curve, segments) {
+    .Call(`_prioriactions_rcpp_constraint_benefit_recovery`, x, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, curve, segments)
+}
+
+rcpp_constraint_lock <- function(x, pu_data, dist_threats_data) {
+    .Call(`_prioriactions_rcpp_constraint_lock`, x, pu_data, dist_threats_data)
 }
 
 rcpp_min_set <- function(x, features_data, pu_data, bound_data, dist_features_data, dist_threats_data, sensitivity_data, threats_data, settings_Data) {
     .Call(`_prioriactions_rcpp_min_set`, x, features_data, pu_data, bound_data, dist_features_data, dist_threats_data, sensitivity_data, threats_data, settings_Data)
 }
 
-rcpp_objective_min_set <- function(x, pu_data, threats_data, dist_threats_data, boundary_data, blm) {
-    .Call(`_prioriactions_rcpp_objective_min_set`, x, pu_data, threats_data, dist_threats_data, boundary_data, blm)
+rcpp_objective_min_set <- function(x, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, boundary_data, blm) {
+    .Call(`_prioriactions_rcpp_objective_min_set`, x, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, boundary_data, blm)
+}
+
+rcpp_stats_calculate_benefit <- function(pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data) {
+    .Call(`_prioriactions_rcpp_stats_calculate_benefit`, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data)
 }
 

@@ -189,7 +189,7 @@ arma::sp_mat create_actions_extended(DataFrame dist_threats_data, int units, int
 
   for(int a = 0; a < number_of_actions; a++){
 
-    actions_extended(pu_id[a], threat_id[a]) = a;
+    actions_extended(pu_id[a], threat_id[a]) = a + 1;
 
   }
   return actions_extended;

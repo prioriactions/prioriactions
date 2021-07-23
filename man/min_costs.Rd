@@ -10,7 +10,7 @@ min_costs(x, ...)
 
 \method{min_costs}{default}(x, ...)
 
-\method{min_costs}{ConservationProblem}(x, blm = 0, curve = 3, segments = 3, ...)
+\method{min_costs}{ConservationProblem}(x, blm = 0, curve = 3, segments = 3, recovery = FALSE, ...)
 }
 \arguments{
 \item{x}{Object of class \code{\link{ConservationProblem-class}} that

@@ -16,17 +16,27 @@ Rcpp::List rcpp_optimization_problem_as_list(SEXP x) {
   // initialization
   Rcpp::XPtr<OptimizationProblem> op =
     Rcpp::as<Rcpp::XPtr<OptimizationProblem>>(x);
+
+  // create bounds
+  List bounds;
+
+  bounds = List::create(Rcpp::Named("lower") = List::create(Rcpp::Named("ind") = seq(1,op->_obj.size()),
+                        Rcpp::Named("val") = op->_lb),
+                        Rcpp::Named("upper") = List::create(Rcpp::Named("ind") = seq(1,op->_obj.size()),
+                        Rcpp::Named("val") = op->_ub));
+
   // create list
   return Rcpp::List::create(
-    Rcpp::Named("modelsense") = op->_sense,
-    Rcpp::Named("A_i") = Rcpp::IntegerVector(op->_A_i.begin(),
+    Rcpp::Named("modelsense") = op->_modelsense,
+    Rcpp::Named("A_i") = op->_A_i,
+    Rcpp::Named("A_i2") = Rcpp::IntegerVector(op->_A_i.begin(),
                 op->_A_i.end()),
-    Rcpp::Named("A_j") = Rcpp::IntegerVector(op->_A_j.begin(),
+    Rcpp::Named("A_j2") = Rcpp::IntegerVector(op->_A_j.begin(),
                             op->_A_j.end()),
+    Rcpp::Named("A_j") = op->_A_j,
     Rcpp::Named("A_x") = op->_A_x,
     Rcpp::Named("obj") = op->_obj,
-    Rcpp::Named("lb") = op->_lb,
-    Rcpp::Named("ub") = op->_ub,
+    Rcpp::Named("bounds") = bounds,
     Rcpp::Named("rhs") = op->_rhs,
     Rcpp::Named("sense") = op->_sense,
     Rcpp::Named("vtype") = op->_vtype);

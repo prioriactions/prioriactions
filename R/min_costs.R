@@ -106,10 +106,11 @@ min_costs.default <- function(x, ...) {
 #' @rdname min_costs
 #' @method min_costs ConservationProblem
 #' @export
-min_costs.ConservationProblem <- function(x, blm = 0, curve = 3, segments = 3, ...) {
+min_costs.ConservationProblem <- function(x, blm = 0, curve = 3, segments = 3, recovery = FALSE, ...) {
   # assert that arguments are valid
   assertthat::assert_that(
     inherits(x, "ConservationProblem"),
+    assertthat::is.flag(recovery),
     no_extra_arguments(...)
   )
 
@@ -193,27 +194,58 @@ min_costs.ConservationProblem <- function(x, blm = 0, curve = 3, segments = 3, .
 
 
 
-  settings_Data <- list(beta1 = blm, beta2 = 0, exponent = curve, segments = segments)
+  #settings_Data <- list(beta1 = blm, beta2 = 0, exponent = curve, segments = segments)
 
   op <- rcpp_new_optimization_problem()
 
-  #rcpp_objective_min_set(op, pu, threats, dist_threats, boundary, blm)
+  rcpp_objective_min_set(op, pu, features, dist_features, threats, dist_threats, boundary, blm)
 
-  rcpp_test <- rcpp_min_set(op, features, pu, boundary, dist_features, dist_threats, sensitivity, threats, settings_Data)
+  if(isTRUE(recovery)){
+    rcpp_constraint_benefit_recovery(op, pu, features, dist_features, threats, dist_threats, sensitivity, curve, segments)
+  }
+  else{
+    rcpp_constraint_benefit(op, pu, features, dist_features, threats, dist_threats, sensitivity, curve, segments)
+  }
 
-  rcpp_test$A <- Matrix::sparseMatrix(i = rcpp_test$A_i + 1, j = rcpp_test$A_j + 1, x = rcpp_test$A_x)
-  #a <- rcpp_optimization_problem_as_list(op)
-  #return(a)
+  rcpp_constraint_activation(op, pu, threats, dist_threats)
+  rcpp_constraint_lock(op, pu, dist_threats)
+
+  model <- rcpp_optimization_problem_as_list(op)
+
+  model$A <- Matrix::sparseMatrix(i = model$A_i + 1, j = model$A_j + 1, x = model$A_x)
+
 
   # create OptimizationProblem object
 
   pproto(NULL, OptimizationProblem,
     data = list(
-      obj = rcpp_test$C, rhs = rcpp_test$Rhs, sense = rcpp_test$Sense, vtype = rcpp_test$Type,
-      A = rcpp_test$A, bounds = rcpp_test$Bounds, modelsense = rcpp_test$Modelsense,
-      statistics = rcpp_test$Statistics, arg = settings_Data
+      obj = model$obj, rhs = model$rhs, sense = model$sense, vtype = model$vtype,
+      A = model$A, bounds = model$bounds,
+      modelsense = model$modelsense
     ),
     ConservationClass = x
   )
+
+
+
+
+
+
+  #rcpp_test <- rcpp_min_set(op, features, pu, boundary, dist_features, dist_threats, sensitivity, threats, settings_Data)
+
+  #rcpp_test$A <- Matrix::sparseMatrix(i = rcpp_test$A_i + 1, j = rcpp_test$A_j + 1, x = rcpp_test$A_x)
+  #a <- rcpp_optimization_problem_as_list(op)
+  #return(a)
+
+  # create OptimizationProblem object
+
+  #pproto(NULL, OptimizationProblem,
+  #  data = list(
+  #    obj = rcpp_test$C, rhs = rcpp_test$Rhs, sense = rcpp_test$Sense, vtype = rcpp_test$Type,
+  #    A = rcpp_test$A, bounds = rcpp_test$Bounds, modelsense = rcpp_test$Modelsense,
+  #    statistics = rcpp_test$Statistics, arg = settings_Data
+  #  ),
+  #  ConservationClass = x
+  #)
 
 }
