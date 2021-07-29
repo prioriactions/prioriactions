@@ -39,7 +39,10 @@ Rcpp::List rcpp_optimization_problem_as_list(SEXP x) {
     Rcpp::Named("bounds") = bounds,
     Rcpp::Named("rhs") = op->_rhs,
     Rcpp::Named("sense") = op->_sense,
-    Rcpp::Named("vtype") = op->_vtype);
+    Rcpp::Named("vtype") = op->_vtype,
+    Rcpp::Named("yvar") = op->_id_pow_variables,
+    Rcpp::Named("xvar") = op->_id_variables);
+
 }
 
 // [[Rcpp::export]]

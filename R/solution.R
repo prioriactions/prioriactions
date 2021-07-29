@@ -22,7 +22,7 @@ NULL
 #' \item{$getGap( )}{returns a \code{string} label indicating the optimality gap achieved for the MIP model.}
 #'
 
-#' \item{$getObjetiveValue( )}{returns a \code{numeric} number indicating the value of the objective function at the optimum.}
+#' \item{$getObjectiveValue( )}{returns a \code{numeric} number indicating the value of the objective function at the optimum.}
 #'
 #' \item{$getSolutionActions( )}{
 #' returns a \code{data.frame} object interpreting the optimal solution of the MIP model
@@ -62,7 +62,7 @@ NULL
 #' ## Use class methods
 #' model_solution$getGap()
 #'
-#' model_solution$getObjetiveValue()
+#' model_solution$getObjectiveValue()
 #'
 #' head(model_solution$getSolutionActions())
 #'
@@ -82,7 +82,7 @@ Solution <- pproto(
   print = function(self) {
     message(
       "Solution overview",
-      "\n  objective value: ", self$getObjetiveValue(),
+      "\n  objective value: ", self$getObjectiveValue(),
       "\n  gap:  ", self$getGap(),
       "\n  status:  ", self$getStatus(),
       "\n  runtime: ", paste0(self$getTimeSolvingModel(), " sec")
@@ -105,7 +105,7 @@ Solution <- pproto(
       return(paste0(base::round(self$data$gap * 100, 4), "%"))
     }
   },
-  getObjetiveValue = function(self) {
+  getObjectiveValue = function(self) {
     return(self$data$objval)
   },
   getSolutionUnits = function(self) {
@@ -124,41 +124,31 @@ Solution <- pproto(
   },
   getBenefits = function(self) {
 
-    sol_unit <- self$getSolutionUnits()
-    sol_action <- self$getSolutionActions()
-    features <- self$OptimizationClass$ConservationClass$getData("features")
-    rij <- self$OptimizationClass$ConservationClass$getData("rij")
-    number_species <- self$OptimizationClass$ConservationClass$getFeatureAmount()
-    sensitivity <- self$OptimizationClass$ConservationClass$getData("sensitivity")
-    threats <- self$OptimizationClass$ConservationClass$getData("threats")
+    objective <- self$getObjectiveValue()
 
-    benefits <- c(rep(0.0,number_species))
-    for (i in 1:number_species) {
-      pu_per_specie <- rij$internal_pu[which(rij$internal_species == features$internal_id[i])]
-      threats_per_specie <- sensitivity$threats[which(sensitivity$internal_species == features$internal_id[i])]
-
-      for (j in pu_per_specie) {
-        threats_per_unit <- threats$threats[which(threats$internal_pu == j)]
-        threats_against_specie_in_unit <- intersect(threats_per_specie, threats_per_unit)
-
-        if (length(threats_against_specie_in_unit) != 0) {
-          counter_specie <- 0.0
-          for (k in threats_against_specie_in_unit){
-            row_threats <- which(threats$internal_pu == j & threats$threats == k)
-            counter_specie <- counter_specie + sol_action[j,k+1] * threats$amount[row_threats]
-          }
-          row_rij_amount <- which(rij$internal_pu == j & rij$internal_species == i)
-          benefits[i]<-benefits[i]+(counter_specie * rij$amount[row_rij_amount]/length(threats_against_specie_in_unit))
-        }
-        else {
-          benefits[i]<-benefits[i]+sol_unit$solution[j]
-        }
-      }
+    if(!is.null(objective)){
+      solution_units <- self$getSolutionUnits()
+      solution_actions <- self$getSolutionActions(format = "reduced")
     }
-    features$benefits <- benefits
-    features <- features[,c("id","target","benefits")]
+    else{
+      solution_units <- c()
+      solution_actions <- c()
 
-    return(features)
+      solution_units$solution <- 0
+      solution_actions$solution < 0
+    }
+
+    a <- rcpp_stats_benefit(self$OptimizationClass$ConservationClass$data$pu,
+                            self$OptimizationClass$ConservationClass$data$features,
+                            self$OptimizationClass$ConservationClass$data$dist_features,
+                            self$OptimizationClass$ConservationClass$data$threats,
+                            self$OptimizationClass$ConservationClass$data$dist_threats,
+                            self$OptimizationClass$ConservationClass$data$sensitivity,
+                            c(solution_units$solution, solution_actions$solution))
+    return(a)
+  },
+  getLocalBenefits = function(self) {
+    return(self$data$local_benefits)
   },
   getStatusCode = function(self) {
     return(self$data$status)
@@ -204,34 +194,63 @@ Solution <- pproto(
     }
   },
   getMonitoringCost = function(self) {
+
     solution_units <- self$getSolutionUnits()
-    monitoring_cost <- sum(solution_units$cost * solution_units$solution)
-    return(monitoring_cost)
+
+    a <- rcpp_stats_costs_units(self$OptimizationClass$ConservationClass$data$pu,
+                                c(solution_units$solution))
+    return(sum(a))
   },
   getActionsCost = function(self) {
     solution_actions <- self$getSolutionActions(format = "reduced")
-    actions_cost <- sum(solution_actions$cost * solution_actions$solution)
-    return(actions_cost)
+
+    a <- rcpp_stats_costs_actions(self$OptimizationClass$ConservationClass$data$dist_threats,
+                                c(solution_actions$solution))
+    return(sum(a))
   },
   getTotalCost = function(self) {
     return(self$getActionsCost() + self$getMonitoringCost())
   },
   getUnitConnectivity = function(self) {
-    solution <- self$data$sol
-    unit_connectivity <- self$OptimizationClass$data$statistics$unitConnectivityVector
-    length(unit_connectivity) <- length(solution)
-    connectivity <- sum(unit_connectivity * solution, na.rm = TRUE)
-    return(connectivity)
+
+    boundary_data <- self$OptimizationClass$ConservationClass$data$boundary
+
+    if(is.null(boundary_data)){
+      return("No boundary data available")
+    }
+    else{
+      solution_units <- self$getSolutionUnits()
+      connectivity <- rcpp_stats_connectivity_units(self$OptimizationClass$ConservationClass$data$pu,
+                                                    boundary_data,
+                                                    c(solution_units$solution))
+      return(sum(connectivity))
+    }
   },
   getActionConnectivity = function(self) {
-    solution <- self$data$sol
-    action_connectivity <- self$OptimizationClass$data$statistics$actionConnectivityVector
-    length(action_connectivity) <- length(solution)
-    connectivity <- sum(action_connectivity * solution, na.rm = TRUE)
-    return(connectivity)
+    boundary_data <- self$OptimizationClass$ConservationClass$data$boundary
+
+    if(is.null(boundary_data)){
+      return("No boundary data available")
+    }
+    else{
+      solution_actions <- self$getSolutionActions(format = "reduced")
+      connectivity <- rcpp_stats_connectivity_actions(self$OptimizationClass$ConservationClass$data$pu,
+                                                      self$OptimizationClass$ConservationClass$data$threats,
+                                                      self$OptimizationClass$ConservationClass$data$dist_threats,
+                                                      self$OptimizationClass$ConservationClass$data$boundary,
+                                                      c(solution_actions$solution))
+      return(sum(connectivity))
+    }
   },
   getTotalConnectivity = function(self) {
-    return(self$getActionConnectivity() + self$getUnitConnectivity())
+    boundary_data <- self$OptimizationClass$ConservationClass$data$boundary
+
+    if(is.null(boundary_data)){
+      return("No boundary data available")
+    }
+    else{
+      return(self$getActionConnectivity() + self$getUnitConnectivity())
+    }
   },
   getTimeSolvingModel = function(self) {
     return(base::round(self$data$runtime, 2))

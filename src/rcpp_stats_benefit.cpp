@@ -3,23 +3,21 @@
 #include "OptimizationProblem.h"
 
 // [[Rcpp::export]]
-bool rcpp_constraint_benefit(SEXP x,
-                            DataFrame pu_data,
-                            DataFrame features_data,
-                            DataFrame dist_features_data,
-                            DataFrame threats_data,
-                            DataFrame dist_threats_data,
-                            DataFrame sensitivity_data,
-                            int curve){
+DataFrame rcpp_stats_benefit(DataFrame pu_data,
+                             DataFrame features_data,
+                             DataFrame dist_features_data,
+                             DataFrame threats_data,
+                             DataFrame dist_threats_data,
+                             DataFrame sensitivity_data,
+                             std::vector<double> solution){
 
   // initialization
-  Rcpp::XPtr<OptimizationProblem> op = Rcpp::as<Rcpp::XPtr<OptimizationProblem>>(x);
 
   //variables
   int number_of_threats = threats_data.nrows();
   int number_of_units = pu_data.nrows();
   int number_of_features = features_data.nrows();
-  int number_of_actions = dist_threats_data.nrows();
+  int large_solution = solution.size();
 
   arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data, number_of_units, number_of_threats);
   arma::sp_mat dist_features_extended = create_dist_features_extended(dist_features_data, number_of_units, number_of_features);
@@ -33,9 +31,8 @@ bool rcpp_constraint_benefit(SEXP x,
 
   int pu_id;
   int threat_id;
-  int row_constraint = op->_rhs.size();
-  int col_constraint = number_of_units + number_of_actions;
   int col_action = 0;
+  int sol_action_id;
 
   double response_coef_variable;
   double response_coef_constant;
@@ -48,6 +45,13 @@ bool rcpp_constraint_benefit(SEXP x,
   double threat_intensity;
   double feature_intensity;
 
+  NumericVector specie_distribution(number_of_features);
+  NumericVector specie_distribution_threatened(number_of_features);
+  NumericVector benefit_nothing(number_of_features);
+  NumericVector benefit_maximum_recovery(number_of_features);
+  NumericVector benefit_solution_nothing(number_of_features);
+  NumericVector benefit_solution_recovery(number_of_features);
+
   for(int s = 0; s < number_of_features; s++){
 
     for (auto it_species = dist_features_extended.begin_col(s);
@@ -55,28 +59,23 @@ bool rcpp_constraint_benefit(SEXP x,
 
       pu_id = it_species.row();
       feature_intensity = dist_features_extended(pu_id, s);
+      specie_distribution[s] = specie_distribution[s] + feature_intensity;
 
       sum_alpha = 0.0;
       alpha = 0.0;
 
-      // b_is
-      op->_id_variables.push_back(col_constraint);
-      op->_A_i.push_back(row_constraint);
-      op->_A_j.push_back(col_constraint);
-      op->_A_x.push_back(1);
-      op->_rhs.push_back(0);
-      op->_sense.push_back("==");
-
       for (auto it_threats = dist_threats_extended.begin_row(pu_id);
            it_threats != dist_threats_extended.end_row(pu_id); ++it_threats) {
-
 
         threat_id = it_threats.col();
 
         if(sensitivity_extended(s, threat_id) == 1){
 
-
           threat_intensity = dist_threats_extended(pu_id, threat_id);
+
+          if(sum_alpha == 0){
+            specie_distribution_threatened[s] = specie_distribution_threatened[s] + feature_intensity;
+          }
 
           //calculate alpha value
           threat_intensity = dist_threats_extended(pu_id, threat_id);
@@ -149,17 +148,16 @@ bool rcpp_constraint_benefit(SEXP x,
           }
 
           if(sum_alpha != 0.0){
+            sol_action_id = number_of_units + actions_extended(pu_id, threat_id) - 1;
+
             // x_ik
-            col_action = number_of_units + actions_extended(pu_id, threat_id) - 1;
+            benefit_nothing[s] = benefit_nothing[s] + ((response_coef_constant * alpha)/sum_alpha)*feature_intensity;
+            benefit_maximum_recovery[s] = benefit_maximum_recovery[s] + ((response_coef_variable * alpha)/sum_alpha)*feature_intensity;
 
-            op->_A_i.push_back(row_constraint);
-            op->_A_j.push_back(col_action);
-            op->_A_x.push_back(-1*(response_coef_variable * alpha)/sum_alpha);
-
-            // w_i
-            op->_A_i.push_back(row_constraint);
-            op->_A_j.push_back(pu_id);
-            op->_A_x.push_back(-1*(response_coef_constant * alpha)/sum_alpha);
+            if(large_solution != 1){
+              benefit_solution_nothing[s] = benefit_solution_nothing[s] + solution[pu_id]*(((response_coef_constant * alpha)/sum_alpha)*feature_intensity);
+              benefit_solution_recovery[s] = benefit_solution_recovery[s] + solution[sol_action_id]*(((response_coef_variable * alpha)/sum_alpha)*feature_intensity);
+            }
           }
         }
       }
@@ -167,76 +165,38 @@ bool rcpp_constraint_benefit(SEXP x,
       if(sum_alpha == 0.0){
 
         //z variables
-        op->_A_i.push_back(row_constraint);
-        op->_A_j.push_back(pu_id);
-        op->_A_x.push_back(-1);
-      }
+        benefit_nothing[s] = benefit_nothing[s] + 1;
 
-      row_constraint = row_constraint + 1;
-      col_constraint = col_constraint + 1;
+        if(large_solution != 1){
+          benefit_solution_nothing[s] = benefit_solution_nothing[s] + solution[pu_id];
+        }
+      }
     }
   }
 
-/*
-  //targets
+  //creating DataFrame
 
-  if(curve == 1){
-    row_constraint = op->_rhs.size();
-    col_constraint = number_of_units + number_of_actions;
+  DataFrame df;
 
-    NumericVector targets = features_data["target"];
-
-    for(int s = 0; s < number_of_features; s++){
-
-      for (auto it_species = dist_features_extended.begin_col(s);
-           it_species != dist_features_extended.end_col(s); ++it_species) {
-
-        pu_id = it_species.row();
-
-        // b_is
-        op->_A_i.push_back(row_constraint + s);
-        op->_A_j.push_back(col_constraint);
-        op->_A_x.push_back(feature_intensity);
-
-        col_constraint = col_constraint + 1;
-      }
-
-      op->_rhs.push_back(targets[s]);
-      op->_sense.push_back(">=");
-    }
+  if(large_solution != 1){
+    df = DataFrame::create(Named("specie") = features_data["internal_id"],
+                                     Named("distribution") = specie_distribution,
+                                     Named("distribution_threatened") = specie_distribution_threatened,
+                                     Named("maximum_benefit_nothing") = benefit_nothing,
+                                     Named("maximum_benefit_recovery") = benefit_maximum_recovery,
+                                     Named("target") = features_data["target"],
+                                     Named("sol_benefit_nothing") = benefit_solution_nothing,
+                                     Named("sol_benefit_recovery") = benefit_solution_recovery);
   }
   else{
-    row_constraint = op->_rhs.size();
-    col_constraint = op->_obj.size();
-
-    NumericVector targets = features_data["target"];
-
-    for(int s = 0; s < number_of_features; s++){
-
-      for (auto it_species = dist_features_extended.begin_col(s);
-           it_species != dist_features_extended.end_col(s); ++it_species) {
-
-        pu_id = it_species.row();
-
-        // b'_is
-        op->_id_pow_variables.push_back(col_constraint);
-        op->_vtype.push_back("C");
-        op->_lb.push_back(0);
-        op->_ub.push_back(1);
-
-        op->_obj.push_back(0);
-
-        // b'_is
-        op->_A_i.push_back(row_constraint + s);
-        op->_A_j.push_back(col_constraint);
-        op->_A_x.push_back(feature_intensity);
-
-        col_constraint = col_constraint + 1;
-      }
-      op->_rhs.push_back(targets[s]);
-      op->_sense.push_back(">=");
-    }
+    df = DataFrame::create(Named("specie") = features_data["internal_id"],
+                                     Named("distribution") = specie_distribution,
+                                     Named("distribution_threatened") = specie_distribution_threatened,
+                                     Named("maximum_benefit_nothing") = benefit_nothing,
+                                     Named("maximum_benefit_recovery") = benefit_maximum_recovery,
+                                     Named("target") = features_data["target"]);
   }
-*/
-  return true;
+
+  return df;
 }
+

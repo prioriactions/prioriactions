@@ -87,7 +87,7 @@ createtxt.Solution <- function(x, name = "output_prioriactions", ...) {
     "\n",
     "4) Solution",
     "\n",
-    "Objective value:  ", x$getObjetiveValue(),
+    "Objective value:  ", x$getObjectiveValue(),
     "\n",
     "Gap:  ", x$getGap(),
     "\n",

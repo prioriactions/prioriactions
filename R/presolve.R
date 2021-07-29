@@ -22,55 +22,51 @@ presolve <- function(x, ...) UseMethod("presolve", x)
 #' @rdname presolve
 #' @method presolve ConservationProblem
 #' @noRd
-presolve.ConservationProblem <- function(x, objective = "min costs", curve = 3, ...) {
+presolve.ConservationProblem <- function(x, objective = "min costs", recovery = FALSE, ...) {
   assertthat::assert_that(inherits(x, "ConservationProblem"))
 
   if (objective == "min costs") {
 
-    ## Evaluating the feasibility (locked out in pu's)
-
-    features <- x$getData("features")
-    dist_features <- x$getData("dist_features")
     pu <- x$getData("pu")
-
     locked_out_units <- pu$id[c(which(pu$status == 3))]
-    dist_features_free <- subset(dist_features, !pu %in% c(locked_out_units))
-    summary_species <- stats::aggregate(. ~ species, dist_features_free, FUN = sum)
+    pu$solution <- 1
+    pu$solution[locked_out_units] <- 0
 
-    if (!all(summary_species$amount >= features$target)) {
-      features_below_target <- which(summary_species$amount < features$target)
-      warning(paste0("Infeasible model \n There is not enough representativeness to achieve the targets required of following features: ", paste(features_below_target, collapse = " ")),call.=FALSE)
 
+    dist_threats <- x$getData("dist_threats")
+    locked_out_actions <- pu$id[c(which(dist_threats$status == 3))]
+    dist_threats$solution <- 1
+    dist_threats$solution[locked_out_actions] <- 0
+
+    a <- rcpp_stats_benefit(x$data$pu,
+                                      x$data$features,
+                                      x$data$dist_features,
+                                      x$data$threats,
+                                      x$data$dist_threats,
+                                      x$data$sensitivity,
+                                      c(pu$solution, dist_threats$solution))
+
+
+    if(isTRUE(recovery)){
+
+      diff_features <- which(a$target > round(a$sol_benefit_recovery))
+
+      if(length(diff_features) > 0){
+        warning(paste0("Infeasible model. There is not enough representativeness to achieve the targets required of following features: ", paste(diff_features, collapse = " ")),call.=FALSE)
+
+        x$data$features$target[diff_features] <- round(a$sol_benefit_recovery[diff_features])
+        warning("The targets for these features will be set to the maximum benefit values", call.=FALSE)
+      }
     }
-    else {
-      ## Evaluating the feasibility (locked out in threats)
-      number_species <- x$getFeatureAmount()
-      sensitivity <- x$getData("sensitivity")
-      threats <- x$getData("dist_threats")
+    else{
+      diff_features <- which(a$target > round(a$sol_benefit_recovery + a$sol_benefit_nothing))
 
-      for (i in 1:number_species) {
-        counter_specie <- 0
-        pu_per_specie <- rij_free$pu[which(rij_free$species == features$id[i])]
-        threats_per_specie <- sensitivity$threats[which(sensitivity$species == features$id[i])]
+      if(length(diff_features) > 0){
+        warning(paste0("Infeasible model. There is not enough representativeness to achieve the targets required of following features: ", paste(diff_features, collapse = " ")),call.=FALSE)
 
-        for (j in pu_per_specie) {
-          threats_per_unit <- threats$threats[which(threats$pu == j)]
-          threats_against_specie_in_unit <- intersect(threats_per_specie, threats_per_unit)
+        x$data$features$target[diff_features] <- round(a$sol_benefit_recovery[diff_features] + a$sol_benefit_nothing[diff_features])
 
-          if (length(threats_against_specie_in_unit) != 0) {
-            threats_filtered <- subset(subset(threats, (pu %in% c(j))), (threats %in% c(threats_against_specie_in_unit)))
-            lenght_threats <- nrow(threats_filtered)
-            lenght_threats_blocked <- length(which(threats_filtered$status == 3))
-            representation <- ((lenght_threats - lenght_threats_blocked) / (lenght_threats))^(curve)
-            counter_specie <- counter_specie + representation
-          }
-          else {
-            counter_specie <- counter_specie + 1
-          }
-        }
-        if (counter_specie < features$target[i]) {
-          stop("Infeasible model \n There is not enough representativeness to achieve the targets required \n Possible cause: Too many actions locked",call.=FALSE)
-        }
+        warning("The targets for these features will be set with the maximum benefit values", call.=FALSE)
       }
     }
   }

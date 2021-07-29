@@ -134,7 +134,7 @@ print(model_solution)
 
 ## Report the solution to the problem you are working on:
 ## (i) total cost of the conservation plan;
-solution_report01 <- model_solution$getObjetiveValue()
+solution_report01 <- model_solution$getObjectiveValue()
 print(solution_report01)
 
 ## (ii) planning units suggested to be included (value 1) and not included (value 0)

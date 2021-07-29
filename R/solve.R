@@ -120,7 +120,7 @@ NULL
 #'
 #' ## Report the solution to the problem you are working on:
 #' ## (i) total cost of the conservation plan;
-#' solution_report01 <- model_solution$getObjetiveValue()
+#' solution_report01 <- model_solution$getObjectiveValue()
 #' print(solution_report01)
 #'
 #' ## (ii) planning units suggested to be included (value 1) and not included (value 0)
@@ -166,8 +166,8 @@ methods::setMethod(
       solver_default <- "gurobi"
     } else if (requireNamespace("Rsymphony", quietly = TRUE)) {
       solver_default <- "symphony"
-    #} else if (requireNamespace("Rglpk", quietly = TRUE)) {
-    #  solver_default <- "glpk"
+      #} else if (requireNamespace("Rglpk", quietly = TRUE)) {
+      #  solver_default <- "glpk"
     } else {
       stop("No optimization problem solvers found on system")
     }
@@ -230,6 +230,11 @@ methods::setMethod(
         params$SolutionLimit <- 1
       }
 
+      if(model$settings$curve != 1){
+        params$FuncPieces <- 1
+        params$FuncPieceLength <- round(1/model$settings$segments, digits = 1)
+      }
+
       solution <- gurobi::gurobi(model, params)
 
       solution$status_code <- dplyr::case_when(
@@ -242,11 +247,11 @@ methods::setMethod(
       )
 
       s <- pproto(NULL, Solution,
-        data = list(
-          objval = solution$objval, sol = solution$x, gap = solution$mipgap,
-          status = solution$status_code, runtime = solution$runtime, arg = arg_solve
-        ),
-        OptimizationClass = a
+                  data = list(
+                    objval = solution$objval, sol = solution$x, gap = solution$mipgap,
+                    status = solution$status_code, runtime = solution$runtime, arg = arg_solve
+                  ),
+                  OptimizationClass = a
       )
     }
     ## SYMPHONY solver
@@ -263,7 +268,7 @@ methods::setMethod(
 
       runtime_symphony <- system.time(
         solution <- Rsymphony::Rsymphony_solve_LP(model$obj, model$mat, model$dir, model$rhs, model$bounds, model$types,
-          model$max, gap_limit = gap_limit, time_limit = time_limit, verbosity = verbose_mod, first_feasible = solution_limit
+                                                  model$max, gap_limit = gap_limit, time_limit = time_limit, verbosity = verbose_mod, first_feasible = solution_limit
         )
       )[[1]]
       #Time_limit
@@ -301,9 +306,9 @@ methods::setMethod(
       }
 
       s <- pproto(NULL, Solution,
-        data = list(objval = solution$objval, sol = solution$solution, gap = solution$gap, status = solution$status_code,
-                    runtime = runtime_symphony, arg = arg_solve),
-        OptimizationClass = a)
+                  data = list(objval = solution$objval, sol = solution$solution, gap = solution$gap, status = solution$status_code,
+                              runtime = runtime_symphony, arg = arg_solve),
+                  OptimizationClass = a)
 
     } ## END IF (SYMPHONY Solver)
 
@@ -381,6 +386,13 @@ methods::setMethod(
       actions_extended <- round(actions_extended,digits = 1)
 
       s$data$sol_actions_extended <- actions_extended
+
+      # Getting local benefits
+      dist_features_data <- a$ConservationClass$getData("dist_features")
+      number_of_dist_features <- nrow(dist_features_data)
+      dist_features_data <- dist_features_data[!names(dist_features_data) %in% c("amount","internal_species","internal_pu")]
+      dist_features_data$local_benefit <- s$data$sol[(pus + actions +1):(pus + actions + number_of_dist_features)]
+      s$data$local_benefits <- dist_features_data
 
 
       # Creating txt output

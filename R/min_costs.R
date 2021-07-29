@@ -106,13 +106,18 @@ min_costs.default <- function(x, ...) {
 #' @rdname min_costs
 #' @method min_costs ConservationProblem
 #' @export
-min_costs.ConservationProblem <- function(x, blm = 0, curve = 3, segments = 3, recovery = FALSE, ...) {
+min_costs.ConservationProblem <- function(x, blm = 0, curve = 3, segments = 3, recovery = TRUE, ...) {
   # assert that arguments are valid
   assertthat::assert_that(
     inherits(x, "ConservationProblem"),
     assertthat::is.flag(recovery),
     no_extra_arguments(...)
   )
+
+
+  ## Presolve
+  presolve(x, objective = "min costs", recovery)
+
 
   ## Getting data
 
@@ -150,7 +155,7 @@ min_costs.ConservationProblem <- function(x, blm = 0, curve = 3, segments = 3, r
   assertthat::assert_that(all(is.finite(threats$blm_actions)))
 
   if (all(threats$blm_actions <= 1e-10) && !is.null(boundary)) {
-    warning("The blm_actions argument was set to 0, so the boundary data has no effect",call.=FALSE)
+    warning("Some blm_actions argument were set to 0, so the boundary data has no effect for these cases",call.=FALSE)
   }
 
   ## blm_actions
@@ -167,13 +172,6 @@ min_costs.ConservationProblem <- function(x, blm = 0, curve = 3, segments = 3, r
     segments = 1
   }
 
-  if(any(dist_threats$amount != 1) && curve != 1){
-    warning("The curve argument was set to 1 because at least one threat amount is not equal to 1", call.=FALSE)
-    curve = 1
-    segments = 1
-  }
-
-
   ## segments
   assertthat::assert_that(assertthat::is.scalar(segments), is.finite(segments))
   if (!segments %in% c(1, 2, 3)) {
@@ -189,63 +187,45 @@ min_costs.ConservationProblem <- function(x, blm = 0, curve = 3, segments = 3, r
   )
 
 
-  ## Presolve
-  #presolve(x, objective = "min costs", curve)
-
-
-
-  #settings_Data <- list(beta1 = blm, beta2 = 0, exponent = curve, segments = segments)
-
   op <- rcpp_new_optimization_problem()
-
   rcpp_objective_min_set(op, pu, features, dist_features, threats, dist_threats, boundary, blm)
 
   if(isTRUE(recovery)){
     rcpp_constraint_benefit_recovery(op, pu, features, dist_features, threats, dist_threats, sensitivity, curve, segments)
   }
   else{
-    rcpp_constraint_benefit(op, pu, features, dist_features, threats, dist_threats, sensitivity, curve, segments)
+    rcpp_constraint_benefit(op, pu, features, dist_features, threats, dist_threats, sensitivity, curve)
   }
-
+  rcpp_constraint_target(op, pu, features, dist_features, dist_threats, curve)
   rcpp_constraint_activation(op, pu, threats, dist_threats)
   rcpp_constraint_lock(op, pu, dist_threats)
 
   model <- rcpp_optimization_problem_as_list(op)
-
   model$A <- Matrix::sparseMatrix(i = model$A_i + 1, j = model$A_j + 1, x = model$A_x)
 
+  settings_Data <- list(curve = curve, segments = segments)
+
+  if(curve != 1){
+    genconpow <- list()
+
+    for(i in 1:length(model$xvar))
+      genconpow[[i]] <- list(xvar = model$xvar[i] + 1, yvar = model$yvar[i] + 1, a = curve)
+  }
+  else{
+    genconpow <- NULL
+  }
 
   # create OptimizationProblem object
 
   pproto(NULL, OptimizationProblem,
-    data = list(
-      obj = model$obj, rhs = model$rhs, sense = model$sense, vtype = model$vtype,
-      A = model$A, bounds = model$bounds,
-      modelsense = model$modelsense
-    ),
-    ConservationClass = x
+         data = list(
+           obj = model$obj, rhs = model$rhs, sense = model$sense, vtype = model$vtype,
+           A = model$A, bounds = model$bounds,
+           modelsense = model$modelsense,
+           genconpow = genconpow,
+           settings = settings_Data
+         ),
+         ConservationClass = x
   )
-
-
-
-
-
-
-  #rcpp_test <- rcpp_min_set(op, features, pu, boundary, dist_features, dist_threats, sensitivity, threats, settings_Data)
-
-  #rcpp_test$A <- Matrix::sparseMatrix(i = rcpp_test$A_i + 1, j = rcpp_test$A_j + 1, x = rcpp_test$A_x)
-  #a <- rcpp_optimization_problem_as_list(op)
-  #return(a)
-
-  # create OptimizationProblem object
-
-  #pproto(NULL, OptimizationProblem,
-  #  data = list(
-  #    obj = rcpp_test$C, rhs = rcpp_test$Rhs, sense = rcpp_test$Sense, vtype = rcpp_test$Type,
-  #    A = rcpp_test$A, bounds = rcpp_test$Bounds, modelsense = rcpp_test$Modelsense,
-  #    statistics = rcpp_test$Statistics, arg = settings_Data
-  #  ),
-  #  ConservationClass = x
-  #)
 
 }

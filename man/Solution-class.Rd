@@ -23,7 +23,7 @@ function.
 \describe{
 \item{$getGap( )}{returns a \code{string} label indicating the optimality gap achieved for the MIP model.}
 
-\item{$getObjetiveValue( )}{returns a \code{numeric} number indicating the value of the objective function at the optimum.}
+\item{$getObjectiveValue( )}{returns a \code{numeric} number indicating the value of the objective function at the optimum.}
 
 \item{$getSolutionActions( )}{
 returns a \code{data.frame} object interpreting the optimal solution of the MIP model
@@ -64,7 +64,7 @@ model_solution <- solve(a = problem_model, verbose = FALSE)
 ## Use class methods
 model_solution$getGap()
 
-model_solution$getObjetiveValue()
+model_solution$getObjectiveValue()
 
 head(model_solution$getSolutionActions())
 
