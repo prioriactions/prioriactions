@@ -10,8 +10,7 @@ bool rcpp_constraint_benefit(SEXP x,
                             DataFrame threats_data,
                             DataFrame dist_threats_data,
                             DataFrame sensitivity_data,
-                            int curve,
-                            int segments){
+                            bool recovery){
 
   // initialization
   Rcpp::XPtr<OptimizationProblem> op = Rcpp::as<Rcpp::XPtr<OptimizationProblem>>(x);
@@ -47,7 +46,6 @@ bool rcpp_constraint_benefit(SEXP x,
   double param_c;
   double param_d;
   double threat_intensity;
-  double feature_intensity;
 
   for(int s = 0; s < number_of_features; s++){
 
@@ -55,12 +53,12 @@ bool rcpp_constraint_benefit(SEXP x,
          it_species != dist_features_extended.end_col(s); ++it_species) {
 
       pu_id = it_species.row();
-      feature_intensity = dist_features_extended(pu_id, s);
 
       sum_alpha = 0.0;
       alpha = 0.0;
 
       // b_is
+      op->_id_variables.push_back(col_constraint);
       op->_A_i.push_back(row_constraint);
       op->_A_j.push_back(col_constraint);
       op->_A_x.push_back(1);
@@ -157,9 +155,11 @@ bool rcpp_constraint_benefit(SEXP x,
             op->_A_x.push_back(-1*(response_coef_variable * alpha)/sum_alpha);
 
             // w_i
-            op->_A_i.push_back(row_constraint);
-            op->_A_j.push_back(pu_id);
-            op->_A_x.push_back(-1*(response_coef_constant * alpha)/sum_alpha);
+            if(recovery == false){
+              op->_A_i.push_back(row_constraint);
+              op->_A_j.push_back(pu_id);
+              op->_A_x.push_back(-1*(response_coef_constant * alpha)/sum_alpha);
+            }
           }
         }
       }
@@ -167,44 +167,17 @@ bool rcpp_constraint_benefit(SEXP x,
       if(sum_alpha == 0.0){
 
         //z variables
-        op->_A_i.push_back(row_constraint);
-        op->_A_j.push_back(pu_id);
-        op->_A_x.push_back(-1);
+        if(recovery == false){
+          op->_A_i.push_back(row_constraint);
+          op->_A_j.push_back(pu_id);
+          op->_A_x.push_back(-1);
+        }
       }
 
       row_constraint = row_constraint + 1;
       col_constraint = col_constraint + 1;
     }
   }
-
-
-  //targets
-
-  row_constraint = op->_rhs.size();
-  col_constraint = number_of_units + number_of_actions;
-
-  NumericVector targets = features_data["target"];
-
-  for(int s = 0; s < number_of_features; s++){
-
-    for (auto it_species = dist_features_extended.begin_col(s);
-         it_species != dist_features_extended.end_col(s); ++it_species) {
-
-      pu_id = it_species.row();
-
-      // b_is
-      op->_A_i.push_back(row_constraint + s);
-      op->_A_j.push_back(col_constraint);
-      op->_A_x.push_back(feature_intensity);
-
-      col_constraint = col_constraint + 1;
-    }
-
-    op->_rhs.push_back(targets[s]);
-    op->_sense.push_back(">=");
-  }
-
-
 
   return true;
 }

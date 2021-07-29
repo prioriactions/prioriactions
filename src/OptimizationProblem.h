@@ -21,6 +21,10 @@ public:
     _lb.reserve(nrow);
     _ub.reserve(nrow);
     _sense.reserve(nrow);
+    _id_pow_variables.reserve(nrow);
+    _id_variables.reserve(nrow);
+    _connect_units.reserve(ncol);
+    _connect_actions.reserve(ncol);
   };
 
   // deconstructor
@@ -37,6 +41,10 @@ public:
   std::vector<double> _lb;
   std::vector<double> _ub;
   std::vector<std::string> _sense;
+  std::vector<double> _id_pow_variables;
+  std::vector<double> _id_variables;
+  std::vector<double> _connect_units;
+  std::vector<double> _connect_actions;
 
   // methods
   inline const std::size_t nrow() const {

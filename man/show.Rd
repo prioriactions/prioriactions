@@ -9,6 +9,7 @@
 \alias{show.ConservationProblem}
 \alias{show.OptimizationProblem}
 \alias{show.Solution}
+\alias{show.Portafolio}
 \title{Show}
 \usage{
 \method{show}{ConservationProblem}(x, ...)
@@ -16,6 +17,8 @@
 \method{show}{OptimizationProblem}(x, ...)
 
 \method{show}{Solution}(x, ...)
+
+\method{show}{Portafolio}(x, ...)
 }
 \arguments{
 \item{x}{Any object.}

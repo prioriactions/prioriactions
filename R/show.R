@@ -35,3 +35,9 @@ show.OptimizationProblem <- function(x, ...) x$show()
 #' @method show Solution
 #' @export
 show.Solution <- function(x, ...) x$show()
+
+#' @rdname show
+#' @method show Portafolio
+#' @export
+show.Portafolio<- function(x, ...) x$show()
+

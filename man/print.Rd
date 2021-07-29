@@ -5,6 +5,7 @@
 \alias{print.ConservationProblem}
 \alias{print.OptimizationProblem}
 \alias{print.Solution}
+\alias{print.Portafolio}
 \title{Print}
 \usage{
 \method{print}{ConservationProblem}(x, ...)
@@ -12,6 +13,8 @@
 \method{print}{OptimizationProblem}(x, ...)
 
 \method{print}{Solution}(x, ...)
+
+\method{print}{Portafolio}(x, ...)
 }
 \arguments{
 \item{x}{Any object.}

@@ -35,3 +35,8 @@ print.OptimizationProblem <- function(x, ...) x$print()
 #' @method print Solution
 #' @export
 print.Solution <- function(x, ...) x$print()
+
+#' @rdname print
+#' @method print Portafolio
+#' @export
+print.Portafolio <- function(x, ...) x$print()

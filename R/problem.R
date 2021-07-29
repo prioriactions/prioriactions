@@ -372,11 +372,11 @@ methods::setMethod(
     }
 
     if(isFALSE(all(sensitivity$b > sensitivity$a))){
-      stop("Every value of a must be less than every value of b", call. = FALSE)
+      stop("Every value of a must be less than every value of b", call. = FALSE, immediate. = TRUE)
     }
 
     if(isFALSE(all(sensitivity$d > sensitivity$c))){
-      stop("Every value of c parameter must be less than every value of d parameter", call. = FALSE)
+      stop("Every value of c parameter must be less than every value of d parameter", call. = FALSE, immediate. = TRUE)
     }
 
 
@@ -389,13 +389,13 @@ methods::setMethod(
 
     dif_pu <- setdiff(unique(pu$id), unique(dist_features$pu))
     if (length(dif_pu) != 0L) {
-      warning(paste0("The following pu's do not contain species: ", paste(dif_pu, collapse = " ")), call. = FALSE)
+      warning(paste0("The following pu's do not contain species: ", paste(dif_pu, collapse = " ")), call. = FALSE, immediate. = TRUE)
     }
 
     dif_features <- setdiff(unique(features$id), unique(dist_features$species))
     if (length(dif_features) != 0L) {
 
-      warning(paste0("The following features are not represented (it'll not be considered in the model): ", paste(dif_features, collapse = " ")), call. = FALSE)
+      warning(paste0("The following features are not represented (it'll not be considered in the model): ", paste(dif_features, collapse = " ")), call. = FALSE, immediate. = TRUE)
 
       # eliminate species not represented
       features <- features[!features$id %in% dif_features, ]
@@ -404,7 +404,7 @@ methods::setMethod(
 
     dif_species_threatened <- setdiff(unique(features$id), unique(sensitivity$species))
     if (length(dif_species_threatened) != 0L) {
-      warning(paste0("The following features are not threatened: ", paste(dif_species_threatened, collapse = " ")), call. = FALSE)
+      warning(paste0("The following features are not threatened: ", paste(dif_species_threatened, collapse = " ")), call. = FALSE, immediate. = TRUE)
 
       # eliminate species not threatened
 
@@ -412,7 +412,7 @@ methods::setMethod(
 
     dif_threats <- setdiff(unique(threats$id), unique(dist_threats$threats))
     if (length(dif_threats) != 0L) {
-      warning(paste0("The following threats are not represented (it'll not be considered in the model): ", paste(dif_threats, collapse = " ")), call. = FALSE)
+      warning(paste0("The following threats are not represented (it'll not be considered in the model): ", paste(dif_threats, collapse = " ")), call. = FALSE, immediate. = TRUE)
 
       # eliminate species not represented
       threats <- threats[!threats$id %in% dif_threats, ]
@@ -421,7 +421,7 @@ methods::setMethod(
 
     dif_threats_dangerous <- setdiff(unique(threats$id), unique(sensitivity$threats))
     if (length(dif_threats_dangerous) != 0L) {
-      warning(paste0("The following threats are not dangerous to any features (it'll not be considered in the model): ", paste(dif_threats_dangerous, collapse = " ")), call. = FALSE)
+      warning(paste0("The following threats are not dangerous to any features (it'll not be considered in the model): ", paste(dif_threats_dangerous, collapse = " ")), call. = FALSE, immediate. = TRUE)
 
       # eliminate threats not represented
       threats <- threats[!threats$id %in% dif_threats_dangerous, ]

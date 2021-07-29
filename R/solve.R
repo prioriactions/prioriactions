@@ -1,4 +1,4 @@
-#' @include presolve.R optimization_problem.R createtxt.R
+#' @include presolve.R writeOutputs.R
 NULL
 
 #' @title solve
@@ -120,7 +120,7 @@ NULL
 #'
 #' ## Report the solution to the problem you are working on:
 #' ## (i) total cost of the conservation plan;
-#' solution_report01 <- model_solution$getObjetiveValue()
+#' solution_report01 <- model_solution$getObjectiveValue()
 #' print(solution_report01)
 #'
 #' ## (ii) planning units suggested to be included (value 1) and not included (value 0)
@@ -138,10 +138,8 @@ NULL
 #' @name solve
 #'
 #' @rdname solve
-methods::setMethod(
-  "solve",
-  signature(a = "OptimizationProblem", b = "missing"),
-  function(a, b, solver = "", gap_limit = 0.0, time_limit = .Machine$integer.max, solution_limit = FALSE, cores = 2,
+
+solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer.max, solution_limit = FALSE, cores = 2,
            verbose = TRUE, name_output_file = "prioriaction_output", name_log = "gurobi_log", output_file = TRUE, log_file = FALSE, ...) {
     # assert that arguments are valid
     assertthat::assert_that(
@@ -166,8 +164,8 @@ methods::setMethod(
       solver_default <- "gurobi"
     } else if (requireNamespace("Rsymphony", quietly = TRUE)) {
       solver_default <- "symphony"
-    #} else if (requireNamespace("Rglpk", quietly = TRUE)) {
-    #  solver_default <- "glpk"
+      #} else if (requireNamespace("Rglpk", quietly = TRUE)) {
+      #  solver_default <- "glpk"
     } else {
       stop("No optimization problem solvers found on system")
     }
@@ -230,6 +228,11 @@ methods::setMethod(
         params$SolutionLimit <- 1
       }
 
+      if(model$settings$curve != 1){
+        params$FuncPieces <- 1
+        params$FuncPieceLength <- round(1/model$settings$segments, digits = 1)
+      }
+
       solution <- gurobi::gurobi(model, params)
 
       solution$status_code <- dplyr::case_when(
@@ -242,11 +245,11 @@ methods::setMethod(
       )
 
       s <- pproto(NULL, Solution,
-        data = list(
-          objval = solution$objval, sol = solution$x, gap = solution$mipgap,
-          status = solution$status_code, runtime = solution$runtime, arg = arg_solve
-        ),
-        OptimizationClass = a
+                  data = list(
+                    objval = solution$objval, sol = solution$x, gap = solution$mipgap,
+                    status = solution$status_code, runtime = solution$runtime, arg = arg_solve
+                  ),
+                  OptimizationClass = a
       )
     }
     ## SYMPHONY solver
@@ -263,7 +266,7 @@ methods::setMethod(
 
       runtime_symphony <- system.time(
         solution <- Rsymphony::Rsymphony_solve_LP(model$obj, model$mat, model$dir, model$rhs, model$bounds, model$types,
-          model$max, gap_limit = gap_limit, time_limit = time_limit, verbosity = verbose_mod, first_feasible = solution_limit
+                                                  model$max, gap_limit = gap_limit, time_limit = time_limit, verbosity = verbose_mod, first_feasible = solution_limit
         )
       )[[1]]
       #Time_limit
@@ -301,9 +304,9 @@ methods::setMethod(
       }
 
       s <- pproto(NULL, Solution,
-        data = list(objval = solution$objval, sol = solution$solution, gap = solution$gap, status = solution$status_code,
-                    runtime = runtime_symphony, arg = arg_solve),
-        OptimizationClass = a)
+                  data = list(objval = solution$objval, sol = solution$solution, gap = solution$gap, status = solution$status_code,
+                              runtime = runtime_symphony, arg = arg_solve),
+                  OptimizationClass = a)
 
     } ## END IF (SYMPHONY Solver)
 
@@ -356,39 +359,53 @@ methods::setMethod(
     #   }
     # } ## END IF (GLPK solver)
 
+
+    # Getting unit solution
+    pus <- a$ConservationClass$getPlanningUnitsAmount()
+    pu_data <- a$ConservationClass$getData("pu")
+    pu_data <- pu_data[!names(pu_data) %in% c("internal_id")]
+
+    # Getting actions solution
+
+    ## REDUCED
+    actions <- a$ConservationClass$getActionsAmount()
+    threats_data <- a$ConservationClass$getData("dist_threats")
+    threats_data <- threats_data[!names(threats_data) %in% c("internal_pu", "internal_threats")]
+
+    # Getting local benefits
+    dist_features_data <- a$ConservationClass$getData("dist_features")
+    number_of_dist_features <- nrow(dist_features_data)
+    dist_features_data <- dist_features_data[!names(dist_features_data) %in% c("amount","internal_species","internal_pu")]
+
     if (s$data$status == 0L || s$data$status == 2L || s$data$status == 4L) {
+      pu_data$solution <- base::round(s$data$sol[1:pus])
+      threats_data$solution <- base::round(s$data$sol[(pus + 1):(pus + actions)])
+      dist_features_data$local_benefit <- s$data$sol[(pus + actions +1):(pus + actions + number_of_dist_features)]
+    }
+    else{
+      pu_data$solution <- NA
+      threats_data$solution <- NA
+      dist_features_data$local_benefit <- NA
+    }
 
-      # Getting unit solution
-      pus <- a$ConservationClass$getPlanningUnitsAmount()
-      pu_data <- a$ConservationClass$getData("pu")
-      pu_data <- pu_data[!names(pu_data) %in% c("internal_id")]
-      pu_data$solution <- s$data$sol[1:pus]
-      s$data$sol_pu <- pu_data
+    s$data$sol_pu <- pu_data
+    s$data$sol_actions_reduced <- threats_data
+    s$data$local_benefits <- dist_features_data
 
-      # Getting actions solution
+    ## EXTENDED
+    threats_data <- threats_data[names(threats_data) %in% c("pu","threats","solution")]
+    actions_extended <- reshape2::dcast(threats_data, pu~threats,value.var = "solution")
+    actions_extended[is.na(actions_extended)] <- 0
+    actions_extended <- round(actions_extended,digits = 1)
 
-      ## REDUCED
-      actions <- a$ConservationClass$getActionsAmount()
-      threats_data <- a$ConservationClass$getData("dist_threats")
-      threats_data <- threats_data[!names(threats_data) %in% c("internal_pu", "internal_threats")]
-      threats_data$solution <- s$data$sol[(pus + 1):(pus + actions)]
-      s$data$sol_actions_reduced <- threats_data
-
-      ## EXTENDED
-      threats_data <- threats_data[names(threats_data) %in% c("pu","threats","solution")]
-      actions_extended <- reshape2::dcast(threats_data, pu~threats,value.var = "solution")
-      actions_extended[is.na(actions_extended)] <- 0
-      actions_extended <- round(actions_extended,digits = 1)
-
-      s$data$sol_actions_extended <- actions_extended
+    s$data$sol_actions_extended <- actions_extended
 
 
-      # Creating txt output
-      if(isTRUE(output_file)){
-        createtxt(s, name = name_output_file)
-      }
+    # Creating txt output
+    if(isTRUE(output_file)){
+      writeOutputs(s, name = name_output_file)
     }
 
     s
   }
-)
+

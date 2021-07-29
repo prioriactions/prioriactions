@@ -1,10 +1,10 @@
-#' @title createtxt
+#' @title writeOutputs
 #'
 #' @description Put description here!
 #'
 #' @param x Put description of a parameter here!
 #'
-#' @name createtxt
+#' @name writeOutputs
 #'
 #' @return Put the "return" object here!
 #'
@@ -17,12 +17,12 @@
 #' @references
 #' ## Put references here!
 #' @noRd
-createtxt <- function(x, ...) UseMethod("createtxt", x)
+writeOutputs <- function(x, ...) UseMethod("writeOutputs", x)
 
-#' @rdname createtxt
-#' @method createtxt Solution
+#' @rdname writeOutputs
+#' @method writeOutputs Solution
 #' @noRd
-createtxt.Solution <- function(x, name = "output_prioriactions", ...) {
+writeOutputs.Solution <- function(x, name = "output_prioriactions", ...) {
   assertthat::assert_that(inherits(x, "Solution"))
 
   name_output <- paste0(name,".txt")
@@ -38,17 +38,17 @@ createtxt.Solution <- function(x, name = "output_prioriactions", ...) {
     "\n",
     "1) Parameters",
     "\n",
-    "blm:  ", x$OptimizationClass$data$arg$beta1,
+    "blm:  ", x$OptimizationClass$data$settings$blm,
     "\n",
-    "blm_actions:  ", x$OptimizationClass$data$arg$beta2,
+    "blm_actions:  ", paste0(x$OptimizationClass$ConservationClass$data$threats$blm_actions, collapse=" "),
     "\n",
-    "exponent of benefit expression  (curve parameter):  ", x$OptimizationClass$data$arg$exponent,
+    "exponent of benefit expression  (curve parameter):  ", x$OptimizationClass$data$settings$curve,
     "\n",
-    "number of linearization segments of benefit expression (segments parameter):  ", x$OptimizationClass$data$arg$segments,
+    "number of linearization segments of benefit expression (segments parameter):  ", x$OptimizationClass$data$settings$segments,
     "\n",
     "solver:  ", x$data$arg$solver,
     "\n",
-    "gap:  ", x$data$arg$gap,
+    "gap:  ", paste0(x$data$arg$gap, "%"),
     "\n",
     "time limit:  ", x$data$arg$timelimit,
     "\n",
@@ -78,40 +78,38 @@ createtxt.Solution <- function(x, name = "output_prioriactions", ...) {
     "\n",
     "3) Mathematical model",
     "\n",
-    "Type of model:  ", x$OptimizationClass$getModelSense(),
+    "Type of model:  ", getModelSense(x),
     "\n",
-    "Number of variables:  ", x$OptimizationClass$getNcol(),
+    "Number of variables:  ", getNvariables(x),
     "\n",
-    "Time to create model [sec]:  ", x$OptimizationClass$getTimeBuildingModel(),
+    "Number of constraints:  ", getNconstraints(x),
     "\n",
     "\n",
     "4) Solution",
     "\n",
-    "Objective value:  ", x$getObjetiveValue(),
+    "Objective value:  ", getObjectiveValue(x),
     "\n",
-    "Gap:  ", x$getGap(),
+    "Gap:  ", getGap(x),
     "\n",
-    "Status:  ", x$getStatus(),
+    "Status:  ", getStatus(x),
     "\n",
-    "Runtime [sec]:  ", x$getTimeSolvingModel(),
+    "Runtime [sec]:  ", getTimeSolving(x),
     "\n",
-    "Total cost:  ", x$getTotalCost(),
+    "Total cost:  ", getTotalCost(x),
     "\n",
-    "  Monitoring cost:  ", x$getMonitoringCost(),
+    "  Monitoring cost:  ", getPlanningUnitsCost(x),
     "\n",
-    "  Action cost:  ", x$getActionsCost(),
+    "  Action cost:  ", getActionsCost(x),
     "\n",
-    "Total connectivity:  ", x$getTotalConnectivity(),
+    "Total connectivity:  ", getTotalConnectivity(x),
     "\n",
-    "  Unit connectivity:  ", x$getUnitConnectivity(),
+    "  Unit connectivity:  ", getPlanningUnitsConnectivity(x),
     "\n",
-    "  Action connectivity:  ", x$getActionConnectivity(),
+    "  Action connectivity:  ", getActionsConnectivity(x),
     "\n"
   )
 
   base::writeLines(msj_output, output_file)
 
   base::on.exit(base::close(output_file))
-
-  output_file
 }

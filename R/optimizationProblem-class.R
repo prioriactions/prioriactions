@@ -76,7 +76,7 @@ NULL
 #' problem_model$getSizeA()
 #'
 #' problem_model$print()
-#' @name OptimizationProblem-class
+#' @name optimizationProblem-class
 #'
 #' @aliases OptimizationProblem
 NULL
@@ -87,14 +87,13 @@ OptimizationProblem <- pproto(
   data = list(),
   ConservationClass = NULL,
   print = function(self) {
-    if (self$getNcol() > 0) {
+    if (getNvariables(self) > 0) {
       message(
         "Optimization Problem",
-        "\n  model sense: ", self$getModelSense(),
-        "\n  dimensions:  ", self$getNrow(), ", ", self$getNcol(), ", ", self$getSizeA(), " Mb",
+        "\n  model sense: ", getModelSense(self),
+        "\n  dimensions:  ", getNconstraints(self), ", ", getNvariables(self), ", ", getSizeA(self), " Mb",
         " (nrow, ncol, size)",
-        "\n  variables:   ", self$getNcol(),
-        "\n  building time: ", paste0(self$getTimeBuildingModel(), " sec")
+        "\n  variables:   ", getNvariables(self)
       )
     } else {
       message("optimization problem (empty)")
@@ -106,17 +105,6 @@ OptimizationProblem <- pproto(
   repr = function(self) {
     "OptimizationProblem object"
   },
-  getNcol = function(self) {
-    return(base::ncol(self$data$A))
-  },
-  getNrow = function(self) {
-    return(base::nrow(self$data$A))
-  },
-  getModelSense = function(self) {
-    if (self$data$modelsense == "min") {
-      return("minimization")
-    }
-  },
   getData = function(self, x) {
     assertthat::assert_that(assertthat::is.string(x))
     if (!x %in% names(self$data)) {
@@ -126,12 +114,5 @@ OptimizationProblem <- pproto(
   },
   getDataList = function(self) {
     return(self$data)
-  },
-  getSizeA = function(self) {
-    size_A <- utils::object.size((self$data$A)) / (1024 * 1024)
-    return(base::round(size_A, 3))
-  },
-  getTimeBuildingModel = function(self) {
-    return(base::round(as.numeric(self$data$statistics$timer[13]), 2))
-  },
+  }
 )

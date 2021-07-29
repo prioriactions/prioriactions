@@ -80,7 +80,7 @@ NULL
 #' problem_data$getThreatsAmount()
 #'
 #' problem_data$print()
-#' @name ConservationProblem-class
+#' @name conservationProblem-class
 #'
 #' @aliases ConservationProblem
 NULL
@@ -115,11 +115,6 @@ ConservationProblem <- pproto(
     }
     return(self$data[[x]])
   },
-  # set_data = function(self, x, value) {
-  #   assertthat::assert_that(assertthat::is.string(x))
-  #   self$data[[x]] <- value
-  #   invisible()
-  # },
   getPlanningUnitsAmount = function(self) {
     if (inherits(self$data$pu, "data.frame")) {
       return(sum(rowSums(!is.na(as.matrix(
@@ -181,11 +176,5 @@ ConservationProblem <- pproto(
     } else {
       stop("threats data is of an unrecognized class")
     }
-  },
-  getBenefitInformation = function(self) {
-    a <- rcpp_stats_calculate_benefit(self$data$pu, self$data$features,
-                                         self$data$dist_features, self$data$threats,
-                                         self$data$dist_threats, self$data$sensitivity)
-    return(a)
   }
 )

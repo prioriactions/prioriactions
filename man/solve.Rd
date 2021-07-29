@@ -4,9 +4,8 @@
 \alias{solve}
 \title{solve}
 \usage{
-\S4method{solve}{OptimizationProblem,missing}(
+solve(
   a,
-  b,
   solver = "",
   gap_limit = 0,
   time_limit = .Machine$integer.max,
@@ -134,7 +133,7 @@ print(model_solution)
 
 ## Report the solution to the problem you are working on:
 ## (i) total cost of the conservation plan;
-solution_report01 <- model_solution$getObjetiveValue()
+solution_report01 <- model_solution$getObjectiveValue()
 print(solution_report01)
 
 ## (ii) planning units suggested to be included (value 1) and not included (value 0)

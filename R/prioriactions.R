@@ -1,8 +1,8 @@
-#' @include presolve.R
+#' @include presolve.R internal.R optimizationProblem-class.R writeOutputs.R
 #' @import Matrix Rcpp
 NULL
 
-#' @title min_costs
+#' @title sensitivityAnalysisBlm
 #'
 #' @description Create an optimization model for the multi-action conservation
 #'   planning problem, following the mathematical formulations used in
@@ -48,7 +48,7 @@ NULL
 #'   is not recommended to change this value unless you have advanced knowledge
 #'   of the linearization of mathematical model}.
 
-#' @name min_costs
+#' @name prioriactions
 #'
 #' @return An object of class \code{\link{OptimizationProblem-class}}.
 #'
@@ -81,7 +81,7 @@ NULL
 #' )
 #'
 #' ## Create optimization model
-#' problem_model <- min_costs(x = problem_data, blm = 1)
+#' problem_model <- prioriactions(x = problem_data, blm = 1)
 #'
 #' ## Model summary
 #' print(problem_model)
@@ -94,158 +94,143 @@ NULL
 #'
 #'
 #' @export
-min_costs <- function(x, ...) UseMethod("min_costs")
+prioriactions <- function(x, ...) UseMethod("prioriactions")
 
-#' @rdname min_costs
-#' @method min_costs default
+#' @rdname prioriactions
 #' @export
-min_costs.default <- function(x, ...) {
-  stop("argument to x is not valid, it should be a Conservation problem object.")
-}
+prioriactions <- function(data = list(), model = "minimizeCosts", ...) {
 
-#' @rdname min_costs
-#' @method min_costs ConservationProblem
-#' @export
-min_costs.ConservationProblem <- function(x, blm = 0, curve = 3, segments = 3, recovery = FALSE, ...) {
   # assert that arguments are valid
   assertthat::assert_that(
-    inherits(x, "ConservationProblem"),
-    assertthat::is.flag(recovery),
-    no_extra_arguments(...)
+    is.list(data)
   )
+  params = list(...)
 
-  ## Getting data
-
-  pu <- x$getData("pu")
-  features <- x$getData("features")
-  dist_features <- x$getData("dist_features")
-  threats <- x$getData("threats")
-  dist_threats <- x$getData("dist_threats")
-  sensitivity <- x$getData("sensitivity")
-  boundary <- x$getData("boundary")
-
-  pu <- pu[, c("internal_id", "cost", "status")]
-  features <- features[, c("internal_id", "target")]
-  dist_features <- dist_features[, c("internal_pu", "internal_species", "amount")]
-  threats <- threats[, c("internal_id", "blm_actions")]
-  dist_threats <- dist_threats[, c("internal_pu", "internal_threats", "amount", "cost", "status")]
-  sensitivity <- sensitivity[, c("internal_species", "internal_threats", "a", "b", "c", "d")]
-
-  if (!is.null(boundary)) {
-    boundary <- boundary[, c("internal_id1", "internal_id2", "boundary")]
+  #Verifying name models
+  if (!model %in% c("minimizeCosts", "maximizeBenefits")) {
+    stop("invalid name model")
   }
 
-  ##bound
-  assertthat::assert_that(assertthat::is.scalar(blm), is.finite(blm))
-
-  if (abs(blm) <= 1e-10 && !is.null(boundary)) {
-    warning("The blm argument was set to 0, so the boundary data has no effect",call.=FALSE)
-  }
-
-  ## blm
-  if (abs(blm) > 1e-50 && is.null(x$getData("boundary"))) {
-    warning("No boundary data supplied so the blm argument has no effect",call.=FALSE)
-  }
-
-  assertthat::assert_that(all(is.finite(threats$blm_actions)))
-
-  if (all(threats$blm_actions <= 1e-10) && !is.null(boundary)) {
-    warning("The blm_actions argument was set to 0, so the boundary data has no effect",call.=FALSE)
-  }
-
-  ## blm_actions
-  if (any(threats$blm_actions > 1e-10) && is.null(boundary)) {
-    warning("No boundary data supplied so the blm_actions arguments has no effect",call.=FALSE)
-  }
-
-  ## curve
-  assertthat::assert_that(assertthat::is.scalar(curve), is.finite(curve))
-  if (!curve %in% c(1, 2, 3)) {
-    stop("invalid curve type")
-  }
-  else if(curve == 1){
-    segments = 1
-  }
-
-  if(any(dist_threats$amount != 1) && curve != 1){
-    warning("The curve argument was set to 1 because at least one threat amount is not equal to 1", call.=FALSE)
-    curve = 1
-    segments = 1
-  }
-
-
-  ## segments
-  assertthat::assert_that(assertthat::is.scalar(segments), is.finite(segments))
-  if (!segments %in% c(1, 2, 3)) {
-    stop("invalid number of segments for linearization")
-  }
-
-  ## Targets
-  features <- x$getData("features")
-  assertthat::has_name(features, "target")
-  assertthat::assert_that(
-    is.numeric(features$target),
-    assertthat::noNA(features$target)
-  )
-
-
-  ## Presolve
-  #presolve(x, objective = "min costs", curve)
-
-
-
-  #settings_Data <- list(beta1 = blm, beta2 = 0, exponent = curve, segments = segments)
-
-  op <- rcpp_new_optimization_problem()
-
-  rcpp_objective_min_set(op, pu, features, dist_features, threats, dist_threats, boundary, blm)
-
-  if(isTRUE(recovery)){
-    rcpp_constraint_benefit_recovery(op, pu, features, dist_features, threats, dist_threats, sensitivity, curve, segments)
+  #verifying boundary presence
+  if(length(data) == 7){
+    conservation_model <- problem(data[[1]], data[[2]], data[[3]], data[[4]], data[[5]], data[[6]],
+                                  inputs[[7]])
   }
   else{
-    rcpp_constraint_benefit(op, pu, features, dist_features, threats, dist_threats, sensitivity, curve, segments)
+    conservation_model <- problem(data[[1]], data[[2]], data[[3]], data[[4]], data[[5]], data[[6]])
   }
 
-  rcpp_constraint_activation(op, pu, threats, dist_threats)
-  rcpp_constraint_lock(op, pu, dist_threats)
+  #verifying blm length
+  if(any(names(params) %in% c("blm"))){
+    assertthat::assert_that(
+      is.numeric(params$blm)
+    )
+  }
+  else{
+    params$blm <- 0
+  }
 
-  model <- rcpp_optimization_problem_as_list(op)
+  #verifying budget length
+  if(any(names(params) %in% c("budget"))){
+    assertthat::assert_that(
+      is.numeric(params$budget)
+    )
+  }
+  else{
+    params$budget <- 0
+  }
 
-  model$A <- Matrix::sparseMatrix(i = model$A_i + 1, j = model$A_j + 1, x = model$A_x)
-
-
-  # create OptimizationProblem object
-
-  pproto(NULL, OptimizationProblem,
-    data = list(
-      obj = model$obj, rhs = model$rhs, sense = model$sense, vtype = model$vtype,
-      A = model$A, bounds = model$bounds,
-      modelsense = model$modelsense
-    ),
-    ConservationClass = x
-  )
+  params_solve <- names(params) %in% c("solver", "gap_limit", "time_limit", "solution_limit", "cores",
+                                       "verbose", "name_output_file", "name_log", "output_file", "log_file")
 
 
+  if(model == "minimizeCosts"){
+
+    if(any(names(params) %in% c("budget"))){
+      if(any(params[["budget"]] > 0)){
+        warning("budget parameter has no effect on the minimizeCosts model", call. = FALSE, immediate. = TRUE)
+      }
+    }
+
+    params_model <- names(params) %in% c("blm", "curve", "segments", "recovery")
+
+    #number of replications
+    iter_size <- length(params$blm)
+
+    for(it in 1:iter_size){
+
+      params_iter <- params
+      params_iter$blm <- params$blm[it]
+
+      message(paste0("Iteration 1 of ",iter_size,": blm = ", params_iter$blm))
+
+      #Creating mathematical model--------------------------------------------------
+      optimization_model <- do.call(minimizeCosts, args = append(x = conservation_model, params_iter[params_model]))
+
+      #changing name of output file
+      if(any(names(params_iter) %in% c("name_output_file"))){
+        params_iter$name_output_file <- paste0(params_iter$name_output_file,"_blm", params_iter$blm)
+      }
+      else{
+        params_iter$name_output_file <- paste0("prioriaction_output_blm", params_iter$blm)
+      }
+
+      solution <- do.call(solve, args = append(x = optimization_model, params_iter[params_solve]))
+
+      if(iter_size != 1){
+        if(it == 1){
+          portafolio <- pproto(NULL, Portafolio, data = list(solution))
+        }
+        else{
+          portafolio$data[[it]] <- solution
+        }
+      }
+    }
+  }
+  else if(model == "maximizeBenefits"){
+    params_model <- names(params) %in% c("blm", "curve", "segments", "recovery","budget")
+
+    #number of replications
+    iter_size <- length(params$budget)
+
+    for(it in 1:iter_size){
+
+      params_iter <- params
+      params_iter$budget <- params$budget[it]
+
+      message(paste0("Iteration 1 of ",iter_size,": budget = ", params_iter$budget))
+
+      #Creating mathematical model--------------------------------------------------
+      optimization_model <- do.call(maximizeBenefits, args = append(x = conservation_model, params_iter[params_model]))
 
 
+      #changing name of output file
+      if(any(names(params_iter) %in% c("name_output_file"))){
+        params_iter$name_output_file <- paste0(params_iter$name_output_file,"_budget", params_iter$budget)
+      }
+      else{
+        params_iter$name_output_file <- paste0("prioriaction_output_budget", params_iter$budget)
+      }
 
 
-  #rcpp_test <- rcpp_min_set(op, features, pu, boundary, dist_features, dist_threats, sensitivity, threats, settings_Data)
+      solution <- do.call(solve, args = append(x = optimization_model, params_iter[params_solve]))
 
-  #rcpp_test$A <- Matrix::sparseMatrix(i = rcpp_test$A_i + 1, j = rcpp_test$A_j + 1, x = rcpp_test$A_x)
-  #a <- rcpp_optimization_problem_as_list(op)
-  #return(a)
+      if(iter_size != 1){
+        if(it == 1){
+          portafolio <- pproto(NULL, Portafolio, data = list(solution))
+        }
+        else{
+          portafolio$data[[it]] <- solution
+        }
+      }
+    }
+  }
 
-  # create OptimizationProblem object
-
-  #pproto(NULL, OptimizationProblem,
-  #  data = list(
-  #    obj = rcpp_test$C, rhs = rcpp_test$Rhs, sense = rcpp_test$Sense, vtype = rcpp_test$Type,
-  #    A = rcpp_test$A, bounds = rcpp_test$Bounds, modelsense = rcpp_test$Modelsense,
-  #    statistics = rcpp_test$Statistics, arg = settings_Data
-  #  ),
-  #  ConservationClass = x
-  #)
-
+  #exporting type of object
+  if(iter_size != 1){
+    portafolio
+  }
+  else{
+    solution
+  }
 }

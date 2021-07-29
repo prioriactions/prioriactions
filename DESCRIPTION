@@ -15,9 +15,9 @@ Description: The prioriactions R package uses a mixed integer mathematical progr
         counterparts: shorter execution times, higher solutions quality, and a solution 
         quality guarantee.
 Authors@R: c(person(c('José'), 'Salgado-Rojas',
-             email='jose.salgado.rojas@hotmail.com', role = c('aut')),
+             email='jose.salgado.rojas@hotmail.com', role = c('aut','cre')),
              person(c('Irlanda'), 'Ceballos-Fuentealba',
-             email='iceballosfuentealba@gmail.com', role = c('aut','cre')),
+             email='iceballosfuentealba@gmail.com', role = c('aut')),
              person(c('Virgilio'), 'Hermoso',
              email='virgilio.hermoso@gmail.com', role = c('aut')),
              person(c('Eduardo'), 'Álvarez-Miranda',
@@ -64,16 +64,38 @@ VignetteBuilder: knitr
 Collate: 
     'RcppExports.R'
     'internal.R'
-    'conservation_problem.R'
-    'createtxt.R'
+    'conservationProblem-class.R'
+    'getActions.R'
+    'getActionsConnectivity.R'
+    'getActionsCost.R'
+    'getBenefits.R'
+    'getGap.R'
+    'getLocalBenefits.R'
+    'getModelSense.R'
+    'getNconstraints.R'
+    'getNvariables.R'
+    'getObjectiveValue.R'
+    'getPlanningUnits.R'
+    'getPlanningUnitsConnectivity.R'
+    'getPlanningUnitsCost.R'
+    'getSizeA.R'
+    'getStatus.R'
+    'getStatusCode.R'
+    'getTimeSolving.R'
+    'getTotalConnectivity.R'
+    'getTotalCost.R'
     'presolve.R'
-    'min_costs.R'
-    'optimization_problem.R'
+    'maximizeBenefits.R'
+    'minimizeCosts.R'
+    'optimizationProblem-class.R'
     'package.R'
+    'portafolio-class.R'
     'print.R'
+    'writeOutputs.R'
+    'prioriactions.R'
     'problem.R'
     'show.R'
-    'solution.R'
+    'solution-class.R'
     'solve.R'
     'utils-pipe.R'
     'zzz.R'
