@@ -9,7 +9,7 @@ problem(pu, features, dist_features, threats, dist_threats, sensitivity, ...)
 \S4method{problem}{data.frame}(pu, features, dist_features, threats, dist_threats, sensitivity, boundary = NULL)
 }
 \arguments{
-\item{pu}{Object of class \code{\link{data.frame}} that specifies the planning units
+\item{pu}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the planning units
 to use in the reserve design exercise and their corresponding cost. It may be
 desirable to exclude some planning units from the analysis, for example those outside
 the study area. To exclude planning units you have two options:
@@ -18,76 +18,76 @@ or (ii) set the \emph{status} of planning units to 3 not to include them. Each r
 to a different planning unit, and each column corresponds to different information about the planning units.
 The description of the columns is listed below.
 \describe{
-   \item{\code{"id"}}{\code{integer} unique identifier for each planning unit. This column is \strong{mandatory}.}
-   \item{\code{"cost"}}{\code{numeric} cost of including each planning unit in the reserve system. This column is \strong{mandatory}.}
-   \item{\code{"status"}}{\code{integer} indicating if each planning unit should not be locked in the solution (0) or if it should be \emph{locked-in} (2) or \emph{locked-out} (3) of the solution. This column is \strong{optional}.}
-   }}
+\item{\code{"id"}}{\code{integer} unique identifier for each planning unit. This column is \strong{mandatory}.}
+\item{\code{"cost"}}{\code{numeric} cost of including each planning unit in the reserve system. This column is \strong{mandatory}.}
+\item{\code{"status"}}{\code{integer} indicating if each planning unit should not be locked in the solution (0) or if it should be \emph{locked-in} (2) or \emph{locked-out} (3) of the solution. This column is \strong{optional}.}
+}}
 
-\item{features}{Object of class \code{\link{data.frame}} that specifies the conservation
+\item{features}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the conservation
 features to consider in the reserve design exercise, such as their name and representation
 requirements (i.e., \emph{targets}). Each row corresponds to a different feature and each column
 corresponds to different information about the features. The description of the columns is listed below.
 \describe{
-   \item{\code{"id"}}{\code{integer} unique identifier for each conservation feature. This column is \strong{mandatory}.}
-   \item{\code{"target"}}{\code{numeric} target amount for each conservation feature. This column is \strong{mandatory}.}
-   \item{\code{"name"}}{\code{character} name for each conservation feature. This column is \strong{optional}.}
-   }}
+\item{\code{"id"}}{\code{integer} unique identifier for each conservation feature. This column is \strong{mandatory}.}
+\item{\code{"target"}}{\code{numeric} target amount for each conservation feature. This column is \strong{mandatory}.}
+\item{\code{"name"}}{\code{character} name for each conservation feature. This column is \strong{optional}.}
+}}
 
-\item{dist_features}{Object of class \code{\link{data.frame}} that specifies the spatial distribution of conservation features across planning units.
+\item{dist_features}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the spatial distribution of conservation features across planning units.
 \strong{It is recommended not to include cases where a feature does not occur in a planning unit (avoid rows with
-\code{"amount"} equal to 0). Instead, it is recommended to omit these cases completely from the \code{\link{data.frame}}, for efficiency reasons.}
+\code{"amount"} equal to 0). Instead, it is recommended to omit these cases completely from the \code{\link[=data.frame]{data.frame()}}, for efficiency reasons.}
 The description of the columns is listed below.
 \describe{
-   \item{\code{"pu"}}{\code{integer} \emph{id} of a planning unit where the conservation feature listed on the same row occurs. This column is \strong{mandatory}.}
-   \item{\code{"species"}}{\code{integer} \emph{id} of each conservation feature. This column is \strong{mandatory}.}
-   \item{\code{"amount"}}{\code{integer} indicating if the conservation feature occurring in the planning unit listed on the same row (1), or if it is not occurring (0). This column is \strong{mandatory}.}
-   }}
+\item{\code{"pu"}}{\code{integer} \emph{id} of a planning unit where the conservation feature listed on the same row occurs. This column is \strong{mandatory}.}
+\item{\code{"species"}}{\code{integer} \emph{id} of each conservation feature. This column is \strong{mandatory}.}
+\item{\code{"amount"}}{\code{integer} indicating if the conservation feature occurring in the planning unit listed on the same row (1), or if it is not occurring (0). This column is \strong{mandatory}.}
+}}
 
-\item{threats}{Object of class \code{\link{data.frame}} that specifies the threats to consider in
+\item{threats}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the threats to consider in
 the reserve design exercise, such as their name and penalty of connectivity (i.e., \emph{blm_actions}). Each row corresponds to a different feature and each column
 corresponds to different information about the threats The description of the columns is listed below.
 \describe{
-   \item{\code{"id"}}{\code{integer} unique identifier for each threat. This column is \strong{mandatory}.}
-   \item{\code{"name"}}{\code{character} name for each threat. This column is \strong{optional}.}
-   \item{\code{"blm_actions"}}{\code{numeric} penalty of connectivity between threats. This column is \strong{optional}.}
-   }}
+\item{\code{"id"}}{\code{integer} unique identifier for each threat. This column is \strong{mandatory}.}
+\item{\code{"name"}}{\code{character} name for each threat. This column is \strong{optional}.}
+\item{\code{"blm_actions"}}{\code{numeric} penalty of connectivity between threats. This column is \strong{optional}.}
+}}
 
-\item{dist_threats}{Object of class \code{\link{data.frame}} that specifies the spatial distribution of threats across planning units
+\item{dist_threats}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the spatial distribution of threats across planning units
 and the corresponding cost of applying an action against these threats. \strong{It is recommended not to include cases where a threat does not occur
-in a planning unit (avoid rows with \code{"amount"} equal to 0). Instead, it is recommended to omit these cases completely from the \code{\link{data.frame}}, for efficiency reasons.}
+in a planning unit (avoid rows with \code{"amount"} equal to 0). Instead, it is recommended to omit these cases completely from the \code{\link[=data.frame]{data.frame()}}, for efficiency reasons.}
 The description of the columns is listed below.
 \describe{
-   \item{\code{"pu"}}{\code{integer} \emph{id} of a planning unit where the threat listed on the same row occurs. This column is \strong{mandatory}.}
-   \item{\code{"threats"}}{\code{integer} \emph{id} of each threat. This column is \strong{mandatory}.}
-   \item{\code{"amount"}}{\code{integer} indicating if the threat occurring in the planning unit listed on the same row (1), or if it is not occurring (0). This column is \strong{mandatory}.}
-   \item{\code{"cost"}}{\code{numeric} cost of applying an action to eliminate the threat in the planning unit listed in the same row. This column is \strong{mandatory}.}
-   \item{\code{"status"}}{\code{integer} indicating if each action should not be locked in the solution (0) or if it should be \emph{locked-in} (2) or \emph{locked-out} (3) of the solution. This column is \strong{optional}.}
-   }}
+\item{\code{"pu"}}{\code{integer} \emph{id} of a planning unit where the threat listed on the same row occurs. This column is \strong{mandatory}.}
+\item{\code{"threats"}}{\code{integer} \emph{id} of each threat. This column is \strong{mandatory}.}
+\item{\code{"amount"}}{\code{integer} indicating if the threat occurring in the planning unit listed on the same row (1), or if it is not occurring (0). This column is \strong{mandatory}.}
+\item{\code{"cost"}}{\code{numeric} cost of applying an action to eliminate the threat in the planning unit listed in the same row. This column is \strong{mandatory}.}
+\item{\code{"status"}}{\code{integer} indicating if each action should not be locked in the solution (0) or if it should be \emph{locked-in} (2) or \emph{locked-out} (3) of the solution. This column is \strong{optional}.}
+}}
 
-\item{sensitivity}{Object of class \code{\link{data.frame}} that specifies the species-threats sensitivity,
+\item{sensitivity}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the species-threats sensitivity,
 i.e., which threats affect the persistence of endangered conservation features (e.g., species).
 \strong{It is recommended not to include cases where there is no species-threats sensitivity
 (avoid rows with \code{"amount"} equal to 0). Instead, it is recommended to omit these cases completely
-from the \code{\link{data.frame}}, for efficiency reasons.}
+from the \code{\link[=data.frame]{data.frame()}}, for efficiency reasons.}
 The description of the columns is listed below.
-   \describe{
-   \item{\code{"species"}}{\code{integer} \emph{id} of each conservation feature. This column is \strong{mandatory}.}
-   \item{\code{"threats"}}{\code{integer} \emph{id} of each threat. This column is \strong{mandatory}.}
-   \item{\code{"amount"}}{\code{integer} indicating if the threat againsting the conservation feature listed on the same row (1), or if it is not againsting (0). This column is \strong{mandatory}.}
-   }}
+\describe{
+\item{\code{"species"}}{\code{integer} \emph{id} of each conservation feature. This column is \strong{mandatory}.}
+\item{\code{"threats"}}{\code{integer} \emph{id} of each threat. This column is \strong{mandatory}.}
+\item{\code{"amount"}}{\code{integer} indicating if the threat againsting the conservation feature listed on the same row (1), or if it is not againsting (0). This column is \strong{mandatory}.}
+}}
 
-\item{boundary}{Object of class \code{\link{NULL}} (default) or an object of class \code{\link{data.frame}}.
+\item{boundary}{Object of class \code{\link[=NULL]{NULL()}} (default) or an object of class \code{\link[=data.frame]{data.frame()}}.
 \code{NULL} indicates that planning units' boundaries (i.e., \emph{boundary data}) are not required for the multi-action conservation planning problem.
 \code{data.frame} specifies the boundaries of the planning units, i.e., the spatial relationship between two units, such as the "length" of the shared boundary between them.
 The description of the columns is listed below.
-  \describe{
-  \item{\code{"id1"}}{\code{integer} \emph{id} of each planning unit. This column is \strong{mandatory}.}
-  \item{\code{"id2"}}{\code{integer} \emph{id} of each planning unit. This column is \strong{mandatory}.}
-  \item{\code{"boundary"}}{\code{numeric} "length" of shared boundary between the planning units identified on the same row. This column is \strong{mandatory}.}
-  }}
+\describe{
+\item{\code{"id1"}}{\code{integer} \emph{id} of each planning unit. This column is \strong{mandatory}.}
+\item{\code{"id2"}}{\code{integer} \emph{id} of each planning unit. This column is \strong{mandatory}.}
+\item{\code{"boundary"}}{\code{numeric} "length" of shared boundary between the planning units identified on the same row. This column is \strong{mandatory}.}
+}}
 }
 \value{
-An object of class \code{\link{ConservationProblem-class}}.
+An object of class \code{\link[=ConservationProblem-class]{ConservationProblem-class()}}.
 }
 \description{
 Create a data instance for the multi-action conservation planning problem. This function is used to specify

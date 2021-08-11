@@ -53,16 +53,16 @@ rcpp_objective_min_set <- function(x, pu_data, features_data, dist_features_data
     .Call(`_prioriactions_rcpp_objective_min_set`, x, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, boundary_data, blm, curve)
 }
 
-rcpp_stats_benefit <- function(pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, solution) {
-    .Call(`_prioriactions_rcpp_stats_benefit`, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, solution)
+rcpp_stats_benefit <- function(pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, solution, recovery) {
+    .Call(`_prioriactions_rcpp_stats_benefit`, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, solution, recovery)
 }
 
-rcpp_stats_connectivity_actions <- function(pu_data, threats_data, dist_threats_data, boundary_data, solution, connectivity) {
-    .Call(`_prioriactions_rcpp_stats_connectivity_actions`, pu_data, threats_data, dist_threats_data, boundary_data, solution, connectivity)
+rcpp_stats_connectivity_actions <- function(pu_data, threats_data, dist_threats_data, boundary_data, solution) {
+    .Call(`_prioriactions_rcpp_stats_connectivity_actions`, pu_data, threats_data, dist_threats_data, boundary_data, solution)
 }
 
-rcpp_stats_connectivity_units <- function(pu_data, boundary_data, dist_threats_data, dist_features_data, solution, connectivity, blm, curve) {
-    .Call(`_prioriactions_rcpp_stats_connectivity_units`, pu_data, boundary_data, dist_threats_data, dist_features_data, solution, connectivity, blm, curve)
+rcpp_stats_connectivity_units <- function(pu_data, boundary_data, dist_threats_data, dist_features_data, solution) {
+    .Call(`_prioriactions_rcpp_stats_connectivity_units`, pu_data, boundary_data, dist_threats_data, dist_features_data, solution)
 }
 
 rcpp_stats_costs_actions <- function(dist_threats_data, solution) {

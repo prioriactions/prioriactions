@@ -28,7 +28,7 @@ bool rcpp_objective_max_coverage(SEXP x,
 
   arma::sp_mat matrix_boundary_extended;
 
-  if(boundary_size != 0){
+  if(boundary_size != 0 && blm != 0){
     matrix_boundary_extended = create_boundary_matrix_extended(boundary_data, number_of_units);
 
     IntegerVector boundary_data_id1 = boundary_data["internal_id1"];
@@ -46,8 +46,6 @@ bool rcpp_objective_max_coverage(SEXP x,
   }
 
   for(int i = 0; i < number_of_units; i++){
-    //connectivity
-    op->_connect_units.push_back(connectivity_units[i]);
 
     op->_obj.push_back(-blm*connectivity_units[i]);
     op->_vtype.push_back("B");
@@ -78,7 +76,7 @@ bool rcpp_objective_max_coverage(SEXP x,
 
   for(int a = 0; a < number_of_actions; a++){
 
-    if(boundary_size != 0){
+    if(boundary_size != 0 && blm_actions[threat_id[a]]){
       int pu_id2_threat;
 
       for (auto it = dist_threats_extended.begin_col(threat_id[a]);
@@ -91,8 +89,6 @@ bool rcpp_objective_max_coverage(SEXP x,
         }
       }
     }
-    //connectivity
-    op->_connect_actions.push_back(connectivity_actions[a]);
 
     op->_obj.push_back(-blm_actions[threat_id[a]]*connectivity_actions[a]);
     op->_vtype.push_back("B");
@@ -179,7 +175,7 @@ bool rcpp_objective_max_coverage(SEXP x,
   row_constraint = op->_rhs.size();
   col_constraint = op->_obj.size();
 
-  if(boundary_size != 0){
+  if(boundary_size != 0 && blm != 0){
     arma::sp_mat z = matrix_boundary_extended.t();
 
     for(arma::sp_mat::const_iterator it = z.begin(); it != z.end(); ++it) {
@@ -187,64 +183,59 @@ bool rcpp_objective_max_coverage(SEXP x,
         connectivityCoeff = 1*(*it);
 
         // objective vector
-        //connectivity
-        op->_connect_units.push_back(connectivityCoeff);
+        op->_obj.push_back(blm*connectivityCoeff);
+        op->_vtype.push_back("B");
+        op->_lb.push_back(0);
+        op->_ub.push_back(1);
 
-        if(blm != 0){
+        //matrix A
 
-          op->_obj.push_back(blm*connectivityCoeff);
-          op->_vtype.push_back("B");
-          op->_lb.push_back(0);
-          op->_ub.push_back(1);
+        //Constraint number 1 (Y[i1,i2] - W[i1] <= 0)
+        op->_A_i.push_back(row_constraint);
+        op->_A_j.push_back(col_constraint);
+        op->_A_x.push_back(1);
 
-          //matrix A
+        op->_A_i.push_back(row_constraint);
+        op->_A_j.push_back(it.row());
+        op->_A_x.push_back(-1);
 
-          //Constraint number 1 (Y[i1,i2] - W[i1] <= 0)
-          op->_A_i.push_back(row_constraint);
-          op->_A_j.push_back(col_constraint);
-          op->_A_x.push_back(1);
+        op->_rhs.push_back(0);
+        op->_sense.push_back("<=");
 
-          op->_A_i.push_back(row_constraint);
-          op->_A_j.push_back(it.row());
-          op->_A_x.push_back(-1);
+        row_constraint = row_constraint + 1;
 
-          op->_rhs.push_back(0);
-          op->_sense.push_back("<=");
+        //Constraint number 2 (Y[i1,i2] - W[i2] <= 0)
+        op->_A_i.push_back(row_constraint);
+        op->_A_j.push_back(col_constraint);
+        op->_A_x.push_back(1);
 
-          row_constraint = row_constraint + 1;
+        op->_A_i.push_back(row_constraint);
+        op->_A_j.push_back(it.col());
+        op->_A_x.push_back(-1);
 
-          //Constraint number 2 (Y[i1,i2] - W[i2] <= 0)
-          op->_A_i.push_back(row_constraint);
-          op->_A_j.push_back(col_constraint);
-          op->_A_x.push_back(1);
+        op->_rhs.push_back(0);
+        op->_sense.push_back("<=");
 
-          op->_A_i.push_back(row_constraint);
-          op->_A_j.push_back(it.col());
-          op->_A_x.push_back(-1);
+        row_constraint = row_constraint + 1;
 
-          op->_rhs.push_back(0);
-          op->_sense.push_back("<=");
+        //Constraint number 3 (Y[i1,i2] - W[i1] - W[i2] => -1)
+        op->_A_i.push_back(row_constraint);
+        op->_A_j.push_back(col_constraint);
+        op->_A_x.push_back(1);
 
-          row_constraint = row_constraint + 1;
+        op->_A_i.push_back(row_constraint);
+        op->_A_j.push_back(it.row());
+        op->_A_x.push_back(-1);
+        op->_A_i.push_back(row_constraint);
+        op->_A_j.push_back(it.col());
+        op->_A_x.push_back(-1);
 
-          //Constraint number 3 (Y[i1,i2] - W[i1] - W[i2] => -1)
-          op->_A_i.push_back(row_constraint);
-          op->_A_j.push_back(col_constraint);
-          op->_A_x.push_back(1);
+        op->_rhs.push_back(-1);
+        op->_sense.push_back(">=");
 
-          op->_A_i.push_back(row_constraint);
-          op->_A_j.push_back(it.row());
-          op->_A_x.push_back(-1);
-          op->_A_i.push_back(row_constraint);
-          op->_A_j.push_back(it.col());
-          op->_A_x.push_back(-1);
+        row_constraint = row_constraint + 1;
+        col_constraint = col_constraint + 1;
 
-          op->_rhs.push_back(-1);
-          op->_sense.push_back(">=");
-
-          row_constraint = row_constraint + 1;
-          col_constraint = col_constraint + 1;
-        }
       }
     }
   }
@@ -263,7 +254,7 @@ bool rcpp_objective_max_coverage(SEXP x,
 
   for(int a = 0; a < number_of_actions; a++){
 
-    if(boundary_size != 0){
+    if(boundary_size != 0 && blm_actions[threat_id[a]] != 0){
 
       int pu_id2_threat;
 
@@ -277,71 +268,67 @@ bool rcpp_objective_max_coverage(SEXP x,
 
 
           // objective vector
-          //connectivity
-          op->_connect_actions.push_back(connectivityCoeff);
 
-          if(blm_actions[threat_id[a]] != 0){
+          op->_obj.push_back(blm_actions[threat_id[a]]*connectivityCoeff);
+          op->_vtype.push_back("B");
+          op->_lb.push_back(0);
+          op->_ub.push_back(1);
 
-            op->_obj.push_back(blm_actions[threat_id[a]]*connectivityCoeff);
-            op->_vtype.push_back("B");
-            op->_lb.push_back(0);
-            op->_ub.push_back(1);
+          //matrix A
 
-            //matrix A
+          //Constraint number 1 (P[i1,i2,k] - X[i1,k] <= 0)
+          col_action = number_of_units + actions_extended(pu_id1_threat[a], threat_id[a]) - 1;
 
-            //Constraint number 1 (P[i1,i2,k] - X[i1,k] <= 0)
-            col_action = number_of_units + actions_extended(pu_id1_threat[a], threat_id[a]) - 1;
+          op->_A_i.push_back(row_constraint);
+          op->_A_j.push_back(col_constraint);
+          op->_A_x.push_back(1);
 
-            op->_A_i.push_back(row_constraint);
-            op->_A_j.push_back(col_constraint);
-            op->_A_x.push_back(1);
+          op->_A_i.push_back(row_constraint);
+          op->_A_j.push_back(col_action);
+          op->_A_x.push_back(-1);
 
-            op->_A_i.push_back(row_constraint);
-            op->_A_j.push_back(col_action);
-            op->_A_x.push_back(-1);
+          op->_rhs.push_back(0);
+          op->_sense.push_back("<=");
 
-            op->_rhs.push_back(0);
-            op->_sense.push_back("<=");
+          row_constraint = row_constraint + 1;
 
-            row_constraint = row_constraint + 1;
+          //Constraint number 2 (P[i1,i2,k] - X[i2,k] <= 0)
+          col_action = number_of_units + actions_extended(pu_id2_threat, threat_id[a]) - 1;
 
-            //Constraint number 2 (P[i1,i2,k] - X[i2,k] <= 0)
-            col_action = number_of_units + actions_extended(pu_id2_threat, threat_id[a]) - 1;
+          op->_A_i.push_back(row_constraint);
+          op->_A_j.push_back(col_constraint);
+          op->_A_x.push_back(1);
 
-            op->_A_i.push_back(row_constraint);
-            op->_A_j.push_back(col_constraint);
-            op->_A_x.push_back(1);
+          op->_A_i.push_back(row_constraint);
+          op->_A_j.push_back(col_action);
+          op->_A_x.push_back(-1);
 
-            op->_A_i.push_back(row_constraint);
-            op->_A_j.push_back(col_action);
-            op->_A_x.push_back(-1);
+          op->_rhs.push_back(0);
+          op->_sense.push_back("<=");
 
-            op->_rhs.push_back(0);
-            op->_sense.push_back("<=");
+          row_constraint = row_constraint + 1;
 
-            row_constraint = row_constraint + 1;
+          //Constraint number 3 (P[i1,i2,k] - X[i1,k] - X[i2,k] => -1)
+          op->_A_i.push_back(row_constraint);
+          op->_A_j.push_back(col_constraint);
+          op->_A_x.push_back(1);
 
-            //Constraint number 3 (P[i1,i2,k] - X[i1,k] - X[i2,k] => -1)
-            op->_A_i.push_back(row_constraint);
-            op->_A_j.push_back(col_constraint);
-            op->_A_x.push_back(1);
+          col_action = number_of_units + actions_extended(pu_id1_threat[a], threat_id[a]) - 1;
+          op->_A_i.push_back(row_constraint);
+          op->_A_j.push_back(col_action);
+          op->_A_x.push_back(-1);
 
-            col_action = number_of_units + actions_extended(pu_id1_threat[a], threat_id[a]) - 1;
-            op->_A_i.push_back(row_constraint);
-            op->_A_j.push_back(col_action);
-            op->_A_x.push_back(-1);
+          col_action = number_of_units + actions_extended(pu_id2_threat, threat_id[a]) - 1;
+          op->_A_i.push_back(row_constraint);
+          op->_A_j.push_back(col_action);
+          op->_A_x.push_back(-1);
 
-            col_action = number_of_units + actions_extended(pu_id2_threat, threat_id[a]) - 1;
-            op->_A_i.push_back(row_constraint);
-            op->_A_j.push_back(col_action);
-            op->_A_x.push_back(-1);
+          op->_rhs.push_back(-1);
+          op->_sense.push_back(">=");
 
-            op->_rhs.push_back(-1);
-            op->_sense.push_back(">=");
+          row_constraint = row_constraint + 1;
+          col_constraint = col_constraint + 1;
 
-            row_constraint = row_constraint + 1;
-            col_constraint = col_constraint + 1;
-          }
         }
       }
     }

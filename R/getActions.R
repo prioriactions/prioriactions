@@ -92,7 +92,7 @@ NULL
 #' @export
 getActions <- function(x, format = "extended") {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("Solution", "Portfolio")))
 
   if(inherits(x, "Solution")){
 
@@ -106,7 +106,7 @@ getActions <- function(x, format = "extended") {
       paste0("The type should be 'extended' or 'reduced'")
     }
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
 
     cont_aux = 0
 
@@ -114,13 +114,13 @@ getActions <- function(x, format = "extended") {
 
       if(cont_aux == 0){
         action_solution <- getActions(x$data[[it]], format = "reduced")
-        colnames(action_solution)[6] <- paste0("sol",it)
+        colnames(action_solution)[3] <- x$data[[it]]$name
         cont_aux = 1
       }
       else{
         aux <- getActions(x$data[[it]], format = "reduced")
-        action_solution[, it + 5] <- aux[,6]
-        colnames(action_solution)[it + 5] <- paste0("sol",it)
+        action_solution[, it + 2] <- aux[,3]
+        colnames(action_solution)[it + 2] <- x$data[[it]]$name
       }
     }
     return(action_solution)

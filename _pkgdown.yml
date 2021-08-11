@@ -1,44 +1,102 @@
 title: prioriactions
 
-url: https://josesalgr.github.io/prioriactions/
+url: https://prioriactions.github.io/prioriactions/
 
 template:
   params:
     docsearch:
       api_key: f00985ff93067595b4da97a65fe69f1a
       index_name: prioriactions
-    bootswatch: flatly
+    ganalytics: G-7WG0HBKPY7
+    #bootswatch: litera
+
 
 destination: docs
 
 authors:
-  José Salgado-Rojas:
+  Jose Salgado-Rojas:
     href: https://www.researchgate.net/profile/Jose_Salgado-Rojas
   Irlanda Ceballos-Fuentealba:
     href: https://www.researchgate.net/profile/Irlanda_Ceballos
   Virgilio Hermoso:
     href: https://www.researchgate.net/profile/Virgilio_Hermoso
-  Eduardo Álvarez-Miranda:
+  Eduardo Alvarez-Miranda:
     href: https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda
   Jordi Garcia-Gonzalo:
     href: https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo
 
 reference:
-  - title: Summary
-    desc: Summary of the package
+
+  - title: Solve problems
+    desc: Function for creating new problems and solving them
     contents:
       - prioriactions
 
-  - title: Create and solve problems
-    desc: Functions for creating new problems and solving them
+  - title: Solve multiple problems with differents params
+    desc: Function for evaluate differents params for a specific problem
+    contents:
+      - evalBlm
+      - evalTarget
+      - evalBudget
+
+  - title: Solve problems by steps
+    desc: Functions for creating new problems and solving in a sequential way
     contents:
       - problem
-      - min_costs
+      - minimizeCosts
+      - maximizeBenefits
       - solve
 
-  - title: Class definitions and methods
-    desc: Classes and other functions
+  - title: Get solution information
+    desc: Functions to obtain various information about the solution
+    contents:
+      - getActions
+      - getActionsConnectivity
+      - getActionsCost
+      - getPlanningUnits
+      - getPlanningUnitsConnectivity
+      - getPlanningUnitsCost
+      - getBenefit
+      - getLocalBenefit
+      - getTotalBenefit
+      - getGap
+      - getObjectiveValue
+      - getStatus
+      - getStatusCode
+      - getTimeSolving
+      - getTotalConnectivity
+      - getTotalCost
+
+  - title: Get mathematical model information
+    desc: Functions to obtain various information about the mathematical model
+    contents:
+      - getModelSense
+      - getNconstraints
+      - getNvariables
+      - getSizeA
+
+  - title: Class definitions
+    desc: Classes for handle mathematical problems
     contents:
       - ConservationProblem
       - OptimizationProblem
       - Solution
+      - Portfolio
+
+  - title: Miscellaneous
+    desc: Various useful functions
+    contents:
+      - plot
+      - print
+      - show
+
+articles:
+
+  - title: Introduction of prioriactions
+    navbar: Introduction
+    contents: [sensitivities, analysis]
+
+  - title: Study cases of prioriactions
+    navbar: Study cases
+    contents: [MitchellRiver]
+

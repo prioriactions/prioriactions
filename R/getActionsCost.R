@@ -92,12 +92,12 @@ NULL
 #' @export
 getActionsCost <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("Solution", "Portfolio")))
 
   solution_actions <- getActions(x, format = "reduced")
 
   if(inherits(x, "Solution")){
-    if(getStatusCode(x) %in% !c(1,3)){
+    if(!(getStatusCode(x) %in% c(1,3))){
       a <- rcpp_stats_costs_actions(x$OptimizationClass$ConservationClass$data$dist_threats,
                                     c(solution_actions$solution))
       return(sum(a))
@@ -106,7 +106,7 @@ getActionsCost <- function(x) {
       return(NA)
     }
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
 
     return_list <- c()
 

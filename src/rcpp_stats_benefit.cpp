@@ -9,7 +9,8 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
                              DataFrame threats_data,
                              DataFrame dist_threats_data,
                              DataFrame sensitivity_data,
-                             std::vector<double> solution){
+                             std::vector<double> solution,
+                             bool recovery){
 
   // initialization
 
@@ -46,7 +47,7 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
 
   NumericVector specie_distribution(number_of_features);
   NumericVector specie_distribution_threatened(number_of_features);
-  NumericVector benefit_nothing(number_of_features);
+  NumericVector benefit_maximum_nothing(number_of_features);
   NumericVector benefit_maximum_recovery(number_of_features);
   NumericVector benefit_solution_nothing(number_of_features);
   NumericVector benefit_solution_recovery(number_of_features);
@@ -150,7 +151,7 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
             sol_action_id = number_of_units + actions_extended(pu_id, threat_id) - 1;
 
             // x_ik
-            benefit_nothing[s] = benefit_nothing[s] + ((response_coef_constant * alpha)/sum_alpha)*feature_intensity;
+            benefit_maximum_nothing[s] = benefit_maximum_nothing[s] + ((response_coef_constant * alpha)/sum_alpha)*feature_intensity;
             benefit_maximum_recovery[s] = benefit_maximum_recovery[s] + ((response_coef_variable * alpha)/sum_alpha)*feature_intensity;
 
             if(large_solution != 1){
@@ -164,7 +165,7 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
       if(sum_alpha == 0.0){
 
         //z variables
-        benefit_nothing[s] = benefit_nothing[s] + 1;
+        benefit_maximum_nothing[s] = benefit_maximum_nothing[s] + 1;
 
         if(large_solution != 1){
           benefit_solution_nothing[s] = benefit_solution_nothing[s] + solution[pu_id];
@@ -174,28 +175,36 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
   }
 
   //creating DataFrame
-
   DataFrame df;
 
   if(large_solution != 1){
-    df = DataFrame::create(Named("specie") = features_data["id"],
-                                     Named("dist") = specie_distribution,
-                                     Named("dist_threatened") = specie_distribution_threatened,
-                                     Named("max_benefit_n") = benefit_nothing,
-                                     Named("max_benefit_rec") = benefit_maximum_recovery,
-                                     Named("target") = features_data["target"],
-                                     Named("benefit_n_sol") = benefit_solution_nothing,
-                                     Named("benefit_rec_sol") = benefit_solution_recovery);
+    if(recovery){
+        df = DataFrame::create(Named("feature") = features_data["id"],
+                               Named("dist") = specie_distribution,
+                               Named("dist_threatened") = specie_distribution_threatened,
+                               Named("benefit.recovery") = Rcpp::round(benefit_maximum_recovery, 4),
+                               Named("benefit.recovery.") = Rcpp::round(benefit_solution_recovery, 4));
+    }
+    else{
+        df = DataFrame::create(Named("feature") = features_data["id"],
+                               Named("dist") = specie_distribution,
+                               Named("dist_threatened") = specie_distribution_threatened,
+                               Named("benefit.nothing") = Rcpp::round(benefit_maximum_nothing, 4),
+                               Named("benefit.recovery") = Rcpp::round(benefit_maximum_recovery, 4),
+                               Named("benefit.total") = Rcpp::round(benefit_maximum_recovery + benefit_maximum_nothing, 4),
+                               Named("benefit.nothing.") = Rcpp::round(benefit_solution_nothing, 4),
+                               Named("benefit.recovery.") = Rcpp::round(benefit_solution_recovery,4),
+                               Named("benefit.total.") = Rcpp::round(benefit_solution_recovery + benefit_solution_nothing, 4));
+    }
   }
   else{
-    df = DataFrame::create(Named("specie") = features_data["id"],
-                                     Named("dist") = specie_distribution,
-                                     Named("dist_threatened") = specie_distribution_threatened,
-                                     Named("max_benefit_n") = benefit_nothing,
-                                     Named("max_benefit_rec") = benefit_maximum_recovery,
-                                     Named("target") = features_data["target"]);
+      df = DataFrame::create(Named("feature") = features_data["id"],
+                             Named("dist") = specie_distribution,
+                             Named("dist_threatened") = specie_distribution_threatened,
+                             Named("benefit.nothing") = Rcpp::round(benefit_maximum_nothing, 4),
+                             Named("benefit.recovery") = Rcpp::round(benefit_maximum_recovery, 4),
+                             Named("benefit.total") = Rcpp::round(benefit_maximum_recovery + benefit_maximum_nothing, 4));
   }
 
   return df;
 }
-

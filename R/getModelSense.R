@@ -92,7 +92,7 @@ NULL
 #' @export
 getModelSense <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("OptimizationProblem", "Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("OptimizationProblem", "Solution", "Portfolio")))
 
   if(inherits(x, "OptimizationProblem")){
     out = x$data$modelsense
@@ -109,7 +109,7 @@ getModelSense <- function(x) {
 
     return(out)
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
 
     return_list <- c()
 

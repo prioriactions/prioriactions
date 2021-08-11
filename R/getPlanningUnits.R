@@ -92,25 +92,25 @@ NULL
 #' @export
 getPlanningUnits <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("Solution", "Portfolio")))
 
   if(inherits(x, "Solution")){
     return(x$data$sol_pu)
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
     cont_aux = 0
 
     for(it in 1:length(x$data)){
 
       if(cont_aux == 0){
         unit_solution <- getPlanningUnits(x$data[[it]])
-        colnames(unit_solution)[4] <- paste0("sol",it)
+        colnames(unit_solution)[2] <- x$data[[it]]$name
         cont_aux = 1
       }
       else{
         aux <- getPlanningUnits(x$data[[it]])
-        unit_solution[, it + 3] <- aux[,4]
-        colnames(unit_solution)[it + 3] <- paste0("sol",it)
+        unit_solution[, it + 1] <- aux[,2]
+        colnames(unit_solution)[it + 1] <- x$data[[it]]$name
       }
     }
     return(unit_solution)

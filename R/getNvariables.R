@@ -92,7 +92,7 @@ NULL
 #' @export
 getNvariables <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("OptimizationProblem", "Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("OptimizationProblem", "Solution", "Portfolio")))
 
   if(inherits(x, "OptimizationProblem")){
     return(base::ncol(x$data$A))
@@ -100,7 +100,7 @@ getNvariables <- function(x) {
   else if(inherits(x, "Solution")){
     return(getNvariables(x$OptimizationClass))
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
 
     return_list <- c()
 

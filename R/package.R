@@ -12,7 +12,7 @@ NULL
 #'  efficient way while accounting for connectivity. Furthermore, the
 #'  flexibility of the package interface allows implementing an extended version
 #'  of the base model for minimizing fragmentation between different actions.
-#'  These models were called as MAMP and MAMP-E by Salgado-Rojas \emph{et al.}
+#'  These models were called as MAMP and MAMP-E by Salgado-Rojas *et al.*
 #'  (2020), where you can get a detailed description of how both problems were
 #'  mathematically modeled. \cr
 #'
@@ -23,12 +23,12 @@ NULL
 #'  shorter execution times, higher solutions quality, and a solution quality
 #'  guarantee.
 #'
-#' @details \strong{Put details here!}
+#' @details **Put details here!**
 #'
 #' @references \itemize{ \item Salgado-Rojas J, <U+00C1>lvarez-Miranda E, Hermoso V,
-#' Garcia-Gonzalo J, Weintraub A. \emph{A mixed integer programming approach for
-#' multi-action planning for threat management}. Ecological Modelling 2020;
-#' 418:108901. \cr (DOI: \url{https://doi.org/10.1016/j.ecolmodel.2019.108901}) }
+#' Garcia-Gonzalo J, Weintraub A. *A mixed integer programming approach for
+#' multi-action planning for threat management*. Ecological Modelling 2020;
+#' 418:108901. \cr (DOI: <https://doi.org/10.1016/j.ecolmodel.2019.108901>) }
 #'
 #' @name prioriactions
 #' @docType package

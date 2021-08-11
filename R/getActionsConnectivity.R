@@ -92,7 +92,7 @@ NULL
 #' @export
 getActionsConnectivity <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("Solution", "Portfolio")))
 
 
   if(inherits(x, "Solution")){
@@ -102,15 +102,14 @@ getActionsConnectivity <- function(x) {
       return(NA)
     }
     else{
-      solution_actions <- getActions(x, format = "reduced")
+      solution_actions <- getActions(x, format = "reduced")$solution
 
-      if(getStatusCode(x) %in% !c(1,3)){
+      if(!(getStatusCode(x) %in% c(1,3))){
         connectivity <- rcpp_stats_connectivity_actions(x$OptimizationClass$ConservationClass$data$pu,
                                                         x$OptimizationClass$ConservationClass$data$threats,
                                                         x$OptimizationClass$ConservationClass$data$dist_threats,
                                                         x$OptimizationClass$ConservationClass$data$boundary,
-                                                        x$data$sol,
-                                                        x$OptimizationClass$data$settings$connect_actions)
+                                                        solution_actions)
         return(sum(connectivity))
       }
       else{
@@ -118,7 +117,7 @@ getActionsConnectivity <- function(x) {
       }
     }
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
 
     return_list <- c()
 

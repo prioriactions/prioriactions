@@ -92,7 +92,7 @@ NULL
 #' @export
 getTotalConnectivity <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("Solution", "Portfolio")))
 
   return(getActionsConnectivity(x) + getPlanningUnitsConnectivity(x))
 }

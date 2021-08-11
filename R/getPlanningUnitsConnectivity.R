@@ -92,7 +92,7 @@ NULL
 #' @export
 getPlanningUnitsConnectivity <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("Solution", "Portfolio")))
 
   if(inherits(x, "Solution")){
     boundary_data <- x$OptimizationClass$ConservationClass$data$boundary
@@ -101,17 +101,14 @@ getPlanningUnitsConnectivity <- function(x) {
       return(NA)
     }
     else{
-      solution_units <- getPlanningUnits(x)
+      solution_units <- getPlanningUnits(x)$solution
 
-      if(getStatusCode(x) %in% !c(1,3)){
+      if(!(getStatusCode(x) %in% c(1,3))){
         connectivity <- rcpp_stats_connectivity_units(x$OptimizationClass$ConservationClass$data$pu,
                                                       boundary_data,
                                                       x$OptimizationClass$ConservationClass$data$dist_threats,
                                                       x$OptimizationClass$ConservationClass$data$dist_features,
-                                                      x$data$sol,
-                                                      x$OptimizationClass$data$settings$connect_units,
-                                                      x$OptimizationClass$data$settings$blm,
-                                                      x$OptimizationClass$data$settings$curve)
+                                                      x$data$sol)
         return(sum(connectivity))
       }
       else{
@@ -119,7 +116,7 @@ getPlanningUnitsConnectivity <- function(x) {
       }
     }
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
 
     return_list <- c()
 

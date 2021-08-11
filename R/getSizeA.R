@@ -92,7 +92,7 @@ NULL
 #' @export
 getSizeA <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("OptimizationProblem", "Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("OptimizationProblem", "Solution", "Portfolio")))
 
   if(inherits(x, "OptimizationProblem")){
     size_A <- utils::object.size((x$data$A)) / (1024 * 1024)
@@ -103,7 +103,7 @@ getSizeA <- function(x) {
     out <- getSizeA(x$OptimizationClass)
     return(out)
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
 
     return_list <- c()
 

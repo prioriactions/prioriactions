@@ -1,0 +1,92 @@
+---
+title: "prioriactions"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## GitHub Documents
+
+This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+
+## Including Code
+
+You can include R code in the document as follows:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+## Example
+
+Quick guide to create and solve a multi-action conservation planning problem, following the three-step methodology already described.
+
+### Step 1 
+Load the "prioriactions" package into the R environment (remember to install it before using it).
+```{r, message = FALSE}
+library(prioriactions)
+```
+Load the necessary input data into the R environment.
+```{r}
+data(example_pu_data, example_features_data, example_dist_features_data,
+     example_threats_data, example_dist_threats_data, example_sensitivity_data, example_bound_data)
+```
+Create a "data instance" that stores and validates all input data.
+```{r}
+problem_data <- problem(
+                pu = example_pu_data, features = example_features_data, dist_features = example_dist_features_data,
+                threats = example_threats_data, dist_threats = example_dist_threats_data, 
+                sensitivity = example_sensitivity_data, boundary = example_bound_data
+)
+
+problem_data
+```
+
+### Step 2
+Create an "optimization model" using the previously loaded "data instance".
+```{r}
+problem_model <- minimizeCosts(x = problem_data, blm = 1)
+problem_model
+```
+
+### Step 3
+Solve the "optimization model" using the available solvers.
+```{r}
+model_solution <- solve(a = problem_model, solver = "gurobi", verbose = FALSE, output_file =FALSE)
+model_solution
+```
+
+Finally, report and interpret the solution to the problem you are working on.
+
+Report the total cost of the conservation plan.
+```{r}
+solution_report01 <- getObjectiveValue(model_solution)
+solution_report01
+```
+
+Report the planning units suggested to be included (value 1) and not included (value 0) 
+within the conservation plan.
+```{r}
+solution_report02 <- getPlanningUnits(model_solution)
+head(solution_report02)
+```
+
+Report the conservation actions that are suggested to be carried out (value 1) 
+and not carried out (value 0) within the conservation plan.
+```{r}
+solution_report03 <- getActions(model_solution)
+head(solution_report03)
+```

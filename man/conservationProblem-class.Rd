@@ -7,48 +7,48 @@
 \description{
 This class is used to represent a data instance for the multi-action
 conservation planning problem. This includes several methods for obtaining
-instance information. It is created using the \code{\link{problem}} function.
+instance information. It is created using the \code{\link[=problem]{problem()}} function.
 }
 \section{Fields}{
  \describe{
 
-  \item{$data}{\code{list} object containing data.}
+\item{$data}{\code{list} object containing data.}
 
-  }
+}
 }
 
 \section{Methods}{
  \describe{ \item{$getActionsAmount( )}{return
-  \code{integer} number of possible actions.}
+\code{integer} number of possible actions.}
 
-  \item{$getData(\code{character} name)}{return an \code{\link{data.frame}}
-  object stored in the \code{data} field with the corresponding \code{name}.
-  The argument \code{name} indicates the name of arguments of the
-  \code{problem} function ("pu", "features", "rij", "threats", "sensitivity"
-  or "boundary").}
+\item{$getData(\code{character} name)}{return an \code{\link[=data.frame]{data.frame()}}
+object stored in the \code{data} field with the corresponding \code{name}.
+The argument \code{name} indicates the name of arguments of the
+\code{problem} function ("pu", "features", "rij", "threats", "sensitivity"
+or "boundary").}
 
-  \item{$getFeatureAmount( )}{return \code{integer} number of features.}
+\item{$getFeatureAmount( )}{return \code{integer} number of features.}
 
-  \item{$getFeatureNames( )}{return \code{character} names of features.}
+\item{$getFeatureNames( )}{return \code{character} names of features.}
 
-  \item{$getPlanningUnitCosts( )}{return the \code{numeric}
-  \code{\link{vector}} cost of allocating each planning unit.}
+\item{$getPlanningUnitCosts( )}{return the \code{numeric}
+\code{\link[=vector]{vector()}} cost of allocating each planning unit.}
 
-  \item{$getPlanningUnitsAmount( )}{return \code{integer} number of planning
-  units.}
+\item{$getPlanningUnitsAmount( )}{return \code{integer} number of planning
+units.}
 
-  \item{$getThreatCosts( )}{return the \code{numeric} \code{\link{vector}}
-  cost of actions each planning unit and threat.}
+\item{$getThreatCosts( )}{return the \code{numeric} \code{\link[=vector]{vector()}}
+cost of actions each planning unit and threat.}
 
-  \item{$getThreatNames( )}{return \code{character} names of threats.}
+\item{$getThreatNames( )}{return \code{character} names of threats.}
 
-  \item{$getThreatsAmount( )}{return \code{integer} number of threats.}
+\item{$getThreatsAmount( )}{return \code{integer} number of threats.}
 
-  \item{$print( )}{print basic information of the data instance.}
+\item{$print( )}{print basic information of the data instance.}
 
-  \item{$show( )}{call print method.}
+\item{$show( )}{call print method.}
 
-  }
+}
 }
 
 \examples{

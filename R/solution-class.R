@@ -9,28 +9,28 @@ NULL
 #' This class is used to represent the solution of the MIP (Mixed-Integer Programming) model
 #' related to the multi-action conservation planning problem. This includes several methods
 #' to obtain information about both the optimization process and the solution associated with
-#' the planning units and conservation actions. It is created using the \code{\link{solve}}
+#' the planning units and conservation actions. It is created using the [solve()]
 #' function.
 #'
 #' @section Fields:
 #' \describe{
-#' \item{$data}{\code{list} object containing data on the results of the optimization process.}
+#' \item{$data}{`list` object containing data on the results of the optimization process.}
 #' }
 #'
 #' @section Methods:
 #' \describe{
-#' \item{$getGap( )}{returns a \code{string} label indicating the optimality gap achieved for the MIP model.}
+#' \item{$getGap( )}{returns a `string` label indicating the optimality gap achieved for the MIP model.}
 #'
 
-#' \item{$getObjectiveValue( )}{returns a \code{numeric} number indicating the value of the objective function at the optimum.}
+#' \item{$getObjectiveValue( )}{returns a `numeric` number indicating the value of the objective function at the optimum.}
 #'
 #' \item{$getSolutionActions( )}{
-#' returns a \code{data.frame} object interpreting the optimal solution of the MIP model
+#' returns a `data.frame` object interpreting the optimal solution of the MIP model
 #' that relates to the conservation actions. It contains information on the conservation actions
 #' that are suggested (value 1) and those that are not suggested (value 0) within the conservation plan.}
 #'
 #' \item{$getSolutionUnits( )}{
-#' returns a \code{data.frame} object interpreting the optimal solution of the MIP model
+#' returns a `data.frame` object interpreting the optimal solution of the MIP model
 #' that relates to the planning units. It contains information on the planning units that are
 #' suggested to be included (value 1) and not included (value 0) within the conservation plan.}
 #'
@@ -79,9 +79,11 @@ Solution <- pproto(
   "Solution",
   data = list(),
   OptimizationClass = NULL,
+  name = "sol",
   print = function(self) {
     message(
       "Solution overview",
+      "\n  name: ", self$name,
       "\n  objective value: ", getObjectiveValue(self),
       "\n  gap:  ", getGap(self),
       "\n  status:  ", getStatus(self),
@@ -93,8 +95,5 @@ Solution <- pproto(
   },
   repr = function(self) {
     "Solution object"
-  },
-  createtxtFile = function(self) {
-    invisible(writeOutputs(self))
   }
 )

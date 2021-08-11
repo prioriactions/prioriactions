@@ -2,11 +2,11 @@
 #' No extra arguments
 #'
 #' Check that no additional unused arguments have been supplied to a function
-#' through the \code{...}.
+#' through the `...`.
 #'
 #' @param ... arguments that are not used.
 #'
-#' @return \code{logical} indicating success.
+#' @return `logical` indicating success.
 #'
 #' @noRd
 no_extra_arguments <- function(...) {
@@ -19,13 +19,13 @@ assertthat::on_failure(no_extra_arguments) <- function(call, env) {
 
 #' Verify if assertion is met
 #'
-#' Verify if an assertion is met and throw a \code{\link[base]{warning}} if it
-#' is not. This function is equivalent to \code{\link[assertthat]{assert_that}}
+#' Verify if an assertion is met and throw a [base::warning()] if it
+#' is not. This function is equivalent to [assertthat::assert_that()]
 #' except that it throws warnings and not errors.
 #'
-#' @param x \code{logical} condition.
+#' @param x `logical` condition.
 #'
-#' @return \code{logical} if assertion is met and a \code{warning} if it is not.
+#' @return `logical` if assertion is met and a `warning` if it is not.
 #'
 #' @noRd
 verify_that <- function(..., env = parent.frame()) {
@@ -42,9 +42,9 @@ verify_that <- function(..., env = parent.frame()) {
 #' Return a pretty character representation of an object with elements and
 #  names.
 #'
-#' @param x \code{object}.
+#' @param x `object`.
 #'
-#' @return \code{character} object.
+#' @return `character` object.
 #'
 #' @examples
 #' repr_atomic(letters)
@@ -63,19 +63,19 @@ repr_atomic <- function(x, description = "") {
   paste0(paste(x, collapse = ", "), " (", n, description, ")")
 }
 
-#' Create a new \code{pproto} object
+#' Create a new `pproto` object
 #'
-#' Construct a new object with \code{pproto}. This object system is inspired
-#' from the \code{ggproto} system used in the \code{ggplot2} package.
+#' Construct a new object with `pproto`. This object system is inspired
+#' from the `ggproto` system used in the `ggplot2` package.
 #'
 #' @param _class Class name to assign to the object. This is stored as the class
-#'   attribute of the object. This is optional: if \code{NULL} (the default),
+#'   attribute of the object. This is optional: if `NULL` (the default),
 #'   no class name will be added to the object.
 #'
-#' @param _inherit \code{pproto} object to inherit from. If \code{NULL}, don"t
+#' @param _inherit `pproto` object to inherit from. If `NULL`, don"t
 #'   inherit from any object.
 #'
-#' @param ... A list of members to add to the new \code{pproto} object.
+#' @param ... A list of members to add to the new `pproto` object.
 #'
 #' @examples
 #' Adder <- pproto("Adder",

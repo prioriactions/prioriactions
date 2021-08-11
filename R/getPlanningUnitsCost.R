@@ -92,21 +92,21 @@ NULL
 #' @export
 getPlanningUnitsCost <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("Solution", "Portfolio")))
 
-  solution_units <- getPlanningUnits(x)
+  solution_units <- getPlanningUnits(x)$solution
 
   if(inherits(x, "Solution")){
-    if(getStatusCode(x) %in% !c(1,3)){
+    if(!(getStatusCode(x) %in% c(1,3))){
       a <- rcpp_stats_costs_units(x$OptimizationClass$ConservationClass$data$pu,
-                                  c(solution_units$solution))
+                                  solution_units)
       return(sum(a))
     }
     else{
       return(NA)
     }
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
 
     return_list <- c()
 

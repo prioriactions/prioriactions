@@ -272,13 +272,14 @@ pre {
 
 pre, code {
   background-color: #f8f8f8;
-  color: #333;
+  color: #bf3759;
 }
 
 pre code {
   overflow: auto;
   word-wrap: normal;
   white-space: pre;
+  color: black;
 }
 
 pre .img {

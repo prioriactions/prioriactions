@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -54,7 +54,7 @@
 
 <meta property="og:title" content="Print — print" />
 <meta property="og:description" content="Display information about an object." />
-<meta property="og:image" content="https://josesalgr.github.io/prioriactions/logo.png" />
+<meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
 
@@ -68,6 +68,16 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7WG0HBKPY7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7WG0HBKPY7');
+</script>
 
 
   </head>
@@ -86,7 +96,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -99,6 +109,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/prioriactions.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -108,6 +121,16 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Introduction</li>
+    <li>
+      <a href="../articles/sensitivities.html">sensitivities</a>
+    </li>
+    <li>
+      <a href="../articles/analysis.html">analysis</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Study cases</li>
     <li>
       <a href="../articles/MitchellRiver.html">Mitchell River</a>
     </li>
@@ -159,6 +182,9 @@
 <span class='fu'>print</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for Solution</span>
+<span class='fu'>print</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for Portfolio</span>
 <span class='fu'>print</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -179,13 +205,8 @@
     <p>None.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/print.html'>print</a></code>.</p></div>
+    <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/print.html'>base::print()</a></code>.</p></div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span></span>
-<span class='r-in'><span class='fu'>print</span><span class='op'>(</span><span class='va'>a</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 2 3 4</span>
-</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -197,7 +218,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by .</p>
+  <p>Developed by <a href='https://www.researchgate.net/profile/Jose_Salgado-Rojas'>Jose Salgado-Rojas</a>, <a href='https://www.researchgate.net/profile/Irlanda_Ceballos'>Irlanda Ceballos-Fuentealba</a>, <a href='https://www.researchgate.net/profile/Virgilio_Hermoso'>Virgilio Hermoso</a>, <a href='https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda'>Eduardo Alvarez-Miranda</a>, <a href='https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo'>Jordi Garcia-Gonzalo</a>.</p>
 </div>
 
 <div class="pkgdown">

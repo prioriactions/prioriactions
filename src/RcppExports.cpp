@@ -193,8 +193,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_stats_benefit
-DataFrame rcpp_stats_benefit(DataFrame pu_data, DataFrame features_data, DataFrame dist_features_data, DataFrame threats_data, DataFrame dist_threats_data, DataFrame sensitivity_data, std::vector<double> solution);
-RcppExport SEXP _prioriactions_rcpp_stats_benefit(SEXP pu_dataSEXP, SEXP features_dataSEXP, SEXP dist_features_dataSEXP, SEXP threats_dataSEXP, SEXP dist_threats_dataSEXP, SEXP sensitivity_dataSEXP, SEXP solutionSEXP) {
+DataFrame rcpp_stats_benefit(DataFrame pu_data, DataFrame features_data, DataFrame dist_features_data, DataFrame threats_data, DataFrame dist_threats_data, DataFrame sensitivity_data, std::vector<double> solution, bool recovery);
+RcppExport SEXP _prioriactions_rcpp_stats_benefit(SEXP pu_dataSEXP, SEXP features_dataSEXP, SEXP dist_features_dataSEXP, SEXP threats_dataSEXP, SEXP dist_threats_dataSEXP, SEXP sensitivity_dataSEXP, SEXP solutionSEXP, SEXP recoverySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -205,13 +205,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< DataFrame >::type dist_threats_data(dist_threats_dataSEXP);
     Rcpp::traits::input_parameter< DataFrame >::type sensitivity_data(sensitivity_dataSEXP);
     Rcpp::traits::input_parameter< std::vector<double> >::type solution(solutionSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_stats_benefit(pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, solution));
+    Rcpp::traits::input_parameter< bool >::type recovery(recoverySEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_stats_benefit(pu_data, features_data, dist_features_data, threats_data, dist_threats_data, sensitivity_data, solution, recovery));
     return rcpp_result_gen;
 END_RCPP
 }
 // rcpp_stats_connectivity_actions
-NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data, DataFrame threats_data, DataFrame dist_threats_data, DataFrame boundary_data, std::vector<double> solution, std::vector<double> connectivity);
-RcppExport SEXP _prioriactions_rcpp_stats_connectivity_actions(SEXP pu_dataSEXP, SEXP threats_dataSEXP, SEXP dist_threats_dataSEXP, SEXP boundary_dataSEXP, SEXP solutionSEXP, SEXP connectivitySEXP) {
+NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data, DataFrame threats_data, DataFrame dist_threats_data, DataFrame boundary_data, std::vector<double> solution);
+RcppExport SEXP _prioriactions_rcpp_stats_connectivity_actions(SEXP pu_dataSEXP, SEXP threats_dataSEXP, SEXP dist_threats_dataSEXP, SEXP boundary_dataSEXP, SEXP solutionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -220,14 +221,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< DataFrame >::type dist_threats_data(dist_threats_dataSEXP);
     Rcpp::traits::input_parameter< DataFrame >::type boundary_data(boundary_dataSEXP);
     Rcpp::traits::input_parameter< std::vector<double> >::type solution(solutionSEXP);
-    Rcpp::traits::input_parameter< std::vector<double> >::type connectivity(connectivitySEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_stats_connectivity_actions(pu_data, threats_data, dist_threats_data, boundary_data, solution, connectivity));
+    rcpp_result_gen = Rcpp::wrap(rcpp_stats_connectivity_actions(pu_data, threats_data, dist_threats_data, boundary_data, solution));
     return rcpp_result_gen;
 END_RCPP
 }
 // rcpp_stats_connectivity_units
-NumericVector rcpp_stats_connectivity_units(DataFrame pu_data, DataFrame boundary_data, DataFrame dist_threats_data, DataFrame dist_features_data, std::vector<double> solution, std::vector<double> connectivity, double blm, int curve);
-RcppExport SEXP _prioriactions_rcpp_stats_connectivity_units(SEXP pu_dataSEXP, SEXP boundary_dataSEXP, SEXP dist_threats_dataSEXP, SEXP dist_features_dataSEXP, SEXP solutionSEXP, SEXP connectivitySEXP, SEXP blmSEXP, SEXP curveSEXP) {
+NumericVector rcpp_stats_connectivity_units(DataFrame pu_data, DataFrame boundary_data, DataFrame dist_threats_data, DataFrame dist_features_data, std::vector<double> solution);
+RcppExport SEXP _prioriactions_rcpp_stats_connectivity_units(SEXP pu_dataSEXP, SEXP boundary_dataSEXP, SEXP dist_threats_dataSEXP, SEXP dist_features_dataSEXP, SEXP solutionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -236,10 +236,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< DataFrame >::type dist_threats_data(dist_threats_dataSEXP);
     Rcpp::traits::input_parameter< DataFrame >::type dist_features_data(dist_features_dataSEXP);
     Rcpp::traits::input_parameter< std::vector<double> >::type solution(solutionSEXP);
-    Rcpp::traits::input_parameter< std::vector<double> >::type connectivity(connectivitySEXP);
-    Rcpp::traits::input_parameter< double >::type blm(blmSEXP);
-    Rcpp::traits::input_parameter< int >::type curve(curveSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_stats_connectivity_units(pu_data, boundary_data, dist_threats_data, dist_features_data, solution, connectivity, blm, curve));
+    rcpp_result_gen = Rcpp::wrap(rcpp_stats_connectivity_units(pu_data, boundary_data, dist_threats_data, dist_features_data, solution));
     return rcpp_result_gen;
 END_RCPP
 }

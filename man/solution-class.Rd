@@ -8,7 +8,7 @@
 This class is used to represent the solution of the MIP (Mixed-Integer Programming) model
 related to the multi-action conservation planning problem. This includes several methods
 to obtain information about both the optimization process and the solution associated with
-the planning units and conservation actions. It is created using the \code{\link{solve}}
+the planning units and conservation actions. It is created using the \code{\link[=solve]{solve()}}
 function.
 }
 \section{Fields}{

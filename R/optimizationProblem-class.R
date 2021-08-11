@@ -10,34 +10,34 @@ NULL
 #' methods for obtaining model information. It is created used models functions
 #' (e.g. min costs).
 #'
-#' @section Fields: \describe{ \item{$data}{\code{list} object containing data
+#' @section Fields: \describe{ \item{$data}{`list` object containing data
 #'   of the mathematical model.}
 #'
 #'   \item{$ConservationClass}{object of class
-#'   \code{\link{ConservationProblem-class}} that contain the data instance.}
+#'   [ConservationProblem-class()] that contain the data instance.}
 #'
 #'   }
 #'
-#' @section Methods: \describe{ \item{$getData(\code{character} name)}{return an
-#'   \code{\link{vector}} object stored in the \code{data} field with the
-#'   corresponding \code{name}. The data correspond to the different parts of
-#'   the mathematical model. The argument \code{name} can be made to the
+#' @section Methods: \describe{ \item{$getData(`character` name)}{return an
+#'   [vector()] object stored in the `data` field with the
+#'   corresponding `name`. The data correspond to the different parts of
+#'   the mathematical model. The argument `name` can be made to the
 #'   following: "obj", "rhs", "sense", "vtype", "A", "bounds" or "modelsense".}
 #'
-#'   \item{$getDataList( )}{returns an \code{\link{list}} of
-#'   \code{\link{vector}} object stored in the \code{data}. It correspond to set
+#'   \item{$getDataList( )}{returns an [list()] of
+#'   [vector()] object stored in the `data`. It correspond to set
 #'   of data stored asociated to the mathematical model.}
 #'
-#'   \item{$getModelSense( )}{returns a \code{character} indicating whether the
+#'   \item{$getModelSense( )}{returns a `character` indicating whether the
 #'   model is minimization or maximization.}
 #'
-#'   \item{$getNcol( )}{returns an \code{integer} number indicating the columns
+#'   \item{$getNcol( )}{returns an `integer` number indicating the columns
 #'   of matrix A.}
 #'
-#'   \item{$getNrow( )}{returns an \code{integer} number indicating the rows of
+#'   \item{$getNrow( )}{returns an `integer` number indicating the rows of
 #'   matrix A.}
 #'
-#'   \item{$getSizeA( )}{returns a \code{double} number indicating the size of
+#'   \item{$getSizeA( )}{returns a `double` number indicating the size of
 #'   matrix A (in Megabytes).}
 #'
 #'   \item{$print( )}{print basic information of the optimization model.}

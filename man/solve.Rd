@@ -12,18 +12,16 @@ solve(
   solution_limit = FALSE,
   cores = 2,
   verbose = TRUE,
-  name_output_file = "prioriaction_output",
-  name_log = "gurobi_log",
+  name_output_file = "output",
   output_file = TRUE,
-  log_file = FALSE,
   ...
 )
 }
 \arguments{
-\item{a}{Object of class \code{\link{OptimizationProblem-class}} that
+\item{a}{Object of class \code{\link[=OptimizationProblem-class]{OptimizationProblem-class()}} that
 specifies the custom-tailor optimization model created for the problem of
 prioritization of multiple conservation actions. This object must be
-created using the \code{\link{min_costs}} function.}
+created using the \code{\link[=min_costs]{min_costs()}} function.}
 
 \item{solver}{A \code{string} label that indicates which solver to use to
 solve the model created for the problem of prioritization of multiple
@@ -46,9 +44,9 @@ current best solution when this time limit is exceeded. \strong{The default
 argument is the \emph{maximum} time the user's machine can hold out}.}
 
 \item{solution_limit}{A \code{logical} value that indicates if the solution process
-should be stopped after the first feasible solution is found (\code{\link{TRUE}}),
+should be stopped after the first feasible solution is found (\code{\link[=TRUE]{TRUE()}}),
 or if it should continue its normal course until the optimal solution is
-found (\code{\link{FALSE}}). \strong{The default argument is \code{FALSE}}.}
+found (\code{\link[=FALSE]{FALSE()}}). \strong{The default argument is \code{FALSE}}.}
 
 \item{cores}{An \code{integer} value that indicates the number of parallel
 cores to use in the machine. \strong{The default argument is 1 (only one
@@ -56,47 +54,47 @@ core in use)}.}
 
 \item{verbose}{A \code{logical} value that indicates if the solver
 information is displayed while solving the optimization model
-(\code{\link{TRUE}}), or if it is not displayed (\code{\link{FALSE}}).
+(\code{\link[=TRUE]{TRUE()}}), or if it is not displayed (\code{\link[=FALSE]{FALSE()}}).
 \strong{The default argument is \code{TRUE}}.}
 }
 \value{
-An object of class \code{\link{Solution-class}}.
+An object of class \code{\link[=Solution-class]{Solution-class()}}.
 }
 \description{
 Solve the optimization model associated with the multi-action
-  conservation planning problem. This function is used to internally solve
-  the mathematical model associated with the problem in reference, specifying
-  the type of solver and providing a set of parameters to control the
-  optimization process and the user's machine settings.
+conservation planning problem. This function is used to internally solve
+the mathematical model associated with the problem in reference, specifying
+the type of solver and providing a set of parameters to control the
+optimization process and the user's machine settings.
 
-  This function requires the \emph{\pkg{Rsymphony}} package, the
-  \emph{\pkg{Rglpk}} package or the \emph{\pkg{gurobi}} package, which host
-  the solvers inside. These packages are installed by default when the
-  \emph{\link{prioriactions}} package is installed. Of these three,
-  \strong{only the Gurobi solver needs a license to operate} .
+This function requires the \emph{\pkg{Rsymphony}} package, the
+\emph{\pkg{Rglpk}} package or the \emph{\pkg{gurobi}} package, which host
+the solvers inside. These packages are installed by default when the
+\emph{\link{prioriactions}} package is installed. Of these three,
+\strong{only the Gurobi solver needs a license to operate} .
 }
 \details{
-The solvers supported by the \code{\link{solve}} function are
-  described below. \describe{
-  \item{\code{Default solver}}{This solver uses the best software currently
-  installed on the system.}
+The solvers supported by the \code{\link[=solve]{solve()}} function are
+described below. \describe{
+\item{\verb{Default solver}}{This solver uses the best software currently
+installed on the system.}
 
-  \item{\code{Gurobi solver}}{ \href{http://gurobi.com}{\emph{Gurobi}} is a
-  state-of-the-art commercial optimization software with an R package
-  interface. It is by far the fastest of the solvers available in this
-  package, however, it is also the only solver that is not freely available.
-  That said, licenses are available to academics at no cost. The \pkg{gurobi}
-  package is distributed with the \emph{Gurobi} software suite. This solver
-  uses the \pkg{gurobi} package to solve problems.}
+\item{\verb{Gurobi solver}}{ \href{http://gurobi.com}{\emph{Gurobi}} is a
+state-of-the-art commercial optimization software with an R package
+interface. It is by far the fastest of the solvers available in this
+package, however, it is also the only solver that is not freely available.
+That said, licenses are available to academics at no cost. The \pkg{gurobi}
+package is distributed with the \emph{Gurobi} software suite. This solver
+uses the \pkg{gurobi} package to solve problems.}
 
-  \item{\code{Symphony solver}}{
-  \href{https://projects.coin-or.org/SYMPHONY}{\emph{SYMPHONY}} is an
-  open-source integer programming solver that is part of the Computational
-  Infrastructure for Operations Research (COIN-OR) project, an initiative to
-  promote development of open-source tools for operations research (a field
-  that includes linear programming). The \pkg{Rsymphony} package provides an
-  interface to COIN-OR and is available on CRAN. This solver uses the
-  \pkg{Rsymphony} package to solve problems.}}
+\item{\verb{Symphony solver}}{
+\href{https://projects.coin-or.org/SYMPHONY}{\emph{SYMPHONY}} is an
+open-source integer programming solver that is part of the Computational
+Infrastructure for Operations Research (COIN-OR) project, an initiative to
+promote development of open-source tools for operations research (a field
+that includes linear programming). The \pkg{Rsymphony} package provides an
+interface to COIN-OR and is available on CRAN. This solver uses the
+\pkg{Rsymphony} package to solve problems.}}
 }
 \examples{
 ## Solve a conservation problem using the associated optimization model and some solver
@@ -148,7 +146,7 @@ head(solution_report03)
 }
 \seealso{
 For more information on how to install and obtain an academic
-  license of the Gurobi solver, see the \emph{Gurobi installation guide},
-  which can be found online at
-  \url{https://prioritizr.net/articles/gurobi_installation.html}.
+license of the Gurobi solver, see the \emph{Gurobi installation guide},
+which can be found online at
+\url{https://prioritizr.net/articles/gurobi_installation.html}.
 }

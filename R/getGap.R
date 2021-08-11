@@ -92,7 +92,7 @@ NULL
 #' @export
 getGap <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("Solution", "Portfolio")))
 
   if(inherits(x, "Solution")){
     if (x$data$gap == "No reported" || is.null(x$data$gap)) {
@@ -102,7 +102,7 @@ getGap <- function(x) {
       return(base::round(x$data$gap * 100, 4))
     }
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
     return_list <- c()
 
     for(it in 1:length(x$data)){

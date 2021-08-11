@@ -5,21 +5,21 @@
 \alias{prioriactions}
 \title{The \pkg{prioriactions} R package}
 \usage{
-prioriactions(data = list(), model = "minimizeCosts", ...)
+prioriactions(data = list(), name_model = "minimizeCosts", ...)
 
-prioriactions(data = list(), model = "minimizeCosts", ...)
+prioriactions(data = list(), name_model = "minimizeCosts", ...)
 }
 \arguments{
-\item{x}{Object of class \code{\link{ConservationProblem-class}} that
+\item{x}{Object of class \code{\link[=ConservationProblem-class]{ConservationProblem-class()}} that
 specifies the basic data used in a problem of prioritization of multiple
 conservation actions. This object must be created using the
-\code{\link{problem}} function.}
+\code{\link[=problem]{problem()}} function.}
 
 \item{blm}{A \code{numeric} value that indicates the penalty factor
 associated to the spatial fragmentation of planning units, similar to
 \strong{Boundary Length Modifier (BLM)} in \emph{Marxan}. This argument
-only has an effect when the \code{\link{bound}} argument of
-\code{\link{problem}} function is a \code{data.frame} object. \strong{The
+only has an effect when the \code{\link[=bound]{bound()}} argument of
+\code{\link[=problem]{problem()}} function is a \code{data.frame} object. \strong{The
 default argument is zero}.}
 
 \item{blm_actions}{A \code{numeric} value that indicates the penalty factor
@@ -41,88 +41,82 @@ is not recommended to change this value unless you have advanced knowledge
 of the linearization of mathematical model}.}
 }
 \value{
-An object of class \code{\link{OptimizationProblem-class}}.
+An object of class \code{\link[=OptimizationProblem-class]{OptimizationProblem-class()}}.
 }
 \description{
 The \pkg{prioriactions R} package uses a mixed integer
- mathematical programming (MIP) approach for building and solving
- multi-action conservation planning problems, where the goal is to find an
- optimal combination of management actions that abate threats, in an
- efficient way while accounting for connectivity. Furthermore, the
- flexibility of the package interface allows implementing an extended version
- of the base model for minimizing fragmentation between different actions.
- These models were called as MAMP and MAMP-E by Salgado-Rojas \emph{et al.}
- (2020), where you can get a detailed description of how both problems were
- mathematically modeled. \cr
+mathematical programming (MIP) approach for building and solving
+multi-action conservation planning problems, where the goal is to find an
+optimal combination of management actions that abate threats, in an
+efficient way while accounting for connectivity. Furthermore, the
+flexibility of the package interface allows implementing an extended version
+of the base model for minimizing fragmentation between different actions.
+These models were called as MAMP and MAMP-E by Salgado-Rojas \emph{et al.}
+(2020), where you can get a detailed description of how both problems were
+mathematically modeled. \cr
 
- Once built a multi-action conservation problem, the next step is to solve
- it. For this, the package has a variety of commercial and open-source exact
- algorithm solvers that guarantee to find optimal solutions. The models
- implemented here have three advantages over their heuristic counterparts:
- shorter execution times, higher solutions quality, and a solution quality
- guarantee.
+Once built a multi-action conservation problem, the next step is to solve
+it. For this, the package has a variety of commercial and open-source exact
+algorithm solvers that guarantee to find optimal solutions. The models
+implemented here have three advantages over their heuristic counterparts:
+shorter execution times, higher solutions quality, and a solution quality
+guarantee.
 
 Create an optimization model for the multi-action conservation
-  planning problem, following the mathematical formulations used in
-  Salgado-Rojas \emph{et al.} (2020). This function is used to specify model
-  configuration parameters related to connectivity issues and its internal
-  \emph{modus operandi}.
+planning problem, following the mathematical formulations used in
+Salgado-Rojas \emph{et al.} (2020). This function is used to specify model
+configuration parameters related to connectivity issues and its internal
+\emph{modus operandi}.
 
-  Connectivity parameters (\code{blm} and \code{blm_actions}) manipulate the
-  spatial fragmentation of planning units and/or action management to improve
-  the compactness of the reserve solutions. Likewise, the other parameters
-  (\code{curve} and \code{segments}) affect the linearization strategy
-  used by the model internally in order to be solved under a linear
-  programming approach. \strong{It is not recommended to modify the default
-  values of the later ones}.
+Connectivity parameters (\code{blm} and \code{blm_actions}) manipulate the
+spatial fragmentation of planning units and/or action management to improve
+the compactness of the reserve solutions. Likewise, the other parameters
+(\code{curve} and \code{segments}) affect the linearization strategy
+used by the model internally in order to be solved under a linear
+programming approach. \strong{It is not recommended to modify the default
+values of the later ones}.
 }
 \details{
 \strong{Put details here!}
 
 \strong{Put details here! The details may include the mathematical
- formulation of the optimization model associated with this conservation
- problem and/or a rough description of the mathematical model, and/or what
- happens when the parameters are set in one way or another.}
+formulation of the optimization model associated with this conservation
+problem and/or a rough description of the mathematical model, and/or what
+happens when the parameters are set in one way or another.}
 }
 \examples{
 ## Create an optimization model for the multi-action conservation
 ## planning problem using a data instance that has been created in R.
 ## This example uses input files included into package.
 
+## Load package
+library(prioriactions)
+
 ## Load data
 data(example_pu_data, example_features_data, example_dist_features_data, example_dist_threats_data, example_threats_data, example_sensitivity_data, example_bound_data)
 
 ## Create data instance
-problem_data <- problem(
+input <- list(
   pu = example_pu_data, features = example_features_data, dist_features = example_dist_features_data,
   threats = example_threats_data, dist_threats = example_dist_threats_data, sensitivity = example_sensitivity_data,
   bound = example_bound_data
 )
 
 ## Create optimization model
-problem_model <- prioriactions(x = problem_data, blm = 1)
+portfolio <- prioriactions(data = input, name_model = "minimizeCosts", blm = 0, output_file = FALSE, time_limit = 10)
 
-## Model summary
-print(problem_model)
 }
 \references{
 \itemize{ \item Salgado-Rojas J, <U+00C1>lvarez-Miranda E, Hermoso V,
 Garcia-Gonzalo J, Weintraub A. \emph{A mixed integer programming approach for
 multi-action planning for threat management}. Ecological Modelling 2020;
 418:108901. \cr (DOI: \url{https://doi.org/10.1016/j.ecolmodel.2019.108901}) }
-
-\itemize{ \item Salgado-Rojas J, <U+00C1>lvarez-Miranda E, Hermoso V,
- Garcia-Gonzalo J, Weintraub A. \emph{A mixed integer programming approach
- for multi-action planning for threat management}. Ecological Modelling 2020;
- 418:108901. \cr (DOI: \url{https://doi.org/10.1016/j.ecolmodel.2019.108901})
- }
 }
 \seealso{
 For more information regarding the arguments \code{blm} and
- \code{blm_actions}, see the \href{https://marxansolutions.org}{official
- \emph{Marxan} website} and the article by Salgado-Rojas \emph{et al.}
- (2020), respectively. Also, for more information regarding the arguments
- \code{curve} and \code{segments}, see the supplementary material
- associated with the article by Salgado-Rojas \emph{et al.} (2020), which can
- be found online at \url{https://doi.org/10.1016/j.ecolmodel.2019.108901}.
+\code{blm_actions}, see the \href{https://marxansolutions.org}{official \emph{Marxan} website} and the article by Salgado-Rojas \emph{et al.}
+(2020), respectively. Also, for more information regarding the arguments
+\code{curve} and \code{segments}, see the supplementary material
+associated with the article by Salgado-Rojas \emph{et al.} (2020), which can
+be found online at \url{https://doi.org/10.1016/j.ecolmodel.2019.108901}.
 }

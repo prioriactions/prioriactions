@@ -92,7 +92,7 @@ NULL
 #' @export
 getStatus <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("Solution", "Portfolio")))
 
   if(inherits(x, "Solution")){
     statusCode <- getStatusCode(x)
@@ -117,7 +117,7 @@ getStatus <- function(x) {
       return("No solution information is available")
     }
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
 
     return_list <- c()
 

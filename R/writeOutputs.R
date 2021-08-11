@@ -22,11 +22,11 @@ writeOutputs <- function(x, ...) UseMethod("writeOutputs", x)
 #' @rdname writeOutputs
 #' @method writeOutputs Solution
 #' @noRd
-writeOutputs.Solution <- function(x, name = "output_prioriactions", ...) {
+writeOutputs.Solution <- function(x, name = "output", ...) {
   assertthat::assert_that(inherits(x, "Solution"))
 
-  name_output <- paste0(name,".txt")
-  output_file <- base::file(name_output)
+  name_output_params <- paste0(name,"_params.txt")
+  output_file <- base::file(name_output_params)
 
   msj_output <- paste0(
     "=============================================",
@@ -38,33 +38,31 @@ writeOutputs.Solution <- function(x, name = "output_prioriactions", ...) {
     "\n",
     "1) Parameters",
     "\n",
-    "blm:  ", x$OptimizationClass$data$settings$blm,
+    "blm:  ", x$OptimizationClass$data$args$blm,
     "\n",
-    "blm_actions:  ", paste0(x$OptimizationClass$ConservationClass$data$threats$blm_actions, collapse=" "),
+    "budget:  ", x$OptimizationClass$data$args$budget,
     "\n",
-    "exponent of benefit expression  (curve parameter):  ", x$OptimizationClass$data$settings$curve,
+    "curve:  ", x$OptimizationClass$data$args$curve,
     "\n",
-    "number of linearization segments of benefit expression (segments parameter):  ", x$OptimizationClass$data$settings$segments,
+    "segments: ", x$OptimizationClass$data$args$segments,
+    "\n",
+    "recovery: ", x$OptimizationClass$data$args$recovery,
     "\n",
     "solver:  ", x$data$arg$solver,
     "\n",
-    "gap:  ", paste0(x$data$arg$gap, "%"),
+    "gap_limit:  ", paste0(x$data$arg$gap, "%"),
     "\n",
     "time limit:  ", x$data$arg$timelimit,
     "\n",
-    "computer cores:  ", x$data$arg$cores,
+    "solution limit:  ", x$data$arg$solution_limit,
     "\n",
-    "verbose?:  ", x$data$arg$verbose,
+    "cores:  ", x$data$arg$cores,
     "\n",
-    "solution limit? (stop whth the first solution found):  ", x$data$arg$solution_limit,
+    "verbose:  ", x$data$arg$verbose,
     "\n",
-    "output file?:  ", x$data$arg$output_file,
+    "name_output_file: ", x$data$arg$name_output_file,
     "\n",
-    "name of output prioriactions:  ", paste0(x$data$arg$name_output_file,".txt"),
-    "\n",
-    "log file? (only gurobi):  ", x$data$arg$log_file,
-    "\n",
-    "name of log solver (only gurobi):  ", paste0(x$data$arg$name_log,".txt"),
+    "output_file:  ", x$data$arg$output_file,
     "\n",
     "\n",
     "2) Instance information",
@@ -75,41 +73,33 @@ writeOutputs.Solution <- function(x, name = "output_prioriactions", ...) {
     "\n",
     "Number of threats:  ", x$OptimizationClass$ConservationClass$getThreatsAmount(),
     "\n",
+    "Number of actions:  ", x$OptimizationClass$ConservationClass$getActionsAmount(),
+    "\n",
     "\n",
     "3) Mathematical model",
     "\n",
-    "Type of model:  ", getModelSense(x),
+    "Type of model:  ", x$OptimizationClass$data$args$name_model,
     "\n",
     "Number of variables:  ", getNvariables(x),
     "\n",
     "Number of constraints:  ", getNconstraints(x),
-    "\n",
-    "\n",
-    "4) Solution",
-    "\n",
-    "Objective value:  ", getObjectiveValue(x),
-    "\n",
-    "Gap:  ", getGap(x),
-    "\n",
-    "Status:  ", getStatus(x),
-    "\n",
-    "Runtime [sec]:  ", getTimeSolving(x),
-    "\n",
-    "Total cost:  ", getTotalCost(x),
-    "\n",
-    "  Monitoring cost:  ", getPlanningUnitsCost(x),
-    "\n",
-    "  Action cost:  ", getActionsCost(x),
-    "\n",
-    "Total connectivity:  ", getTotalConnectivity(x),
-    "\n",
-    "  Unit connectivity:  ", getPlanningUnitsConnectivity(x),
-    "\n",
-    "  Action connectivity:  ", getActionsConnectivity(x),
     "\n"
   )
 
   base::writeLines(msj_output, output_file)
 
   base::on.exit(base::close(output_file))
+
+
+  #writing benefits
+  name_output_benefits <- paste0(name,"_benefits.txt")
+  utils::write.csv(getBenefit(x), file = name_output_benefits, row.names = FALSE)
+
+  #writing actions
+  name_output_actions <- paste0(name,"_actions.txt")
+  utils::write.csv(getActions(x), file = name_output_actions, row.names = FALSE)
+
+  #writing PU
+  name_output_pu <- paste0(name,"_PU.txt")
+  utils::write.csv(getPlanningUnits(x), file = name_output_pu, row.names = FALSE)
 }

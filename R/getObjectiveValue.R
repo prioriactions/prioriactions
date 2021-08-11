@@ -92,17 +92,17 @@ NULL
 #' @export
 getObjectiveValue <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("Solution", "Portfolio")))
 
   if(inherits(x, "Solution")){
-    if(getStatusCode(x) %in% !c(1,3)){
+    if(!(getStatusCode(x) %in% c(1,3))){
       return(x$data$objval)
     }
     else{
       return(NA)
     }
   }
-  else if(inherits(x, "Portafolio")){
+  else if(inherits(x, "Portfolio")){
 
     return_list <- c()
 

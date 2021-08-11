@@ -5,7 +5,7 @@
 \alias{print.ConservationProblem}
 \alias{print.OptimizationProblem}
 \alias{print.Solution}
-\alias{print.Portafolio}
+\alias{print.Portfolio}
 \title{Print}
 \usage{
 \method{print}{ConservationProblem}(x, ...)
@@ -14,7 +14,7 @@
 
 \method{print}{Solution}(x, ...)
 
-\method{print}{Portafolio}(x, ...)
+\method{print}{Portfolio}(x, ...)
 }
 \arguments{
 \item{x}{Any object.}
@@ -27,10 +27,6 @@ None.
 \description{
 Display information about an object.
 }
-\examples{
-a <- 1:4
-print(a)
-}
 \seealso{
-\code{\link[base]{print}}.
+\code{\link[base:print]{base::print()}}.
 }

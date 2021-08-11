@@ -6,8 +6,8 @@
 \usage{
 maximizeBenefits(
   x,
-  budget = 0,
   blm = 0,
+  budget = 0,
   curve = 3,
   segments = 3,
   recovery = TRUE
@@ -15,24 +15,24 @@ maximizeBenefits(
 
 maximizeBenefits(
   x,
-  budget = 0,
   blm = 0,
+  budget = 0,
   curve = 3,
   segments = 3,
   recovery = TRUE
 )
 }
 \arguments{
-\item{x}{Object of class \code{\link{ConservationProblem-class}} that
+\item{x}{Object of class \code{\link[=ConservationProblem-class]{ConservationProblem-class()}} that
 specifies the basic data used in a problem of prioritization of multiple
 conservation actions. This object must be created using the
-\code{\link{problem}} function.}
+\code{\link[=problem]{problem()}} function.}
 
 \item{blm}{A \code{numeric} value that indicates the penalty factor
 associated to the spatial fragmentation of planning units, similar to
 \strong{Boundary Length Modifier (BLM)} in \emph{Marxan}. This argument
-only has an effect when the \code{\link{bound}} argument of
-\code{\link{problem}} function is a \code{data.frame} object. \strong{The
+only has an effect when the \code{\link[=bound]{bound()}} argument of
+\code{\link[=problem]{problem()}} function is a \code{data.frame} object. \strong{The
 default argument is zero}.}
 
 \item{curve}{An \code{integer} value that selects the type of continuous
@@ -54,28 +54,28 @@ associated to the spatial fragmentation of actions. \strong{The default
 argument is zero}.}
 }
 \value{
-An object of class \code{\link{OptimizationProblem-class}}.
+An object of class \code{\link[=OptimizationProblem-class]{OptimizationProblem-class()}}.
 }
 \description{
 Create an optimization model for the multi-action conservation
-  planning problem, following the mathematical formulations used in
-  Salgado-Rojas \emph{et al.} (2020). This function is used to specify model
-  configuration parameters related to connectivity issues and its internal
-  \emph{modus operandi}.
+planning problem, following the mathematical formulations used in
+Salgado-Rojas \emph{et al.} (2020). This function is used to specify model
+configuration parameters related to connectivity issues and its internal
+\emph{modus operandi}.
 
-  Connectivity parameters (\code{blm} and \code{blm_actions}) manipulate the
-  spatial fragmentation of planning units and/or action management to improve
-  the compactness of the reserve solutions. Likewise, the other parameters
-  (\code{curve} and \code{segments}) affect the linearization strategy
-  used by the model internally in order to be solved under a linear
-  programming approach. \strong{It is not recommended to modify the default
-  values of the later ones}.
+Connectivity parameters (\code{blm} and \code{blm_actions}) manipulate the
+spatial fragmentation of planning units and/or action management to improve
+the compactness of the reserve solutions. Likewise, the other parameters
+(\code{curve} and \code{segments}) affect the linearization strategy
+used by the model internally in order to be solved under a linear
+programming approach. \strong{It is not recommended to modify the default
+values of the later ones}.
 }
 \details{
 \strong{Put details here! The details may include the mathematical
- formulation of the optimization model associated with this conservation
- problem and/or a rough description of the mathematical model, and/or what
- happens when the parameters are set in one way or another.}
+formulation of the optimization model associated with this conservation
+problem and/or a rough description of the mathematical model, and/or what
+happens when the parameters are set in one way or another.}
 }
 \examples{
 ## Create an optimization model for the multi-action conservation
@@ -93,24 +93,13 @@ problem_data <- problem(
 )
 
 ## Create optimization model
-problem_model <- maximizeBenefits(x = problem_data, blm = 1)
-
-## Model summary
-print(problem_model)
-}
-\references{
-\itemize{ \item Salgado-Rojas J, <U+00C1>lvarez-Miranda E, Hermoso V,
- Garcia-Gonzalo J, Weintraub A. \emph{A mixed integer programming approach
- for multi-action planning for threat management}. Ecological Modelling 2020;
- 418:108901. \cr (DOI: \url{https://doi.org/10.1016/j.ecolmodel.2019.108901})
- }
+problem_model <- maximizeBenefits(x = problem_data, budget = 10)
 }
 \seealso{
 For more information regarding the arguments \code{blm} and
- \code{blm_actions}, see the \href{https://marxansolutions.org}{official
- \emph{Marxan} website} and the article by Salgado-Rojas \emph{et al.}
- (2020), respectively. Also, for more information regarding the arguments
- \code{curve} and \code{segments}, see the supplementary material
- associated with the article by Salgado-Rojas \emph{et al.} (2020), which can
- be found online at \url{https://doi.org/10.1016/j.ecolmodel.2019.108901}.
+\code{blm_actions}, see the \href{https://marxansolutions.org}{official \emph{Marxan} website} and the article by Salgado-Rojas \emph{et al.}
+(2020), respectively. Also, for more information regarding the arguments
+\code{curve} and \code{segments}, see the supplementary material
+associated with the article by Salgado-Rojas \emph{et al.} (2020), which can
+be found online at \url{https://doi.org/10.1016/j.ecolmodel.2019.108901}.
 }

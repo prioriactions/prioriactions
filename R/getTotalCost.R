@@ -92,7 +92,7 @@ NULL
 #' @export
 getTotalCost <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Solution", "Portafolio")))
+  assertthat::assert_that(inherits(x, c("Solution", "Portfolio")))
 
   return(getActionsCost(x) + getPlanningUnitsCost(x))
 }
