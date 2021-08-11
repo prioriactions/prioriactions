@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -32,11 +32,17 @@
         The models implemented here have three advantages over their heuristic 
         counterparts: shorter execution times, higher solutions quality, and a solution 
         quality guarantee.">
-<meta property="og:image" content="https://josesalgr.github.io/prioriactions/logo.png">
+<meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-7WG0HBKPY7"></script><script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7WG0HBKPY7');
+</script>
 </head>
 <body data-spy="scroll" data-target="#toc">
     <div class="container template-home">
@@ -51,7 +57,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -64,6 +70,9 @@
   </a>
 </li>
 <li>
+  <a href="articles/prioriactions.html">Get started</a>
+</li>
+<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -73,7 +82,17 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-<li>
+<li class="divider">
+    <li class="dropdown-header">Introduction</li>
+    <li>
+      <a href="articles/sensitivities.html">sensitivities</a>
+    </li>
+    <li>
+      <a href="articles/analysis.html">analysis</a>
+    </li>
+    <li class="divider">
+    <li class="dropdown-header">Study cases</li>
+    <li>
       <a href="articles/MitchellRiver.html">Mitchell River</a>
     </li>
   </ul>
@@ -107,124 +126,38 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="multi-action-conservation-planning-in-r-" class="section level1">
+<div id="multi-action-conservation-planning-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#multi-action-conservation-planning-in-r-" class="anchor"></a>Multi-action conservation planning in R <img src="reference/figures/logo.png" align="right" width="15%">
+<a href="#multi-action-conservation-planning-" class="anchor"></a>Multi-action conservation planning <img src="reference/figures/logo.png" align="right" width="15%">
 </h1></div>
 <!-- badges: start -->
 
 <p><strong>This project was financed by the National Agency of Research and Development, ANID, Chile, through the grant FONDECYT N.1180670 and through the Complex Engineering Systems Institute PIA/BASAL AFB180003. Also it has received funding from the European Union’s H2020 research and innovation program under the Marie Sklodowska-Curie grant agreement N.691149 (SuFoRun).</strong></p>
-<p>The <em>prioriactions R</em> package uses a mixed integer mathematical programming (MIP) approach for building and solving multi-action conservation planning problems, where the goal is to find an optimal combination of management actions that abate threats, in an efficient way while accounting for connectivity. Furthermore, the flexibility of the package interface allows implementing an extended version of the base model for minimizing fragmentation between different actions. These models were called as MAMP and MAMP-E by Salgado-Rojas <em>et al.</em> (2020), where you can get a detailed description of how both problems were mathematically modeled.</p>
-<p>Once built a multi-action conservation problem, the next step is to solve it. For this, the package has a variety of commercial and open-source exact algorithm solvers that guarantee to find optimal solutions. The models implemented here have three advantages over their heuristic counterparts: shorter execution times, higher solutions quality, and a solution quality guarantee.</p>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
+<p>The <code>prioriactions</code> package uses a mixed integer mathematical programming (MIP) approach for building and solving multi-action conservation planning problems, where the goal is to find an optimal combination of management actions that abate threats, in an efficient way while accounting for connectivity. Furthermore, the flexibility of the package interface allows implementing an extended version of the base model for minimizing fragmentation between different actions. These models were called as MAMP and MAMP-E by Salgado-Rojas <em>et al.</em> (2020), where you can get a detailed description of how both problems were mathematically modeled. The package has a variety of commercial and open-source exact algorithm solvers that guarantee to find optimal solutions.</p>
+</div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>The latest development version can be installed from <a href="https://github.com/josesalgr/prioriactions/">GitHub</a> using the following code.</p>
+<p>The latest development version of <code>prioriactions</code> can be installed from <a href="https://github.com/prioriactions/prioriactions/">GitHub</a> using the following code.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"prioriactions/prioriactions"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org">remotes</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"prioriactions/prioriactions"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>The <em>prioriactions R</em> package works in three main stages. It starts with the <code><a href="reference/problem.html">problem()</a></code> function that receives a set of data to create a valid data instance for the conservation problem. Then, the <code><a href="reference/min_costs.html">min_costs()</a></code> function receives this data to create the mathematical model associated with this problem, which will finally be solved using the <code>solver()</code> function. A detailed description of these steps is illustrated below.</p>
-<center>
-<img src="reference/figures/README_package_diagram.png" alt="hola" width="100%">
-</center>
-</div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<p>Quick guide to create and solve a multi-action conservation planning problem, following the three-step methodology already described.</p>
-<div id="step-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-1" class="anchor"></a>Step 1</h3>
-<p>Load the “prioriactions” package into the R environment (remember to install it before using it).</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://prioriactions.github.io/prioriactions">prioriactions</a></span><span class="op">)</span></code></pre></div>
-<p>Load the necessary input data into the R environment.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">example_pu_data</span>, <span class="va">example_features_data</span>, <span class="va">example_rij_data</span>,
-     <span class="va">example_threats_data</span>, <span class="va">example_sensibility_data</span>, <span class="va">example_bound_data</span><span class="op">)</span></code></pre></div>
-<p>Create a “data instance” that stores and validates all input data.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">problem_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/problem.html">problem</a></span><span class="op">(</span>
-                pu <span class="op">=</span> <span class="va">example_pu_data</span>, features <span class="op">=</span> <span class="va">example_features_data</span>, rij <span class="op">=</span> <span class="va">example_rij_data</span>,
-                threats <span class="op">=</span> <span class="va">example_threats_data</span>, sensitivity <span class="op">=</span> <span class="va">example_sensibility_data</span>,
-                bound <span class="op">=</span> <span class="va">example_bound_data</span>
-<span class="op">)</span>
-<span class="co">#&gt; Warning: The following pu's do not contain species: 59 97 109 118 121 122 123</span>
-<span class="co">#&gt; 127 129 134 136 139 141 142 146 166 167 185 194 195 196 198 211 230</span>
-<span class="co">#&gt; Correctly loaded inputs</span>
-
-<span class="va">problem_data</span>
-<span class="co">#&gt; Conservation Problem</span>
-<span class="co">#&gt;   planning units: data.frame (240 units)</span>
-<span class="co">#&gt;   unit costs:     min: 3, max: 5</span>
-<span class="co">#&gt;   features:       scl_ja, nem_er, thr_sc, ... (10 features)</span>
-<span class="co">#&gt;   threats:        1, 2, 3, 4 (4 threats)</span>
-<span class="co">#&gt;   threat costs:   min: 3, max: 5</span></code></pre></div>
-</div>
-<div id="step-2" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-2" class="anchor"></a>Step 2</h3>
-<p>Create an “optimization model” using the previously loaded “data instance”.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">problem_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/min_costs.html">min_costs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">problem_data</span>, blm <span class="op">=</span> <span class="fl">1</span>, blm_actions <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="va">problem_model</span>
-<span class="co">#&gt; Optimization Problem</span>
-<span class="co">#&gt;   model sense: minimization</span>
-<span class="co">#&gt;   dimensions:  18004, 11740, 0.658 Mb (nrow, ncol, size)</span>
-<span class="co">#&gt;   variables:   11740</span>
-<span class="co">#&gt;   building time: 0.05 sec</span></code></pre></div>
-</div>
-<div id="step-3" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-3" class="anchor"></a>Step 3</h3>
-<p>Solve the “optimization model” using the available solvers.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/solve.html">solve</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>, output_file <span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">model_solution</span>
-<span class="co">#&gt; Solution overview</span>
-<span class="co">#&gt;   objective value: 1755.42968110999</span>
-<span class="co">#&gt;   gap:  0%</span>
-<span class="co">#&gt;   status:  Optimal solution (according to gap tolerance: 0%)</span>
-<span class="co">#&gt;   runtime: 0.62 sec</span></code></pre></div>
-<p>Finally, report and interpret the solution to the problem you are working on.</p>
-<p>Report the total cost of the conservation plan.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">solution_report01</span> <span class="op">&lt;-</span> <span class="va">model_solution</span><span class="op">$</span><span class="fu">getObjetiveValue</span><span class="op">(</span><span class="op">)</span>
-<span class="va">solution_report01</span>
-<span class="co">#&gt; [1] 1755.43</span></code></pre></div>
-<p>Report the planning units suggested to be included (value 1) and not included (value 0) within the conservation plan.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">solution_report02</span> <span class="op">&lt;-</span> <span class="va">model_solution</span><span class="op">$</span><span class="fu">getSolutionUnits</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">solution_report02</span><span class="op">)</span>
-<span class="co">#&gt;   id cost status solution</span>
-<span class="co">#&gt; 1  1    3      0        0</span>
-<span class="co">#&gt; 2  2    4      0        1</span>
-<span class="co">#&gt; 3  3    3      0        1</span>
-<span class="co">#&gt; 4  4    3      0        0</span>
-<span class="co">#&gt; 5  5    3      0        1</span>
-<span class="co">#&gt; 6  6    3      0        1</span></code></pre></div>
-<p>Report the conservation actions that are suggested to be carried out (value 1) and not carried out (value 0) within the conservation plan.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">solution_report03</span> <span class="op">&lt;-</span> <span class="va">model_solution</span><span class="op">$</span><span class="fu">getSolutionActions</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">solution_report03</span><span class="op">)</span>
-<span class="co">#&gt;   pu 1 2 3 4</span>
-<span class="co">#&gt; 1  1 0 0 0 0</span>
-<span class="co">#&gt; 2  2 0 1 1 1</span>
-<span class="co">#&gt; 3  3 0 1 0 1</span>
-<span class="co">#&gt; 4  4 0 0 0 0</span>
-<span class="co">#&gt; 5  5 0 1 0 1</span>
-<span class="co">#&gt; 6  6 0 1 0 1</span></code></pre></div>
-</div>
+<p>You can browse the package documentation online at <a href="https://prioriactions.github.io/prioriactions/" class="uri">https://prioriactions.github.io/prioriactions/</a>.</p>
+<p>If this is your first time using <code>prioriactions</code>, we strongly recommend reading the <a href="https://prioriactions.github.io/prioriactions/articles/prioriactions.html">Introduction to prioriactions</a> vignette.</p>
+<p>If you believe you’ve found a bug in <code>prioriactions</code>, please file a bug (and, if possible, a <a href="https://reprex.tidyverse.org">reproducible example</a>) at <a href="https://github.com/prioriactions/prioriactions/issues" class="uri">https://github.com/prioriactions/prioriactions/issues</a>.</p>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
 <ul>
-<li>Salgado-Rojas J, Álvarez-Miranda E, Hermoso V, Garcia-Gonzalo J, Weintraub A. <em>A mixed integer programming approach for multi-action planning for threat management</em>. Ecological Modelling 2020; 418:108901.<br>
+<li>Salgado-Rojas J, Alvarez-Miranda E, Hermoso V, Garcia-Gonzalo J, Weintraub A. <em>A mixed integer programming approach for multi-action planning for threat management</em>. Ecological Modelling 2020; 418:108901.<br>
 (DOI: <a href="https://doi.org/10.1016/j.ecolmodel.2019.108901" class="uri">https://doi.org/10.1016/j.ecolmodel.2019.108901</a>) .</li>
 </ul>
 </div>
@@ -251,13 +184,13 @@
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://www.researchgate.net/profile/Jose_Salgado-Rojas">José Salgado-Rojas</a> <br><small class="roles"> Author </small>  </li>
+<a href="https://www.researchgate.net/profile/Jose_Salgado-Rojas">Jose Salgado-Rojas</a> <br><small class="roles"> Author, maintainer </small>  </li>
 <li>
-<a href="https://www.researchgate.net/profile/Irlanda_Ceballos">Irlanda Ceballos-Fuentealba</a> <br><small class="roles"> Author, maintainer </small>  </li>
+<a href="https://www.researchgate.net/profile/Irlanda_Ceballos">Irlanda Ceballos-Fuentealba</a> <br><small class="roles"> Author </small>  </li>
 <li>
 <a href="https://www.researchgate.net/profile/Virgilio_Hermoso">Virgilio Hermoso</a> <br><small class="roles"> Author </small>  </li>
 <li>
-<a href="https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda">Eduardo Álvarez-Miranda</a> <br><small class="roles"> Author </small>  </li>
+<a href="https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda">Eduardo Alvarez-Miranda</a> <br><small class="roles"> Author </small>  </li>
 <li>
 <a href="https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo">Jordi Garcia-Gonzalo</a> <br><small class="roles"> Author </small>  </li>
 </ul>
@@ -266,7 +199,7 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
 </ul>
 </div>
 </div>
@@ -274,7 +207,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://www.researchgate.net/profile/Jose_Salgado-Rojas">José Salgado-Rojas</a>, <a href="https://www.researchgate.net/profile/Irlanda_Ceballos">Irlanda Ceballos-Fuentealba</a>, <a href="https://www.researchgate.net/profile/Virgilio_Hermoso">Virgilio Hermoso</a>, <a href="https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda">Eduardo Álvarez-Miranda</a>, <a href="https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo">Jordi Garcia-Gonzalo</a>.</p>
+  <p>Developed by <a href="https://www.researchgate.net/profile/Jose_Salgado-Rojas">Jose Salgado-Rojas</a>, <a href="https://www.researchgate.net/profile/Irlanda_Ceballos">Irlanda Ceballos-Fuentealba</a>, <a href="https://www.researchgate.net/profile/Virgilio_Hermoso">Virgilio Hermoso</a>, <a href="https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda">Eduardo Alvarez-Miranda</a>, <a href="https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo">Jordi Garcia-Gonzalo</a>.</p>
 </div>
 
 <div class="pkgdown">

@@ -12,13 +12,10 @@ NULL
 #'
 #' @return None.
 #'
-#' @seealso \code{\link[base]{print}}.
+#' @seealso [base::print()].
 #'
 #' @aliases print
-#'
-#' @examples
-#' a <- 1:4
-#' print(a)
+
 NULL
 
 #' @rdname print
@@ -35,3 +32,8 @@ print.OptimizationProblem <- function(x, ...) x$print()
 #' @method print Solution
 #' @export
 print.Solution <- function(x, ...) x$print()
+
+#' @rdname print
+#' @method print Portfolio
+#' @export
+print.Portfolio <- function(x, ...) x$print()

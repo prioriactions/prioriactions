@@ -1,4 +1,4 @@
-#' @include presolve.R optimization_problem.R createtxt.R
+#' @include presolve.R writeOutputs.R
 NULL
 
 #' @title solve
@@ -12,67 +12,67 @@ NULL
 #'   This function requires the \emph{\pkg{Rsymphony}} package, the
 #'   \emph{\pkg{Rglpk}} package or the \emph{\pkg{gurobi}} package, which host
 #'   the solvers inside. These packages are installed by default when the
-#'   \emph{\link{prioriactions}} package is installed. Of these three,
-#'   \strong{only the Gurobi solver needs a license to operate} .
+#'   *[prioriactions]* package is installed. Of these three,
+#'   **only the Gurobi solver needs a license to operate** .
 #'
-#' @param a Object of class \code{\link{OptimizationProblem-class}} that
+#' @param a Object of class [OptimizationProblem-class()] that
 #'   specifies the custom-tailor optimization model created for the problem of
 #'   prioritization of multiple conservation actions. This object must be
-#'   created using the \code{\link{min_costs}} function.
+#'   created using the [min_costs()] function.
 #'
-#' @param solver A \code{string} label that indicates which solver to use to
+#' @param solver A `string` label that indicates which solver to use to
 #'   solve the model created for the problem of prioritization of multiple
 #'   conservation actions. The following solvers are supported:
-#'   \href{http://gurobi.com}{\code{"gurobi"}}, and
-#'   \href{https://projects.coin-or.org/SYMPHONY}{\code{"symphony"}}.
-#'   \strong{The default argument is \code{"gurobi"} (requires a license)}.
+#'   [`"gurobi"`](http://gurobi.com), and
+#'   [`"symphony"`](https://projects.coin-or.org/SYMPHONY).
+#'   **The default argument is `"gurobi"` (requires a license)**.
 #'
-#' @param gap_limit A \code{numeric} value (between 0 and 1) that represents the gap
+#' @param gap_limit A `numeric` value (between 0 and 1) that represents the gap
 #'   to optimality, i.e., a relative number that cause the optimizer to
 #'   terminate when the difference between the upper and lower objective
 #'   function bounds is less than the gap times the upper bound. For example, a
 #'   value of 0.01 will result in the optimizer stopping when the difference
-#'   between the bounds is 1 percent of the upper bound. \strong{The default
-#'   argument is 0.0}.
+#'   between the bounds is 1 percent of the upper bound. **The default
+#'   argument is 0.0**.
 #'
-#' @param time_limit A \code{numeric} value (non negative) that indicates the
+#' @param time_limit A `numeric` value (non negative) that indicates the
 #'   time limit to run the optimizer (in seconds). The solver will return the
-#'   current best solution when this time limit is exceeded. \strong{The default
-#'   argument is the \emph{maximum} time the user's machine can hold out}.
+#'   current best solution when this time limit is exceeded. **The default
+#'   argument is the *maximum* time the user's machine can hold out**.
 #'
-#' @param solution_limit A \code{logical} value that indicates if the solution process
-#' should be stopped after the first feasible solution is found (\code{\link{TRUE}}),
+#' @param solution_limit A `logical` value that indicates if the solution process
+#' should be stopped after the first feasible solution is found ([TRUE()]),
 #' or if it should continue its normal course until the optimal solution is
-#' found (\code{\link{FALSE}}). \strong{The default argument is \code{FALSE}}.
+#' found ([FALSE()]). **The default argument is `FALSE`**.
 #'
-#' @param cores An \code{integer} value that indicates the number of parallel
-#'   cores to use in the machine. \strong{The default argument is 1 (only one
-#'   core in use)}.
+#' @param cores An `integer` value that indicates the number of parallel
+#'   cores to use in the machine. **The default argument is 1 (only one
+#'   core in use)**.
 #'
-#' @param verbose A \code{logical} value that indicates if the solver
+#' @param verbose A `logical` value that indicates if the solver
 #'   information is displayed while solving the optimization model
-#'   (\code{\link{TRUE}}), or if it is not displayed (\code{\link{FALSE}}).
-#'   \strong{The default argument is \code{TRUE}}.
+#'   ([TRUE()]), or if it is not displayed ([FALSE()]).
+#'   **The default argument is `TRUE`**.
 #'
 #' @name solve
 #'
-#' @return An object of class \code{\link{Solution-class}}.
+#' @return An object of class [Solution-class()].
 #'
-#' @details The solvers supported by the \code{\link{solve}} function are
+#' @details The solvers supported by the [solve()] function are
 #'   described below. \describe{
-#'   \item{\code{Default solver}}{This solver uses the best software currently
+#'   \item{`Default solver`}{This solver uses the best software currently
 #'   installed on the system.}
 #'
-#'   \item{\code{Gurobi solver}}{ \href{http://gurobi.com}{\emph{Gurobi}} is a
+#'   \item{`Gurobi solver`}{ [*Gurobi*](http://gurobi.com) is a
 #'   state-of-the-art commercial optimization software with an R package
 #'   interface. It is by far the fastest of the solvers available in this
 #'   package, however, it is also the only solver that is not freely available.
 #'   That said, licenses are available to academics at no cost. The \pkg{gurobi}
-#'   package is distributed with the \emph{Gurobi} software suite. This solver
+#'   package is distributed with the *Gurobi* software suite. This solver
 #'   uses the \pkg{gurobi} package to solve problems.}
 #'
-#'   \item{\code{Symphony solver}}{
-#'   \href{https://projects.coin-or.org/SYMPHONY}{\emph{SYMPHONY}} is an
+#'   \item{`Symphony solver`}{
+#'   [*SYMPHONY*](https://projects.coin-or.org/SYMPHONY) is an
 #'   open-source integer programming solver that is part of the Computational
 #'   Infrastructure for Operations Research (COIN-OR) project, an initiative to
 #'   promote development of open-source tools for operations research (a field
@@ -81,9 +81,9 @@ NULL
 #'   \pkg{Rsymphony} package to solve problems.}}
 #'
 #' @seealso For more information on how to install and obtain an academic
-#'   license of the Gurobi solver, see the \emph{Gurobi installation guide},
+#'   license of the Gurobi solver, see the *Gurobi installation guide*,
 #'   which can be found online at
-#'   \url{https://prioritizr.net/articles/gurobi_installation.html}.
+#'   <https://prioritizr.net/articles/gurobi_installation.html>.
 #'
 #' @examples
 #' ## Solve a conservation problem using the associated optimization model and some solver
@@ -120,7 +120,7 @@ NULL
 #'
 #' ## Report the solution to the problem you are working on:
 #' ## (i) total cost of the conservation plan;
-#' solution_report01 <- model_solution$getObjetiveValue()
+#' solution_report01 <- model_solution$getObjectiveValue()
 #' print(solution_report01)
 #'
 #' ## (ii) planning units suggested to be included (value 1) and not included (value 0)
@@ -138,11 +138,11 @@ NULL
 #' @name solve
 #'
 #' @rdname solve
-methods::setMethod(
-  "solve",
-  signature(a = "OptimizationProblem", b = "missing"),
-  function(a, b, solver = "", gap_limit = 0.0, time_limit = .Machine$integer.max, solution_limit = FALSE, cores = 2,
-           verbose = TRUE, name_output_file = "prioriaction_output", name_log = "gurobi_log", output_file = TRUE, log_file = FALSE, ...) {
+
+solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer.max,
+                  solution_limit = FALSE, cores = 2, verbose = TRUE,
+                  name_output_file = "output", output_file = TRUE, ...) {
+
     # assert that arguments are valid
     assertthat::assert_that(
       inherits(a, "OptimizationProblem"),
@@ -156,9 +156,7 @@ methods::setMethod(
       isTRUE(cores <= parallel::detectCores(TRUE)),
       assertthat::is.flag(verbose),
       assertthat::is.flag(output_file),
-      assertthat::is.flag(log_file),
       assertthat::is.string(name_output_file),
-      assertthat::is.string(name_log),
       no_extra_arguments(...)
     )
 
@@ -166,8 +164,8 @@ methods::setMethod(
       solver_default <- "gurobi"
     } else if (requireNamespace("Rsymphony", quietly = TRUE)) {
       solver_default <- "symphony"
-    #} else if (requireNamespace("Rglpk", quietly = TRUE)) {
-    #  solver_default <- "glpk"
+      #} else if (requireNamespace("Rglpk", quietly = TRUE)) {
+      #  solver_default <- "glpk"
     } else {
       stop("No optimization problem solvers found on system")
     }
@@ -191,9 +189,9 @@ methods::setMethod(
     }
 
     #arguments
-    arg_solve <- list(gap = gap_limit, timelimit = time_limit, cores = cores, verbose = verbose,
+    args <- list(gap = gap_limit, timelimit = time_limit, cores = cores, verbose = verbose,
                       solver = solver, solution_limit = solution_limit, name_output_file = name_output_file,
-                      name_log = name_log, output_file = output_file, log_file = log_file)
+                      output_file = output_file)
 
     ## Solving
     model <- a$getDataList()
@@ -218,8 +216,8 @@ methods::setMethod(
       params$TimeLimit <- time_limit
 
       #log gurobi
-      if(isTRUE(log_file)){
-        params$LogFile <- paste0(name_log,".txt")
+      if(isTRUE(output_file)){
+        params$LogFile <- paste0(name_output_file,"_log.txt")
       }
 
       #params$SolutionLimit <- solution_limit
@@ -228,6 +226,11 @@ methods::setMethod(
         params$SolutionLimit <- NULL
       } else {
         params$SolutionLimit <- 1
+      }
+
+      if(model$args$curve != 1){
+        params$FuncPieces <- 1
+        params$FuncPieceLength <- round(1/model$args$segments, digits = 1)
       }
 
       solution <- gurobi::gurobi(model, params)
@@ -242,11 +245,11 @@ methods::setMethod(
       )
 
       s <- pproto(NULL, Solution,
-        data = list(
-          objval = solution$objval, sol = solution$x, gap = solution$mipgap,
-          status = solution$status_code, runtime = solution$runtime, arg = arg_solve
-        ),
-        OptimizationClass = a
+                  data = list(
+                    objval = solution$objval, sol = solution$x, gap = solution$mipgap,
+                    status = solution$status_code, runtime = solution$runtime, args = args
+                  ),
+                  OptimizationClass = a
       )
     }
     ## SYMPHONY solver
@@ -263,7 +266,7 @@ methods::setMethod(
 
       runtime_symphony <- system.time(
         solution <- Rsymphony::Rsymphony_solve_LP(model$obj, model$mat, model$dir, model$rhs, model$bounds, model$types,
-          model$max, gap_limit = gap_limit, time_limit = time_limit, verbosity = verbose_mod, first_feasible = solution_limit
+                                                  model$max, gap_limit = gap_limit, time_limit = time_limit, verbosity = verbose_mod, first_feasible = solution_limit
         )
       )[[1]]
       #Time_limit
@@ -301,9 +304,9 @@ methods::setMethod(
       }
 
       s <- pproto(NULL, Solution,
-        data = list(objval = solution$objval, sol = solution$solution, gap = solution$gap, status = solution$status_code,
-                    runtime = runtime_symphony, arg = arg_solve),
-        OptimizationClass = a)
+                  data = list(objval = solution$objval, sol = solution$solution, gap = solution$gap, status = solution$status_code,
+                              runtime = runtime_symphony, args = args),
+                  OptimizationClass = a)
 
     } ## END IF (SYMPHONY Solver)
 
@@ -356,39 +359,54 @@ methods::setMethod(
     #   }
     # } ## END IF (GLPK solver)
 
+
+    # Getting unit solution
+    pus <- a$ConservationClass$getPlanningUnitsAmount()
+    pu_data <- a$ConservationClass$getData("pu")
+    pu_data <- pu_data[!names(pu_data) %in% c("cost", "status", "internal_id")]
+
+    # Getting actions solution
+
+    ## REDUCED
+    actions <- a$ConservationClass$getActionsAmount()
+    threats_data <- a$ConservationClass$getData("dist_threats")
+    threats_data <- threats_data[names(threats_data) %in% c("pu","threats")]
+
+    # Getting local benefits
+    dist_features_data <- a$ConservationClass$getData("dist_features")
+    number_of_dist_features <- nrow(dist_features_data)
+    dist_features_data <- dist_features_data[!names(dist_features_data) %in% c("amount","internal_species","internal_pu")]
+
+
+
     if (s$data$status == 0L || s$data$status == 2L || s$data$status == 4L) {
+      pu_data$solution <- base::round(s$data$sol[1:pus])
+      threats_data$solution <- base::round(s$data$sol[(pus + 1):(pus + actions)])
+      dist_features_data$local_benefit <- s$data$sol[(pus + actions +1):(pus + actions + number_of_dist_features)]
+    }
+    else{
+      pu_data$solution <- NA
+      threats_data$solution <- NA
+      dist_features_data$local_benefit <- NA
+    }
 
-      # Getting unit solution
-      pus <- a$ConservationClass$getPlanningUnitsAmount()
-      pu_data <- a$ConservationClass$getData("pu")
-      pu_data <- pu_data[!names(pu_data) %in% c("internal_id")]
-      pu_data$solution <- s$data$sol[1:pus]
-      s$data$sol_pu <- pu_data
+    s$data$sol_pu <- pu_data
+    s$data$sol_actions_reduced <- threats_data
+    s$data$local_benefits <- dist_features_data
 
-      # Getting actions solution
+    ## EXTENDED
+    threats_data <- threats_data[names(threats_data) %in% c("pu","threats","solution")]
+    actions_extended <- reshape2::dcast(threats_data, pu~threats,value.var = "solution")
+    actions_extended[is.na(actions_extended)] <- 0
+    actions_extended <- round(actions_extended,digits = 1)
 
-      ## REDUCED
-      actions <- a$ConservationClass$getActionsAmount()
-      threats_data <- a$ConservationClass$getData("threats")
-      threats_data <- threats_data[!names(threats_data) %in% c("internal_pu")]
-      threats_data$solution <- s$data$sol[(pus + 1):(pus + actions)]
-      s$data$sol_actions_reduced <- threats_data
+    s$data$sol_actions_extended <- actions_extended
 
-      ## EXTENDED
-      threats_data <- threats_data[names(threats_data) %in% c("pu","threats","solution")]
-      actions_extended <- reshape2::dcast(threats_data, pu~threats,value.var = "solution")
-      actions_extended[is.na(actions_extended)] <- 0
-      actions_extended <- round(actions_extended,digits = 1)
-
-      s$data$sol_actions_extended <- actions_extended
-
-
-      # Creating txt output
-      if(isTRUE(output_file)){
-        createtxt(s, name = name_output_file)
-      }
+    # Creating txt output
+    if(isTRUE(output_file)){
+      writeOutputs(s, name = name_output_file)
     }
 
     s
   }
-)
+

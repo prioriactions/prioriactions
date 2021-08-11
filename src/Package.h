@@ -2,6 +2,8 @@
 #ifndef GUARD_Package_h
 #define GUARD_Package_h
 
+/* Disable run-time debugging for faster code */
+#define BOOST_DISABLE_ASSERTS true
 
 /* Load header files, set plugins, load Rcpp namespace */
 

@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -54,22 +54,34 @@
 
 <meta property="og:title" content="The prioriactions R package — prioriactions" />
 <meta property="og:description" content="The prioriactions R package uses a mixed integer
- mathematical programming (MIP) approach for building and solving
- multi-action conservation planning problems, where the goal is to find an
- optimal combination of management actions that abate threats, in an
- efficient way while accounting for connectivity. Furthermore, the
- flexibility of the package interface allows implementing an extended version
- of the base model for minimizing fragmentation between different actions.
- These models were called as MAMP and MAMP-E by Salgado-Rojas et al.
- (2020), where you can get a detailed description of how both problems were
- mathematically modeled. 
+mathematical programming (MIP) approach for building and solving
+multi-action conservation planning problems, where the goal is to find an
+optimal combination of management actions that abate threats, in an
+efficient way while accounting for connectivity. Furthermore, the
+flexibility of the package interface allows implementing an extended version
+of the base model for minimizing fragmentation between different actions.
+These models were called as MAMP and MAMP-E by Salgado-Rojas et al.
+(2020), where you can get a detailed description of how both problems were
+mathematically modeled. 
 Once built a multi-action conservation problem, the next step is to solve
- it. For this, the package has a variety of commercial and open-source exact
- algorithm solvers that guarantee to find optimal solutions. The models
- implemented here have three advantages over their heuristic counterparts:
- shorter execution times, higher solutions quality, and a solution quality
- guarantee." />
-<meta property="og:image" content="https://josesalgr.github.io/prioriactions/logo.png" />
+it. For this, the package has a variety of commercial and open-source exact
+algorithm solvers that guarantee to find optimal solutions. The models
+implemented here have three advantages over their heuristic counterparts:
+shorter execution times, higher solutions quality, and a solution quality
+guarantee.
+Create an optimization model for the multi-action conservation
+planning problem, following the mathematical formulations used in
+Salgado-Rojas et al. (2020). This function is used to specify model
+configuration parameters related to connectivity issues and its internal
+modus operandi.
+Connectivity parameters (blm and blm_actions) manipulate the
+spatial fragmentation of planning units and/or action management to improve
+the compactness of the reserve solutions. Likewise, the other parameters
+(curve and segments) affect the linearization strategy
+used by the model internally in order to be solved under a linear
+programming approach. It is not recommended to modify the default
+values of the later ones." />
+<meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
 
@@ -83,6 +95,16 @@ Once built a multi-action conservation problem, the next step is to solve
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7WG0HBKPY7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7WG0HBKPY7');
+</script>
 
 
   </head>
@@ -101,7 +123,7 @@ Once built a multi-action conservation problem, the next step is to solve
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -114,6 +136,9 @@ Once built a multi-action conservation problem, the next step is to solve
   </a>
 </li>
 <li>
+  <a href="../articles/prioriactions.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -123,6 +148,16 @@ Once built a multi-action conservation problem, the next step is to solve
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Introduction</li>
+    <li>
+      <a href="../articles/sensitivities.html">sensitivities</a>
+    </li>
+    <li>
+      <a href="../articles/analysis.html">analysis</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Study cases</li>
     <li>
       <a href="../articles/MitchellRiver.html">Mitchell River</a>
     </li>
@@ -159,34 +194,100 @@ Once built a multi-action conservation problem, the next step is to solve
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>The <span class="pkg">prioriactions</span> R package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/package.R'><code>R/package.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/package.R'><code>R/package.R</code></a>, <a href='https://github.com/prioriactions/prioriactions/blob/master/R/prioriactions.R'><code>R/prioriactions.R</code></a></small>
     <div class="hidden name"><code>prioriactions.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>The <span class="pkg">prioriactions R</span> package uses a mixed integer
- mathematical programming (MIP) approach for building and solving
- multi-action conservation planning problems, where the goal is to find an
- optimal combination of management actions that abate threats, in an
- efficient way while accounting for connectivity. Furthermore, the
- flexibility of the package interface allows implementing an extended version
- of the base model for minimizing fragmentation between different actions.
- These models were called as MAMP and MAMP-E by Salgado-Rojas <em>et al.</em>
- (2020), where you can get a detailed description of how both problems were
- mathematically modeled. <br /></p>
+mathematical programming (MIP) approach for building and solving
+multi-action conservation planning problems, where the goal is to find an
+optimal combination of management actions that abate threats, in an
+efficient way while accounting for connectivity. Furthermore, the
+flexibility of the package interface allows implementing an extended version
+of the base model for minimizing fragmentation between different actions.
+These models were called as MAMP and MAMP-E by Salgado-Rojas <em>et al.</em>
+(2020), where you can get a detailed description of how both problems were
+mathematically modeled. <br /></p>
 <p>Once built a multi-action conservation problem, the next step is to solve
- it. For this, the package has a variety of commercial and open-source exact
- algorithm solvers that guarantee to find optimal solutions. The models
- implemented here have three advantages over their heuristic counterparts:
- shorter execution times, higher solutions quality, and a solution quality
- guarantee.</p>
+it. For this, the package has a variety of commercial and open-source exact
+algorithm solvers that guarantee to find optimal solutions. The models
+implemented here have three advantages over their heuristic counterparts:
+shorter execution times, higher solutions quality, and a solution quality
+guarantee.</p>
+<p>Create an optimization model for the multi-action conservation
+planning problem, following the mathematical formulations used in
+Salgado-Rojas <em>et al.</em> (2020). This function is used to specify model
+configuration parameters related to connectivity issues and its internal
+<em>modus operandi</em>.</p>
+<p>Connectivity parameters (<code>blm</code> and <code>blm_actions</code>) manipulate the
+spatial fragmentation of planning units and/or action management to improve
+the compactness of the reserve solutions. Likewise, the other parameters
+(<code>curve</code> and <code>segments</code>) affect the linearization strategy
+used by the model internally in order to be solved under a linear
+programming approach. <strong>It is not recommended to modify the default
+values of the later ones</strong>.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, <span class='va'>...</span><span class='op'>)</span>
 
+<span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>Object of class <code>ConservationProblem-class()</code> that
+specifies the basic data used in a problem of prioritization of multiple
+conservation actions. This object must be created using the
+<code><a href='problem.html'>problem()</a></code> function.</p></td>
+    </tr>
+    <tr>
+      <th>blm</th>
+      <td><p>A <code>numeric</code> value that indicates the penalty factor
+associated to the spatial fragmentation of planning units, similar to
+<strong>Boundary Length Modifier (BLM)</strong> in <em>Marxan</em>. This argument
+only has an effect when the <code>bound()</code> argument of
+<code><a href='problem.html'>problem()</a></code> function is a <code>data.frame</code> object. <strong>The
+default argument is zero</strong>.</p></td>
+    </tr>
+    <tr>
+      <th>blm_actions</th>
+      <td><p>A <code>numeric</code> value that indicates the penalty factor
+associated to the spatial fragmentation of actions. <strong>The default
+argument is zero</strong>.</p></td>
+    </tr>
+    <tr>
+      <th>curve</th>
+      <td><p>An <code>integer</code> value that selects the type of continuous
+curve that will represent the expression (linear or non-linear) associated
+with a specific constraint in this model. Therefore, the curve can
+represent a linear (1), quadratic (2) or cubic (3) function. <strong>The
+default argument is 3 and it is not recommended to change this value unless
+you have advanced knowledge of the linearization of mathematical model</strong>.</p></td>
+    </tr>
+    <tr>
+      <th>segments</th>
+      <td><p>An <code>integer</code> value that selects the number of
+segments (1, 2 or 3) that will have the <em>piecewise linear function</em>
+in charge of approximating the non-linear expression contained in a
+specific constraint of this model. <strong>The default argument is 3 and it
+is not recommended to change this value unless you have advanced knowledge
+of the linearization of mathematical model</strong>.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An object of class <code>OptimizationProblem-class()</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><strong>Put details here!</strong></p>
+<p><strong>Put details here! The details may include the mathematical
+formulation of the optimization model associated with this conservation
+problem and/or a rough description of the mathematical model, and/or what
+happens when the parameters are set in one way or another.</strong></p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
@@ -197,7 +298,73 @@ multi-action planning for threat management</em>. Ecological Modelling 2020;
 418:108901. <br /> (DOI: <a href='https://doi.org/10.1016/j.ecolmodel.2019.108901'>https://doi.org/10.1016/j.ecolmodel.2019.108901</a>)</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <div class='dont-index'><p>For more information regarding the arguments <code>blm</code> and
+<code>blm_actions</code>, see the <a href='https://marxansolutions.org'>official <em>Marxan</em> website</a> and the article by Salgado-Rojas <em>et al.</em>
+(2020), respectively. Also, for more information regarding the arguments
+<code>curve</code> and <code>segments</code>, see the supplementary material
+associated with the article by Salgado-Rojas <em>et al.</em> (2020), which can
+be found online at <a href='https://doi.org/10.1016/j.ecolmodel.2019.108901'>https://doi.org/10.1016/j.ecolmodel.2019.108901</a>.</p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='r-in'><span class='co'>## Create an optimization model for the multi-action conservation</span></span>
+<span class='r-in'><span class='co'>## planning problem using a data instance that has been created in R.</span></span>
+<span class='r-in'><span class='co'>## This example uses input files included into package.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load package</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://prioriactions.github.io/prioriactions'>prioriactions</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load data</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_dist_features_data</span>, <span class='va'>example_dist_threats_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensitivity_data</span>, <span class='va'>example_bound_data</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Create data instance</span></span>
+<span class='r-in'><span class='va'>input</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>example_pu_data</span>, features <span class='op'>=</span> <span class='va'>example_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>example_dist_features_data</span>,</span>
+<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>example_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>example_sensitivity_data</span>,</span>
+<span class='r-in'>  bound <span class='op'>=</span> <span class='va'>example_bound_data</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Create optimization model</span></span>
+<span class='r-in'><span class='va'>portfolio</span> <span class='op'>&lt;-</span> <span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>input</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, blm <span class='op'>=</span> <span class='fl'>0</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span>, time_limit <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The following pu's do not contain species: 59 97 109 118 121 122 123 127 129 134 136 139 141 142 146 166 167 185 194 195 196 198 211 230</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The blm argument was set to 0, so the boundary data has no effect</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 1254 rows, 2810 columns and 5041 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x46965b47</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 1004 general constraints</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 2008 continuous, 802 integer (802 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [2e-01, 4e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [3e+00, 5e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [3e+01, 1e+02]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 2774.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve removed 628 rows and 1460 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.03s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 626 rows, 1350 columns, 3040 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 221 SOS constraint(s)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 1979.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 1222 continuous, 128 integer (64 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 1.449000e+03, 190 iterations, 0.00 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> *    0     0               0    1449.0000000 1449.00000  0.00%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 0 nodes (190 simplex iterations) in 0.03 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 3: 1449 1979 2774 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 1.449000000000e+03, best bound 1.449000000000e+03, gap 0.0000%</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -209,7 +376,7 @@ multi-action planning for threat management</em>. Ecological Modelling 2020;
 
       <footer>
       <div class="copyright">
-  <p>Developed by .</p>
+  <p>Developed by <a href='https://www.researchgate.net/profile/Jose_Salgado-Rojas'>Jose Salgado-Rojas</a>, <a href='https://www.researchgate.net/profile/Irlanda_Ceballos'>Irlanda Ceballos-Fuentealba</a>, <a href='https://www.researchgate.net/profile/Virgilio_Hermoso'>Virgilio Hermoso</a>, <a href='https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda'>Eduardo Alvarez-Miranda</a>, <a href='https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo'>Jordi Garcia-Gonzalo</a>.</p>
 </div>
 
 <div class="pkgdown">

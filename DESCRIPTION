@@ -1,6 +1,6 @@
 Package: prioriactions
 Type: Package
-Version: 0.1.2
+Version: 0.2.0
 Title: Multi-action conservation planning in R             
 Description: The prioriactions R package uses a mixed integer mathematical programming (MIP)
         approach for building and solving multi-action conservation planning problems, 
@@ -14,61 +14,94 @@ Description: The prioriactions R package uses a mixed integer mathematical progr
         The models implemented here have three advantages over their heuristic 
         counterparts: shorter execution times, higher solutions quality, and a solution 
         quality guarantee.
-Authors@R: c(person(c('José'), 'Salgado-Rojas',
-             email='jose.salgado.rojas@hotmail.com', role = c('aut')),
+Authors@R: c(person(c('Jose'), 'Salgado-Rojas',
+             email='jose.salgado.rojas@hotmail.com', role = c('aut','cre')),
              person(c('Irlanda'), 'Ceballos-Fuentealba',
-             email='iceballosfuentealba@gmail.com', role = c('aut','cre')),
+             email='iceballosfuentealba@gmail.com', role = c('aut')),
              person(c('Virgilio'), 'Hermoso',
              email='virgilio.hermoso@gmail.com', role = c('aut')),
-             person(c('Eduardo'), 'Álvarez-Miranda',
+             person(c('Eduardo'), 'Alvarez-Miranda',
              email='eduardo.alvmir@gmail.com', role = c('aut')),
              person(c('Jordi'), 'Garcia-Gonzalo',
              email='j.garcia@ctfc.es', role = c('aut')))        
 Depends:
   R (>= 3.5.0)
 Imports: 
-  assertthat (>= 0.2.0),
-  Matrix,
-  data.table,
-  proto,
-  magrittr,
-  methods,
-  purrr,
-  Rsymphony,
-  readr,
-  tidyverse,
-  reshape2
+    assertthat (>= 0.2.0),
+    Matrix,
+    data.table,
+    proto,
+    magrittr,
+    methods,
+    purrr,
+    Rsymphony,
+    readr,
+    tidyverse,
+    dplyr,
+    reshape2,
+    Rcpp,
+    ggplot2,
+    lifecycle
 Suggests: 
   knitr,
-  dplyr,
   gurobi (>= 9.0),
   roxygen2,
-  Rglpk,
   rmarkdown,
-  testthat,
-  Rcpp
+  testthat
+LinkingTo: 
+  Rcpp, 
+  RcppArmadillo, 
+  BH
 Encoding: UTF-8
 LazyData: true
 SystemRequirements: C++11
 License: GPL-3
-LinkingTo: Rcpp, RcppArmadillo, BH
 RoxygenNote: 7.1.1
 URL: https://prioriactions.github.io/prioriactions, 
   https://github.com/prioriactions/prioriactions
 BugReports: https://github.com/prioriactions/prioriactions/issues
 VignetteBuilder: knitr
 Collate: 
-    'MAMP_model.R'
+    'RcppExports.R'
     'internal.R'
-    'conservation_problem.R'
-    'createtxt.R'
+    'conservationProblem-class.R'
+    'writeOutputs.R'
+    'optimizationProblem-class.R'
     'presolve.R'
-    'min_costs.R'
-    'optimization_problem.R'
+    'evalBlm.R'
+    'evalBudget.R'
+    'evalTarget.R'
+    'getActions.R'
+    'getActionsConnectivity.R'
+    'getActionsCost.R'
+    'getBenefit.R'
+    'getGap.R'
+    'getLocalBenefit.R'
+    'getModelSense.R'
+    'getNconstraints.R'
+    'getNvariables.R'
+    'getObjectiveValue.R'
+    'getPlanningUnits.R'
+    'getPlanningUnitsConnectivity.R'
+    'getPlanningUnitsCost.R'
+    'getSizeA.R'
+    'getStatus.R'
+    'getStatusCode.R'
+    'getTimeSolving.R'
+    'getTotalBenefit.R'
+    'getTotalConnectivity.R'
+    'getTotalCost.R'
+    'maximizeBenefits.R'
+    'minimizeCosts.R'
     'package.R'
+    'plot.R'
+    'portfolio-class.R'
     'print.R'
+    'prioriactions.R'
     'problem.R'
     'show.R'
-    'solution.R'
+    'solution-class.R'
     'solve.R'
+    'utils-pipe.R'
     'zzz.R'
+Roxygen: list(markdown = TRUE)

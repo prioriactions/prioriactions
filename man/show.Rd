@@ -9,6 +9,7 @@
 \alias{show.ConservationProblem}
 \alias{show.OptimizationProblem}
 \alias{show.Solution}
+\alias{show.Portfolio}
 \title{Show}
 \usage{
 \method{show}{ConservationProblem}(x, ...)
@@ -16,6 +17,8 @@
 \method{show}{OptimizationProblem}(x, ...)
 
 \method{show}{Solution}(x, ...)
+
+\method{show}{Portfolio}(x, ...)
 }
 \arguments{
 \item{x}{Any object.}
@@ -33,5 +36,5 @@ a <- 1:4
 show(a)
 }
 \seealso{
-\code{\link[methods]{show}}.
+\code{\link[methods:show]{methods::show()}}.
 }

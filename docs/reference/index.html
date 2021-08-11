@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -53,7 +53,7 @@
 
 
 <meta property="og:title" content="Function reference" />
-<meta property="og:image" content="https://josesalgr.github.io/prioriactions/logo.png" />
+<meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
 
@@ -67,6 +67,16 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7WG0HBKPY7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7WG0HBKPY7');
+</script>
 
 
   </head>
@@ -85,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -98,6 +108,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/prioriactions.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -107,6 +120,16 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Introduction</li>
+    <li>
+      <a href="../articles/sensitivities.html">sensitivities</a>
+    </li>
+    <li>
+      <a href="../articles/analysis.html">analysis</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Study cases</li>
     <li>
       <a href="../articles/MitchellRiver.html">Mitchell River</a>
     </li>
@@ -156,8 +179,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-summary" class="hasAnchor"><a href="#section-summary" class="anchor"></a>Summary</h2>
-          <p class="section-desc"><p>Summary of the package</p></p>
+          <h2 id="section-solve-problems" class="hasAnchor"><a href="#section-solve-problems" class="anchor"></a>Solve problems</h2>
+          <p class="section-desc"><p>Function for creating new problems and solving them</p></p>
         </th>
       </tr>
       
@@ -168,15 +191,46 @@
       <tr>
         
         <td>
-          <p><code><a href="prioriactions.html">prioriactions</a></code> </p>
+          <p><code><a href="prioriactions.html">prioriactions()</a></code> <code><a href="prioriactions.html">prioriactions()</a></code> </p>
         </td>
         <td><p>The <span class="pkg">prioriactions</span> R package</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-create-and-solve-problems" class="hasAnchor"><a href="#section-create-and-solve-problems" class="anchor"></a>Create and solve problems</h2>
-          <p class="section-desc"><p>Functions for creating new problems and solving them</p></p>
+          <h2 id="section-solve-multiple-problems-with-differents-params" class="hasAnchor"><a href="#section-solve-multiple-problems-with-differents-params" class="anchor"></a>Solve multiple problems with differents params</h2>
+          <p class="section-desc"><p>Function for evaluate differents params for a specific problem</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="evalBlm.html">evalBlm()</a></code> </p>
+        </td>
+        <td><p>evalBlm</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="evalTarget.html">evalTarget()</a></code> </p>
+        </td>
+        <td><p>sensitivityAnalysisBlm</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="evalBudget.html">evalBudget()</a></code> </p>
+        </td>
+        <td><p>evalBudget</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-solve-problems-by-steps" class="hasAnchor"><a href="#section-solve-problems-by-steps" class="anchor"></a>Solve problems by steps</h2>
+          <p class="section-desc"><p>Functions for creating new problems and solving in a sequential way</p></p>
         </th>
       </tr>
       
@@ -193,21 +247,27 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="min_costs.html">min_costs()</a></code> </p>
+          <p><code><a href="minimizeCosts.html">minimizeCosts()</a></code> <code><a href="minimizeCosts.html">minimizeCosts()</a></code> </p>
         </td>
-        <td><p>min_costs</p></td>
+        <td><p>minimizeCosts</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="solve.html">solve(<i>&lt;OptimizationProblem&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> </p>
+          <p><code><a href="maximizeBenefits.html">maximizeBenefits()</a></code> <code><a href="maximizeBenefits.html">maximizeBenefits()</a></code> </p>
+        </td>
+        <td><p>maximizeBenefits</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="solve.html">solve()</a></code> </p>
         </td>
         <td><p>solve</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-class-definitions-and-methods" class="hasAnchor"><a href="#section-class-definitions-and-methods" class="anchor"></a>Class definitions and methods</h2>
-          <p class="section-desc"><p>Classes and other functions</p></p>
+          <h2 id="section-get-solution-information" class="hasAnchor"><a href="#section-get-solution-information" class="anchor"></a>Get solution information</h2>
+          <p class="section-desc"><p>Functions to obtain various information about the solution</p></p>
         </th>
       </tr>
       
@@ -218,21 +278,204 @@
       <tr>
         
         <td>
-          <p><code><a href="ConservationProblem-class.html">ConservationProblem-class</a></code> </p>
+          <p><code><a href="getActions.html">getActions()</a></code> </p>
+        </td>
+        <td><p>getActions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getActionsConnectivity.html">getActionsConnectivity()</a></code> </p>
+        </td>
+        <td><p>getActionsConnectivity</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getActionsCost.html">getActionsCost()</a></code> </p>
+        </td>
+        <td><p>getActionsCost</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getPlanningUnits.html">getPlanningUnits()</a></code> </p>
+        </td>
+        <td><p>getPlanningUnits</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getPlanningUnitsConnectivity.html">getPlanningUnitsConnectivity()</a></code> </p>
+        </td>
+        <td><p>getPlanningUnitsConnectivity</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getPlanningUnitsCost.html">getPlanningUnitsCost()</a></code> </p>
+        </td>
+        <td><p>getPlanningUnitsCost</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getBenefit.html">getBenefit()</a></code> </p>
+        </td>
+        <td><p>getBenefit</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getLocalBenefit.html">getLocalBenefit()</a></code> </p>
+        </td>
+        <td><p>getLocalBenefit</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getTotalBenefit.html">getTotalBenefit()</a></code> </p>
+        </td>
+        <td><p>getTotalBenefit</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getGap.html">getGap()</a></code> </p>
+        </td>
+        <td><p>getGap</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getObjectiveValue.html">getObjectiveValue()</a></code> </p>
+        </td>
+        <td><p>getObjectiveValue</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getStatus.html">getStatus()</a></code> </p>
+        </td>
+        <td><p>getStatus</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getStatusCode.html">getStatusCode()</a></code> </p>
+        </td>
+        <td><p>getStatusCode</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getTimeSolving.html">getTimeSolving()</a></code> </p>
+        </td>
+        <td><p>getTimeSolving</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getTotalConnectivity.html">getTotalConnectivity()</a></code> </p>
+        </td>
+        <td><p>getTotalConnectivity</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getTotalCost.html">getTotalCost()</a></code> </p>
+        </td>
+        <td><p>getTotalCost</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-get-mathematical-model-information" class="hasAnchor"><a href="#section-get-mathematical-model-information" class="anchor"></a>Get mathematical model information</h2>
+          <p class="section-desc"><p>Functions to obtain various information about the mathematical model</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="getModelSense.html">getModelSense()</a></code> </p>
+        </td>
+        <td><p>getModelSense</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getNconstraints.html">getNconstraints()</a></code> </p>
+        </td>
+        <td><p>getNconstraints</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getNvariables.html">getNvariables()</a></code> </p>
+        </td>
+        <td><p>getNvariables</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getSizeA.html">getSizeA()</a></code> </p>
+        </td>
+        <td><p>getSizeA</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-class-definitions" class="hasAnchor"><a href="#section-class-definitions" class="anchor"></a>Class definitions</h2>
+          <p class="section-desc"><p>Classes for handle mathematical problems</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="conservationProblem-class.html">conservationProblem-class</a></code> </p>
         </td>
         <td><p>Conservation problem class</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="OptimizationProblem-class.html">OptimizationProblem-class</a></code> </p>
+          <p><code><a href="optimizationProblem-class.html">optimizationProblem-class</a></code> </p>
         </td>
         <td><p>Optimization problem class</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="Solution-class.html">Solution-class</a></code> </p>
+          <p><code><a href="solution-class.html">solution-class</a></code> </p>
         </td>
         <td><p>Solution class</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="portfolio-class.html">portfolio-class</a></code> </p>
+        </td>
+        <td><p>Portfolio class</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-miscellaneous" class="hasAnchor"><a href="#section-miscellaneous" class="anchor"></a>Miscellaneous</h2>
+          <p class="section-desc"><p>Various useful functions</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="plot.html">plot(<i>&lt;Portfolio&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plot</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.html">print(<i>&lt;ConservationProblem&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;OptimizationProblem&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;Solution&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;Portfolio&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="show.html">show(<i>&lt;ConservationProblem&gt;</i>)</a></code> <code><a href="show.html">show(<i>&lt;OptimizationProblem&gt;</i>)</a></code> <code><a href="show.html">show(<i>&lt;Solution&gt;</i>)</a></code> <code><a href="show.html">show(<i>&lt;Portfolio&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Show</p></td>
       </tr>
     </tbody>
     </table>
@@ -248,7 +491,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://www.researchgate.net/profile/Jose_Salgado-Rojas'>José Salgado-Rojas</a>, <a href='https://www.researchgate.net/profile/Irlanda_Ceballos'>Irlanda Ceballos-Fuentealba</a>, <a href='https://www.researchgate.net/profile/Virgilio_Hermoso'>Virgilio Hermoso</a>, <a href='https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda'>Eduardo Álvarez-Miranda</a>, <a href='https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo'>Jordi Garcia-Gonzalo</a>.</p>
+  <p>Developed by <a href='https://www.researchgate.net/profile/Jose_Salgado-Rojas'>Jose Salgado-Rojas</a>, <a href='https://www.researchgate.net/profile/Irlanda_Ceballos'>Irlanda Ceballos-Fuentealba</a>, <a href='https://www.researchgate.net/profile/Virgilio_Hermoso'>Virgilio Hermoso</a>, <a href='https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda'>Eduardo Alvarez-Miranda</a>, <a href='https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo'>Jordi Garcia-Gonzalo</a>.</p>
 </div>
 
 <div class="pkgdown">

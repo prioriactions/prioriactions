@@ -12,7 +12,7 @@ NULL
 #'
 #' @return None.
 #'
-#' @seealso \code{\link[methods]{show}}.
+#' @seealso [methods::show()].
 #'
 #' @aliases show, ConservationProblem-method show, OptimizationProblem-method show, Solution-method show
 #'
@@ -35,3 +35,9 @@ show.OptimizationProblem <- function(x, ...) x$show()
 #' @method show Solution
 #' @export
 show.Solution <- function(x, ...) x$show()
+
+#' @rdname show
+#' @method show Portfolio
+#' @export
+show.Portfolio<- function(x, ...) x$show()
+
