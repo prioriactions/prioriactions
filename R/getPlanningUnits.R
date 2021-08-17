@@ -100,7 +100,7 @@ getPlanningUnits <- function(x) {
   else if(inherits(x, "Portfolio")){
     cont_aux = 0
 
-    for(it in 1:length(x$data)){
+    for(it in seq_len(length(x$data))){
 
       if(cont_aux == 0){
         unit_solution <- getPlanningUnits(x$data[[it]])

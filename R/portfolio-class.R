@@ -91,9 +91,9 @@ Portfolio <- pproto(
     "Portfolio object"
   },
   getNames = function(self) {
-    return_list <- c()
+    return_list <- NULL
 
-    for(it in 1:length(self$data)){
+    for(it in seq_len(length(self$data))){
 
       out <- self$data[[it]]$name
 
@@ -105,7 +105,7 @@ Portfolio <- pproto(
   getBlms = function(self) {
     return_list <- c()
 
-    for(it in 1:length(self$data)){
+    for(it in seq_len(length(self$data))){
 
       out <- self$data[[it]]$OptimizationClass$data$args$blm
 

@@ -39,7 +39,6 @@ NumericVector rcpp_stats_connectivity_units(DataFrame pu_data,
       connectivity_units[pu_id2[i]] = connectivity_units[pu_id2[i]] + bound[i];
     }
   }
-
   for(int i = 0; i < number_of_units; i++){
     connectivity_units_solution[i] = connectivity_units[i]*solution[i];
   }
@@ -65,7 +64,5 @@ NumericVector rcpp_stats_connectivity_units(DataFrame pu_data,
       }
     }
   }
-
   return connectivity_units_solution;
-
 }

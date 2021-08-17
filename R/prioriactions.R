@@ -85,9 +85,6 @@ NULL
 #'
 #' ## Create optimization model
 #' portfolio <- prioriactions(data = input, name_model = "minimizeCosts", blm = 0, output_file = FALSE, time_limit = 10)
-#'
-#' @export
-prioriactions <- function(x, ...) UseMethod("prioriactions")
 
 #' @rdname prioriactions
 #' @export

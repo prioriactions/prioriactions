@@ -101,7 +101,7 @@ evalBudget <- function(data = list(), ...) {
   conservation_model <- do.call(problem, args = data)
 
   #verifying budget length
-  if(any(names(params) %in% c("budget"))){
+  if(any(names(params) %in% "budget")){
     assertthat::assert_that(
       is.numeric(params$budget),
       length(params$budget) > 1
@@ -157,7 +157,7 @@ evalBudget <- function(data = list(), ...) {
 
 
     #changing name of output file
-    if(any(names(params) %in% c("name_output_file"))){
+    if(any(names(params) %in% "name_output_file")){
       params_iter$name_output_file <- paste0(params$name_output_file, "_", name_iter)
     }
     else{

@@ -6,8 +6,6 @@
 \title{The \pkg{prioriactions} R package}
 \usage{
 prioriactions(data = list(), name_model = "minimizeCosts", ...)
-
-prioriactions(data = list(), name_model = "minimizeCosts", ...)
 }
 \arguments{
 \item{x}{Object of class \code{\link[=ConservationProblem-class]{ConservationProblem-class()}} that
@@ -104,7 +102,6 @@ input <- list(
 
 ## Create optimization model
 portfolio <- prioriactions(data = input, name_model = "minimizeCosts", blm = 0, output_file = FALSE, time_limit = 10)
-
 }
 \references{
 \itemize{ \item Salgado-Rojas J, <U+00C1>lvarez-Miranda E, Hermoso V,

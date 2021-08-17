@@ -25,14 +25,12 @@ bool rcpp_constraint_budget(SEXP x,
   NumericVector unit_costs = pu_data["cost"];
 
   for(int i = 0; i < number_of_units; i++){
-
     op->_A_i.push_back(row_constraint);
     op->_A_j.push_back(col_constraint);
     op->_A_x.push_back(unit_costs[i]);
 
     col_constraint = col_constraint + 1;
   }
-
 
   for(int a = 0; a < number_of_actions; a++){
     op->_A_i.push_back(row_constraint);
@@ -41,10 +39,8 @@ bool rcpp_constraint_budget(SEXP x,
 
     col_constraint = col_constraint + 1;
   }
-
   op->_rhs.push_back(budget);
   op->_sense.push_back("<=");
-
 
   return true;
 }

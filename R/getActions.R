@@ -110,7 +110,7 @@ getActions <- function(x, format = "extended") {
 
     cont_aux = 0
 
-    for(it in 1:length(x$data)){
+    for(it in seq_len(length(x$data))){
 
       if(cont_aux == 0){
         action_solution <- getActions(x$data[[it]], format = "reduced")

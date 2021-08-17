@@ -111,7 +111,7 @@ evalBlm <- function(data = list(), name_model = "minimizeCosts", ...) {
   conservation_model <- do.call(problem, args = data)
 
   #verifying blm length
-  if(any(names(params) %in% c("blm"))){
+  if(any(names(params) %in% "blm")){
     assertthat::assert_that(
       is.numeric(params$blm),
       length(params$blm) > 1
@@ -162,7 +162,7 @@ evalBlm <- function(data = list(), name_model = "minimizeCosts", ...) {
                                                             params_iter[names(params_iter) %in% params_model]))
 
     #changing name of output file
-    if(any(names(params) %in% c("name_output_file"))){
+    if(any(names(params) %in% "name_output_file")){
       params_iter$name_output_file <- paste0(params$name_output_file, "_", name_iter)
     }
     else{

@@ -302,7 +302,7 @@ methods::setMethod(
 
     ## boundary
     assertthat::assert_that(inherits(boundary, c("NULL", "data.frame")))
-    if (inherits(boundary, c("data.frame"))) {
+    if (inherits(boundary, "data.frame")) {
       assertthat::assert_that(
         assertthat::has_name(boundary, "id1"),
         assertthat::has_name(boundary, "id2"),
@@ -347,7 +347,7 @@ methods::setMethod(
       max_intensities <- dist_threats %>% dplyr::group_by(threat) %>% dplyr::summarise(value = max(amount))
 
       sensitivity$b <- 1
-      for(i in 1:nrow(max_intensities)){
+      for(i in seq_len(nrow(max_intensities))){
         if(any(sensitivity$threat == max_intensities$threat[i][[1]])){
           sensitivity[sensitivity$threat == max_intensities$threat[i][[1]], ]$b <- max_intensities$value[i][[1]]
         }
@@ -431,13 +431,13 @@ methods::setMethod(
     ## Creating internal id's
 
     # pu
-    pu$internal_id <- seq(1:nrow(pu))
+    pu$internal_id <- seq_len(nrow(pu))
 
     # features
-    features$internal_id <- seq(1:nrow(features))
+    features$internal_id <- seq_len(nrow(features))
 
     # threats
-    threats$internal_id <- seq(1:nrow(threats))
+    threats$internal_id <- seq_len(nrow(threats))
 
     # boundary
     if(!is.null(boundary)){

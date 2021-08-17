@@ -46,7 +46,6 @@ Suggests:
   gurobi (>= 9.0),
   roxygen2,
   rmarkdown,
-  markdown,
   testthat
 LinkingTo: 
   Rcpp, 

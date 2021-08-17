@@ -34,7 +34,6 @@ NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data,
 
   arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data, number_of_units, number_of_threats);
 
-
   for(int a = 0; a < number_of_actions; a++){
 
     if(boundary_size != 0){
@@ -52,7 +51,6 @@ NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data,
         }
       }
     }
-
     connectivity_actions_solution[a] = connectivity_actions_solution[a] + connectivity_actions[a]*solution[a];
   }
 
@@ -88,6 +86,5 @@ NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data,
       }
     }
   }
-
   return connectivity_actions_solution;
 }

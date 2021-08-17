@@ -111,7 +111,7 @@ evalTarget <- function(data = list(), prop = 1, ...) {
     stop("invalid prop param")
   }
 
-  if(any(names(params) %in% c("recovery"))){
+  if(any(names(params) %in% "recovery")){
     recovery = params$recovery
   }
   else{
@@ -173,7 +173,7 @@ evalTarget <- function(data = list(), prop = 1, ...) {
     }
 
     #changing name of output file
-    if(any(names(params) %in% c("name_output_file"))){
+    if(any(names(params) %in% "name_output_file")){
       params_iter$name_output_file <- paste0(params$name_output_file, "_", name_iter)
     }
     else{

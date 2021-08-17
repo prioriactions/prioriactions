@@ -27,25 +27,21 @@ authors:
 
 reference:
 
-  - title: Solve problems
-    desc: Function for creating new problems and solving them
-    contents:
-      - prioriactions
-
-  - title: Solve multiple problems with differents params
-    desc: Function for evaluate differents params for a specific problem
-    contents:
-      - evalBlm
-      - evalTarget
-      - evalBudget
-
-  - title: Solve problems by steps
-    desc: Functions for creating new problems and solving in a sequential way
+  - title: Create and solve problems
+    desc: Functions for creating new problems and solving them
     contents:
       - problem
       - minimizeCosts
       - maximizeBenefits
       - solve
+      - prioriactions
+
+  - title: Evaluate params
+    desc: Function for evaluate differents params for a specific problem
+    contents:
+      - evalBlm
+      - evalTarget
+      - evalBudget
 
   - title: Get solution information
     desc: Functions to obtain various information about the solution

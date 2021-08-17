@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The prioriactions R package — prioriactions • prioriactions</title>
+<title>sensitivityAnalysisBlm — prioriactions • prioriactions</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,24 +52,8 @@
 
 
 
-<meta property="og:title" content="The prioriactions R package — prioriactions" />
-<meta property="og:description" content="The prioriactions R package uses a mixed integer
-mathematical programming (MIP) approach for building and solving
-multi-action conservation planning problems, where the goal is to find an
-optimal combination of management actions that abate threats, in an
-efficient way while accounting for connectivity. Furthermore, the
-flexibility of the package interface allows implementing an extended version
-of the base model for minimizing fragmentation between different actions.
-These models were called as MAMP and MAMP-E by Salgado-Rojas et al.
-(2020), where you can get a detailed description of how both problems were
-mathematically modeled. 
-Once built a multi-action conservation problem, the next step is to solve
-it. For this, the package has a variety of commercial and open-source exact
-algorithm solvers that guarantee to find optimal solutions. The models
-implemented here have three advantages over their heuristic counterparts:
-shorter execution times, higher solutions quality, and a solution quality
-guarantee.
-Create an optimization model for the multi-action conservation
+<meta property="og:title" content="sensitivityAnalysisBlm — prioriactions" />
+<meta property="og:description" content="Create an optimization model for the multi-action conservation
 planning problem, following the mathematical formulations used in
 Salgado-Rojas et al. (2020). This function is used to specify model
 configuration parameters related to connectivity issues and its internal
@@ -193,29 +177,13 @@ values of the later ones." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>The <span class="pkg">prioriactions</span> R package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/package.R'><code>R/package.R</code></a>, <a href='https://github.com/prioriactions/prioriactions/blob/master/R/prioriactions.R'><code>R/prioriactions.R</code></a></small>
+    <h1>sensitivityAnalysisBlm</h1>
+    <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/prioriactions.R'><code>R/prioriactions.R</code></a></small>
     <div class="hidden name"><code>prioriactions.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The <span class="pkg">prioriactions R</span> package uses a mixed integer
-mathematical programming (MIP) approach for building and solving
-multi-action conservation planning problems, where the goal is to find an
-optimal combination of management actions that abate threats, in an
-efficient way while accounting for connectivity. Furthermore, the
-flexibility of the package interface allows implementing an extended version
-of the base model for minimizing fragmentation between different actions.
-These models were called as MAMP and MAMP-E by Salgado-Rojas <em>et al.</em>
-(2020), where you can get a detailed description of how both problems were
-mathematically modeled. <br /></p>
-<p>Once built a multi-action conservation problem, the next step is to solve
-it. For this, the package has a variety of commercial and open-source exact
-algorithm solvers that guarantee to find optimal solutions. The models
-implemented here have three advantages over their heuristic counterparts:
-shorter execution times, higher solutions quality, and a solution quality
-guarantee.</p>
-<p>Create an optimization model for the multi-action conservation
+    <p>Create an optimization model for the multi-action conservation
 planning problem, following the mathematical formulations used in
 Salgado-Rojas <em>et al.</em> (2020). This function is used to specify model
 configuration parameters related to connectivity issues and its internal
@@ -229,9 +197,7 @@ programming approach. <strong>It is not recommended to modify the default
 values of the later ones</strong>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -283,21 +249,10 @@ of the linearization of mathematical model</strong>.</p></td>
     <p>An object of class <code>OptimizationProblem-class()</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><strong>Put details here!</strong></p>
-<p><strong>Put details here! The details may include the mathematical
+    <p><strong>Put details here! The details may include the mathematical
 formulation of the optimization model associated with this conservation
 problem and/or a rough description of the mathematical model, and/or what
 happens when the parameters are set in one way or another.</strong></p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    
-<ul>
-<li><p>Salgado-Rojas J, &lt;U+00C1&gt;lvarez-Miranda E, Hermoso V,
-Garcia-Gonzalo J, Weintraub A. <em>A mixed integer programming approach for
-multi-action planning for threat management</em>. Ecological Modelling 2020;
-418:108901. <br /> (DOI: <a href='https://doi.org/10.1016/j.ecolmodel.2019.108901'>https://doi.org/10.1016/j.ecolmodel.2019.108901</a>)</p></li>
-</ul>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>For more information regarding the arguments <code>blm</code> and
@@ -336,7 +291,6 @@ be found online at <a href='https://doi.org/10.1016/j.ecolmodel.2019.108901'>htt
 <span class='r-in'><span class='co'>## Create optimization model</span></span>
 <span class='r-in'><span class='va'>portfolio</span> <span class='op'>&lt;-</span> <span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>input</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, blm <span class='op'>=</span> <span class='fl'>0</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span>, time_limit <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
 <span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(assertion, env)</span> object 'input' not found</span>
-<span class='r-in'></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

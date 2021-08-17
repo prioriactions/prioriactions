@@ -11,9 +11,7 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
                              DataFrame sensitivity_data,
                              std::vector<double> solution,
                              bool recovery){
-
   // initialization
-
   //variables
   int number_of_threats = threats_data.nrows();
   int number_of_units = pu_data.nrows();
@@ -27,7 +25,6 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
   arma::sp_mat sensitivity_b_extended = create_sensitivity_param_extended(sensitivity_data, number_of_features, number_of_threats, "b");
   arma::sp_mat sensitivity_c_extended = create_sensitivity_param_extended(sensitivity_data, number_of_features, number_of_threats, "c");
   arma::sp_mat sensitivity_d_extended = create_sensitivity_param_extended(sensitivity_data, number_of_features, number_of_threats, "d");
-
   arma::sp_mat actions_extended = create_actions_extended(dist_threats_data, number_of_units, number_of_threats);
 
   int pu_id;
@@ -53,10 +50,8 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
   NumericVector benefit_solution_recovery(number_of_features);
 
   for(int s = 0; s < number_of_features; s++){
-
     for (auto it_species = dist_features_extended.begin_col(s);
          it_species != dist_features_extended.end_col(s); ++it_species) {
-
       pu_id = it_species.row();
       feature_intensity = dist_features_extended(pu_id, s);
       specie_distribution[s] = specie_distribution[s] + feature_intensity;
@@ -66,11 +61,9 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
 
       for (auto it_threats = dist_threats_extended.begin_row(pu_id);
            it_threats != dist_threats_extended.end_row(pu_id); ++it_threats) {
-
         threat_id = it_threats.col();
 
         if(sensitivity_extended(s, threat_id) == 1){
-
           threat_intensity = dist_threats_extended(pu_id, threat_id);
 
           if(sum_alpha == 0){
@@ -84,21 +77,17 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
           param_c = sensitivity_c_extended(s, threat_id);
           param_d = sensitivity_d_extended(s, threat_id);
 
-
           if(threat_intensity <= param_a){
-
             // intensity below or equal to a
             response_coef_constant = param_d;
             alpha = 1 - response_coef_constant;
           }
           else if(threat_intensity >= param_b){
-
             // intensity above or equal to b
             response_coef_constant = param_c;
             alpha = 1 - response_coef_constant;
           }
           else{
-
             // intensity between a and b
             response_coef_constant = (double) (param_c*(threat_intensity - param_a) - param_d*(threat_intensity - param_b))/(param_b - param_a);
             alpha = 1 - response_coef_constant;
@@ -109,12 +98,9 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
 
       for (auto it_threats = dist_threats_extended.begin_row(pu_id);
            it_threats != dist_threats_extended.end_row(pu_id); ++it_threats) {
-
-
         threat_id = it_threats.col();
 
         if(sensitivity_extended(s, threat_id) == 1){
-
           threat_intensity = dist_threats_extended(pu_id, threat_id);
 
           //calculate alpha value
@@ -124,23 +110,19 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
           param_c = sensitivity_c_extended(s, threat_id);
           param_d = sensitivity_d_extended(s, threat_id);
 
-
           if(threat_intensity <= param_a){
-
             // intensity below or equal to a
             response_coef_variable = 0.0;
             response_coef_constant = param_d;
             alpha = 1 - response_coef_constant;
           }
           else if(threat_intensity >= param_b){
-
             // intensity above or equal to b
             response_coef_variable = param_d - param_c;
             response_coef_constant = param_c;
             alpha = 1 - response_coef_constant;
           }
           else{
-
             // intensity between a and b
             response_coef_variable = (double) ((param_a - threat_intensity)*(param_c - param_d))/(param_b - param_a);
             response_coef_constant = (double) (param_c*(threat_intensity - param_a) - param_d*(threat_intensity - param_b))/(param_b - param_a);
@@ -163,7 +145,6 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
       }
 
       if(sum_alpha == 0.0){
-
         //z variables
         benefit_maximum_nothing[s] = benefit_maximum_nothing[s] + 1;
 
@@ -205,6 +186,5 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
                              Named("benefit.recovery") = Rcpp::round(benefit_maximum_recovery, 4),
                              Named("benefit.total") = Rcpp::round(benefit_maximum_recovery + benefit_maximum_nothing, 4));
   }
-
   return df;
 }

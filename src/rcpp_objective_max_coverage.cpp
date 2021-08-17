@@ -25,7 +25,6 @@ bool rcpp_objective_max_coverage(SEXP x,
   int number_of_units = pu_data.nrows();
   int boundary_size = boundary_data.nrows();
   NumericVector connectivity_units(number_of_units);
-
   arma::sp_mat matrix_boundary_extended;
 
   if(boundary_size != 0 && blm != 0){
@@ -46,7 +45,6 @@ bool rcpp_objective_max_coverage(SEXP x,
   }
 
   for(int i = 0; i < number_of_units; i++){
-
     op->_obj.push_back(-blm*connectivity_units[i]);
     op->_vtype.push_back("B");
     op->_lb.push_back(0);
@@ -73,15 +71,12 @@ bool rcpp_objective_max_coverage(SEXP x,
 
   arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data, number_of_units, number_of_threats);
 
-
   for(int a = 0; a < number_of_actions; a++){
-
     if(boundary_size != 0 && blm_actions[threat_id[a]]){
       int pu_id2_threat;
 
       for (auto it = dist_threats_extended.begin_col(threat_id[a]);
            it != dist_threats_extended.end_col(threat_id[a]); ++it) {
-
         pu_id2_threat = it.row();
 
         if(pu_id1_threat[a] != pu_id2_threat && matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat) != 0){
@@ -89,12 +84,10 @@ bool rcpp_objective_max_coverage(SEXP x,
         }
       }
     }
-
     op->_obj.push_back(-blm_actions[threat_id[a]]*connectivity_actions[a]);
     op->_vtype.push_back("B");
     op->_lb.push_back(0);
     op->_ub.push_back(1);
-
   }
 
   //------------------------------------------------------------------------------------------
@@ -109,7 +102,6 @@ bool rcpp_objective_max_coverage(SEXP x,
   arma::sp_mat dist_features_extended = create_dist_features_extended(dist_features_data, number_of_units, number_of_features);
 
   for(int s = 0; s < number_of_features; s++){
-
     for (auto it_species = dist_features_extended.begin_col(s);
          it_species != dist_features_extended.end_col(s); ++it_species) {
 
@@ -139,7 +131,6 @@ bool rcpp_objective_max_coverage(SEXP x,
 
   if(curve != 1){
     for(int s = 0; s < number_of_features; s++){
-
       for (auto it_species = dist_features_extended.begin_col(s);
            it_species != dist_features_extended.end_col(s); ++it_species) {
 
@@ -162,14 +153,12 @@ bool rcpp_objective_max_coverage(SEXP x,
         col_constraint = col_constraint + 1;
       }
     }
-
   }
 
   //------------------------------------------------------------------------------------------
   //--------------------- (coefficients associated with y[i1,i2] variables) ------------------
   // auxiliary variables to normalize no-linear objective function
   //------------------------------------------------------------------------------------------
-
 
   double connectivityCoeff;
   row_constraint = op->_rhs.size();
@@ -189,7 +178,6 @@ bool rcpp_objective_max_coverage(SEXP x,
         op->_ub.push_back(1);
 
         //matrix A
-
         //Constraint number 1 (Y[i1,i2] - W[i1] <= 0)
         op->_A_i.push_back(row_constraint);
         op->_A_j.push_back(col_constraint);
@@ -235,7 +223,6 @@ bool rcpp_objective_max_coverage(SEXP x,
 
         row_constraint = row_constraint + 1;
         col_constraint = col_constraint + 1;
-
       }
     }
   }
@@ -250,32 +237,25 @@ bool rcpp_objective_max_coverage(SEXP x,
   int col_action = 0;
   arma::sp_mat actions_extended = create_actions_extended(dist_threats_data, number_of_units, number_of_threats);
 
-
-
   for(int a = 0; a < number_of_actions; a++){
-
     if(boundary_size != 0 && blm_actions[threat_id[a]] != 0){
 
       int pu_id2_threat;
 
       for (auto it = dist_threats_extended.begin_col(threat_id[a]);
            it != dist_threats_extended.end_col(threat_id[a]); ++it) {
-
         pu_id2_threat = it.row();
 
         if(pu_id1_threat[a] != pu_id2_threat && matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat) != 0){
           connectivityCoeff = matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat);
 
-
           // objective vector
-
           op->_obj.push_back(blm_actions[threat_id[a]]*connectivityCoeff);
           op->_vtype.push_back("B");
           op->_lb.push_back(0);
           op->_ub.push_back(1);
 
           //matrix A
-
           //Constraint number 1 (P[i1,i2,k] - X[i1,k] <= 0)
           col_action = number_of_units + actions_extended(pu_id1_threat[a], threat_id[a]) - 1;
 
@@ -328,12 +308,9 @@ bool rcpp_objective_max_coverage(SEXP x,
 
           row_constraint = row_constraint + 1;
           col_constraint = col_constraint + 1;
-
         }
       }
     }
   }
-
-
   return true;
 }

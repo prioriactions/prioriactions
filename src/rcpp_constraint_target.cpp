@@ -18,7 +18,6 @@ bool rcpp_constraint_target(SEXP x,
   int number_of_features = features_data.nrows();
   int number_of_actions = dist_threats_data.nrows();
   int number_of_dist_features = dist_features_data.nrows();
-
   int row_constraint;
   int col_constraint;
   int pu_id;
@@ -33,7 +32,6 @@ bool rcpp_constraint_target(SEXP x,
     NumericVector targets = features_data["target"];
 
     for(int s = 0; s < number_of_features; s++){
-
       for (auto it_species = dist_features_extended.begin_col(s);
            it_species != dist_features_extended.end_col(s); ++it_species) {
 
@@ -47,7 +45,6 @@ bool rcpp_constraint_target(SEXP x,
 
         col_constraint = col_constraint + 1;
       }
-
       op->_rhs.push_back(targets[s]);
       op->_sense.push_back(">=");
     }
@@ -59,7 +56,6 @@ bool rcpp_constraint_target(SEXP x,
     NumericVector targets = features_data["target"];
 
     for(int s = 0; s < number_of_features; s++){
-
       for (auto it_species = dist_features_extended.begin_col(s);
            it_species != dist_features_extended.end_col(s); ++it_species) {
 
@@ -84,6 +80,5 @@ bool rcpp_constraint_target(SEXP x,
       op->_sense.push_back(">=");
     }
   }
-
   return true;
 }

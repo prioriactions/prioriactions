@@ -198,7 +198,7 @@ minimizeCosts <- function(x, blm = 0, curve = 3, segments = 3, recovery = TRUE) 
   if(curve != 1){
     genconpow <- list()
 
-    for(i in 1:length(model$xvar))
+    for(i in seq_len(length(model$xvar)))
       genconpow[[i]] <- list(xvar = model$xvar[i] + 1, yvar = model$yvar[i] + 1, a = curve)
   }
   else{

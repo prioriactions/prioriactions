@@ -22,7 +22,7 @@ NULL
 #' @export
 plot.Portfolio <- function(x, type = "connectivity_vs_cost", text = TRUE,...){
   # assert argument is valid
-  assertthat::assert_that(inherits(x, c("Portfolio")))
+  assertthat::assert_that(inherits(x, "Portfolio"))
 
   if(type == "connectivity_vs_cost"){
 

@@ -164,7 +164,7 @@ getBenefit <- function(x) {
   else if(inherits(x, "Portfolio")){
     cont_aux = 0
 
-    for(it in 1:length(x$data)){
+    for(it in seq_len(length(x$data))){
 
       recovery = x$data[[it]]$OptimizationClass$data$args$recovery
       benefit_solution <- getBenefit(x$data[[it]])

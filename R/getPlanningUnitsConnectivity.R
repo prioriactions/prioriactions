@@ -118,9 +118,9 @@ getPlanningUnitsConnectivity <- function(x) {
   }
   else if(inherits(x, "Portfolio")){
 
-    return_list <- c()
+    return_list <- NULL
 
-    for(it in 1:length(x$data)){
+    for(it in seq_len(length(x$data))){
 
       out <- getPlanningUnitsConnectivity(x$data[[it]])
 

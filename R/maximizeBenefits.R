@@ -117,7 +117,7 @@ maximizeBenefits <- function(x, blm = 0, budget = 0, curve = 3, segments = 3, re
   boundary <- x$getData("boundary")
 
   pu <- pu[, c("internal_id", "cost", "status")]
-  features <- features[, c("internal_id")]
+  features <- features[, "internal_id"]
   dist_features <- dist_features[, c("internal_pu", "internal_feature", "amount")]
   threats <- threats[, c("internal_id", "blm_actions")]
   dist_threats <- dist_threats[, c("internal_pu", "internal_threat", "amount", "cost", "status")]
@@ -187,7 +187,7 @@ maximizeBenefits <- function(x, blm = 0, budget = 0, curve = 3, segments = 3, re
   if(curve != 1){
     genconpow <- list()
 
-    for(i in 1:length(model$xvar))
+    for(i in seq_len(length(model$xvar)))
       genconpow[[i]] <- list(xvar = model$xvar[i] + 1, yvar = model$yvar[i] + 1, a = curve)
   }
   else{
