@@ -185,7 +185,7 @@ instance information. It is created using the <code><a href='problem.html'>probl
 
     <p></p><dl>
 
-<dt>$data</dt><dd><p><code>list</code> object containing data.</p></dd>
+<dt>data</dt><dd><p><code>list</code> object containing data.</p></dd>
 
 
 </dl>
@@ -193,87 +193,173 @@ instance information. It is created using the <code><a href='problem.html'>probl
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     <p></p><dl>
-<dt>$getActionsAmount( )</dt><dd><p>return
-<code>integer</code> number of possible actions.</p></dd>
+<dt>getActionsAmount()</dt><dd><p><code>integer</code>. Number of possible actions.</p></dd>
 
-<dt>$getData(<code>character</code> name)</dt><dd><p>return an <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code>
-object stored in the <code>data</code> field with the corresponding <code>name</code>.
+<dt>getData(<code>character</code> name)</dt><dd><p><code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code>. Object stored in the <code>data</code> field with the corresponding <code>name</code>.
 The argument <code>name</code> indicates the name of arguments of the
-<code>problem</code> function ("pu", "features", "rij", "threats", "sensitivity"
+<code>problem</code> function ("pu", "features", "dist_features", "threats",
+"dist_threats", "sensitivity"
 or "boundary").</p></dd>
 
-<dt>$getFeatureAmount( )</dt><dd><p>return <code>integer</code> number of features.</p></dd>
+<dt>getFeatureAmount()</dt><dd><p><code>integer</code>. Number of features.</p></dd>
 
-<dt>$getFeatureNames( )</dt><dd><p>return <code>character</code> names of features.</p></dd>
+<dt>getFeatureNames()</dt><dd><p><code>character</code>. Names of features.</p></dd>
 
-<dt>$getPlanningUnitCosts( )</dt><dd><p>return the <code>numeric</code>
-<code><a href='https://rdrr.io/r/base/vector.html'>vector()</a></code> cost of allocating each planning unit.</p></dd>
+<dt>getPlanningUnitCosts()</dt><dd><p><code>numeric</code> <code><a href='https://rdrr.io/r/base/vector.html'>vector()</a></code>. Cost of allocating each planning unit.</p></dd>
 
-<dt>$getPlanningUnitsAmount( )</dt><dd><p>return <code>integer</code> number of planning
-units.</p></dd>
+<dt>getPlanningUnitsAmount()</dt><dd><p><code>integer</code>. Number of planning units.</p></dd>
 
-<dt>$getThreatCosts( )</dt><dd><p>return the <code>numeric</code> <code><a href='https://rdrr.io/r/base/vector.html'>vector()</a></code>
-cost of actions each planning unit and threat.</p></dd>
+<dt>getThreatCosts()</dt><dd><p><code>numeric</code> <code><a href='https://rdrr.io/r/base/vector.html'>vector()</a></code>. Cost of actions each planning unit and threat.</p></dd>
 
-<dt>$getThreatNames( )</dt><dd><p>return <code>character</code> names of threats.</p></dd>
+<dt>getThreatNames()</dt><dd><p><code>character</code>. Names of threats.</p></dd>
 
-<dt>$getThreatsAmount( )</dt><dd><p>return <code>integer</code> number of threats.</p></dd>
+<dt>getThreatsAmount()</dt><dd><p><code>integer</code>. Number of threats.</p></dd>
 
-<dt>$print( )</dt><dd><p>print basic information of the data instance.</p></dd>
+<dt>print()</dt><dd><p>Print basic information of the data instance.</p></dd>
 
-<dt>$show( )</dt><dd><p>call print method.</p></dd>
-
+<dt>show()</dt><dd><p>Call print method.</p></dd>
 
 </dl>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'>## Examples of how to use the methods of a ConservationProblem class object.</span></span>
+    <pre class="examples"><span class='r-in'><span class='co'>## set seed for reproducibility</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>14</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Load data</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_rij_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensitivity_data</span>, <span class='va'>example_boundary_data</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_pu_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_features_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_rij_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_threats_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_sensitivity_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_boundary_data’ not found</span>
+<span class='r-in'><span class='co'>## Set prioriactions path</span></span>
+<span class='r-in'><span class='va'>prioriactions_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/input/"</span>, package <span class='op'>=</span> <span class='st'>"prioriactions"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load in planning unit data</span></span>
+<span class='r-in'><span class='va'>pu_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/pu.dat"</span><span class='op'>)</span>, data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>pu_data</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   id cost status</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1    2      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2    2      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  3    2      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  4    2      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  5    2      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  6    2      0</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load in feature data</span></span>
+<span class='r-in'><span class='va'>features_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/features.dat"</span><span class='op'>)</span>, data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>features_data</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   id target     name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1     11 feature1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2     16 feature2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  3      8 feature3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  4      9 feature4</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load in planning unit vs feature data</span></span>
+<span class='r-in'><span class='va'>dist_features_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/dist_features.dat"</span><span class='op'>)</span>, data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>dist_features_data</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   pu feature amount</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1       3      1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2       3      1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  3       3      1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  4       3      1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  5       3      1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  6       3      1</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load in the threats data</span></span>
+<span class='r-in'><span class='va'>threats_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/threats.dat"</span><span class='op'>)</span>, data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>threats_data</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   id    name blm_actions</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1 threat1           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2 threat2           0</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load in the threats distribution data</span></span>
+<span class='r-in'><span class='va'>dist_threats_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/dist_threats.dat"</span><span class='op'>)</span>, data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>dist_threats_data</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   pu threat amount cost status</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1      1      1    4      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  1      2      1    3      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  2      1      1    4      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  2      2      1    2      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  3      1      1    4      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  3      2      1    2      0</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load in the sensitivity data</span></span>
+<span class='r-in'><span class='va'>sensitivity_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/sensitivity.dat"</span><span class='op'>)</span>, data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>sensitivity_data</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   feature threat</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       1      1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       2      1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3       3      1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4       4      1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5       1      2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6       2      2</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load in the boundary data</span></span>
+<span class='r-in'><span class='va'>boundary_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/boundary.dat"</span><span class='op'>)</span>, data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>boundary_data</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   id1 id2 boundary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   1   1        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   2   1        1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   3   1        2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   4   1        3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5   5   1        4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   6   1        5</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
 <span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='problem.html'>problem</a></span><span class='op'>(</span></span>
-<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>example_pu_data</span>, features <span class='op'>=</span> <span class='va'>example_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>example_dist_features__data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, dist_therats <span class='op'>=</span> <span class='va'>example_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>example_sensibility_data</span>,</span>
-<span class='r-in'>  boundary <span class='op'>=</span> <span class='va'>example_boundary_data</span></span>
+<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>pu_data</span>, features <span class='op'>=</span> <span class='va'>features_data</span>, dist_features <span class='op'>=</span> <span class='va'>dist_features_data</span>,</span>
+<span class='r-in'>  dist_threats <span class='op'>=</span> <span class='va'>dist_threats_data</span>, threats <span class='op'>=</span> <span class='va'>threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>sensitivity_data</span>,</span>
+<span class='r-in'>  boundary <span class='op'>=</span> <span class='va'>boundary_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in h(simpleError(msg, call))</span> error in evaluating the argument 'pu' in selecting a method for function 'problem': object 'example_pu_data' not found</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Summary</span></span>
+<span class='r-in'><span class='fu'><a href='print.html'>print</a></span><span class='op'>(</span><span class='va'>problem_data</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Conservation Problem</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   planning units: data.frame (100 units)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   unit costs:     min: 1, max: 10</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   features:       feature1, feature2, feature3, feature4 (4 features)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   threats:        threat1, threat2 (2 threats)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   threat costs:   min: 1, max: 10</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Use class methods</span></span>
 <span class='r-in'><span class='va'>problem_data</span><span class='op'>$</span><span class='fu'>getData</span><span class='op'>(</span><span class='st'>"features"</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_data' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   id target     name internal_id</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1     11 feature1           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2     16 feature2           2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  3      8 feature3           3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  4      9 feature4           4</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_data</span><span class='op'>$</span><span class='fu'>getFeatureAmount</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_data' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_data</span><span class='op'>$</span><span class='fu'>getFeatureNames</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_data' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "feature1" "feature2" "feature3" "feature4"</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_data</span><span class='op'>$</span><span class='fu'>getPlanningUnitCosts</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_data' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   [1]  2  2  2  2  2  2  2  2  1  1  3  3  3  3  3  3  2  2  2  2  4  4  4  4  4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [26]  3  3  3  2  2  4  4  5  4  4  4  4  3  3  3  5  5  5  5  5  5  4  4  3  3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [51]  6  6  6  6  6  5  5  4  4  4  7  7  7  7  6  6  5  5  4  4  8  8  8  8  7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [76]  6  6  5  5  4  9  9  9  8  8  7  6  6  5  5 10 10 10  9  9  8  7  6  5  5</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_data</span><span class='op'>$</span><span class='fu'>getPlanningUnitsAmount</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_data' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 100</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_data</span><span class='op'>$</span><span class='fu'>getThreatCosts</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_data' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   [1]  4  3  4  2  4  2  1  1  1  1  2  2  2  3  4  3  3  4  2  4  2  1  1  1  2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [26]  2  2  2  4  2  3  3  3  4  2  5  2  2  2  2  2  2  1  5  2  4  2  3  3  3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [51]  4  2  2  2  2  2  2  1  5  2  4  2  3  3  3  4  3  5  3  3  3  3  3  1  5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [76]  2  4  2  4  3  3  4  3  5  3  7  4  4  4  4  1  4  2  4  3  3  4  3  5  3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [101]  6  4  7  4  5  5  6  2  3  4  4  5  6  7  8  7  7  3  4  5  6  6  7  8  8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [126]  9  9  5  5  6  7  8  8  9  9  9 10</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_data</span><span class='op'>$</span><span class='fu'>getThreatNames</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_data' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "threat1" "threat2"</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_data</span><span class='op'>$</span><span class='fu'>getThreatsAmount</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_data' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_data</span><span class='op'>$</span><span class='fu'>print</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_data' not found</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Conservation Problem</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   planning units: data.frame (100 units)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   unit costs:     min: 1, max: 10</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   features:       feature1, feature2, feature3, feature4 (4 features)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   threats:        threat1, threat2 (2 threats)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   threat costs:   min: 1, max: 10</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

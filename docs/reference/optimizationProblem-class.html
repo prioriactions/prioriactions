@@ -55,7 +55,7 @@
 <meta property="og:title" content="Optimization problem class — optimizationProblem-class" />
 <meta property="og:description" content="This class is used to represent an optimization model. This includes several
 methods for obtaining model information. It is created used models functions
-(e.g. min costs)." />
+(i.e. minimizeCosts() and maximizeBenefits() functions)." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -176,7 +176,7 @@ methods for obtaining model information. It is created used models functions
     <div class="ref-description">
     <p>This class is used to represent an optimization model. This includes several
 methods for obtaining model information. It is created used models functions
-(e.g. min costs).</p>
+(i.e. <code><a href='minimizeCosts.html'>minimizeCosts()</a></code> and <code><a href='maximizeBenefits.html'>maximizeBenefits()</a></code> functions).</p>
     </div>
 
 
@@ -188,7 +188,7 @@ methods for obtaining model information. It is created used models functions
 of the mathematical model.</p></dd>
 
 <dt>$ConservationClass</dt><dd><p>object of class
-<code>ConservationProblem-class()</code> that contain the data instance.</p></dd>
+<code><a href='conservationProblem-class.html'>conservationProblem-class()</a></code> that contain the data instance.</p></dd>
 
 
 </dl>
@@ -196,81 +196,78 @@ of the mathematical model.</p></dd>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     <p></p><dl>
-<dt>$getData(<code>character</code> name)</dt><dd><p>return an
-<code><a href='https://rdrr.io/r/base/vector.html'>vector()</a></code> object stored in the <code>data</code> field with the
+<dt>getData(<code>character</code> name)</dt><dd><p><code><a href='https://rdrr.io/r/base/vector.html'>vector()</a></code>. Object stored in the <code>data</code> field with the
 corresponding <code>name</code>. The data correspond to the different parts of
 the mathematical model. The argument <code>name</code> can be made to the
 following: "obj", "rhs", "sense", "vtype", "A", "bounds" or "modelsense".</p></dd>
 
-<dt>$getDataList( )</dt><dd><p>returns an <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> of
-<code><a href='https://rdrr.io/r/base/vector.html'>vector()</a></code> object stored in the <code>data</code>. It correspond to set
-of data stored asociated to the mathematical model.</p></dd>
+<dt>getDataList()</dt><dd><p><code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> of
+<code><a href='https://rdrr.io/r/base/vector.html'>vector()</a></code>. Object stored in the <code>data</code>. It correspond to set
+of data stored associated to the mathematical model.</p></dd>
 
-<dt>$getModelSense( )</dt><dd><p>returns a <code>character</code> indicating whether the
+<dt>getModelSense()</dt><dd><p><code>character</code>. Indicate whether the
 model is minimization or maximization.</p></dd>
 
-<dt>$getNcol( )</dt><dd><p>returns an <code>integer</code> number indicating the columns
-of matrix A.</p></dd>
+<dt>getNcol()</dt><dd><p><code>integer</code>. Number indicating the columns of matrix A.</p></dd>
 
-<dt>$getNrow( )</dt><dd><p>returns an <code>integer</code> number indicating the rows of
-matrix A.</p></dd>
+<dt>getNrow()</dt><dd><p><code>integer</code>. Number indicating the rows of matrix A.</p></dd>
 
-<dt>$getSizeA( )</dt><dd><p>returns a <code>double</code> number indicating the size of
-matrix A (in Megabytes).</p></dd>
+<dt>getSizeA()</dt><dd><p><code>character</code>. Number indicating the size of matrix A (in kilo Bytes).</p></dd>
 
-<dt>$print( )</dt><dd><p>print basic information of the optimization model.</p></dd>
+<dt>print()</dt><dd><p>Print basic information of the optimization model.</p></dd>
 
-<dt>$show( )</dt><dd><p>call print method.</p></dd>
+<dt>show()</dt><dd><p>Call print method.</p></dd>
 
 
 </dl>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'>## Examples of how to use the methods of a OptimizationProblem class object.</span></span>
+    <pre class="examples"><span class='r-in'><span class='co'># set seed for reproducibility</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>14</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Load data</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_rij_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensitivity_data</span>, <span class='va'>example_bound_data</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_pu_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_features_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_rij_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_threats_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_sensitivity_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_bound_data’ not found</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_pu_data</span>, <span class='va'>sim_features_data</span>, <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'><span class='va'>sim_threats_data</span>, <span class='va'>sim_dist_threats_data</span>, <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
 <span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='problem.html'>problem</a></span><span class='op'>(</span></span>
-<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>example_pu_data</span>, features <span class='op'>=</span> <span class='va'>example_features_data</span>, rij <span class='op'>=</span> <span class='va'>example_rij_data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>example_sensibility_data</span>,</span>
-<span class='r-in'>  bound <span class='op'>=</span> <span class='va'>example_bound_data</span></span>
+<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'>  boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in h(simpleError(msg, call))</span> error in evaluating the argument 'pu' in selecting a method for function 'problem': object 'example_pu_data' not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create optimization model</span></span>
-<span class='r-in'><span class='va'>problem_model</span> <span class='op'>&lt;-</span> <span class='fu'>min_costs</span><span class='op'>(</span><span class='va'>problem_data</span>, blm <span class='op'>=</span> <span class='fl'>1</span>, blm_actions <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in min_costs(problem_data, blm = 1, blm_actions = 1)</span> could not find function "min_costs"</span>
+<span class='r-in'><span class='va'>problem_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='minimizeCosts.html'>minimizeCosts</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>problem_data</span>, blm <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Use class methods</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>problem_model</span><span class='op'>$</span><span class='fu'>getData</span><span class='op'>(</span><span class='st'>"obj"</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in head(problem_model$getData("obj"))</span> object 'problem_model' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1402.609 1289.433 1202.196 1143.024 1113.151 1113.151</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>problem_model</span><span class='op'>$</span><span class='fu'>getDataList</span><span class='op'>(</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>7</span><span class='op'>]</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in head(problem_model$getDataList()[7])</span> object 'problem_model' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $modelsense</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "min"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_model</span><span class='op'>$</span><span class='fu'>getModelSense</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_model' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "minimization"</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_model</span><span class='op'>$</span><span class='fu'>getNcol</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_model' not found</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in get(name, envir = x, inherits = inherits)</span> object 'getNcol' not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_model</span><span class='op'>$</span><span class='fu'>getNrow</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_model' not found</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in get(name, envir = x, inherits = inherits)</span> object 'getNrow' not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_model</span><span class='op'>$</span><span class='fu'>getSizeA</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_model' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "884.92 kB"</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_model</span><span class='op'>$</span><span class='fu'>print</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'problem_model' not found</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Optimization Problem</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   model sense: minimization</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dimensions:  29980, 10489, 884.92 kB Mb (nrow, ncol, size)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   variables:   10489</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

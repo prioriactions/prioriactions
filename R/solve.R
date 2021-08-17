@@ -1,67 +1,57 @@
 #' @include presolve.R writeOutputs.R
 NULL
 
-#' @title solve
+#' @title Solve mathematical models
 #'
 #' @description Solve the optimization model associated with the multi-action
-#'   conservation planning problem. This function is used to internally solve
-#'   the mathematical model associated with the problem in reference, specifying
-#'   the type of solver and providing a set of parameters to control the
-#'   optimization process and the user's machine settings.
+#'   conservation planning problem. This function is used to solve
+#'   the mathematical model created by the `minimizeCosts()` or `maximizeBenefits()`
+#'   functions.
 #'
-#'   This function requires the \emph{\pkg{Rsymphony}} package, the
-#'   \emph{\pkg{Rglpk}} package or the \emph{\pkg{gurobi}} package, which host
-#'   the solvers inside. These packages are installed by default when the
-#'   *[prioriactions]* package is installed. Of these three,
-#'   **only the Gurobi solver needs a license to operate** .
+#' @param a [optimizationProblem-class] object. Optimization model created
+#'   for the problem of prioritization of multiple conservation actions. This object must be
+#'   created using the `minimizeCosts()` or `maximizeBenefits()` functions.
 #'
-#' @param a Object of class [OptimizationProblem-class()] that
-#'   specifies the custom-tailor optimization model created for the problem of
-#'   prioritization of multiple conservation actions. This object must be
-#'   created using the [min_costs()] function.
+#' @param solver `string`. Name of solver to use to
+#'   solve the model. The following solvers are supported:
+#'   [`"gurobi"`](http://gurobi.com)(requires the \pkg{gurobi} package), and
+#'   [`"symphony"`](https://projects.coin-or.org/SYMPHONY)(requires the \pkg{Rsymphony} package).
+#'   We highly recommend using gurobi (for more information on how to obtain an academic license
+#'   [here](https://prioritizr.net/articles/gurobi_installation.html)).
 #'
-#' @param solver A `string` label that indicates which solver to use to
-#'   solve the model created for the problem of prioritization of multiple
-#'   conservation actions. The following solvers are supported:
-#'   [`"gurobi"`](http://gurobi.com), and
-#'   [`"symphony"`](https://projects.coin-or.org/SYMPHONY).
-#'   **The default argument is `"gurobi"` (requires a license)**.
-#'
-#' @param gap_limit A `numeric` value (between 0 and 1) that represents the gap
+#' @param gap_limit `numeric`. Value between 0 and 1 that represents the gap
 #'   to optimality, i.e., a relative number that cause the optimizer to
 #'   terminate when the difference between the upper and lower objective
 #'   function bounds is less than the gap times the upper bound. For example, a
 #'   value of 0.01 will result in the optimizer stopping when the difference
-#'   between the bounds is 1 percent of the upper bound. **The default
-#'   argument is 0.0**.
+#'   between the bounds is 1 percent of the upper bound.
 #'
-#' @param time_limit A `numeric` value (non negative) that indicates the
-#'   time limit to run the optimizer (in seconds). The solver will return the
-#'   current best solution when this time limit is exceeded. **The default
-#'   argument is the *maximum* time the user's machine can hold out**.
+#' @param time_limit `numeric`. Time limit to run the optimizer (in seconds).
+#'   The solver will return the current best solution when this time limit is exceeded.
 #'
-#' @param solution_limit A `logical` value that indicates if the solution process
-#' should be stopped after the first feasible solution is found ([TRUE()]),
-#' or if it should continue its normal course until the optimal solution is
-#' found ([FALSE()]). **The default argument is `FALSE`**.
+#' @param solution_limit `logical`. Indicates if the solution process
+#' should be stopped after the first feasible solution is found (`TRUE`),
+#' or not (`FALSE`).
 #'
-#' @param cores An `integer` value that indicates the number of parallel
-#'   cores to use in the machine. **The default argument is 1 (only one
-#'   core in use)**.
+#' @param cores `integer`. Number of parallel cores to use in the machine to solve the problem.
 #'
-#' @param verbose A `logical` value that indicates if the solver
-#'   information is displayed while solving the optimization model
-#'   ([TRUE()]), or if it is not displayed ([FALSE()]).
-#'   **The default argument is `TRUE`**.
+#' @param verbose `logical`. Indicates if the solver information is displayed while
+#' solving the optimization model (`TRUE`), or if it is not displayed (`FALSE`).
+#'
+#' @param name_output_file `string`. Prefix of all output names.
+#'
+#' @param output_file `logical`. Indicates if the outputs are exported as .csv files (`TRUE`),
+#' or they are not exported (`FALSE`). Currently, 5 files are exported. The
+#' distribution of actions in the solution, the distribution of the selected
+#' planning units, the benefits achieved by the features, the parameters used,
+#' and the optimization engine log.
 #'
 #' @name solve
 #'
-#' @return An object of class [Solution-class()].
+#' @return An object of class [solution-class].
 #'
 #' @details The solvers supported by the [solve()] function are
 #'   described below. \describe{
-#'   \item{`Default solver`}{This solver uses the best software currently
-#'   installed on the system.}
 #'
 #'   \item{`Gurobi solver`}{ [*Gurobi*](http://gurobi.com) is a
 #'   state-of-the-art commercial optimization software with an R package
@@ -83,55 +73,38 @@ NULL
 #' @seealso For more information on how to install and obtain an academic
 #'   license of the Gurobi solver, see the *Gurobi installation guide*,
 #'   which can be found online at
-#'   <https://prioritizr.net/articles/gurobi_installation.html>.
+#'   [prioritizr vignette](<https://prioritizr.net/articles/gurobi_installation.html>).
 #'
 #' @examples
-#' ## Solve a conservation problem using the associated optimization model and some solver
-#' ## that the user has available. This example uses input files included into package.
+#' ## This example uses input files included into package.
 #'
 #' ## Load data
-#' data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
+#' data(sim_pu_data, sim_features_data, sim_dist_features_data,
+#' sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
+#' sim_boundary_data)
 #'
 #' ## Create data instance
 #' problem_data <- problem(
-#'   pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-#'   threats = example_threats_data, sensitivity = example_sensibility_data,
-#'   bound = example_bound_data
+#'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
+#'   threats = sim_threats_data, dist_threats = sim_dist_threats_data, sensitivity = sim_sensitivity_data,
+#'   boundary = sim_boundary_data
 #' )
 #'
 #' ## Create optimization model
-#' problem_model <- min_costs(x = problem_data, blm = 1, blm_actions = 1)
+#' problem_model <- minimizeCosts(x = problem_data, blm = 1)
 #'
-#' ## Solve the optimization model using a default solver
-#' model_solution <- solve(a = problem_model, verbose = FALSE)
-#' model_solution
-#'
-#' ## Solve the optimization model using the Gurobi solver
+#' ## Solve the optimization model using a gap_limit and gurobi solver
 #' ## NOTE: The Gurobi solver must be previously installed and must have a valid license!
-#' model_solution <- solve(a = problem_model, solver = "gurobi")
-#' model_solution
+#' s <- solve(a = problem_model, solver = "gurobi", gap_limit = 0.01, output_file = FALSE)
 #'
-#' ## Solve the optimization model using the Symphony solver
-#' model_solution <- solve(a = problem_model, solver = "symphony")
-#' model_solution
+#' print(s)
 #'
-#' ## Solution summary
-#' print(model_solution)
+#' ## Solve the optimization model using a time_limit and gurobi solver
+
+#' s <- solve(a = problem_model, solver = "gurobi", time_limit = 10, output_file = FALSE)
 #'
-#' ## Report the solution to the problem you are working on:
-#' ## (i) total cost of the conservation plan;
-#' solution_report01 <- model_solution$getObjectiveValue()
-#' print(solution_report01)
+#' print(s)
 #'
-#' ## (ii) planning units suggested to be included (value 1) and not included (value 0)
-#' ## within the conservation plan;
-#' solution_report02 <- model_solution$getSolutionUnits()
-#' head(solution_report02)
-#'
-#' ## (iii) conservation actions that are suggested to be carried out (value 1)
-#' ## and not carried out (value 0) within the conservation plan.
-#' solution_report03 <- model_solution$getSolutionActions()
-#' head(solution_report03)
 #' @export
 NULL
 
@@ -141,7 +114,7 @@ NULL
 
 solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer.max,
                   solution_limit = FALSE, cores = 2, verbose = TRUE,
-                  name_output_file = "output", output_file = TRUE, ...) {
+                  name_output_file = "output", output_file = TRUE) {
 
     # assert that arguments are valid
     assertthat::assert_that(
@@ -156,8 +129,7 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
       isTRUE(cores <= parallel::detectCores(TRUE)),
       assertthat::is.flag(verbose),
       assertthat::is.flag(output_file),
-      assertthat::is.string(name_output_file),
-      no_extra_arguments(...)
+      assertthat::is.string(name_output_file)
     )
 
     if (requireNamespace("gurobi", quietly = TRUE)) {

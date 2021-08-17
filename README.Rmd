@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 ![CRAN/METACRAN](https://www.r-pkg.org/badges/version/prioriactions)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![CodeFactor](https://www.codefactor.io/repository/github/prioriactions/prioriactions/badge)](https://www.codefactor.io/repository/github/prioriactions/prioriactions)
 <!-- badges: end -->
 
 **This project was financed by the National Agency of Research and Development, ANID, Chile,  through the grant FONDECYT N.1180670 and through the Complex Engineering Systems Institute PIA/BASAL AFB180003. Also it has received funding from the European Union’s H2020 research and innovation program under the Marie Sklodowska-Curie grant agreement N.691149 (SuFoRun).**

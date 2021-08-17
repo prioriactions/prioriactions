@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>sensitivityAnalysisBlm — prioriactions • prioriactions</title>
+<title>Create and solve multi-actions planning problems — prioriactions • prioriactions</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,19 +52,10 @@
 
 
 
-<meta property="og:title" content="sensitivityAnalysisBlm — prioriactions" />
-<meta property="og:description" content="Create an optimization model for the multi-action conservation
-planning problem, following the mathematical formulations used in
-Salgado-Rojas et al. (2020). This function is used to specify model
-configuration parameters related to connectivity issues and its internal
-modus operandi.
-Connectivity parameters (blm and blm_actions) manipulate the
-spatial fragmentation of planning units and/or action management to improve
-the compactness of the reserve solutions. Likewise, the other parameters
-(curve and segments) affect the linearization strategy
-used by the model internally in order to be solved under a linear
-programming approach. It is not recommended to modify the default
-values of the later ones." />
+<meta property="og:title" content="Create and solve multi-actions planning problems — prioriactions" />
+<meta property="og:description" content="Create and solve a multi-actions planning problem. It can be used
+instead of following the sequence of the problem(), minimizeCosts()/maximizeBenefits()
+and solve() functions." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -177,24 +168,15 @@ values of the later ones." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>sensitivityAnalysisBlm</h1>
-    <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/prioriactions.R'><code>R/prioriactions.R</code></a></small>
+    <h1>Create and solve multi-actions planning problems</h1>
+    <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/package.R'><code>R/package.R</code></a></small>
     <div class="hidden name"><code>prioriactions.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create an optimization model for the multi-action conservation
-planning problem, following the mathematical formulations used in
-Salgado-Rojas <em>et al.</em> (2020). This function is used to specify model
-configuration parameters related to connectivity issues and its internal
-<em>modus operandi</em>.</p>
-<p>Connectivity parameters (<code>blm</code> and <code>blm_actions</code>) manipulate the
-spatial fragmentation of planning units and/or action management to improve
-the compactness of the reserve solutions. Likewise, the other parameters
-(<code>curve</code> and <code>segments</code>) affect the linearization strategy
-used by the model internally in order to be solved under a linear
-programming approach. <strong>It is not recommended to modify the default
-values of the later ones</strong>.</p>
+    <p>Create and solve a multi-actions planning problem. It can be used
+instead of following the sequence of the <code><a href='problem.html'>problem()</a></code>, <code><a href='minimizeCosts.html'>minimizeCosts()</a></code>/<code><a href='maximizeBenefits.html'>maximizeBenefits()</a></code>
+and <code><a href='solve.html'>solve()</a></code> functions.</p>
     </div>
 
     <pre class="usage"><span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
@@ -203,94 +185,95 @@ values of the later ones</strong>.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Object of class <code>ConservationProblem-class()</code> that
-specifies the basic data used in a problem of prioritization of multiple
-conservation actions. This object must be created using the
-<code><a href='problem.html'>problem()</a></code> function.</p></td>
+      <th>data</th>
+      <td><p><code>list</code>. Input data list for <code><a href='problem.html'>problem()</a></code> function.</p></td>
     </tr>
     <tr>
-      <th>blm</th>
-      <td><p>A <code>numeric</code> value that indicates the penalty factor
-associated to the spatial fragmentation of planning units, similar to
-<strong>Boundary Length Modifier (BLM)</strong> in <em>Marxan</em>. This argument
-only has an effect when the <code>bound()</code> argument of
-<code><a href='problem.html'>problem()</a></code> function is a <code>data.frame</code> object. <strong>The
-default argument is zero</strong>.</p></td>
+      <th>name_model</th>
+      <td><p><code>string</code>. Name of the type of model to create. With two possible values:
+<code>"minimizeCosts"</code> and <code>"maximizeBenefits"</code>.</p></td>
     </tr>
     <tr>
-      <th>blm_actions</th>
-      <td><p>A <code>numeric</code> value that indicates the penalty factor
-associated to the spatial fragmentation of actions. <strong>The default
-argument is zero</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>curve</th>
-      <td><p>An <code>integer</code> value that selects the type of continuous
-curve that will represent the expression (linear or non-linear) associated
-with a specific constraint in this model. Therefore, the curve can
-represent a linear (1), quadratic (2) or cubic (3) function. <strong>The
-default argument is 3 and it is not recommended to change this value unless
-you have advanced knowledge of the linearization of mathematical model</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>segments</th>
-      <td><p>An <code>integer</code> value that selects the number of
-segments (1, 2 or 3) that will have the <em>piecewise linear function</em>
-in charge of approximating the non-linear expression contained in a
-specific constraint of this model. <strong>The default argument is 3 and it
-is not recommended to change this value unless you have advanced knowledge
-of the linearization of mathematical model</strong>.</p></td>
+      <th>...</th>
+      <td><p>arguments inherited from <code><a href='problem.html'>problem()</a></code>, <code><a href='minimizeCosts.html'>minimizeCosts()</a></code>, <code><a href='maximizeBenefits.html'>maximizeBenefits()</a></code>,
+and <code><a href='solve.html'>solve()</a></code> functions.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>OptimizationProblem-class()</code>.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><strong>Put details here! The details may include the mathematical
-formulation of the optimization model associated with this conservation
-problem and/or a rough description of the mathematical model, and/or what
-happens when the parameters are set in one way or another.</strong></p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>For more information regarding the arguments <code>blm</code> and
-<code>blm_actions</code>, see the <a href='https://marxansolutions.org'>official <em>Marxan</em> website</a> and the article by Salgado-Rojas <em>et al.</em>
-(2020), respectively. Also, for more information regarding the arguments
-<code>curve</code> and <code>segments</code>, see the supplementary material
-associated with the article by Salgado-Rojas <em>et al.</em> (2020), which can
-be found online at <a href='https://doi.org/10.1016/j.ecolmodel.2019.108901'>https://doi.org/10.1016/j.ecolmodel.2019.108901</a>.</p></div>
+    <p>An object of class <a href='solution-class.html'>solution</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'>## Create an optimization model for the multi-action conservation</span></span>
-<span class='r-in'><span class='co'>## planning problem using a data instance that has been created in R.</span></span>
-<span class='r-in'><span class='co'>## This example uses input files included into package.</span></span>
+    <pre class="examples"><span class='r-in'><span class='co'>## This example uses input files included into package.</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Load package</span></span>
-<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://prioriactions.github.io/prioriactions'>prioriactions</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## set seed for reproducibility</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>14</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Load data</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_dist_features_data</span>, <span class='va'>example_dist_threats_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensitivity_data</span>, <span class='va'>example_bound_data</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_pu_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_features_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_dist_features_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_dist_threats_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_threats_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_sensitivity_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_bound_data’ not found</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_pu_data</span>, <span class='va'>sim_features_data</span>, <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'><span class='va'>sim_threats_data</span>, <span class='va'>sim_dist_threats_data</span>, <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Create data instance</span></span>
+<span class='r-in'><span class='co'>## Create data list</span></span>
 <span class='r-in'><span class='va'>input</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
-<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>example_pu_data</span>, features <span class='op'>=</span> <span class='va'>example_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>example_dist_features_data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>example_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>example_sensitivity_data</span>,</span>
-<span class='r-in'>  bound <span class='op'>=</span> <span class='va'>example_bound_data</span></span>
+<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'>  bound <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'example_pu_data' not found</span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Create optimization model</span></span>
-<span class='r-in'><span class='va'>portfolio</span> <span class='op'>&lt;-</span> <span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>input</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, blm <span class='op'>=</span> <span class='fl'>0</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span>, time_limit <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(assertion, env)</span> object 'input' not found</span>
+<span class='r-in'><span class='co'>## Create and solve optimization model</span></span>
+<span class='r-in'><span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>input</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, blm <span class='op'>=</span> <span class='fl'>0</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span>, time_limit <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The blm argument was set to 0, so the boundary data has no effect</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 280 rows, 589 columns and 822 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x9475cbf3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 176 general constraints</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 237 integer (237 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [1e+00, 1e+01]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [8e+00, 2e+01]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 1002.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve added 289 rows and 635 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.00s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 569 rows, 1224 columns, 2970 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 176 SOS constraint(s)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 1056 continuous, 168 integer (162 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 1.455000e+02, 186 iterations, 0.00 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  145.50000    0   12 1002.00000  145.50000  85.5%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     973.0000000  145.50000  85.0%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  148.00000    0    6  973.00000  148.00000  84.8%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     162.0000000  148.00000  8.64%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  149.00000    0    6  162.00000  149.00000  8.02%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     152.0000000  149.00000  1.97%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  149.50000    0    5  152.00000  149.50000  1.64%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     150.0000000  149.50000  0.33%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (219 simplex iterations) in 0.04 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 5: 150 152 162 ... 1002</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 1.500000000000e+02, best bound 1.500000000000e+02, gap 0.0000%</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='print.html'>print</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Solution overview</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   name: sol</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   objective value: 150</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   gap:  0</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   status:  Optimal solution (according to gap tolerance: 0)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 0.04 sec</span>
+<span class='r-in'></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

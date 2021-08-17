@@ -13,54 +13,93 @@ NULL
 #'
 #' @section Fields: \describe{
 #'
-#'   \item{$data}{`list` object containing data.}
+#'   \item{data}{`list` object containing data.}
 #'
 #'   }
 #'
-#' @section Methods: \describe{ \item{$getActionsAmount( )}{return
-#'   `integer` number of possible actions.}
+#' @section Methods: \describe{
+#'   \item{getActionsAmount()}{
+#'   `integer`. Number of possible actions.}
 #'
-#'   \item{$getData(`character` name)}{return an [data.frame()]
-#'   object stored in the `data` field with the corresponding `name`.
+#'   \item{getData(`character` name)}{
+#'   [data.frame()]. Object stored in the `data` field with the corresponding `name`.
 #'   The argument `name` indicates the name of arguments of the
-#'   `problem` function ("pu", "features", "rij", "threats", "sensitivity"
+#'   `problem` function ("pu", "features", "dist_features", "threats",
+#'   "dist_threats", "sensitivity"
 #'   or "boundary").}
 #'
-#'   \item{$getFeatureAmount( )}{return `integer` number of features.}
+#'   \item{getFeatureAmount()}{
+#'   `integer`. Number of features.}
 #'
-#'   \item{$getFeatureNames( )}{return `character` names of features.}
+#'   \item{getFeatureNames()}{
+#'   `character`. Names of features.}
 #'
-#'   \item{$getPlanningUnitCosts( )}{return the `numeric`
-#'   [vector()] cost of allocating each planning unit.}
+#'   \item{getPlanningUnitCosts()}{
+#'   `numeric` [vector()]. Cost of allocating each planning unit.}
 #'
-#'   \item{$getPlanningUnitsAmount( )}{return `integer` number of planning
-#'   units.}
+#'   \item{getPlanningUnitsAmount()}{
+#'   `integer`. Number of planning units.}
 #'
-#'   \item{$getThreatCosts( )}{return the `numeric` [vector()]
-#'   cost of actions each planning unit and threat.}
+#'   \item{getThreatCosts()}{
+#'   `numeric` [vector()]. Cost of actions each planning unit and threat.}
 #'
-#'   \item{$getThreatNames( )}{return `character` names of threats.}
+#'   \item{getThreatNames()}{
+#'   `character`. Names of threats.}
 #'
-#'   \item{$getThreatsAmount( )}{return `integer` number of threats.}
+#'   \item{getThreatsAmount()}{
+#'   `integer`. Number of threats.}
 #'
-#'   \item{$print( )}{print basic information of the data instance.}
+#'   \item{print()}{
+#'   Print basic information of the data instance.}
 #'
-#'   \item{$show( )}{call print method.}
-#'
+#'   \item{show()}{
+#'   Call print method.}
 #'   }
 #'
 #' @examples
-#' ## Examples of how to use the methods of a ConservationProblem class object.
+#' ## set seed for reproducibility
+#' set.seed(14)
 #'
-#' ## Load data
-#' data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_boundary_data)
+#' ## Set prioriactions path
+#' prioriactions_path <- system.file("extdata/input/", package = "prioriactions")
+#'
+#' ## Load in planning unit data
+#' pu_data <- data.table::fread(paste0(prioriactions_path,"/pu.dat"), data.table = FALSE)
+#' head(pu_data)
+#'
+#' ## Load in feature data
+#' features_data <- data.table::fread(paste0(prioriactions_path,"/features.dat"), data.table = FALSE)
+#' head(features_data)
+#'
+#' ## Load in planning unit vs feature data
+#' dist_features_data <- data.table::fread(paste0(prioriactions_path,"/dist_features.dat"), data.table = FALSE)
+#' head(dist_features_data)
+#'
+#' ## Load in the threats data
+#' threats_data <- data.table::fread(paste0(prioriactions_path,"/threats.dat"), data.table = FALSE)
+#' head(threats_data)
+#'
+#' ## Load in the threats distribution data
+#' dist_threats_data <- data.table::fread(paste0(prioriactions_path,"/dist_threats.dat"), data.table = FALSE)
+#' head(dist_threats_data)
+#'
+#' ## Load in the sensitivity data
+#' sensitivity_data <- data.table::fread(paste0(prioriactions_path,"/sensitivity.dat"), data.table = FALSE)
+#' head(sensitivity_data)
+#'
+#' ## Load in the boundary data
+#' boundary_data <- data.table::fread(paste0(prioriactions_path,"/boundary.dat"), data.table = FALSE)
+#' head(boundary_data)
 #'
 #' ## Create data instance
 #' problem_data <- problem(
-#'   pu = example_pu_data, features = example_features_data, dist_features = example_dist_features__data,
-#'   threats = example_threats_data, dist_therats = example_dist_threats_data, sensitivity = example_sensibility_data,
-#'   boundary = example_boundary_data
+#'   pu = pu_data, features = features_data, dist_features = dist_features_data,
+#'   dist_threats = dist_threats_data, threats = threats_data, sensitivity = sensitivity_data,
+#'   boundary = boundary_data
 #' )
+#'
+#' ## Summary
+#' print(problem_data)
 #'
 #' ## Use class methods
 #' problem_data$getData("features")

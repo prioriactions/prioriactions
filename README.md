@@ -8,6 +8,7 @@
 ![CRAN/METACRAN](https://www.r-pkg.org/badges/version/prioriactions)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![CodeFactor](https://www.codefactor.io/repository/github/prioriactions/prioriactions/badge)](https://www.codefactor.io/repository/github/prioriactions/prioriactions)
 <!-- badges: end -->
 
 **This project was financed by the National Agency of Research and

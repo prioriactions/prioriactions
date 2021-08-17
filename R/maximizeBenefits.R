@@ -2,89 +2,105 @@
 #' @import Matrix Rcpp
 NULL
 
-#' @title maximizeBenefits
+#' @title Create mathematical model: maximize benefits
 #'
-#' @description Create an optimization model for the multi-action conservation
-#'   planning problem, following the mathematical formulations used in
-#'   Salgado-Rojas *et al.* (2020). This function is used to specify model
-#'   configuration parameters related to connectivity issues and its internal
-#'   *modus operandi*.
+#' @description Create an optimization model that maximize the sum of benefits of
+#'   all features without exceeding a budget limit for the multi-action conservation
+#'   planning problem. Following the mathematical formulations used in
+#'   Salgado-Rojas *et al.* (2020). More information about mathematical formulation
+#'   in detail section.
 #'
-#'   Connectivity parameters (`blm` and `blm_actions`) manipulate the
-#'   spatial fragmentation of planning units and/or action management to improve
-#'   the compactness of the reserve solutions. Likewise, the other parameters
-#'   (`curve` and `segments`) affect the linearization strategy
-#'   used by the model internally in order to be solved under a linear
-#'   programming approach. **It is not recommended to modify the default
-#'   values of the later ones**.
-#'
-#' @param x Object of class [ConservationProblem-class()] that
-#'   specifies the basic data used in a problem of prioritization of multiple
-#'   conservation actions. This object must be created using the
+#' @param x [conservationProblem-class] object. Data used in a problem of
+#'   prioritization of multiple conservation actions. This object must be created using the
 #'   [problem()] function.
 #'
-#' @param blm A `numeric` value that indicates the penalty factor
-#'   associated to the spatial fragmentation of planning units, similar to
-#'   **Boundary Length Modifier (BLM)** in *Marxan*. This argument
-#'   only has an effect when the [bound()] argument of
-#'   [problem()] function is a `data.frame` object. **The
-#'   default argument is zero**.
+#' @param blm `numeric`. Penalty factor associated to the spatial fragmentation of planning
+#'   units, similar to Boundary Length Modifier (BLM) in *Marxan*. This argument
+#'   only has an effect when the `boundary` is available.
 #'
-#' @param blm_actions A `numeric` value that indicates the penalty factor
-#'   associated to the spatial fragmentation of actions. **The default
-#'   argument is zero**.
+#' @param budget `numeric`. Maximum budget to perform actions.
 #'
-#' @param curve An `integer` value that selects the type of continuous
-#'   curve that will represent the expression (linear or non-linear) associated
-#'   with a specific constraint in this model. Therefore, the curve can
-#'   represent a linear (1), quadratic (2) or cubic (3) function. **The
-#'   default argument is 3 and it is not recommended to change this value unless
-#'   you have advanced knowledge of the linearization of mathematical model**.
+#' @param curve `integer`. Type of continuous curve used to represent benefit expression. It can
+#'   be a linear (`1`), quadratic (`2`) or cubic (`3`) function.
+#'   See **Details** for more information.
 #'
-#' @param segments An `integer` value that selects the number of
-#'   segments (1, 2 or 3) that will have the *piecewise linear function*
-#'   in charge of approximating the non-linear expression contained in a
-#'   specific constraint of this model. **The default argument is 3 and it
-#'   is not recommended to change this value unless you have advanced knowledge
-#'   of the linearization of mathematical model**.
+#' @param segments `integer`. Number of segments (`1`, `2`, or `3`) used to approximate the non-linear
+#'  expression (`curve`) in the calculate benefits. See **Details** for more information.
+#'
+#' @param recovery `logical`. Indicates if it is a recovery (`TRUE`) or conservation problem (`FALSE`).
+#' A recovery problem assumes no benefits for the features by incorporating units to the solution
+#' where threats are not found (i.e. no co-occurrence between the feature and
+#' its threats on that site).
+#'
 
 #' @name maximizeBenefits
 #'
-#' @return An object of class [OptimizationProblem-class()].
+#' @return An object of class [optimizationProblem-class].
 #'
-#' @details **Put details here! The details may include the mathematical
-#'  formulation of the optimization model associated with this conservation
-#'  problem and/or a rough description of the mathematical model, and/or what
-#'  happens when the parameters are set in one way or another.**
+#' @details The maximize benefits model seeks to find the set of actions that
+#' maximizes the sum of benefits of all features, while the cost of performing
+#' actions does not exceed a certain budget.
 #'
-#' @seealso For more information regarding the arguments `blm` and
-#'  `blm_actions`, see the [official
-#'  *Marxan* website](https://marxansolutions.org) and the article by Salgado-Rojas *et al.*
-#'  (2020), respectively. Also, for more information regarding the arguments
+#'This model can be expressed mathematically for a set of planning units
+#'\eqn{I} indexed by \eqn{i} a set of features \eqn{S} indexed by \eqn{s}, and
+#'a set of threats \eqn{K} indexed by \eqn{k} as:
+#'
+#' \deqn{
+#' \max \space \sum_{i \in I}\sum_{s \in S_i} b_{is} r_{is} \\
+#' \mathit{s.t.} \\
+#'\sum_{i \in I} \sum_{k \in K_i} x_{ik} c_{ik} \leq budget
+#' }
+#'
+#' Here, \eqn{x_{ik}} is the decisions variable that specify whether action to abate the
+#' threat \eqn{k} in the planning unit \eqn{i} has been selected (1) or not (0), \eqn{c_{ik}}
+#' is the cost of do the action to abate the threat \eqn{k} in the planning unit \eqn{i},
+#' \eqn{b_{is}} is the benefit of the feature \eqn{s} in the planning unit \eqn{i}
+#' after doing actions on it (value between 0 and 1), \eqn{r_{is}} is the amount of
+#' feature \eqn{s} in planning unit \eqn{i}.
+#' And, the \eqn{t_s} is the target for feature \eqn{s}. The first term is the objective
+#' function and the second is the set of constraints.
+#'
+#' In the case of working with the presence/absence of threats (binary intensities),
+#' we defined the benefit as a measure of the number of actions taken against the threats that
+#' affect said feature with respect to all possible actions to do. However, this may
+#' underestimate the true value of benefits. For this, we use a power (`curve` parameter)
+#' to raise the expression and thus seek to perform a higher density of actions per site.
+#' Because we work with linear models, we use the piecewise linearization strategy to
+#' work with this expression. The `segments` parameter indicates how well the expression
+#' approximates. A higher number implies a better approximation but increases the resolution complexity.
+#' For more information on its calculation, see the
+#' [getBenefit](https://prioriactions.github.io/prioriactions/reference/getBenefit.html)
+#' reference.
+#'
+#' Connectivity parameters (`blm` and `blm_actions`) manipulate the
+#' spatial fragmentation of planning units and/or action management to improve
+#' the compactness of the reserve solutions.
+#'
+#' @seealso For more information regarding the arguments
 #'  `curve` and `segments`, see the supplementary material
-#'  associated with the article by Salgado-Rojas *et al.* (2020), which can
+#'  of Salgado-Rojas *et al.* (2020), which can
 #'  be found online at <https://doi.org/10.1016/j.ecolmodel.2019.108901>.
 #'
 #' @examples
-#' ## Create an optimization model for the multi-action conservation
-#' ## planning problem using a data instance that has been created in R.
 #' ## This example uses input files included into package.
 #'
+#' ## set seed for reproducibility
+#' set.seed(14)
+#'
 #' ## Load data
-#' data(example_pu_data, example_features_data, example_dist_features_data, example_dist_threats_data, example_threats_data, example_sensitivity_data, example_bound_data)
+#' data(sim_pu_data, sim_features_data, sim_dist_features_data,
+#' sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
+#' sim_boundary_data)
 #'
 #' ## Create data instance
 #' problem_data <- problem(
-#'   pu = example_pu_data, features = example_features_data, dist_features = example_dist_features_data,
-#'   threats = example_threats_data, dist_threats = example_dist_threats_data, sensitivity = example_sensitivity_data,
-#'   bound = example_bound_data
+#'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
+#'   threats = sim_threats_data, dist_threats = sim_dist_threats_data, sensitivity = sim_sensitivity_data,
+#'   boundary = sim_boundary_data
 #' )
 #'
 #' ## Create optimization model
-#' problem_model <- maximizeBenefits(x = problem_data, budget = 10)
-
-#' @export
-maximizeBenefits <- function(x, ...) UseMethod("maximizeBenefits")
+#' problem_model <- maximizeBenefits(x = problem_data, blm = 1, budget = 100)
 
 #' @rdname maximizeBenefits
 #' @export

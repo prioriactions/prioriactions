@@ -96,7 +96,6 @@ Collate:
     'plot.R'
     'portfolio-class.R'
     'print.R'
-    'prioriactions.R'
     'problem.R'
     'show.R'
     'solution-class.R'

@@ -1,95 +1,118 @@
 #' @include internal.R
 NULL
 
-#' @title Multi-action conservation planning problem
+#' @title Create the conservation planning problem
 #'
 #' @description
-#' Create a data instance for the multi-action conservation planning problem. This function is used to specify
-#' the basic data used in a problem of prioritization of multiple conservation actions.
-#' This includes, the spatial distribution of the planning units and their costs,
-#' the features to be conserved (e.g. species, ecosystems) and their threats, and the
-#' costs of implementing an action to remove such threats.
+#' Create the [conservationProblem-class] object with information about the multi-action
+#' conservation planning problem. This function is used to specify all the data
+#' that defines the spatial prioritization problem (planning units data, feature
+#' data, threats data, and their spatial distributions.)
 #'
-#' @param pu Object of class [data.frame()] that specifies the planning units
-#' to use in the reserve design exercise and their corresponding cost. It may be
-#' desirable to exclude some planning units from the analysis, for example those outside
-#' the study area. To exclude planning units you have two options:
-#' (i) pre-process the `data.frame` before using it (i.e., *manually* exclude planning units);
-#' or (ii) set the *status* of planning units to 3 not to include them. Each row corresponds
-#' to a different planning unit, and each column corresponds to different information about the planning units.
-#' The description of the columns is listed below.
+#' @param pu Object of class [data.frame()] that specifies the planning units (PU)
+#' to use in the design exercise and their corresponding cost and status. Each
+#' row corresponds to a different planning unit (following the conventions used by
+#'  *Marxan*). It must also contain the following columns:
 #' \describe{
-#'    \item{`"id"`}{`integer` unique identifier for each planning unit. This column is **mandatory**.}
-#'    \item{`"cost"`}{`numeric` cost of including each planning unit in the reserve system. This column is **mandatory**.}
-#'    \item{`"status"`}{`integer` indicating if each planning unit should not be locked in the solution (0) or if it should be *locked-in* (2) or *locked-out* (3) of the solution. This column is **optional**.}
+#'    \item{`id`}{`integer` unique identifier for each planning unit.}
+#'    \item{`cost`}{`numeric` cost of including each planning unit in the reserve system.}
+#'    \item{`status`}{`integer` (**optional**) value that indicate if each planning unit
+#'    should be available to be selected (0), *locked-in* (2) as part of the
+#'    solution, or *locked-out* (3) and excluded from the solution.}
 #'    }
 #'
 #' @param features Object of class [data.frame()] that specifies the conservation
-#' features to consider in the reserve design exercise, such as their name and representation
-#' requirements (i.e., *targets*). Each row corresponds to a different feature and each column
-#' corresponds to different information about the features. The description of the columns is listed below.
+#' features to consider in the design exercise. Each row corresponds to a different
+#' feature. This file is inherited from marxan's *spec.dat*. It must also contain
+#' the following columns:
 #' \describe{
-#'    \item{`"id"`}{`integer` unique identifier for each conservation feature. This column is **mandatory**.}
-#'    \item{`"target"`}{`numeric` target amount for each conservation feature. This column is **mandatory**.}
-#'    \item{`"name"`}{`character` name for each conservation feature. This column is **optional**.}
+#'    \item{`id`}{`integer` unique identifier for each conservation feature.}
+#'    \item{`target`}{`numeric` target amount to achieve for each conservation feature.
+#'    This field is **required** if a `minimizeCosts()` model is used.}
+#'    \item{`name`}{`character` (**optional**) name for each conservation feature.}
 #'    }
 #'
-#' @param dist_features Object of class [data.frame()] that specifies the spatial distribution of conservation features across planning units.
-#' **It is recommended not to include cases where a feature does not occur in a planning unit (avoid rows with
-#' `"amount"` equal to 0). Instead, it is recommended to omit these cases completely from the [data.frame()], for efficiency reasons.**
-#' The description of the columns is listed below.
+#' @param dist_features Object of class [data.frame()] that specifies the spatial
+#' distribution of conservation features across planning units. Each row corresponds
+#' to a combination of planning unit and feature. This file is inherited from marxan's
+#' *puvspr.dat*. It must also contain the following columns:
 #' \describe{
-#'    \item{`"pu"`}{`integer` *id* of a planning unit where the conservation feature listed on the same row occurs. This column is **mandatory**.}
-#'    \item{`"species"`}{`integer` *id* of each conservation feature. This column is **mandatory**.}
-#'    \item{`"amount"`}{`integer` indicating if the conservation feature occurring in the planning unit listed on the same row (1), or if it is not occurring (0). This column is **mandatory**.}
+#'    \item{`pu`}{`integer` *id* of a planning unit where the conservation feature
+#'    listed on the same row occurs.}
+#'    \item{`feature`}{`integer` *id* of each conservation feature.}
+#'    \item{`amount`}{`numeric` amount of the feature in the planning unit. Set
+#'    to 1 to work with presence/absence.}
 #'    }
 #'
 #' @param threats Object of class [data.frame()] that specifies the threats to consider in
-#' the reserve design exercise, such as their name and penalty of connectivity (i.e., *blm_actions*). Each row corresponds to a different feature and each column
-#' corresponds to different information about the threats The description of the columns is listed below.
+#' the design exercise. Each row corresponds to a different threats. It must also contain
+#' the following columns:
 #' \describe{
-#'    \item{`"id"`}{`integer` unique identifier for each threat. This column is **mandatory**.}
-#'    \item{`"name"`}{`character` name for each threat. This column is **optional**.}
-#'    \item{`"blm_actions"`}{`numeric` penalty of connectivity between threats. This column is **optional**.}
+#'    \item{`id`}{`integer` unique identifier for each threat.}
+#'    \item{`blm_actions`}{`numeric` (**optional**) penalty of connectivity between threats.
+#'    Default is 0.}
+#'    \item{`name`}{`character` (**optional**) name for each threat.}
 #'    }
 #'
-#' @param dist_threats Object of class [data.frame()] that specifies the spatial distribution of threats across planning units
-#' and the corresponding cost of applying an action against these threats. **It is recommended not to include cases where a threat does not occur
-#' in a planning unit (avoid rows with `"amount"` equal to 0). Instead, it is recommended to omit these cases completely from the [data.frame()], for efficiency reasons.**
-#' The description of the columns is listed below.
+#' @param dist_threats Object of class [data.frame()] that specifies the spatial
+#' distribution of threats across planning units. Each row corresponds
+#' to a combination of planning unit and threat. It must also contain the following
+#' columns:
 #' \describe{
-#'    \item{`"pu"`}{`integer` *id* of a planning unit where the threat listed on the same row occurs. This column is **mandatory**.}
-#'    \item{`"threats"`}{`integer` *id* of each threat. This column is **mandatory**.}
-#'    \item{`"amount"`}{`integer` indicating if the threat occurring in the planning unit listed on the same row (1), or if it is not occurring (0). This column is **mandatory**.}
-#'    \item{`"cost"`}{`numeric` cost of applying an action to eliminate the threat in the planning unit listed in the same row. This column is **mandatory**.}
-#'    \item{`"status"`}{`integer` indicating if each action should not be locked in the solution (0) or if it should be *locked-in* (2) or *locked-out* (3) of the solution. This column is **optional**.}
+#'    \item{`pu`}{`integer` *id* of a planning unit where the threat listed on the
+#'    same row occurs.}
+#'    \item{`threat`}{`integer` *id* of each threat.}
+#'    \item{`amount`}{`numeric` amount of the threat in the planning unit. Set
+#'    to 1 to work with presence/absence. Continuous amount values require
+#'    that feature sensitivities to threats be established (more info in
+#'    [sensitivities](https://prioriactions.github.io/prioriactions/articles/sensitivities.html)
+#'    vignette).}
+#'    \item{`cost`}{`numeric` cost of applying an action to eliminate the threat
+#'    in this planning unit.}
+#'    \item{`status`}{`integer` (**optional**) value that indicate if each action
+#'    to abate the threat should be available to be selected (0), *locked-in* (2)
+#'    as part of the solution, or *locked-out* (3) and excluded from the solution.}
 #'    }
 #'
-#' @param sensitivity Object of class [data.frame()] that specifies the species-threats sensitivity,
-#' i.e., which threats affect the persistence of endangered conservation features (e.g., species).
-#' **It is recommended not to include cases where there is no species-threats sensitivity
-#' (avoid rows with `"amount"` equal to 0). Instead, it is recommended to omit these cases completely
-#' from the [data.frame()], for efficiency reasons.**
-#' The description of the columns is listed below.
+#' @param sensitivity (**optional**) Object of class [data.frame()] that specifies
+#' the species-threats sensitivity, i.e., which threats affect the persistence of
+#' endangered conservation features (e.g., species). Each row corresponds
+#' to a combination of feature and threat. If not informed, all features
+#' are assumed to be sensitive to all threats. We strongly recommend reviewing the
+#' [sensitivities](https://prioriactions.github.io/prioriactions/articles/sensitivities.html)
+#' vignette. It must also contain the following
+#' columns:
 #'    \describe{
-#'    \item{`"species"`}{`integer` *id* of each conservation feature. This column is **mandatory**.}
-#'    \item{`"threats"`}{`integer` *id* of each threat. This column is **mandatory**.}
-#'    \item{`"amount"`}{`integer` indicating if the threat againsting the conservation feature listed on the same row (1), or if it is not againsting (0). This column is **mandatory**.}
+#'    \item{`feature`}{`integer` *id* of each conservation feature.}
+#'    \item{`threat`}{`integer` *id* of each threat.}
+#'    \item{`a`}{`numeric` (**optional**) minimum intensity threshold value.
+#'    Value at which the intensity of the threat stops causing positive changes in the
+#'    response of the species (achieving a maximum response `d`). Default is 0.}
+#'    \item{`b`}{`numeric` (**optional**) maximum intensity threshold value.
+#'    Value at which the intensity of the threat stops causing negative changes in the
+#'    response of the species (achieving a minimum response `c`). If it is not established,
+#'    it is assumed as the **maximum intensity value of this threat in all planning units**.}
+#'    \item{`c`}{`numeric` (**optional**) response of the feature to the
+#'    maximum value of intensity of the threat. Default is 0.}
+#'    \item{`d`}{`numeric` (**optional**) response of the feature to the
+#'    minimum value of intensity of the threat. Default is 1.}
 #'    }
 #'
-#' @param boundary Object of class [NULL()] (default) or an object of class [data.frame()].
-#' `NULL` indicates that planning units' boundaries (i.e., *boundary data*) are not required for the multi-action conservation planning problem.
-#' `data.frame` specifies the boundaries of the planning units, i.e., the spatial relationship between two units, such as the "length" of the shared boundary between them.
-#' The description of the columns is listed below.
+#' @param boundary (**optional**) Object of class [data.frame()] that specifies
+#' the boundaries of the planning units, i.e., the spatial relationship between two units,
+#'  such as the "length" of the shared boundary between them. Each row corresponds
+#' to a combination of planning unit. This file is inherited from marxan's
+#' *bound.dat*. It must also contain the following columns:
 #'   \describe{
-#'   \item{`"id1"`}{`integer` *id* of each planning unit. This column is **mandatory**.}
-#'   \item{`"id2"`}{`integer` *id* of each planning unit. This column is **mandatory**.}
-#'   \item{`"boundary"`}{`numeric` "length" of shared boundary between the planning units identified on the same row. This column is **mandatory**.}
+#'   \item{`id1`}{`integer` *id* of each planning unit.}
+#'   \item{`id2`}{`integer` *id* of each planning unit.}
+#'   \item{`boundary`}{`numeric` shared boundary between the planning
+#'   units identified on the same row.}
 #'   }
 #'
 #' @name problem
 #'
-#' @return An object of class [ConservationProblem-class()].
+#' @return An object of class [conservationProblem-class].
 #'
 #' @details If you are familiar with using conservation planning software called
 #' *Marxan*, you should know that most of the arguments in this function
@@ -104,39 +127,38 @@ NULL
 #' [official *Marxan* website](https://marxansolutions.org) and Ball *et al.* (2009).
 #'
 #' @examples
-#' ## Create a data instance for the multi-action conservation planning problem
-#' ## using data.frames that have been loaded into R. This example uses input files included
-#' ## into package.
+#' ## set seed for reproducibility
+#' set.seed(14)
 #'
 #' ## Set prioriactions path
 #' prioriactions_path <- system.file("extdata/input/", package = "prioriactions")
 #'
 #' ## Load in planning unit data
-#' pu_data <- data.table::fread(paste0(prioriactions_path,"pu.dat"), data.table = FALSE)
+#' pu_data <- data.table::fread(paste0(prioriactions_path,"/pu.dat"), data.table = FALSE)
 #' head(pu_data)
 #'
 #' ## Load in feature data
-#' features_data <- data.table::fread(paste0(prioriactions_path,"features.dat"), data.table = FALSE)
-#' head(spec_data)
+#' features_data <- data.table::fread(paste0(prioriactions_path,"/features.dat"), data.table = FALSE)
+#' head(features_data)
 #'
 #' ## Load in planning unit vs feature data
-#' dist_features_data <- data.table::fread(paste0(prioriactions_path,"dist_features.dat"), data.table = FALSE)
+#' dist_features_data <- data.table::fread(paste0(prioriactions_path,"/dist_features.dat"), data.table = FALSE)
 #' head(dist_features_data)
 #'
 #' ## Load in the threats data
-#' threats_data <- data.table::fread(paste0(prioriactions_path,"threats.dat"), data.table = FALSE)
+#' threats_data <- data.table::fread(paste0(prioriactions_path,"/threats.dat"), data.table = FALSE)
 #' head(threats_data)
 #'
 #' ## Load in the threats distribution data
-#' dist_threats_data <- data.table::fread(paste0(prioriactions_path,"dist_threats.dat"), data.table = FALSE)
+#' dist_threats_data <- data.table::fread(paste0(prioriactions_path,"/dist_threats.dat"), data.table = FALSE)
 #' head(dist_threats_data)
 #'
 #' ## Load in the sensitivity data
-#' sensitivity_data <- data.table::fread(paste0(prioriactions_path,"sensibility.dat"), data.table = FALSE)
+#' sensitivity_data <- data.table::fread(paste0(prioriactions_path,"/sensitivity.dat"), data.table = FALSE)
 #' head(sensitivity_data)
 #'
 #' ## Load in the boundary data
-#' boundary_data <- data.table::fread(paste0(prioriactions_path,"bound.dat"), data.table = FALSE)
+#' boundary_data <- data.table::fread(paste0(prioriactions_path,"/boundary.dat"), data.table = FALSE)
 #' head(boundary_data)
 #'
 #' ## Create data instance
@@ -146,35 +168,32 @@ NULL
 #'   boundary = boundary_data
 #' )
 #'
-#' ## Instance summary
+#' ## Summary
 #' print(problem_data)
+#'
 #' @references
 #' \itemize{
 #' \item Ball I, Possingham H, Watts, M. *Marxan and relatives: software for spatial
 #' conservation prioritization*. Spatial conservation prioritisation: quantitative
-#' methods and computational tools 2009; 185<U+2012>195.
+#' methods and computational tools 2009.
 #' }
 #'
 #' @export
 methods::setGeneric("problem",
-                    signature = methods::signature("pu", "features", "dist_features", "threats", "dist_threats","sensitivity"),
-                    function(pu, features, dist_features, threats, dist_threats, sensitivity, ...) standardGeneric("problem")
+                    signature = methods::signature("pu", "features", "dist_features", "threats", "dist_threats"),
+                    function(pu, features, dist_features, threats, dist_threats, ...) standardGeneric("problem")
 )
 
 #' @name problem
-#' @usage \S4method{problem}{data.frame}(pu, features, dist_features, threats, dist_threats, sensitivity, boundary = NULL)
+#' @usage \S4method{problem}{data.frame}(pu, features, dist_features, threats, dist_threats, sensitivity = NULL, boundary = NULL)
 #' @rdname problem
 methods::setMethod(
   "problem",
   methods::signature(
     pu = "data.frame", features = "data.frame", dist_features = "data.frame",
-    threats = "data.frame", dist_threats = "data.frame", sensitivity = "data.frame"
+    threats = "data.frame", dist_threats = "data.frame"
   ),
-  function(pu, features, dist_features, threats, dist_threats, sensitivity, boundary = NULL, ...) {
-    # This is an exact copy of the prioritizr code ------------
-
-    # assert arguments are valid
-    assertthat::assert_that(no_extra_arguments(...))
+  function(pu, features, dist_features, threats, dist_threats, sensitivity = NULL, boundary = NULL) {
 
     ## pu
     assertthat::assert_that(
@@ -216,7 +235,6 @@ methods::setMethod(
     } else {
       features$name <- paste0("feature.", seq_len(nrow(features)))
     }
-
 
     ## dist_features
     assertthat::assert_that(
@@ -319,17 +337,23 @@ methods::setMethod(
 
 
     ## sensitivity
-    assertthat::assert_that(
-      inherits(sensitivity, "data.frame"),
-      assertthat::has_name(sensitivity, "feature"),
-      assertthat::has_name(sensitivity, "threat"),
-      nrow(sensitivity) > 0,
-      is.numeric(sensitivity$feature),
-      is.numeric(sensitivity$threat),
-      assertthat::noNA(sensitivity$feature),
-      assertthat::noNA(sensitivity$threat),
-      assertthat::noNA(sensitivity$amount)
-    )
+    assertthat::assert_that(inherits(sensitivity, c("NULL", "data.frame")))
+    if (inherits(boundary, "data.frame")) {
+      assertthat::assert_that(
+        assertthat::has_name(sensitivity, "feature"),
+        assertthat::has_name(sensitivity, "threat"),
+        nrow(sensitivity) > 0,
+        is.numeric(sensitivity$feature),
+        is.numeric(sensitivity$threat),
+        assertthat::noNA(sensitivity$feature),
+        assertthat::noNA(sensitivity$threat),
+        assertthat::noNA(sensitivity$amount)
+      )
+    }
+    else{
+      sensitivity <- expand.grid("feature" = features$id, "threat" = threats$id)
+    }
+
     if ("a" %in% names(sensitivity)) {
       assertthat::assert_that(
         is.numeric(sensitivity$a),

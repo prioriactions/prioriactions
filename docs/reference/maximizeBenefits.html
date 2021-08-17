@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>maximizeBenefits — maximizeBenefits • prioriactions</title>
+<title>Create mathematical model: maximize benefits — maximizeBenefits • prioriactions</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,19 +52,12 @@
 
 
 
-<meta property="og:title" content="maximizeBenefits — maximizeBenefits" />
-<meta property="og:description" content="Create an optimization model for the multi-action conservation
-planning problem, following the mathematical formulations used in
-Salgado-Rojas et al. (2020). This function is used to specify model
-configuration parameters related to connectivity issues and its internal
-modus operandi.
-Connectivity parameters (blm and blm_actions) manipulate the
-spatial fragmentation of planning units and/or action management to improve
-the compactness of the reserve solutions. Likewise, the other parameters
-(curve and segments) affect the linearization strategy
-used by the model internally in order to be solved under a linear
-programming approach. It is not recommended to modify the default
-values of the later ones." />
+<meta property="og:title" content="Create mathematical model: maximize benefits — maximizeBenefits" />
+<meta property="og:description" content="Create an optimization model that maximize the sum of benefits of
+all features without exceeding a budget limit for the multi-action conservation
+planning problem. Following the mathematical formulations used in
+Salgado-Rojas et al. (2020). More information about mathematical formulation
+in detail section." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -177,36 +170,20 @@ values of the later ones." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>maximizeBenefits</h1>
+    <h1>Create mathematical model: maximize benefits</h1>
     <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/maximizeBenefits.R'><code>R/maximizeBenefits.R</code></a></small>
     <div class="hidden name"><code>maximizeBenefits.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create an optimization model for the multi-action conservation
-planning problem, following the mathematical formulations used in
-Salgado-Rojas <em>et al.</em> (2020). This function is used to specify model
-configuration parameters related to connectivity issues and its internal
-<em>modus operandi</em>.</p>
-<p>Connectivity parameters (<code>blm</code> and <code>blm_actions</code>) manipulate the
-spatial fragmentation of planning units and/or action management to improve
-the compactness of the reserve solutions. Likewise, the other parameters
-(<code>curve</code> and <code>segments</code>) affect the linearization strategy
-used by the model internally in order to be solved under a linear
-programming approach. <strong>It is not recommended to modify the default
-values of the later ones</strong>.</p>
+    <p>Create an optimization model that maximize the sum of benefits of
+all features without exceeding a budget limit for the multi-action conservation
+planning problem. Following the mathematical formulations used in
+Salgado-Rojas <em>et al.</em> (2020). More information about mathematical formulation
+in detail section.</p>
     </div>
 
     <pre class="usage"><span class='fu'>maximizeBenefits</span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  blm <span class='op'>=</span> <span class='fl'>0</span>,
-  budget <span class='op'>=</span> <span class='fl'>0</span>,
-  curve <span class='op'>=</span> <span class='fl'>3</span>,
-  segments <span class='op'>=</span> <span class='fl'>3</span>,
-  recovery <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-
-<span class='fu'>maximizeBenefits</span><span class='op'>(</span>
   <span class='va'>x</span>,
   blm <span class='op'>=</span> <span class='fl'>0</span>,
   budget <span class='op'>=</span> <span class='fl'>0</span>,
@@ -220,90 +197,106 @@ values of the later ones</strong>.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Object of class <code>ConservationProblem-class()</code> that
-specifies the basic data used in a problem of prioritization of multiple
-conservation actions. This object must be created using the
+      <td><p><a href='conservationProblem-class.html'>conservationProblem</a> object. Data used in a problem of
+prioritization of multiple conservation actions. This object must be created using the
 <code><a href='problem.html'>problem()</a></code> function.</p></td>
     </tr>
     <tr>
       <th>blm</th>
-      <td><p>A <code>numeric</code> value that indicates the penalty factor
-associated to the spatial fragmentation of planning units, similar to
-<strong>Boundary Length Modifier (BLM)</strong> in <em>Marxan</em>. This argument
-only has an effect when the <code>bound()</code> argument of
-<code><a href='problem.html'>problem()</a></code> function is a <code>data.frame</code> object. <strong>The
-default argument is zero</strong>.</p></td>
+      <td><p><code>numeric</code>. Penalty factor associated to the spatial fragmentation of planning
+units, similar to Boundary Length Modifier (BLM) in <em>Marxan</em>. This argument
+only has an effect when the <code>boundary</code> is available.</p></td>
+    </tr>
+    <tr>
+      <th>budget</th>
+      <td><p><code>numeric</code>. Maximum budget to perform actions.</p></td>
     </tr>
     <tr>
       <th>curve</th>
-      <td><p>An <code>integer</code> value that selects the type of continuous
-curve that will represent the expression (linear or non-linear) associated
-with a specific constraint in this model. Therefore, the curve can
-represent a linear (1), quadratic (2) or cubic (3) function. <strong>The
-default argument is 3 and it is not recommended to change this value unless
-you have advanced knowledge of the linearization of mathematical model</strong>.</p></td>
+      <td><p><code>integer</code>. Type of continuous curve used to represent benefit expression. It can
+be a linear (<code>1</code>), quadratic (<code>2</code>) or cubic (<code>3</code>) function.
+See <strong>Details</strong> for more information.</p></td>
     </tr>
     <tr>
       <th>segments</th>
-      <td><p>An <code>integer</code> value that selects the number of
-segments (1, 2 or 3) that will have the <em>piecewise linear function</em>
-in charge of approximating the non-linear expression contained in a
-specific constraint of this model. <strong>The default argument is 3 and it
-is not recommended to change this value unless you have advanced knowledge
-of the linearization of mathematical model</strong>.</p></td>
+      <td><p><code>integer</code>. Number of segments (<code>1</code>, <code>2</code>, or <code>3</code>) used to approximate the non-linear
+expression (<code>curve</code>) in the calculate benefits. See <strong>Details</strong> for more information.</p></td>
     </tr>
     <tr>
-      <th>blm_actions</th>
-      <td><p>A <code>numeric</code> value that indicates the penalty factor
-associated to the spatial fragmentation of actions. <strong>The default
-argument is zero</strong>.</p></td>
+      <th>recovery</th>
+      <td><p><code>logical</code>. Indicates if it is a recovery (<code>TRUE</code>) or conservation problem (<code>FALSE</code>).
+A recovery problem assumes no benefits for the features by incorporating units to the solution
+where threats are not found (i.e. no co-occurrence between the feature and
+its threats on that site).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>OptimizationProblem-class()</code>.</p>
+    <p>An object of class <a href='optimizationProblem-class.html'>optimizationProblem</a>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><strong>Put details here! The details may include the mathematical
-formulation of the optimization model associated with this conservation
-problem and/or a rough description of the mathematical model, and/or what
-happens when the parameters are set in one way or another.</strong></p>
+    <p>The maximize benefits model seeks to find the set of actions that
+maximizes the sum of benefits of all features, while the cost of performing
+actions does not exceed a certain budget.</p>
+<p>This model can be expressed mathematically for a set of planning units
+\(I\) indexed by \(i\) a set of features \(S\) indexed by \(s\), and
+a set of threats \(K\) indexed by \(k\) as:</p>
+<p>$$
+\max \space \sum_{i \in I}\sum_{s \in S_i} b_{is} r_{is} \\
+\mathit{s.t.} \\
+\sum_{i \in I} \sum_{k \in K_i} x_{ik} c_{ik} \leq budget
+$$</p>
+<p>Here, \(x_{ik}\) is the decisions variable that specify whether action to abate the
+threat \(k\) in the planning unit \(i\) has been selected (1) or not (0), \(c_{ik}\)
+is the cost of do the action to abate the threat \(k\) in the planning unit \(i\),
+\(b_{is}\) is the benefit of the feature \(s\) in the planning unit \(i\)
+after doing actions on it (value between 0 and 1), \(r_{is}\) is the amount of
+feature \(s\) in planning unit \(i\).
+And, the \(t_s\) is the target for feature \(s\). The first term is the objective
+function and the second is the set of constraints.</p>
+<p>In the case of working with the presence/absence of threats (binary intensities),
+we defined the benefit as a measure of the number of actions taken against the threats that
+affect said feature with respect to all possible actions to do. However, this may
+underestimate the true value of benefits. For this, we use a power (<code>curve</code> parameter)
+to raise the expression and thus seek to perform a higher density of actions per site.
+Because we work with linear models, we use the piecewise linearization strategy to
+work with this expression. The <code>segments</code> parameter indicates how well the expression
+approximates. A higher number implies a better approximation but increases the resolution complexity.
+For more information on its calculation, see the
+<a href='https://prioriactions.github.io/prioriactions/reference/getBenefit.html'>getBenefit</a>
+reference.</p>
+<p>Connectivity parameters (<code>blm</code> and <code>blm_actions</code>) manipulate the
+spatial fragmentation of planning units and/or action management to improve
+the compactness of the reserve solutions.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>For more information regarding the arguments <code>blm</code> and
-<code>blm_actions</code>, see the <a href='https://marxansolutions.org'>official <em>Marxan</em> website</a> and the article by Salgado-Rojas <em>et al.</em>
-(2020), respectively. Also, for more information regarding the arguments
+    <div class='dont-index'><p>For more information regarding the arguments
 <code>curve</code> and <code>segments</code>, see the supplementary material
-associated with the article by Salgado-Rojas <em>et al.</em> (2020), which can
+of Salgado-Rojas <em>et al.</em> (2020), which can
 be found online at <a href='https://doi.org/10.1016/j.ecolmodel.2019.108901'>https://doi.org/10.1016/j.ecolmodel.2019.108901</a>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'>## Create an optimization model for the multi-action conservation</span></span>
-<span class='r-in'><span class='co'>## planning problem using a data instance that has been created in R.</span></span>
-<span class='r-in'><span class='co'>## This example uses input files included into package.</span></span>
+    <pre class="examples"><span class='r-in'><span class='co'>## This example uses input files included into package.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## set seed for reproducibility</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>14</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Load data</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_dist_features_data</span>, <span class='va'>example_dist_threats_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensitivity_data</span>, <span class='va'>example_bound_data</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_pu_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_features_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_dist_features_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_dist_threats_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_threats_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_sensitivity_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_bound_data’ not found</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_pu_data</span>, <span class='va'>sim_features_data</span>, <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'><span class='va'>sim_threats_data</span>, <span class='va'>sim_dist_threats_data</span>, <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
 <span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='problem.html'>problem</a></span><span class='op'>(</span></span>
-<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>example_pu_data</span>, features <span class='op'>=</span> <span class='va'>example_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>example_dist_features_data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>example_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>example_sensitivity_data</span>,</span>
-<span class='r-in'>  bound <span class='op'>=</span> <span class='va'>example_bound_data</span></span>
+<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'>  boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in h(simpleError(msg, call))</span> error in evaluating the argument 'pu' in selecting a method for function 'problem': object 'example_pu_data' not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create optimization model</span></span>
-<span class='r-in'><span class='va'>problem_model</span> <span class='op'>&lt;-</span> <span class='fu'>maximizeBenefits</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>problem_data</span>, budget <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in inherits(x, "ConservationProblem")</span> object 'problem_data' not found</span>
+<span class='r-in'><span class='va'>problem_model</span> <span class='op'>&lt;-</span> <span class='fu'>maximizeBenefits</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>problem_data</span>, blm <span class='op'>=</span> <span class='fl'>1</span>, budget <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

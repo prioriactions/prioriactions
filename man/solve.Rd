@@ -2,7 +2,7 @@
 % Please edit documentation in R/solve.R
 \name{solve}
 \alias{solve}
-\title{solve}
+\title{Solve mathematical models}
 \usage{
 solve(
   a,
@@ -13,71 +13,60 @@ solve(
   cores = 2,
   verbose = TRUE,
   name_output_file = "output",
-  output_file = TRUE,
-  ...
+  output_file = TRUE
 )
 }
 \arguments{
-\item{a}{Object of class \code{\link[=OptimizationProblem-class]{OptimizationProblem-class()}} that
-specifies the custom-tailor optimization model created for the problem of
-prioritization of multiple conservation actions. This object must be
-created using the \code{\link[=min_costs]{min_costs()}} function.}
+\item{a}{\linkS4class{optimizationProblem} object. Optimization model created
+for the problem of prioritization of multiple conservation actions. This object must be
+created using the \code{minimizeCosts()} or \code{maximizeBenefits()} functions.}
 
-\item{solver}{A \code{string} label that indicates which solver to use to
-solve the model created for the problem of prioritization of multiple
-conservation actions. The following solvers are supported:
-\href{http://gurobi.com}{\code{"gurobi"}}, and
-\href{https://projects.coin-or.org/SYMPHONY}{\code{"symphony"}}.
-\strong{The default argument is \code{"gurobi"} (requires a license)}.}
+\item{solver}{\code{string}. Name of solver to use to
+solve the model. The following solvers are supported:
+\href{http://gurobi.com}{\code{"gurobi"}}(requires the \pkg{gurobi} package), and
+\href{https://projects.coin-or.org/SYMPHONY}{\code{"symphony"}}(requires the \pkg{Rsymphony} package).
+We highly recommend using gurobi (for more information on how to obtain an academic license
+\href{https://prioritizr.net/articles/gurobi_installation.html}{here}).}
 
-\item{gap_limit}{A \code{numeric} value (between 0 and 1) that represents the gap
+\item{gap_limit}{\code{numeric}. Value between 0 and 1 that represents the gap
 to optimality, i.e., a relative number that cause the optimizer to
 terminate when the difference between the upper and lower objective
 function bounds is less than the gap times the upper bound. For example, a
 value of 0.01 will result in the optimizer stopping when the difference
-between the bounds is 1 percent of the upper bound. \strong{The default
-argument is 0.0}.}
+between the bounds is 1 percent of the upper bound.}
 
-\item{time_limit}{A \code{numeric} value (non negative) that indicates the
-time limit to run the optimizer (in seconds). The solver will return the
-current best solution when this time limit is exceeded. \strong{The default
-argument is the \emph{maximum} time the user's machine can hold out}.}
+\item{time_limit}{\code{numeric}. Time limit to run the optimizer (in seconds).
+The solver will return the current best solution when this time limit is exceeded.}
 
-\item{solution_limit}{A \code{logical} value that indicates if the solution process
-should be stopped after the first feasible solution is found (\code{\link[=TRUE]{TRUE()}}),
-or if it should continue its normal course until the optimal solution is
-found (\code{\link[=FALSE]{FALSE()}}). \strong{The default argument is \code{FALSE}}.}
+\item{solution_limit}{\code{logical}. Indicates if the solution process
+should be stopped after the first feasible solution is found (\code{TRUE}),
+or not (\code{FALSE}).}
 
-\item{cores}{An \code{integer} value that indicates the number of parallel
-cores to use in the machine. \strong{The default argument is 1 (only one
-core in use)}.}
+\item{cores}{\code{integer}. Number of parallel cores to use in the machine to solve the problem.}
 
-\item{verbose}{A \code{logical} value that indicates if the solver
-information is displayed while solving the optimization model
-(\code{\link[=TRUE]{TRUE()}}), or if it is not displayed (\code{\link[=FALSE]{FALSE()}}).
-\strong{The default argument is \code{TRUE}}.}
+\item{verbose}{\code{logical}. Indicates if the solver information is displayed while
+solving the optimization model (\code{TRUE}), or if it is not displayed (\code{FALSE}).}
+
+\item{name_output_file}{\code{string}. Prefix of all output names.}
+
+\item{output_file}{\code{logical}. Indicates if the outputs are exported as .csv files (\code{TRUE}),
+or they are not exported (\code{FALSE}). Currently, 5 files are exported. The
+distribution of actions in the solution, the distribution of the selected
+planning units, the benefits achieved by the features, the parameters used,
+and the optimization engine log.}
 }
 \value{
-An object of class \code{\link[=Solution-class]{Solution-class()}}.
+An object of class \linkS4class{solution}.
 }
 \description{
 Solve the optimization model associated with the multi-action
-conservation planning problem. This function is used to internally solve
-the mathematical model associated with the problem in reference, specifying
-the type of solver and providing a set of parameters to control the
-optimization process and the user's machine settings.
-
-This function requires the \emph{\pkg{Rsymphony}} package, the
-\emph{\pkg{Rglpk}} package or the \emph{\pkg{gurobi}} package, which host
-the solvers inside. These packages are installed by default when the
-\emph{\link{prioriactions}} package is installed. Of these three,
-\strong{only the Gurobi solver needs a license to operate} .
+conservation planning problem. This function is used to solve
+the mathematical model created by the \code{minimizeCosts()} or \code{maximizeBenefits()}
+functions.
 }
 \details{
 The solvers supported by the \code{\link[=solve]{solve()}} function are
 described below. \describe{
-\item{\verb{Default solver}}{This solver uses the best software currently
-installed on the system.}
 
 \item{\verb{Gurobi solver}}{ \href{http://gurobi.com}{\emph{Gurobi}} is a
 state-of-the-art commercial optimization software with an R package
@@ -97,56 +86,38 @@ interface to COIN-OR and is available on CRAN. This solver uses the
 \pkg{Rsymphony} package to solve problems.}}
 }
 \examples{
-## Solve a conservation problem using the associated optimization model and some solver
-## that the user has available. This example uses input files included into package.
+## This example uses input files included into package.
 
 ## Load data
-data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
+data(sim_pu_data, sim_features_data, sim_dist_features_data,
+sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
+sim_boundary_data)
 
 ## Create data instance
 problem_data <- problem(
-  pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-  threats = example_threats_data, sensitivity = example_sensibility_data,
-  bound = example_bound_data
+  pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
+  threats = sim_threats_data, dist_threats = sim_dist_threats_data, sensitivity = sim_sensitivity_data,
+  boundary = sim_boundary_data
 )
 
 ## Create optimization model
-problem_model <- min_costs(x = problem_data, blm = 1, blm_actions = 1)
+problem_model <- minimizeCosts(x = problem_data, blm = 1)
 
-## Solve the optimization model using a default solver
-model_solution <- solve(a = problem_model, verbose = FALSE)
-model_solution
-
-## Solve the optimization model using the Gurobi solver
+## Solve the optimization model using a gap_limit and gurobi solver
 ## NOTE: The Gurobi solver must be previously installed and must have a valid license!
-model_solution <- solve(a = problem_model, solver = "gurobi")
-model_solution
+s <- solve(a = problem_model, solver = "gurobi", gap_limit = 0.01, output_file = FALSE)
 
-## Solve the optimization model using the Symphony solver
-model_solution <- solve(a = problem_model, solver = "symphony")
-model_solution
+print(s)
 
-## Solution summary
-print(model_solution)
+## Solve the optimization model using a time_limit and gurobi solver
+s <- solve(a = problem_model, solver = "gurobi", time_limit = 10, output_file = FALSE)
 
-## Report the solution to the problem you are working on:
-## (i) total cost of the conservation plan;
-solution_report01 <- model_solution$getObjectiveValue()
-print(solution_report01)
+print(s)
 
-## (ii) planning units suggested to be included (value 1) and not included (value 0)
-## within the conservation plan;
-solution_report02 <- model_solution$getSolutionUnits()
-head(solution_report02)
-
-## (iii) conservation actions that are suggested to be carried out (value 1)
-## and not carried out (value 0) within the conservation plan.
-solution_report03 <- model_solution$getSolutionActions()
-head(solution_report03)
 }
 \seealso{
 For more information on how to install and obtain an academic
 license of the Gurobi solver, see the \emph{Gurobi installation guide},
 which can be found online at
-\url{https://prioritizr.net/articles/gurobi_installation.html}.
+\href{https://prioritizr.net/articles/gurobi_installation.html}{prioritizr vignette}.
 }

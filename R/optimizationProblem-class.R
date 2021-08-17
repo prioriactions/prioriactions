@@ -8,59 +8,67 @@ NULL
 #'
 #' This class is used to represent an optimization model. This includes several
 #' methods for obtaining model information. It is created used models functions
-#' (e.g. min costs).
+#' (i.e. `minimizeCosts()` and `maximizeBenefits()` functions).
 #'
 #' @section Fields: \describe{ \item{$data}{`list` object containing data
 #'   of the mathematical model.}
 #'
 #'   \item{$ConservationClass}{object of class
-#'   [ConservationProblem-class()] that contain the data instance.}
+#'   [conservationProblem-class()] that contain the data instance.}
 #'
 #'   }
 #'
-#' @section Methods: \describe{ \item{$getData(`character` name)}{return an
-#'   [vector()] object stored in the `data` field with the
+#' @section Methods: \describe{
+#'  \item{getData(`character` name)}{
+#'   [vector()]. Object stored in the `data` field with the
 #'   corresponding `name`. The data correspond to the different parts of
 #'   the mathematical model. The argument `name` can be made to the
 #'   following: "obj", "rhs", "sense", "vtype", "A", "bounds" or "modelsense".}
 #'
-#'   \item{$getDataList( )}{returns an [list()] of
-#'   [vector()] object stored in the `data`. It correspond to set
-#'   of data stored asociated to the mathematical model.}
+#'   \item{getDataList()}{
+#'    [list()] of
+#'   [vector()]. Object stored in the `data`. It correspond to set
+#'   of data stored associated to the mathematical model.}
 #'
-#'   \item{$getModelSense( )}{returns a `character` indicating whether the
+#'   \item{getModelSense()}{
+#'   `character`. Indicate whether the
 #'   model is minimization or maximization.}
 #'
-#'   \item{$getNcol( )}{returns an `integer` number indicating the columns
-#'   of matrix A.}
+#'   \item{getNcol()}{
+#'   `integer`. Number indicating the columns of matrix A.}
 #'
-#'   \item{$getNrow( )}{returns an `integer` number indicating the rows of
-#'   matrix A.}
+#'   \item{getNrow()}{
+#'   `integer`. Number indicating the rows of matrix A.}
 #'
-#'   \item{$getSizeA( )}{returns a `double` number indicating the size of
-#'   matrix A (in Megabytes).}
+#'   \item{getSizeA()}{
+#'   `character`. Number indicating the size of matrix A (in kilo Bytes).}
 #'
-#'   \item{$print( )}{print basic information of the optimization model.}
+#'   \item{print()}{
+#'   Print basic information of the optimization model.}
 #'
-#'   \item{$show( )}{call print method.}
+#'   \item{show()}{
+#'   Call print method.}
 #'
 #'   }
 #'
 #' @examples
-#' ## Examples of how to use the methods of a OptimizationProblem class object.
+#' # set seed for reproducibility
+#' set.seed(14)
 #'
 #' ## Load data
-#' data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
+#' data(sim_pu_data, sim_features_data, sim_dist_features_data,
+#' sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
+#' sim_boundary_data)
 #'
 #' ## Create data instance
 #' problem_data <- problem(
-#'   pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-#'   threats = example_threats_data, sensitivity = example_sensibility_data,
-#'   bound = example_bound_data
+#'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
+#'   threats = sim_threats_data, dist_threats = sim_dist_threats_data, sensitivity = sim_sensitivity_data,
+#'   boundary = sim_boundary_data
 #' )
 #'
 #' ## Create optimization model
-#' problem_model <- min_costs(problem_data, blm = 1, blm_actions = 1)
+#' problem_model <- minimizeCosts(x = problem_data, blm = 1)
 #'
 #' ## Use class methods
 #' head(problem_model$getData("obj"))

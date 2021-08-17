@@ -3,33 +3,87 @@
 ## usethis namespace: end
 NULL
 
-#' @title The \pkg{prioriactions} R package
+#' @title Create and solve multi-actions planning problems
 #'
-#' @description The \pkg{prioriactions R} package uses a mixed integer
-#'  mathematical programming (MIP) approach for building and solving
-#'  multi-action conservation planning problems, where the goal is to find an
-#'  optimal combination of management actions that abate threats, in an
-#'  efficient way while accounting for connectivity. Furthermore, the
-#'  flexibility of the package interface allows implementing an extended version
-#'  of the base model for minimizing fragmentation between different actions.
-#'  These models were called as MAMP and MAMP-E by Salgado-Rojas *et al.*
-#'  (2020), where you can get a detailed description of how both problems were
-#'  mathematically modeled. \cr
+#' @description Create and solve a multi-actions planning problem. It can be used
+#' instead of following the sequence of the `problem()`, `minimizeCosts()`/`maximizeBenefits()`
+#' and `solve()` functions.
 #'
-#'  Once built a multi-action conservation problem, the next step is to solve
-#'  it. For this, the package has a variety of commercial and open-source exact
-#'  algorithm solvers that guarantee to find optimal solutions. The models
-#'  implemented here have three advantages over their heuristic counterparts:
-#'  shorter execution times, higher solutions quality, and a solution quality
-#'  guarantee.
+#' @param data `list`. Input data list for `problem()` function.
 #'
-#' @details **Put details here!**
+#' @param name_model `string`. Name of the type of model to create. With two possible values:
+#' `"minimizeCosts"` and `"maximizeBenefits"`.
 #'
-#' @references \itemize{ \item Salgado-Rojas J, <U+00C1>lvarez-Miranda E, Hermoso V,
-#' Garcia-Gonzalo J, Weintraub A. *A mixed integer programming approach for
-#' multi-action planning for threat management*. Ecological Modelling 2020;
-#' 418:108901. \cr (DOI: <https://doi.org/10.1016/j.ecolmodel.2019.108901>) }
-#'
+#' @param ... arguments inherited from `problem()`, `minimizeCosts()`, `maximizeBenefits()`,
+#'   and `solve()` functions.
+
 #' @name prioriactions
-#' @docType package
-NULL
+#'
+#' @return An object of class [solution-class].
+#'
+#' @examples
+#' ## This example uses input files included into package.
+#'
+#' ## set seed for reproducibility
+#' set.seed(14)
+#'
+#' ## Load data
+#' data(sim_pu_data, sim_features_data, sim_dist_features_data,
+#' sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
+#' sim_boundary_data)
+#'
+#' ## Create data list
+#' input <- list(
+#'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
+#'   threats = sim_threats_data, dist_threats = sim_dist_threats_data, sensitivity = sim_sensitivity_data,
+#'   bound = sim_boundary_data
+#' )
+#'
+#' ## Create and solve optimization model
+#' s <- prioriactions(data = input, name_model = "minimizeCosts", blm = 0, output_file = FALSE, time_limit = 10)
+#'
+#' print(s)
+#'
+#' @rdname prioriactions
+#' @export
+prioriactions <- function(data = list(), name_model = "minimizeCosts", ...) {
+
+  # assert that arguments are valid
+  assertthat::assert_that(
+    is.list(data)
+  )
+  params = list(...)
+
+  #Verifying name models
+  if (!name_model %in% c("minimizeCosts", "maximizeBenefits")) {
+    stop("invalid name model")
+  }
+
+  #verifying boundary presence
+  conservation_model <- do.call(problem, args = data)
+
+  params_solve <- c("solver", "gap_limit", "time_limit", "solution_limit", "cores",
+                    "verbose", "name_output_file", "output_file")
+  params_model <- c("blm", "curve", "segments", "recovery")
+
+  if(name_model == "maximizeBenefits"){
+    params_model <- c(params_model, "budget")
+  }
+
+  #verifying input parameters
+  if(!all(names(params) %in% c(params_solve, params_model))){
+    id_error <- which(!names(params) %in% c(params_solve, params_model))
+
+    stop(paste0("The following params are not defined in this function: ", paste(names(params)[id_error], collapse = " ")))
+  }
+
+  #Creating mathematical model--------------------------------------------------
+  optimization_model <- do.call(name_model, args = append(x = conservation_model,
+                                                          params[names(params) %in% params_model]))
+
+
+  solution <- do.call(solve, args = append(x = optimization_model,
+                                           params[names(params) %in% params_solve]))
+
+  solution
+}

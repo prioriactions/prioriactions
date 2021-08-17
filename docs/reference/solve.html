@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>solve — solve • prioriactions</title>
+<title>Solve mathematical models — solve • prioriactions</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,17 +52,11 @@
 
 
 
-<meta property="og:title" content="solve — solve" />
+<meta property="og:title" content="Solve mathematical models — solve" />
 <meta property="og:description" content="Solve the optimization model associated with the multi-action
-conservation planning problem. This function is used to internally solve
-the mathematical model associated with the problem in reference, specifying
-the type of solver and providing a set of parameters to control the
-optimization process and the user's machine settings.
-This function requires the Rsymphony package, the
-Rglpk package or the gurobi package, which host
-the solvers inside. These packages are installed by default when the
-prioriactions package is installed. Of these three,
-only the Gurobi solver needs a license to operate ." />
+conservation planning problem. This function is used to solve
+the mathematical model created by the minimizeCosts() or maximizeBenefits()
+functions." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -175,22 +169,16 @@ only the Gurobi solver needs a license to operate ." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>solve</h1>
+    <h1>Solve mathematical models</h1>
     <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/solve.R'><code>R/solve.R</code></a></small>
     <div class="hidden name"><code>solve.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Solve the optimization model associated with the multi-action
-conservation planning problem. This function is used to internally solve
-the mathematical model associated with the problem in reference, specifying
-the type of solver and providing a set of parameters to control the
-optimization process and the user's machine settings.</p>
-<p>This function requires the <em><span class="pkg">Rsymphony</span></em> package, the
-<em><span class="pkg">Rglpk</span></em> package or the <em><span class="pkg">gurobi</span></em> package, which host
-the solvers inside. These packages are installed by default when the
-<em><a href='prioriactions.html'>prioriactions</a></em> package is installed. Of these three,
-<strong>only the Gurobi solver needs a license to operate</strong> .</p>
+conservation planning problem. This function is used to solve
+the mathematical model created by the <code><a href='minimizeCosts.html'>minimizeCosts()</a></code> or <code><a href='maximizeBenefits.html'>maximizeBenefits()</a></code>
+functions.</p>
     </div>
 
     <pre class="usage"><span class='fu'>solve</span><span class='op'>(</span>
@@ -202,8 +190,7 @@ the solvers inside. These packages are installed by default when the
   cores <span class='op'>=</span> <span class='fl'>2</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
   name_output_file <span class='op'>=</span> <span class='st'>"output"</span>,
-  output_file <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  <span class='va'>...</span>
+  output_file <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -211,68 +198,69 @@ the solvers inside. These packages are installed by default when the
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>a</th>
-      <td><p>Object of class <code>OptimizationProblem-class()</code> that
-specifies the custom-tailor optimization model created for the problem of
-prioritization of multiple conservation actions. This object must be
-created using the <code>min_costs()</code> function.</p></td>
+      <td><p><a href='optimizationProblem-class.html'>optimizationProblem</a> object. Optimization model created
+for the problem of prioritization of multiple conservation actions. This object must be
+created using the <code><a href='minimizeCosts.html'>minimizeCosts()</a></code> or <code><a href='maximizeBenefits.html'>maximizeBenefits()</a></code> functions.</p></td>
     </tr>
     <tr>
       <th>solver</th>
-      <td><p>A <code>string</code> label that indicates which solver to use to
-solve the model created for the problem of prioritization of multiple
-conservation actions. The following solvers are supported:
-<a href='http://gurobi.com'><code>"gurobi"</code></a>, and
-<a href='https://projects.coin-or.org/SYMPHONY'><code>"symphony"</code></a>.
-<strong>The default argument is <code>"gurobi"</code> (requires a license)</strong>.</p></td>
+      <td><p><code>string</code>. Name of solver to use to
+solve the model. The following solvers are supported:
+<a href='http://gurobi.com'><code>"gurobi"</code></a>(requires the <span class="pkg">gurobi</span> package), and
+<a href='https://projects.coin-or.org/SYMPHONY'><code>"symphony"</code></a>(requires the <span class="pkg">Rsymphony</span> package).
+We highly recommend using gurobi (for more information on how to obtain an academic license
+<a href='https://prioritizr.net/articles/gurobi_installation.html'>here</a>).</p></td>
     </tr>
     <tr>
       <th>gap_limit</th>
-      <td><p>A <code>numeric</code> value (between 0 and 1) that represents the gap
+      <td><p><code>numeric</code>. Value between 0 and 1 that represents the gap
 to optimality, i.e., a relative number that cause the optimizer to
 terminate when the difference between the upper and lower objective
 function bounds is less than the gap times the upper bound. For example, a
 value of 0.01 will result in the optimizer stopping when the difference
-between the bounds is 1 percent of the upper bound. <strong>The default
-argument is 0.0</strong>.</p></td>
+between the bounds is 1 percent of the upper bound.</p></td>
     </tr>
     <tr>
       <th>time_limit</th>
-      <td><p>A <code>numeric</code> value (non negative) that indicates the
-time limit to run the optimizer (in seconds). The solver will return the
-current best solution when this time limit is exceeded. <strong>The default
-argument is the <em>maximum</em> time the user's machine can hold out</strong>.</p></td>
+      <td><p><code>numeric</code>. Time limit to run the optimizer (in seconds).
+The solver will return the current best solution when this time limit is exceeded.</p></td>
     </tr>
     <tr>
       <th>solution_limit</th>
-      <td><p>A <code>logical</code> value that indicates if the solution process
-should be stopped after the first feasible solution is found (<code><a href='https://rdrr.io/r/base/logical.html'>TRUE()</a></code>),
-or if it should continue its normal course until the optimal solution is
-found (<code><a href='https://rdrr.io/r/base/logical.html'>FALSE()</a></code>). <strong>The default argument is <code>FALSE</code></strong>.</p></td>
+      <td><p><code>logical</code>. Indicates if the solution process
+should be stopped after the first feasible solution is found (<code>TRUE</code>),
+or not (<code>FALSE</code>).</p></td>
     </tr>
     <tr>
       <th>cores</th>
-      <td><p>An <code>integer</code> value that indicates the number of parallel
-cores to use in the machine. <strong>The default argument is 1 (only one
-core in use)</strong>.</p></td>
+      <td><p><code>integer</code>. Number of parallel cores to use in the machine to solve the problem.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>A <code>logical</code> value that indicates if the solver
-information is displayed while solving the optimization model
-(<code><a href='https://rdrr.io/r/base/logical.html'>TRUE()</a></code>), or if it is not displayed (<code><a href='https://rdrr.io/r/base/logical.html'>FALSE()</a></code>).
-<strong>The default argument is <code>TRUE</code></strong>.</p></td>
+      <td><p><code>logical</code>. Indicates if the solver information is displayed while
+solving the optimization model (<code>TRUE</code>), or if it is not displayed (<code>FALSE</code>).</p></td>
+    </tr>
+    <tr>
+      <th>name_output_file</th>
+      <td><p><code>string</code>. Prefix of all output names.</p></td>
+    </tr>
+    <tr>
+      <th>output_file</th>
+      <td><p><code>logical</code>. Indicates if the outputs are exported as .csv files (<code>TRUE</code>),
+or they are not exported (<code>FALSE</code>). Currently, 5 files are exported. The
+distribution of actions in the solution, the distribution of the selected
+planning units, the benefits achieved by the features, the parameters used,
+and the optimization engine log.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>Solution-class()</code>.</p>
+    <p>An object of class <a href='solution-class.html'>solution</a>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The solvers supported by the <code>solve()</code> function are
 described below.</p><dl>
-<dt><code>Default solver</code></dt><dd><p>This solver uses the best software currently
-installed on the system.</p></dd>
 
 <dt><code>Gurobi solver</code></dt><dd><p><a href='http://gurobi.com'><em>Gurobi</em></a> is a
 state-of-the-art commercial optimization software with an R package
@@ -296,76 +284,176 @@ interface to COIN-OR and is available on CRAN. This solver uses the
     <div class='dont-index'><p>For more information on how to install and obtain an academic
 license of the Gurobi solver, see the <em>Gurobi installation guide</em>,
 which can be found online at
-<a href='https://prioritizr.net/articles/gurobi_installation.html'>https://prioritizr.net/articles/gurobi_installation.html</a>.</p></div>
+<a href='https://prioritizr.net/articles/gurobi_installation.html'>prioritizr vignette</a>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'>## Solve a conservation problem using the associated optimization model and some solver</span></span>
-<span class='r-in'><span class='co'>## that the user has available. This example uses input files included into package.</span></span>
+    <pre class="examples"><span class='r-in'><span class='co'>## This example uses input files included into package.</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Load data</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_rij_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensitivity_data</span>, <span class='va'>example_bound_data</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_pu_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_features_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_rij_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_threats_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_sensitivity_data’ not found</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_bound_data’ not found</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_pu_data</span>, <span class='va'>sim_features_data</span>, <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'><span class='va'>sim_threats_data</span>, <span class='va'>sim_dist_threats_data</span>, <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
 <span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='problem.html'>problem</a></span><span class='op'>(</span></span>
-<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>example_pu_data</span>, features <span class='op'>=</span> <span class='va'>example_features_data</span>, rij <span class='op'>=</span> <span class='va'>example_rij_data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>example_sensibility_data</span>,</span>
-<span class='r-in'>  bound <span class='op'>=</span> <span class='va'>example_bound_data</span></span>
+<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'>  boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in h(simpleError(msg, call))</span> error in evaluating the argument 'pu' in selecting a method for function 'problem': object 'example_pu_data' not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create optimization model</span></span>
-<span class='r-in'><span class='va'>problem_model</span> <span class='op'>&lt;-</span> <span class='fu'>min_costs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>problem_data</span>, blm <span class='op'>=</span> <span class='fl'>1</span>, blm_actions <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in min_costs(x = problem_data, blm = 1, blm_actions = 1)</span> could not find function "min_costs"</span>
+<span class='r-in'><span class='va'>problem_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='minimizeCosts.html'>minimizeCosts</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>problem_data</span>, blm <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Solve the optimization model using a default solver</span></span>
-<span class='r-in'><span class='va'>model_solution</span> <span class='op'>&lt;-</span> <span class='fu'>solve</span><span class='op'>(</span>a <span class='op'>=</span> <span class='va'>problem_model</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in inherits(a, "OptimizationProblem")</span> object 'problem_model' not found</span>
-<span class='r-in'><span class='va'>model_solution</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'model_solution' not found</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>## Solve the optimization model using the Gurobi solver</span></span>
+<span class='r-in'><span class='co'>## Solve the optimization model using a gap_limit and gurobi solver</span></span>
 <span class='r-in'><span class='co'>## NOTE: The Gurobi solver must be previously installed and must have a valid license!</span></span>
-<span class='r-in'><span class='va'>model_solution</span> <span class='op'>&lt;-</span> <span class='fu'>solve</span><span class='op'>(</span>a <span class='op'>=</span> <span class='va'>problem_model</span>, solver <span class='op'>=</span> <span class='st'>"gurobi"</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in inherits(a, "OptimizationProblem")</span> object 'problem_model' not found</span>
-<span class='r-in'><span class='va'>model_solution</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'model_solution' not found</span>
+<span class='r-in'><span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>solve</span><span class='op'>(</span>a <span class='op'>=</span> <span class='va'>problem_model</span>, solver <span class='op'>=</span> <span class='st'>"gurobi"</span>, gap_limit <span class='op'>=</span> <span class='fl'>0.01</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 29980 rows, 10489 columns and 70122 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x3037b50b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 176 general constraints</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 10137 integer (10137 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [1e+00, 1e+03]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [1e+00, 2e+01]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 52870.722212</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve added 352 rows and 698 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.19s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 30332 rows, 11187 columns, 72396 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 176 SOS constraint(s)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 1056 continuous, 10131 integer (10125 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Root simplex log...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Iteration    Objective       Primal Inf.    Dual Inf.      Time</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     5877    1.7317445e+04   1.895000e+02   0.000000e+00      1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     7998    1.7570872e+04   0.000000e+00   0.000000e+00      1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 1.757087e+04, 7998 iterations, 1.13 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17570.8718    0 4613 52870.7222 17570.8718  66.8%     -    1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                    18997.667675 17570.8718  7.51%     -    1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                    17810.201891 17570.8718  1.34%     -    1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17579.3062    0 4602 17810.2019 17579.3062  1.30%     -    2s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17579.3062    0 2083 17810.2019 17579.3062  1.30%     -    3s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17596.7487    0 2038 17810.2019 17596.7487  1.20%     -    4s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17597.1098    0 2040 17810.2019 17597.1098  1.20%     -    4s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17631.6491    0 2013 17810.2019 17631.6491  1.00%     -    4s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17662.6335    0 1619 17810.2019 17662.6335  0.83%     -    5s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Gomory: 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Cover: 9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Implied bound: 9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Flow cover: 8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   GUB cover: 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mod-K: 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   RLT: 1463</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   BQP: 551</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (16454 simplex iterations) in 5.57 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 3: 17810.2 18997.7 52870.7 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 1.00e-02)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 1.781020189131e+04, best bound 1.766263345760e+04, gap 0.8286%</span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Solve the optimization model using the Symphony solver</span></span>
-<span class='r-in'><span class='va'>model_solution</span> <span class='op'>&lt;-</span> <span class='fu'>solve</span><span class='op'>(</span>a <span class='op'>=</span> <span class='va'>problem_model</span>, solver <span class='op'>=</span> <span class='st'>"symphony"</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in inherits(a, "OptimizationProblem")</span> object 'problem_model' not found</span>
-<span class='r-in'><span class='va'>model_solution</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'model_solution' not found</span>
+<span class='r-in'><span class='fu'><a href='print.html'>print</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Solution overview</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   name: sol</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   objective value: 17810.2018913131</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   gap:  0.8286</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   status:  Optimal solution (according to gap tolerance: 0.8286)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 5.57 sec</span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Solution summary</span></span>
-<span class='r-in'><span class='fu'><a href='print.html'>print</a></span><span class='op'>(</span><span class='va'>model_solution</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in print(model_solution)</span> object 'model_solution' not found</span>
+<span class='r-in'><span class='co'>## Solve the optimization model using a time_limit and gurobi solver</span></span>
+<span class='r-in'><span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>solve</span><span class='op'>(</span>a <span class='op'>=</span> <span class='va'>problem_model</span>, solver <span class='op'>=</span> <span class='st'>"gurobi"</span>, time_limit <span class='op'>=</span> <span class='fl'>10</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 29980 rows, 10489 columns and 70122 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x3037b50b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 176 general constraints</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 10137 integer (10137 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [1e+00, 1e+03]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [1e+00, 2e+01]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 52870.722212</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve added 352 rows and 698 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.16s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 30332 rows, 11187 columns, 72396 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 176 SOS constraint(s)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 1056 continuous, 10131 integer (10125 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Root simplex log...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Iteration    Objective       Primal Inf.    Dual Inf.      Time</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     6501    1.7433507e+04   3.785000e+02   0.000000e+00      1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     7998    1.7570872e+04   0.000000e+00   0.000000e+00      1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 1.757087e+04, 7998 iterations, 1.09 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17570.8718    0 4613 52870.7222 17570.8718  66.8%     -    1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                    18997.667675 17570.8718  7.51%     -    1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                    17810.201891 17570.8718  1.34%     -    1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17579.3062    0 4602 17810.2019 17579.3062  1.30%     -    2s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17579.3062    0 2083 17810.2019 17579.3062  1.30%     -    3s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17596.7487    0 2038 17810.2019 17596.7487  1.20%     -    4s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17597.1098    0 2040 17810.2019 17597.1098  1.20%     -    4s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17631.6491    0 2013 17810.2019 17631.6491  1.00%     -    4s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17662.6335    0 1619 17810.2019 17662.6335  0.83%     -    5s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17662.6335    0 1870 17810.2019 17662.6335  0.83%     -    6s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17662.6335    0 1779 17810.2019 17662.6335  0.83%     -    6s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17662.6335    0 1506 17810.2019 17662.6335  0.83%     -    7s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17664.9903    0 1517 17810.2019 17664.9903  0.82%     -    7s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17666.2991    0 1374 17810.2019 17666.2991  0.81%     -    7s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17666.4953    0 1374 17810.2019 17666.4953  0.81%     -    7s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17666.5714    0 1375 17810.2019 17666.5714  0.81%     -    7s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17679.0256    0 1759 17810.2019 17679.0256  0.74%     -    8s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17679.0256    0 1870 17810.2019 17679.0256  0.74%     -    8s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17679.0256    0 1758 17810.2019 17679.0256  0.74%     -    8s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17679.0256    0 1549 17810.2019 17679.0256  0.74%     -    9s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17679.0256    0 1674 17810.2019 17679.0256  0.74%     -    9s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17680.8114    0 1686 17810.2019 17680.8114  0.73%     -    9s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17680.8384    0 1692 17810.2019 17680.8384  0.73%     -    9s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17687.5001    0 1388 17810.2019 17687.5001  0.69%     -    9s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17687.9356    0 1390 17810.2019 17687.9356  0.69%     -    9s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Gomory: 8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   GUB cover: 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Zero half: 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mod-K: 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   RLT: 946</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   BQP: 280</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (30108 simplex iterations) in 10.00 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 3: 17810.2 18997.7 52870.7 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Time limit reached</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 1.781020189131e+04, best bound 1.768793556378e+04, gap 0.6865%</span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Report the solution to the problem you are working on:</span></span>
-<span class='r-in'><span class='co'>## (i) total cost of the conservation plan;</span></span>
-<span class='r-in'><span class='va'>solution_report01</span> <span class='op'>&lt;-</span> <span class='va'>model_solution</span><span class='op'>$</span><span class='fu'>getObjectiveValue</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'model_solution' not found</span>
-<span class='r-in'><span class='fu'><a href='print.html'>print</a></span><span class='op'>(</span><span class='va'>solution_report01</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in print(solution_report01)</span> object 'solution_report01' not found</span>
+<span class='r-in'><span class='fu'><a href='print.html'>print</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Solution overview</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   name: sol</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   objective value: 17810.2018913131</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   gap:  0.6865</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   status:  Feasible solution (according to time limit: 10 sec)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 10 sec</span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## (ii) planning units suggested to be included (value 1) and not included (value 0)</span></span>
-<span class='r-in'><span class='co'>## within the conservation plan;</span></span>
-<span class='r-in'><span class='va'>solution_report02</span> <span class='op'>&lt;-</span> <span class='va'>model_solution</span><span class='op'>$</span><span class='fu'>getSolutionUnits</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'model_solution' not found</span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>solution_report02</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in head(solution_report02)</span> object 'solution_report02' not found</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>## (iii) conservation actions that are suggested to be carried out (value 1)</span></span>
-<span class='r-in'><span class='co'>## and not carried out (value 0) within the conservation plan.</span></span>
-<span class='r-in'><span class='va'>solution_report03</span> <span class='op'>&lt;-</span> <span class='va'>model_solution</span><span class='op'>$</span><span class='fu'>getSolutionActions</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'model_solution' not found</span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>solution_report03</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in head(solution_report03)</span> object 'solution_report03' not found</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

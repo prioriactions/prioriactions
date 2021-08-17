@@ -1,90 +1,50 @@
-#' @title getActionsConnectivity
+#' @title Get connectivity of actions
 #'
-#' @description  Set the objective of a conservation planning [problem()] to
-#' minimize the cost of the solution whilst ensuring that all targets are met.
-#' This objective is similar to that used in
-#' *Marxan* and is detailed in Rodrigues *et al.* (2000).
+#' @description Provides the connectivity value of all actions in a solution.
 #'
-#' @param x [solve()] (i.e. [`solution-class`]) object.
+#' @param x `Solution-class` or `Portfolio-class` object.
 #'
-#' @details A problem objective is used to specify the overall goal of the
-#'   conservation planning problem. Please note that all conservation
-#'   planning problems formulated in the \pkg{prioritizr} package require the
-#'   addition of objectives---failing to do so will return an error
-#'   message when attempting to solve problem.
+#' @details The actions connectivity is calculated as the sum of all
+#' boundaries unreached by each action in the solution. This can be expressed
+#' mathematically for a set of planning units
+#'\eqn{I} indexed by \eqn{i} and \eqn{j}, and
+#'a set of threats \eqn{K} indexed by \eqn{k} as:
 #'
-#'   In the context of systematic reserve design, the minimum set objective
-#'   seeks to find the set of planning units that minimizes the overall cost of
-#'   a reserve network, while meeting a set of representation targets for the
-#'   conservation features. This objective is equivalent to a simplified
-#'   *Marxan* reserve design problem with the Boundary Length Modifier
-#'   (BLM) set to zero.
+#' \deqn{
+#' \sum_{k \in K}\sum_{i \in I_k}\sum_{j \in I_k} x_{ik} (1 - x_{jk})cv_{ij}
+#' }
 #'
-#'   The minimum set objective for the reserve design problem can be expressed
-#'   mathematically for a set of planning units (\eqn{I}{I} indexed by
-#'   \eqn{i}{i}) and a set of features (\eqn{J}{J} indexed by \eqn{j}{j}) as:
+#' Here, \eqn{x_{ik}} is the decisions variable that specify whether action to abate the
+#' threat \eqn{k} in the planning unit \eqn{i} has been selected (1) or not (0), \eqn{cv_{ij}}
+#' is the large of boundary that share the planning units \eqn{i} and \eqn{j}.
 #'
-#'   \deqn{\mathit{Minimize} \space \sum_{i = 1}^{I} x_i c_i \\
-#'   \mathit{subject \space to} \\
-#'   \sum_{i = 1}^{I} x_i r_{ij} \geq T_j \space \forall \space j \in J}{
-#'   Minimize sum_i^I (xi * ci) subject to sum_i^I (xi * rij) >= Tj for all
-#'   j in J}
-#'
-#'   Here, \eqn{x_i}{xi} is the [decisions] variable (e.g.
-#'   specifying whether planning unit \eqn{i}{i} has been selected (1) or not
-#'   (0)), \eqn{c_i}{ci} is the cost of planning unit \eqn{i}{i},
-#'   \eqn{r_{ij}}{rij} is the amount of feature \eqn{j}{j} in planning unit
-#'   \eqn{i}{i}, and \eqn{T_j}{Tj} is the target for feature \eqn{j}{j}. The
-#'   first term is the objective function and the second is the set of
-#'   constraints. In words this says find the set of planning units that meets
-#'   all the representation targets while minimizing the overall cost.
-#'
-#' @references
-#' Rodrigues AS, Cerdeira OJ, and Gaston KJ (2000) Flexibility,
-#' efficiency, and accountability: adapting reserve selection algorithms to
-#' more complex conservation problems. *Ecography*, 23: 565--574.
-#'
-#' @seealso [objectives], [targets].
-#'
-#' @return Object (i.e. [`ConservationProblem-class`]) with the objective
-#'   added to it.
+#' @return [numeric].
 #'
 #' @examples
 #' # set seed for reproducibility
-#' set.seed(500)
+#' set.seed(14)
 #'
-#' # load data
-#' data(sim_pu_raster, sim_features, sim_pu_zones_stack, sim_features_zones)
+#' ## Load data
+#' data(sim_pu_data, sim_features_data, sim_dist_features_data,
+#' sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
+#' sim_boundary_data)
 #'
-#' # create minimal problem with minimum set objective
-#' p1 <- problem(sim_pu_raster, sim_features) %>%
-#'       add_min_set_objective() %>%
-#'       add_relative_targets(0.1) %>%
-#'       add_binary_decisions() %>%
-#'       add_default_solver(verbose = FALSE)
-#' \dontrun{
-#' # solve problem
-#' s1 <- solve(p1)
+#' ## Create data instance
+#' problem_data <- problem(
+#'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
+#'   threats = sim_threats_data, dist_threats = sim_dist_threats_data, sensitivity = sim_sensitivity_data,
+#'   boundary = sim_boundary_data
+#' )
 #'
-#' # plot solution
-#' plot(s1, main = "solution", axes = FALSE, box = FALSE)
-#' }
+#' ## Create optimization model
+#' problem_model <- minimizeCosts(x = problem_data, blm = 1)
 #'
-#' # create multi-zone problem with minimum set objective
-#' targets_matrix <- matrix(rpois(15, 1), nrow = 5, ncol = 3)
+#' ## Solve the optimization model
+#' s <- solve(a = problem_model, solver = "gurobi", gap_limit = 0.01, output_file = FALSE)
 #'
-#' p2 <- problem(sim_pu_zones_stack, sim_features_zones) %>%
-#'       add_min_set_objective() %>%
-#'       add_absolute_targets(targets_matrix) %>%
-#'       add_binary_decisions() %>%
-#'       add_default_solver(verbose = FALSE)
-#' \dontrun{
-#' # solve problem
-#' s2 <- solve(p2)
+#' # get connectivity of actions
+#' getActionsConnectivity(s)
 #'
-#' # plot solution
-#' plot(category_layer(s2), main = "solution", axes = FALSE, box = FALSE)
-#' }
 #' @name getActionsConnectivity
 NULL
 
@@ -102,7 +62,7 @@ getActionsConnectivity <- function(x) {
       return(NA)
     }
     else{
-      solution_actions <- getActions(x, format = "reduced")$solution
+      solution_actions <- getActions(x, format = "large")$solution
 
       if(!(getStatusCode(x) %in% c(1,3))){
         connectivity <- rcpp_stats_connectivity_actions(x$OptimizationClass$ConservationClass$data$pu,

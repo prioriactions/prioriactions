@@ -2,99 +2,122 @@
 % Please edit documentation in R/problem.R
 \name{problem}
 \alias{problem}
-\title{Multi-action conservation planning problem}
+\title{Create the conservation planning problem}
 \usage{
-problem(pu, features, dist_features, threats, dist_threats, sensitivity, ...)
+problem(pu, features, dist_features, threats, dist_threats, ...)
 
-\S4method{problem}{data.frame}(pu, features, dist_features, threats, dist_threats, sensitivity, boundary = NULL)
+\S4method{problem}{data.frame}(pu, features, dist_features, threats, dist_threats, sensitivity = NULL, boundary = NULL)
 }
 \arguments{
-\item{pu}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the planning units
-to use in the reserve design exercise and their corresponding cost. It may be
-desirable to exclude some planning units from the analysis, for example those outside
-the study area. To exclude planning units you have two options:
-(i) pre-process the \code{data.frame} before using it (i.e., \emph{manually} exclude planning units);
-or (ii) set the \emph{status} of planning units to 3 not to include them. Each row corresponds
-to a different planning unit, and each column corresponds to different information about the planning units.
-The description of the columns is listed below.
+\item{pu}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the planning units (PU)
+to use in the design exercise and their corresponding cost and status. Each
+row corresponds to a different planning unit (following the conventions used by
+\emph{Marxan}). It must also contain the following columns:
 \describe{
-\item{\code{"id"}}{\code{integer} unique identifier for each planning unit. This column is \strong{mandatory}.}
-\item{\code{"cost"}}{\code{numeric} cost of including each planning unit in the reserve system. This column is \strong{mandatory}.}
-\item{\code{"status"}}{\code{integer} indicating if each planning unit should not be locked in the solution (0) or if it should be \emph{locked-in} (2) or \emph{locked-out} (3) of the solution. This column is \strong{optional}.}
+\item{\code{id}}{\code{integer} unique identifier for each planning unit.}
+\item{\code{cost}}{\code{numeric} cost of including each planning unit in the reserve system.}
+\item{\code{status}}{\code{integer} (\strong{optional}) value that indicate if each planning unit
+should be available to be selected (0), \emph{locked-in} (2) as part of the
+solution, or \emph{locked-out} (3) and excluded from the solution.}
 }}
 
 \item{features}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the conservation
-features to consider in the reserve design exercise, such as their name and representation
-requirements (i.e., \emph{targets}). Each row corresponds to a different feature and each column
-corresponds to different information about the features. The description of the columns is listed below.
+features to consider in the design exercise. Each row corresponds to a different
+feature. This file is inherited from marxan's \emph{spec.dat}. It must also contain
+the following columns:
 \describe{
-\item{\code{"id"}}{\code{integer} unique identifier for each conservation feature. This column is \strong{mandatory}.}
-\item{\code{"target"}}{\code{numeric} target amount for each conservation feature. This column is \strong{mandatory}.}
-\item{\code{"name"}}{\code{character} name for each conservation feature. This column is \strong{optional}.}
+\item{\code{id}}{\code{integer} unique identifier for each conservation feature.}
+\item{\code{target}}{\code{numeric} target amount to achieve for each conservation feature.
+This field is \strong{required} if a \code{minimizeCosts()} model is used.}
+\item{\code{name}}{\code{character} (\strong{optional}) name for each conservation feature.}
 }}
 
-\item{dist_features}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the spatial distribution of conservation features across planning units.
-\strong{It is recommended not to include cases where a feature does not occur in a planning unit (avoid rows with
-\code{"amount"} equal to 0). Instead, it is recommended to omit these cases completely from the \code{\link[=data.frame]{data.frame()}}, for efficiency reasons.}
-The description of the columns is listed below.
+\item{dist_features}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the spatial
+distribution of conservation features across planning units. Each row corresponds
+to a combination of planning unit and feature. This file is inherited from marxan's
+\emph{puvspr.dat}. It must also contain the following columns:
 \describe{
-\item{\code{"pu"}}{\code{integer} \emph{id} of a planning unit where the conservation feature listed on the same row occurs. This column is \strong{mandatory}.}
-\item{\code{"species"}}{\code{integer} \emph{id} of each conservation feature. This column is \strong{mandatory}.}
-\item{\code{"amount"}}{\code{integer} indicating if the conservation feature occurring in the planning unit listed on the same row (1), or if it is not occurring (0). This column is \strong{mandatory}.}
+\item{\code{pu}}{\code{integer} \emph{id} of a planning unit where the conservation feature
+listed on the same row occurs.}
+\item{\code{feature}}{\code{integer} \emph{id} of each conservation feature.}
+\item{\code{amount}}{\code{numeric} amount of the feature in the planning unit. Set
+to 1 to work with presence/absence.}
 }}
 
 \item{threats}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the threats to consider in
-the reserve design exercise, such as their name and penalty of connectivity (i.e., \emph{blm_actions}). Each row corresponds to a different feature and each column
-corresponds to different information about the threats The description of the columns is listed below.
+the design exercise. Each row corresponds to a different threats. It must also contain
+the following columns:
 \describe{
-\item{\code{"id"}}{\code{integer} unique identifier for each threat. This column is \strong{mandatory}.}
-\item{\code{"name"}}{\code{character} name for each threat. This column is \strong{optional}.}
-\item{\code{"blm_actions"}}{\code{numeric} penalty of connectivity between threats. This column is \strong{optional}.}
+\item{\code{id}}{\code{integer} unique identifier for each threat.}
+\item{\code{blm_actions}}{\code{numeric} (\strong{optional}) penalty of connectivity between threats.
+Default is 0.}
+\item{\code{name}}{\code{character} (\strong{optional}) name for each threat.}
 }}
 
-\item{dist_threats}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the spatial distribution of threats across planning units
-and the corresponding cost of applying an action against these threats. \strong{It is recommended not to include cases where a threat does not occur
-in a planning unit (avoid rows with \code{"amount"} equal to 0). Instead, it is recommended to omit these cases completely from the \code{\link[=data.frame]{data.frame()}}, for efficiency reasons.}
-The description of the columns is listed below.
+\item{dist_threats}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the spatial
+distribution of threats across planning units. Each row corresponds
+to a combination of planning unit and threat. It must also contain the following
+columns:
 \describe{
-\item{\code{"pu"}}{\code{integer} \emph{id} of a planning unit where the threat listed on the same row occurs. This column is \strong{mandatory}.}
-\item{\code{"threats"}}{\code{integer} \emph{id} of each threat. This column is \strong{mandatory}.}
-\item{\code{"amount"}}{\code{integer} indicating if the threat occurring in the planning unit listed on the same row (1), or if it is not occurring (0). This column is \strong{mandatory}.}
-\item{\code{"cost"}}{\code{numeric} cost of applying an action to eliminate the threat in the planning unit listed in the same row. This column is \strong{mandatory}.}
-\item{\code{"status"}}{\code{integer} indicating if each action should not be locked in the solution (0) or if it should be \emph{locked-in} (2) or \emph{locked-out} (3) of the solution. This column is \strong{optional}.}
+\item{\code{pu}}{\code{integer} \emph{id} of a planning unit where the threat listed on the
+same row occurs.}
+\item{\code{threat}}{\code{integer} \emph{id} of each threat.}
+\item{\code{amount}}{\code{numeric} amount of the threat in the planning unit. Set
+to 1 to work with presence/absence. Continuous amount values require
+that feature sensitivities to threats be established (more info in
+\href{https://prioriactions.github.io/prioriactions/articles/sensitivities.html}{sensitivities}
+vignette).}
+\item{\code{cost}}{\code{numeric} cost of applying an action to eliminate the threat
+in this planning unit.}
+\item{\code{status}}{\code{integer} (\strong{optional}) value that indicate if each action
+to abate the threat should be available to be selected (0), \emph{locked-in} (2)
+as part of the solution, or \emph{locked-out} (3) and excluded from the solution.}
 }}
 
-\item{sensitivity}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the species-threats sensitivity,
-i.e., which threats affect the persistence of endangered conservation features (e.g., species).
-\strong{It is recommended not to include cases where there is no species-threats sensitivity
-(avoid rows with \code{"amount"} equal to 0). Instead, it is recommended to omit these cases completely
-from the \code{\link[=data.frame]{data.frame()}}, for efficiency reasons.}
-The description of the columns is listed below.
+\item{sensitivity}{(\strong{optional}) Object of class \code{\link[=data.frame]{data.frame()}} that specifies
+the species-threats sensitivity, i.e., which threats affect the persistence of
+endangered conservation features (e.g., species). Each row corresponds
+to a combination of feature and threat. If not informed, all features
+are assumed to be sensitive to all threats. We strongly recommend reviewing the
+\href{https://prioriactions.github.io/prioriactions/articles/sensitivities.html}{sensitivities}
+vignette. It must also contain the following
+columns:
 \describe{
-\item{\code{"species"}}{\code{integer} \emph{id} of each conservation feature. This column is \strong{mandatory}.}
-\item{\code{"threats"}}{\code{integer} \emph{id} of each threat. This column is \strong{mandatory}.}
-\item{\code{"amount"}}{\code{integer} indicating if the threat againsting the conservation feature listed on the same row (1), or if it is not againsting (0). This column is \strong{mandatory}.}
+\item{\code{feature}}{\code{integer} \emph{id} of each conservation feature.}
+\item{\code{threat}}{\code{integer} \emph{id} of each threat.}
+\item{\code{a}}{\code{numeric} (\strong{optional}) minimum intensity threshold value.
+Value at which the intensity of the threat stops causing positive changes in the
+response of the species (achieving a maximum response \code{d}). Default is 0.}
+\item{\code{b}}{\code{numeric} (\strong{optional}) maximum intensity threshold value.
+Value at which the intensity of the threat stops causing negative changes in the
+response of the species (achieving a minimum response \code{c}). If it is not established,
+it is assumed as the \strong{maximum intensity value of this threat in all planning units}.}
+\item{\code{c}}{\code{numeric} (\strong{optional}) response of the feature to the
+maximum value of intensity of the threat. Default is 0.}
+\item{\code{d}}{\code{numeric} (\strong{optional}) response of the feature to the
+minimum value of intensity of the threat. Default is 1.}
 }}
 
-\item{boundary}{Object of class \code{\link[=NULL]{NULL()}} (default) or an object of class \code{\link[=data.frame]{data.frame()}}.
-\code{NULL} indicates that planning units' boundaries (i.e., \emph{boundary data}) are not required for the multi-action conservation planning problem.
-\code{data.frame} specifies the boundaries of the planning units, i.e., the spatial relationship between two units, such as the "length" of the shared boundary between them.
-The description of the columns is listed below.
+\item{boundary}{(\strong{optional}) Object of class \code{\link[=data.frame]{data.frame()}} that specifies
+the boundaries of the planning units, i.e., the spatial relationship between two units,
+such as the "length" of the shared boundary between them. Each row corresponds
+to a combination of planning unit. This file is inherited from marxan's
+\emph{bound.dat}. It must also contain the following columns:
 \describe{
-\item{\code{"id1"}}{\code{integer} \emph{id} of each planning unit. This column is \strong{mandatory}.}
-\item{\code{"id2"}}{\code{integer} \emph{id} of each planning unit. This column is \strong{mandatory}.}
-\item{\code{"boundary"}}{\code{numeric} "length" of shared boundary between the planning units identified on the same row. This column is \strong{mandatory}.}
+\item{\code{id1}}{\code{integer} \emph{id} of each planning unit.}
+\item{\code{id2}}{\code{integer} \emph{id} of each planning unit.}
+\item{\code{boundary}}{\code{numeric} shared boundary between the planning
+units identified on the same row.}
 }}
 }
 \value{
-An object of class \code{\link[=ConservationProblem-class]{ConservationProblem-class()}}.
+An object of class \linkS4class{conservationProblem}.
 }
 \description{
-Create a data instance for the multi-action conservation planning problem. This function is used to specify
-the basic data used in a problem of prioritization of multiple conservation actions.
-This includes, the spatial distribution of the planning units and their costs,
-the features to be conserved (e.g. species, ecosystems) and their threats, and the
-costs of implementing an action to remove such threats.
+Create the \linkS4class{conservationProblem} object with information about the multi-action
+conservation planning problem. This function is used to specify all the data
+that defines the spatial prioritization problem (planning units data, feature
+data, threats data, and their spatial distributions.)
 }
 \details{
 If you are familiar with using conservation planning software called
@@ -107,39 +130,38 @@ Conservation Feature File} (typically called \code{"dist_features.dat"}); and \c
 to the data in the \strong{Boundary Length File} (typically called \code{"bound.dat"}).
 }
 \examples{
-## Create a data instance for the multi-action conservation planning problem
-## using data.frames that have been loaded into R. This example uses input files included
-## into package.
+## set seed for reproducibility
+set.seed(14)
 
 ## Set prioriactions path
 prioriactions_path <- system.file("extdata/input/", package = "prioriactions")
 
 ## Load in planning unit data
-pu_data <- data.table::fread(paste0(prioriactions_path,"pu.dat"), data.table = FALSE)
+pu_data <- data.table::fread(paste0(prioriactions_path,"/pu.dat"), data.table = FALSE)
 head(pu_data)
 
 ## Load in feature data
-features_data <- data.table::fread(paste0(prioriactions_path,"features.dat"), data.table = FALSE)
-head(spec_data)
+features_data <- data.table::fread(paste0(prioriactions_path,"/features.dat"), data.table = FALSE)
+head(features_data)
 
 ## Load in planning unit vs feature data
-dist_features_data <- data.table::fread(paste0(prioriactions_path,"dist_features.dat"), data.table = FALSE)
+dist_features_data <- data.table::fread(paste0(prioriactions_path,"/dist_features.dat"), data.table = FALSE)
 head(dist_features_data)
 
 ## Load in the threats data
-threats_data <- data.table::fread(paste0(prioriactions_path,"threats.dat"), data.table = FALSE)
+threats_data <- data.table::fread(paste0(prioriactions_path,"/threats.dat"), data.table = FALSE)
 head(threats_data)
 
 ## Load in the threats distribution data
-dist_threats_data <- data.table::fread(paste0(prioriactions_path,"dist_threats.dat"), data.table = FALSE)
+dist_threats_data <- data.table::fread(paste0(prioriactions_path,"/dist_threats.dat"), data.table = FALSE)
 head(dist_threats_data)
 
 ## Load in the sensitivity data
-sensitivity_data <- data.table::fread(paste0(prioriactions_path,"sensibility.dat"), data.table = FALSE)
+sensitivity_data <- data.table::fread(paste0(prioriactions_path,"/sensitivity.dat"), data.table = FALSE)
 head(sensitivity_data)
 
 ## Load in the boundary data
-boundary_data <- data.table::fread(paste0(prioriactions_path,"bound.dat"), data.table = FALSE)
+boundary_data <- data.table::fread(paste0(prioriactions_path,"/boundary.dat"), data.table = FALSE)
 head(boundary_data)
 
 ## Create data instance
@@ -149,14 +171,15 @@ problem_data <- problem(
   boundary = boundary_data
 )
 
-## Instance summary
+## Summary
 print(problem_data)
+
 }
 \references{
 \itemize{
 \item Ball I, Possingham H, Watts, M. \emph{Marxan and relatives: software for spatial
 conservation prioritization}. Spatial conservation prioritisation: quantitative
-methods and computational tools 2009; 185<U+2012>195.
+methods and computational tools 2009.
 }
 }
 \seealso{
