@@ -7,7 +7,6 @@ bool rcpp_constraint_activation(SEXP x,
                              DataFrame pu_data,
                              DataFrame threats_data,
                              DataFrame dist_threats_data){
-
   // initialization
   Rcpp::XPtr<OptimizationProblem> op = Rcpp::as<Rcpp::XPtr<OptimizationProblem>>(x);
 
@@ -23,12 +22,10 @@ bool rcpp_constraint_activation(SEXP x,
   arma::sp_mat actions_extended = create_actions_extended(dist_threats_data, number_of_units, number_of_threats);
 
   for(int i = 0; i < number_of_units; i++){
-
     subset_size = 0;
 
     for (auto it_threats = dist_threats_extended.begin_row(i);
          it_threats != dist_threats_extended.end_row(i); ++it_threats) {
-
       threat_id = it_threats.col();
       col_action = number_of_units + actions_extended(i, threat_id) - 1;
 
@@ -45,8 +42,6 @@ bool rcpp_constraint_activation(SEXP x,
 
     op->_rhs.push_back(0);
     op->_sense.push_back("<=");
-
   }
-
   return true;
 }

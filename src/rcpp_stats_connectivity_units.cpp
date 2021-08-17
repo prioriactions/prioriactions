@@ -8,9 +8,7 @@ NumericVector rcpp_stats_connectivity_units(DataFrame pu_data,
                             DataFrame dist_threats_data,
                             DataFrame dist_features_data,
                             std::vector<double> solution){
-
   // initialization
-
   //------------------------------------------------------------------------------------------
   //--------------------- (coefficients associated with w[i] variables) ----------------------
   //------------------------------------------------------------------------------------------
@@ -20,7 +18,6 @@ NumericVector rcpp_stats_connectivity_units(DataFrame pu_data,
   int boundary_size = boundary_data.nrows();
   NumericVector connectivity_units(number_of_units);
   NumericVector connectivity_units_solution(number_of_units);
-
   arma::sp_mat matrix_boundary_extended;
 
   if(boundary_size != 0){
@@ -47,8 +44,6 @@ NumericVector rcpp_stats_connectivity_units(DataFrame pu_data,
   //--------------------- (coefficients associated with y[i1,i2] variables) ------------------
   // auxiliary variables to normalize no-linear objective function
   //------------------------------------------------------------------------------------------
-
-
   double connectivityCoeff;
 
   if(boundary_size != 0){

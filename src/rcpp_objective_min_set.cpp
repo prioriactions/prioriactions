@@ -123,7 +123,6 @@ bool rcpp_objective_min_set(SEXP x,
     for(int s = 0; s < number_of_features; s++){
       for (auto it_species = dist_features_extended.begin_col(s);
            it_species != dist_features_extended.end_col(s); ++it_species) {
-
         op->_obj.push_back(0);
         op->_vtype.push_back("C");
         op->_lb.push_back(0);

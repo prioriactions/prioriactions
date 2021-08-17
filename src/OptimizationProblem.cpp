@@ -4,7 +4,7 @@
 SEXP rcpp_new_optimization_problem(std::size_t nrow = 1000000,
                                    std::size_t ncol = 1000000,
                                    std::size_t ncell= 100000) {
-
+  //
   OptimizationProblem* x = new OptimizationProblem(nrow, ncol, ncell);
   Rcpp::XPtr<OptimizationProblem> op = Rcpp::XPtr<OptimizationProblem>(x,
                                                                         true);

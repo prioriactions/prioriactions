@@ -11,7 +11,6 @@ bool rcpp_constraint_benefit(SEXP x,
                             DataFrame dist_threats_data,
                             DataFrame sensitivity_data,
                             bool recovery){
-
   // initialization
   Rcpp::XPtr<OptimizationProblem> op = Rcpp::as<Rcpp::XPtr<OptimizationProblem>>(x);
 

@@ -12,7 +12,6 @@ bool rcpp_objective_max_coverage(SEXP x,
                             DataFrame boundary_data,
                             double blm,
                             int curve){
-
   // initialization
   Rcpp::XPtr<OptimizationProblem> op = Rcpp::as<Rcpp::XPtr<OptimizationProblem>>(x);
   op->_modelsense = "max";
@@ -104,7 +103,6 @@ bool rcpp_objective_max_coverage(SEXP x,
   for(int s = 0; s < number_of_features; s++){
     for (auto it_species = dist_features_extended.begin_col(s);
          it_species != dist_features_extended.end_col(s); ++it_species) {
-
       pu_id = it_species.row();
       feature_intensity = dist_features_extended(pu_id, s);
 
@@ -133,12 +131,10 @@ bool rcpp_objective_max_coverage(SEXP x,
     for(int s = 0; s < number_of_features; s++){
       for (auto it_species = dist_features_extended.begin_col(s);
            it_species != dist_features_extended.end_col(s); ++it_species) {
-
         pu_id = it_species.row();
         feature_intensity = dist_features_extended(pu_id, s);
 
         op->_obj.push_back(feature_intensity);
-
         op->_vtype.push_back("C");
         op->_lb.push_back(0);
         op->_ub.push_back(1);
@@ -239,7 +235,6 @@ bool rcpp_objective_max_coverage(SEXP x,
 
   for(int a = 0; a < number_of_actions; a++){
     if(boundary_size != 0 && blm_actions[threat_id[a]] != 0){
-
       int pu_id2_threat;
 
       for (auto it = dist_threats_extended.begin_col(threat_id[a]);

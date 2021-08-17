@@ -5,9 +5,7 @@
 // [[Rcpp::export]]
 NumericVector rcpp_stats_costs_units(DataFrame pu_data,
                                std::vector<double> solution){
-
   // initialization
-
   //------------------------------------------------------------------------------------------
   //--------------------- (coefficients associated with w[i] variables) ----------------------
   //------------------------------------------------------------------------------------------
@@ -20,6 +18,5 @@ NumericVector rcpp_stats_costs_units(DataFrame pu_data,
   for(int i = 0; i < number_of_units; i++){
     costs_units_solution[i] = costs_units_solution[i] + unit_costs[i]*solution[i];
   }
-
   return costs_units_solution;
 }

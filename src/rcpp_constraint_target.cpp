@@ -9,7 +9,6 @@ bool rcpp_constraint_target(SEXP x,
                             DataFrame dist_features_data,
                             DataFrame dist_threats_data,
                             int curve){
-
   // initialization
   Rcpp::XPtr<OptimizationProblem> op = Rcpp::as<Rcpp::XPtr<OptimizationProblem>>(x);
 
@@ -34,7 +33,6 @@ bool rcpp_constraint_target(SEXP x,
     for(int s = 0; s < number_of_features; s++){
       for (auto it_species = dist_features_extended.begin_col(s);
            it_species != dist_features_extended.end_col(s); ++it_species) {
-
         pu_id = it_species.row();
         feature_intensity = dist_features_extended(pu_id, s);
 
@@ -58,7 +56,6 @@ bool rcpp_constraint_target(SEXP x,
     for(int s = 0; s < number_of_features; s++){
       for (auto it_species = dist_features_extended.begin_col(s);
            it_species != dist_features_extended.end_col(s); ++it_species) {
-
         pu_id = it_species.row();
         feature_intensity = dist_features_extended(pu_id, s);
 

@@ -5,9 +5,7 @@
 // [[Rcpp::export]]
 NumericVector rcpp_stats_costs_actions(DataFrame dist_threats_data,
                                        std::vector<double> solution){
-
   // initialization
-
   //------------------------------------------------------------------------------------------
   //--------------------- (coefficients associated with w[i] variables) ----------------------
   //------------------------------------------------------------------------------------------
@@ -20,6 +18,5 @@ NumericVector rcpp_stats_costs_actions(DataFrame dist_threats_data,
   for(int a = 0; a < number_of_actions; a++){
     costs_action_solution[a] = costs_action_solution[a] + action_costs[a]*solution[a];
   }
-
   return costs_action_solution;
 }

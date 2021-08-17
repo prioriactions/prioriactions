@@ -103,7 +103,7 @@ Portfolio <- pproto(
     return(return_list)
   },
   getBlms = function(self) {
-    return_list <- c()
+    return_list <- NULL
 
     for(it in seq_len(length(self$data))){
 

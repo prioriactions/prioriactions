@@ -8,7 +8,6 @@ NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data,
                                               DataFrame dist_threats_data,
                                               DataFrame boundary_data,
                                               std::vector<double> solution){
-
   // initialization
 
   //------------------------------------------------------------------------------------------
@@ -35,7 +34,6 @@ NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data,
   arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data, number_of_units, number_of_threats);
 
   for(int a = 0; a < number_of_actions; a++){
-
     if(boundary_size != 0){
       matrix_boundary_extended = create_boundary_matrix_extended(boundary_data, number_of_units);
 
@@ -43,7 +41,6 @@ NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data,
 
       for (auto it = dist_threats_extended.begin_col(threat_id[a]);
            it != dist_threats_extended.end_col(threat_id[a]); ++it) {
-
         pu_id2_threat = it.row();
 
         if(pu_id1_threat[a] != pu_id2_threat && matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat) != 0){
@@ -66,14 +63,11 @@ NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data,
   for(int a = 0; a < number_of_actions; a++){
 
     if(boundary_size != 0){
-
       int pu_id2_threat;
-
       for (auto it = dist_threats_extended.begin_col(threat_id[a]);
            it != dist_threats_extended.end_col(threat_id[a]); ++it) {
 
         pu_id2_threat = it.row();
-
         if(pu_id1_threat[a] != pu_id2_threat && matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat) != 0){
           connectivityCoeff = -1*matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat);
 

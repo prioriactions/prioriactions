@@ -13,7 +13,6 @@
  * that you want (symmetric or asymmetric), and the data (tuple data), obviously.
  */
 arma::sp_mat create_boundary_matrix_extended(DataFrame boundary_data, int units){
-
   IntegerVector boundary_data_id1 = boundary_data["internal_id1"];
   IntegerVector id1 = clone(boundary_data_id1);
   id1 = id1 - 1;
@@ -39,7 +38,6 @@ arma::sp_mat create_boundary_matrix_extended(DataFrame boundary_data, int units)
 }
 
 arma::sp_mat create_dist_threats_extended(DataFrame dist_threats_data, int units, int threats){
-
   IntegerVector dist_threats_data_pu_id = dist_threats_data["internal_pu"];
   IntegerVector pu_id = clone(dist_threats_data_pu_id);
   pu_id = pu_id - 1;
@@ -59,7 +57,6 @@ arma::sp_mat create_dist_threats_extended(DataFrame dist_threats_data, int units
 }
 
 arma::sp_mat create_dist_features_extended(DataFrame dist_features_data, int units, int features){
-
   IntegerVector dist_features_data_pu_id = dist_features_data["internal_pu"];
   IntegerVector pu_id = clone(dist_features_data_pu_id);
   pu_id = pu_id - 1;
@@ -77,7 +74,6 @@ arma::sp_mat create_dist_features_extended(DataFrame dist_features_data, int uni
 }
 
 arma::sp_mat create_sensitivity_extended(DataFrame sensitivity_data, int features, int threats){
-
   IntegerVector sensitivity_data_feature_id = sensitivity_data["internal_feature"];
   IntegerVector feature_id = clone(sensitivity_data_feature_id);
   feature_id = feature_id - 1;
@@ -94,7 +90,6 @@ arma::sp_mat create_sensitivity_extended(DataFrame sensitivity_data, int feature
 }
 
 arma::sp_mat create_sensitivity_param_extended(DataFrame sensitivity_data, int features, int threats, String param){
-
   IntegerVector sensitivity_data_feature_id = sensitivity_data["internal_feature"];
   IntegerVector feature_id = clone(sensitivity_data_feature_id);
   feature_id = feature_id - 1;
@@ -125,7 +120,6 @@ arma::sp_mat create_sensitivity_param_extended(DataFrame sensitivity_data, int f
 }
 
 arma::sp_mat create_actions_extended(DataFrame dist_threats_data, int units, int threats){
-
   IntegerVector dist_threats_data_pu_id = dist_threats_data["internal_pu"];
   IntegerVector pu_id = clone(dist_threats_data_pu_id);
   pu_id = pu_id - 1;
