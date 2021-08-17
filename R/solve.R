@@ -370,13 +370,14 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
     ## REDUCED
     actions <- a$ConservationClass$getActionsAmount()
     threats_data <- a$ConservationClass$getData("dist_threats")
-    threats_data <- threats_data[names(threats_data) %in% c("pu","threats")]
+    threats_data <- threats_data[names(threats_data) %in% c("pu","threat")]
 
     # Getting local benefits
     dist_features_data <- a$ConservationClass$getData("dist_features")
     number_of_dist_features <- nrow(dist_features_data)
-    dist_features_data <- dist_features_data[!names(dist_features_data) %in% c("amount","internal_species","internal_pu")]
+    dist_features_data <- dist_features_data[!names(dist_features_data) %in% c("amount","internal_feature","internal_pu")]
 
+    dist_features_data <- dist_features_data[order(dist_features_data$feature), ]
 
 
     if (s$data$status == 0L || s$data$status == 2L || s$data$status == 4L) {
@@ -392,11 +393,13 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
 
     s$data$sol_pu <- pu_data
     s$data$sol_actions_reduced <- threats_data
+
+    dist_features_data <- dist_features_data[order(dist_features_data$pu), ]
     s$data$local_benefits <- dist_features_data
 
     ## EXTENDED
-    threats_data <- threats_data[names(threats_data) %in% c("pu","threats","solution")]
-    actions_extended <- reshape2::dcast(threats_data, pu~threats,value.var = "solution")
+    threats_data <- threats_data[names(threats_data) %in% c("pu","threat","solution")]
+    actions_extended <- reshape2::dcast(threats_data, pu~threat,value.var = "solution")
     actions_extended[is.na(actions_extended)] <- 0
     actions_extended <- round(actions_extended,digits = 1)
 

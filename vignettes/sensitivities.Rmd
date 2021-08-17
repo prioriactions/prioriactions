@@ -1,5 +1,5 @@
 ---
-title: "sensitivities"
+title: "Sensitivities"
 output: github_document
 ---
 

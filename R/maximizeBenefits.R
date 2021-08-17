@@ -118,10 +118,10 @@ maximizeBenefits <- function(x, blm = 0, budget = 0, curve = 3, segments = 3, re
 
   pu <- pu[, c("internal_id", "cost", "status")]
   features <- features[, c("internal_id")]
-  dist_features <- dist_features[, c("internal_pu", "internal_species", "amount")]
+  dist_features <- dist_features[, c("internal_pu", "internal_feature", "amount")]
   threats <- threats[, c("internal_id", "blm_actions")]
-  dist_threats <- dist_threats[, c("internal_pu", "internal_threats", "amount", "cost", "status")]
-  sensitivity <- sensitivity[, c("internal_species", "internal_threats", "a", "b", "c", "d")]
+  dist_threats <- dist_threats[, c("internal_pu", "internal_threat", "amount", "cost", "status")]
+  sensitivity <- sensitivity[, c("internal_feature", "internal_threat", "a", "b", "c", "d")]
 
   if (!is.null(boundary)) {
     boundary <- boundary[, c("internal_id1", "internal_id2", "boundary")]

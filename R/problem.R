@@ -222,18 +222,18 @@ methods::setMethod(
     assertthat::assert_that(
       inherits(dist_features, "data.frame"),
       assertthat::has_name(dist_features, "pu"),
-      assertthat::has_name(dist_features, "species"),
+      assertthat::has_name(dist_features, "feature"),
       assertthat::has_name(dist_features, "amount"),
       nrow(dist_features) > 0,
       is.numeric(dist_features$pu),
-      is.numeric(dist_features$species),
+      is.numeric(dist_features$feature),
       is.numeric(dist_features$amount),
       assertthat::noNA(dist_features$pu),
-      assertthat::noNA(dist_features$species),
+      assertthat::noNA(dist_features$feature),
       assertthat::noNA(dist_features$amount),
       all(dist_features$amount >= 0),
       all(dist_features$pu %in% pu$id),
-      all(dist_features$species %in% features$id)
+      all(dist_features$feature %in% features$id)
     )
 
     # eliminate features with amount equal to zero
@@ -272,16 +272,16 @@ methods::setMethod(
     assertthat::assert_that(
       inherits(dist_threats, "data.frame"),
       assertthat::has_name(dist_threats, "pu"),
-      assertthat::has_name(dist_threats, "threats"),
+      assertthat::has_name(dist_threats, "threat"),
       assertthat::has_name(dist_threats, "cost"),
       assertthat::has_name(dist_threats, "amount"),
       nrow(dist_threats) > 0,
       is.numeric(dist_threats$pu),
-      is.numeric(dist_threats$threats),
+      is.numeric(dist_threats$threat),
       is.numeric(dist_threats$cost),
       is.numeric(dist_threats$amount),
       assertthat::noNA(dist_threats$pu),
-      assertthat::noNA(dist_threats$threats),
+      assertthat::noNA(dist_threats$threat),
       assertthat::noNA(dist_threats$cost),
       all(dist_threats$amount >= 0),
       all(dist_threats$pu %in% pu$id)
@@ -321,13 +321,13 @@ methods::setMethod(
     ## sensitivity
     assertthat::assert_that(
       inherits(sensitivity, "data.frame"),
-      assertthat::has_name(sensitivity, "species"),
-      assertthat::has_name(sensitivity, "threats"),
+      assertthat::has_name(sensitivity, "feature"),
+      assertthat::has_name(sensitivity, "threat"),
       nrow(sensitivity) > 0,
-      is.numeric(sensitivity$species),
-      is.numeric(sensitivity$threats),
-      assertthat::noNA(sensitivity$species),
-      assertthat::noNA(sensitivity$threats),
+      is.numeric(sensitivity$feature),
+      is.numeric(sensitivity$threat),
+      assertthat::noNA(sensitivity$feature),
+      assertthat::noNA(sensitivity$threat),
       assertthat::noNA(sensitivity$amount)
     )
     if ("a" %in% names(sensitivity)) {
@@ -344,12 +344,12 @@ methods::setMethod(
         assertthat::noNA(sensitivity$b)
       )
     } else {
-      max_intensities <- dist_threats %>% dplyr::group_by(threats) %>% dplyr::summarise(value = max(amount))
+      max_intensities <- dist_threats %>% dplyr::group_by(threat) %>% dplyr::summarise(value = max(amount))
 
       sensitivity$b <- 1
       for(i in 1:nrow(max_intensities)){
-        if(any(sensitivity$threats == max_intensities$threats[i][[1]])){
-          sensitivity[sensitivity$threats == max_intensities$threats[i][[1]], ]$b <- max_intensities$value[i][[1]]
+        if(any(sensitivity$threat == max_intensities$threat[i][[1]])){
+          sensitivity[sensitivity$threat == max_intensities$threat[i][[1]], ]$b <- max_intensities$value[i][[1]]
         }
       }
     }
@@ -389,20 +389,20 @@ methods::setMethod(
 
     dif_pu <- setdiff(unique(pu$id), unique(dist_features$pu))
     if (length(dif_pu) != 0L) {
-      warning(paste0("The following pu's do not contain species: ", paste(dif_pu, collapse = " ")), call. = FALSE, immediate. = TRUE)
+      warning(paste0("The following pu's do not contain features: ", paste(dif_pu, collapse = " ")), call. = FALSE, immediate. = TRUE)
     }
 
-    dif_features <- setdiff(unique(features$id), unique(dist_features$species))
+    dif_features <- setdiff(unique(features$id), unique(dist_features$feature))
     if (length(dif_features) != 0L) {
 
       warning(paste0("The following features are not represented (it'll not be considered in the model): ", paste(dif_features, collapse = " ")), call. = FALSE, immediate. = TRUE)
 
       # eliminate species not represented
       features <- features[!features$id %in% dif_features, ]
-      sensitivity <- sensitivity[!sensitivity$species %in% dif_features, ]
+      sensitivity <- sensitivity[!sensitivity$feature %in% dif_features, ]
     }
 
-    dif_species_threatened <- setdiff(unique(features$id), unique(sensitivity$species))
+    dif_species_threatened <- setdiff(unique(features$id), unique(sensitivity$feature))
     if (length(dif_species_threatened) != 0L) {
       warning(paste0("The following features are not threatened: ", paste(dif_species_threatened, collapse = " ")), call. = FALSE, immediate. = TRUE)
 
@@ -410,22 +410,22 @@ methods::setMethod(
 
     }
 
-    dif_threats <- setdiff(unique(threats$id), unique(dist_threats$threats))
+    dif_threats <- setdiff(unique(threats$id), unique(dist_threats$threat))
     if (length(dif_threats) != 0L) {
       warning(paste0("The following threats are not represented (it'll not be considered in the model): ", paste(dif_threats, collapse = " ")), call. = FALSE, immediate. = TRUE)
 
       # eliminate species not represented
       threats <- threats[!threats$id %in% dif_threats, ]
-      sensitivity <- sensitivity[!sensitivity$threats %in% dif_threats, ]
+      sensitivity <- sensitivity[!sensitivity$threat %in% dif_threats, ]
     }
 
-    dif_threats_dangerous <- setdiff(unique(threats$id), unique(sensitivity$threats))
+    dif_threats_dangerous <- setdiff(unique(threats$id), unique(sensitivity$threat))
     if (length(dif_threats_dangerous) != 0L) {
       warning(paste0("The following threats are not dangerous to any features (it'll not be considered in the model): ", paste(dif_threats_dangerous, collapse = " ")), call. = FALSE, immediate. = TRUE)
 
       # eliminate threats not represented
       threats <- threats[!threats$id %in% dif_threats_dangerous, ]
-      dist_threats <- dist_threats[!dist_threats$threats %in% dif_threats_dangerous, ]
+      dist_threats <- dist_threats[!dist_threats$threat %in% dif_threats_dangerous, ]
     }
 
     ## Creating internal id's
@@ -451,22 +451,22 @@ methods::setMethod(
     internal_id <- dplyr::inner_join(dist_features, pu, by = c("pu" = "id"))$internal_id
     dist_features$internal_pu <- internal_id
 
-    internal_species <- dplyr::inner_join(dist_features, features, by = c("species" = "id"))$internal_id
-    dist_features$internal_species <- internal_species
+    internal_feature <- dplyr::inner_join(dist_features, features, by = c("feature" = "id"))$internal_id
+    dist_features$internal_feature <- internal_feature
 
     # dist_threats
     internal_id <- dplyr::inner_join(dist_threats, pu, by = c("pu" = "id"))$internal_id
     dist_threats$internal_pu <- internal_id
 
-    internal_threats <- dplyr::inner_join(dist_threats, threats, by = c("threats" = "id"))$internal_id
-    dist_threats$internal_threats <- internal_threats
+    internal_threat <- dplyr::inner_join(dist_threats, threats, by = c("threat" = "id"))$internal_id
+    dist_threats$internal_threat <- internal_threat
 
     # sensitivity
-    internal_species <- dplyr::inner_join(sensitivity, features, by = c("species" = "id"))$internal_id
-    sensitivity$internal_species <- internal_species
+    internal_feature <- dplyr::inner_join(sensitivity, features, by = c("feature" = "id"))$internal_id
+    sensitivity$internal_feature <- internal_feature
 
-    internal_threats <- dplyr::inner_join(sensitivity, threats, by = c("threats" = "id"))$internal_id
-    sensitivity$internal_threats <- internal_threats
+    internal_threat <- dplyr::inner_join(sensitivity, threats, by = c("threat" = "id"))$internal_id
+    sensitivity$internal_threat <- internal_threat
 
 
     ## Create ConservationProblem object

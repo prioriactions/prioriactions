@@ -126,10 +126,10 @@ methods for obtaining model information. It is created used models functions
     <li class="divider"></li>
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="../articles/sensitivities.html">sensitivities</a>
+      <a href="../articles/sensitivities.html">Sensitivities</a>
     </li>
     <li>
-      <a href="../articles/analysis.html">analysis</a>
+      <a href="../articles/analysis.html">Analysis</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -231,7 +231,12 @@ matrix A (in Megabytes).</p></dd>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Load data</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_rij_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensitivity_data</span>, <span class='va'>example_bound_data</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ü¾Œ¦”¼ü¾Œƒ ¼ü¾Žƒ¤¼example_rij_dataü¾Œ¦”¼ü¾Œƒ ¼ü¾Ž“¤¼ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set â€˜example_pu_dataâ€™ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set â€˜example_features_dataâ€™ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set â€˜example_rij_dataâ€™ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set â€˜example_threats_dataâ€™ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set â€˜example_sensitivity_dataâ€™ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set â€˜example_bound_dataâ€™ not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
 <span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='problem.html'>problem</a></span><span class='op'>(</span></span>
@@ -239,7 +244,7 @@ matrix A (in Megabytes).</p></dd>
 <span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>example_sensibility_data</span>,</span>
 <span class='r-in'>  bound <span class='op'>=</span> <span class='va'>example_bound_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in h(simpleError(msg, call))</span> error in evaluating the argument 'sensitivity' in selecting a method for function 'problem': object 'example_sensibility_data' not found</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in h(simpleError(msg, call))</span> error in evaluating the argument 'pu' in selecting a method for function 'problem': object 'example_pu_data' not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create optimization model</span></span>
 <span class='r-in'><span class='va'>problem_model</span> <span class='op'>&lt;-</span> <span class='fu'>min_costs</span><span class='op'>(</span><span class='va'>problem_data</span>, blm <span class='op'>=</span> <span class='fl'>1</span>, blm_actions <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>

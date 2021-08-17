@@ -1,7 +1,7 @@
 Package: prioriactions
 Type: Package
 Version: 0.2.0
-Title: Multi-action conservation planning in R             
+Title: Multi-action conservation planning             
 Description: The prioriactions R package uses a mixed integer mathematical programming (MIP)
         approach for building and solving multi-action conservation planning problems, 
         where the goal is to find an optimal combination of management actions that
@@ -40,13 +40,13 @@ Imports:
     dplyr,
     reshape2,
     Rcpp,
-    ggplot2,
-    lifecycle
+    ggplot2
 Suggests: 
   knitr,
   gurobi (>= 9.0),
   roxygen2,
   rmarkdown,
+  markdown,
   testthat
 LinkingTo: 
   Rcpp, 

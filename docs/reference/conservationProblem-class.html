@@ -126,10 +126,10 @@ instance information. It is created using the problem() function." />
     <li class="divider"></li>
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="../articles/sensitivities.html">sensitivities</a>
+      <a href="../articles/sensitivities.html">Sensitivities</a>
     </li>
     <li>
-      <a href="../articles/analysis.html">analysis</a>
+      <a href="../articles/analysis.html">Analysis</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -232,7 +232,11 @@ cost of actions each planning unit and threat.</p></dd>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Load data</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_rij_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensitivity_data</span>, <span class='va'>example_boundary_data</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_pu_data’ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_features_data’ not found</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_rij_data’ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_threats_data’ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_sensitivity_data’ not found</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_boundary_data’ not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
@@ -241,7 +245,7 @@ cost of actions each planning unit and threat.</p></dd>
 <span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, dist_therats <span class='op'>=</span> <span class='va'>example_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>example_sensibility_data</span>,</span>
 <span class='r-in'>  boundary <span class='op'>=</span> <span class='va'>example_boundary_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in h(simpleError(msg, call))</span> error in evaluating the argument 'dist_features' in selecting a method for function 'problem': object 'example_dist_features__data' not found</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in h(simpleError(msg, call))</span> error in evaluating the argument 'pu' in selecting a method for function 'problem': object 'example_pu_data' not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Use class methods</span></span>
 <span class='r-in'><span class='va'>problem_data</span><span class='op'>$</span><span class='fu'>getData</span><span class='op'>(</span><span class='st'>"features"</span><span class='op'>)</span></span>

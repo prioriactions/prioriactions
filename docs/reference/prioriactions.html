@@ -151,10 +151,10 @@ values of the later ones." />
     <li class="divider"></li>
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="../articles/sensitivities.html">sensitivities</a>
+      <a href="../articles/sensitivities.html">Sensitivities</a>
     </li>
     <li>
-      <a href="../articles/analysis.html">analysis</a>
+      <a href="../articles/analysis.html">Analysis</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -317,6 +317,13 @@ be found online at <a href='https://doi.org/10.1016/j.ecolmodel.2019.108901'>htt
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Load data</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_pu_data</span>, <span class='va'>example_features_data</span>, <span class='va'>example_dist_features_data</span>, <span class='va'>example_dist_threats_data</span>, <span class='va'>example_threats_data</span>, <span class='va'>example_sensitivity_data</span>, <span class='va'>example_bound_data</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_pu_data’ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_features_data’ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_dist_features_data’ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_dist_threats_data’ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_threats_data’ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_sensitivity_data’ not found</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘example_bound_data’ not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
 <span class='r-in'><span class='va'>input</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
@@ -324,45 +331,11 @@ be found online at <a href='https://doi.org/10.1016/j.ecolmodel.2019.108901'>htt
 <span class='r-in'>  threats <span class='op'>=</span> <span class='va'>example_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>example_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>example_sensitivity_data</span>,</span>
 <span class='r-in'>  bound <span class='op'>=</span> <span class='va'>example_bound_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'example_pu_data' not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create optimization model</span></span>
 <span class='r-in'><span class='va'>portfolio</span> <span class='op'>&lt;-</span> <span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>input</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, blm <span class='op'>=</span> <span class='fl'>0</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span>, time_limit <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The following pu's do not contain species: 59 97 109 118 121 122 123 127 129 134 136 139 141 142 146 166 167 185 194 195 196 198 211 230</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The blm argument was set to 0, so the boundary data has no effect</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 1254 rows, 2810 columns and 5041 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x46965b47</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 1004 general constraints</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 2008 continuous, 802 integer (802 binary)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [2e-01, 4e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [3e+00, 5e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [3e+01, 1e+02]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 2774.0000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve removed 628 rows and 1460 columns</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.03s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 626 rows, 1350 columns, 3040 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 221 SOS constraint(s)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 1979.0000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 1222 continuous, 128 integer (64 binary)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 1.449000e+03, 190 iterations, 0.00 seconds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> *    0     0               0    1449.0000000 1449.00000  0.00%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 0 nodes (190 simplex iterations) in 0.03 seconds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 3: 1449 1979 2774 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 1.449000000000e+03, best bound 1.449000000000e+03, gap 0.0000%</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(assertion, env)</span> object 'input' not found</span>
 <span class='r-in'></span>
 </pre>
   </div>

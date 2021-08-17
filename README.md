@@ -19,18 +19,16 @@ N.691149 (SuFoRun).**
 
 ## Overview
 
-The `prioriactions` package uses a mixed integer mathematical
-programming (MIP) approach for building and solving multi-action
-conservation planning problems, where the goal is to find an optimal
-combination of management actions that abate threats, in an efficient
-way while accounting for connectivity. Furthermore, the flexibility of
-the package interface allows implementing an extended version of the
-base model for minimizing fragmentation between different actions. These
-models were called as MAMP and MAMP-E by Salgado-Rojas *et al.* (2020),
-where you can get a detailed description of how both problems were
-mathematically modeled. The package has a variety of commercial and
-open-source exact algorithm solvers that guarantee to find optimal
-solutions.
+The `prioriactions` package allows you to create and solve conservation
+planning problems that involve multiple threats and actions. This uses
+techniques of integer linear programming (ILP), obtaining optimal
+solutions or with a certain degree of guaranteed quality (gap). Due to
+its flexibility, the package offers the possibility of creating
+different mathematical models with multiple requirements (spatial,
+budget requirements, etc.). All the included models are presented in
+detail in Salgado-Rojas et al. (2020). The package has a variety of
+commercial and open-source exact algorithm solvers that guarantee to
+find optimal solutions.
 
 ## Installation
 
@@ -63,5 +61,4 @@ example](https://reprex.tidyverse.org)) at
 -   Salgado-Rojas J, Alvarez-Miranda E, Hermoso V, Garcia-Gonzalo J,
     Weintraub A. *A mixed integer programming approach for multi-action
     planning for threat management*. Ecological Modelling 2020;
-    418:108901.  
-    (DOI: <https://doi.org/10.1016/j.ecolmodel.2019.108901>) .
+    418:108901. DOI: <https://doi.org/10.1016/j.ecolmodel.2019.108901>.

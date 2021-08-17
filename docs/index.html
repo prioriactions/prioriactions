@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Multi-action conservation planning in R              • prioriactions</title>
+<title>Multi-action conservation planning              • prioriactions</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Multi-action conservation planning in R             ">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Multi-action conservation planning             ">
 <meta property="og:description" content="The prioriactions R package uses a mixed integer mathematical programming (MIP)
         approach for building and solving multi-action conservation planning problems, 
         where the goal is to find an optimal combination of management actions that
@@ -85,10 +85,10 @@
 <li class="divider">
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="articles/sensitivities.html">sensitivities</a>
+      <a href="articles/sensitivities.html">Sensitivities</a>
     </li>
     <li>
-      <a href="articles/analysis.html">analysis</a>
+      <a href="articles/analysis.html">Analysis</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Study cases</li>
@@ -136,7 +136,7 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>The <code>prioriactions</code> package uses a mixed integer mathematical programming (MIP) approach for building and solving multi-action conservation planning problems, where the goal is to find an optimal combination of management actions that abate threats, in an efficient way while accounting for connectivity. Furthermore, the flexibility of the package interface allows implementing an extended version of the base model for minimizing fragmentation between different actions. These models were called as MAMP and MAMP-E by Salgado-Rojas <em>et al.</em> (2020), where you can get a detailed description of how both problems were mathematically modeled. The package has a variety of commercial and open-source exact algorithm solvers that guarantee to find optimal solutions.</p>
+<p>The <code>prioriactions</code> package allows you to create and solve conservation planning problems that involve multiple threats and actions. This uses techniques of integer linear programming (ILP), obtaining optimal solutions or with a certain degree of guaranteed quality (gap). Due to its flexibility, the package offers the possibility of creating different mathematical models with multiple requirements (spatial, budget requirements, etc.). All the included models are presented in detail in Salgado-Rojas et al. (2020). The package has a variety of commercial and open-source exact algorithm solvers that guarantee to find optimal solutions.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -157,8 +157,7 @@
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
 <ul>
-<li>Salgado-Rojas J, Alvarez-Miranda E, Hermoso V, Garcia-Gonzalo J, Weintraub A. <em>A mixed integer programming approach for multi-action planning for threat management</em>. Ecological Modelling 2020; 418:108901.<br>
-(DOI: <a href="https://doi.org/10.1016/j.ecolmodel.2019.108901" class="uri">https://doi.org/10.1016/j.ecolmodel.2019.108901</a>) .</li>
+<li>Salgado-Rojas J, Alvarez-Miranda E, Hermoso V, Garcia-Gonzalo J, Weintraub A. <em>A mixed integer programming approach for multi-action planning for threat management</em>. Ecological Modelling 2020; 418:108901. DOI: <a href="https://doi.org/10.1016/j.ecolmodel.2019.108901" class="uri">https://doi.org/10.1016/j.ecolmodel.2019.108901</a>.</li>
 </ul>
 </div>
 </div>

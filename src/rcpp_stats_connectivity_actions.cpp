@@ -28,7 +28,7 @@ NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data,
   IntegerVector pu_id1_threat = clone(dist_threats_data_pu_id);
   pu_id1_threat = pu_id1_threat - 1;
 
-  IntegerVector dist_threats_data_threat_id = dist_threats_data["internal_threats"];
+  IntegerVector dist_threats_data_threat_id = dist_threats_data["internal_threat"];
   IntegerVector threat_id = clone(dist_threats_data_threat_id);
   threat_id = threat_id - 1;
 

@@ -74,10 +74,10 @@
 <li class="divider">
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="../articles/sensitivities.html">sensitivities</a>
+      <a href="../articles/sensitivities.html">Sensitivities</a>
     </li>
     <li>
-      <a href="../articles/analysis.html">analysis</a>
+      <a href="../articles/analysis.html">Analysis</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Study cases</li>
@@ -113,7 +113,7 @@
 
       
 
-      </header><script src="MitchellRiver_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="MitchellRiver_files/header-attrs-2.10.1/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Mitchell River</h1>
@@ -141,104 +141,6 @@
 <h1 class="hasAnchor">
 <a href="#preparing-data-inputs" class="anchor"></a>Preparing data inputs</h1>
 <p>We divided the whole catchment (71,630 km2 into 2316 sites (i.e., sub-catchments), each one included the portion of river length between two consecutive river connections. We considered four major threats to freshwater fish species in the catchment: water buffalo (Bubalis bubalis), cane toad (Bufo marinus), river flow alteration (caused by impoundments, channels for water extractions and levee banks) and grazing land use. Also, we used the modelled spatial distribution of 45 fish species in the Mitchell river catchment as our conservation features. The distribution of features and threats () will be simulated while the other input files a <em>prioriactions</em> will be loaded directly from the package as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/input_big/"</span>, package <span class="op">=</span> <span class="st">"prioriactions"</span><span class="op">)</span>
-
-<span class="va">pu_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"unitCost_Big.csv"</span><span class="op">)</span>, data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">features_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"target_Big.csv"</span><span class="op">)</span>, data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">bound_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"boundary_Big.csv"</span><span class="op">)</span>, data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">sensitivity_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"sensibility_Big.csv"</span><span class="op">)</span>, data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p>We load the shapefile of the case study also included as part of the package installation:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#reading shapefile</span>
-<span class="va">shp_mitchell</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/shapefile.html">shapefile</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"Mitchell.shp"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">sp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sp/man/spplot.html">spplot</a></span><span class="op">(</span><span class="va">shp_mitchell</span>, zcol <span class="op">=</span> <span class="st">"Shape_Area"</span>, names.attr <span class="op">=</span> <span class="st">"Area"</span>,
-      main <span class="op">=</span> <span class="st">"Planning unit areas"</span>, col.regions <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html">viridis</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="MitchellRiver_files/figure-html/unnamed-chunk-3-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>To model the distribution of features and threats, we use the function <em>simulate_species</em> from <em>prioritizr</em> package. Due this simulation is performed on a raster object, we rasterize the shapefile (through the <em>rasterize</em> function of the <em>raster</em> library) and then vectorize it again with the <em>extract</em> function of the same library.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#We set the seed to can replicate the same simulations</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-
-<span class="co">#We transform the shapefile to raster with a convenient resolution for simulation</span>
-<span class="va">ext</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/extent.html">extent</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span>
-<span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span><span class="op">(</span><span class="va">ext</span>, res <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> 
-<span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterize.html">rasterize</a></span><span class="op">(</span><span class="va">shp_mitchell</span>, <span class="va">r</span>, field<span class="op">=</span><span class="fl">1</span><span class="op">)</span>
-
-<span class="co">#Simulation of 45 features distribution</span>
-<span class="va">dist_features</span> <span class="op">&lt;-</span> <span class="fu">prioritizr</span><span class="fu">::</span><span class="fu"><a href="https://prioritizr.net/reference/simulate_species.html">simulate_species</a></span><span class="op">(</span><span class="va">r</span>, <span class="fl">45</span>, model <span class="op">=</span>    <span class="fu">RandomFields</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RandomFields/man/RMgauss.html">RMgauss</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">40000</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; .............................................</span>
-
-<span class="co">#We project the simulated rasters to shapefile</span>
-<span class="va">rij_data</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/extract.html">extract</a></span><span class="op">(</span><span class="va">dist_features</span>, <span class="va">shp_mitchell</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">rij_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">features_data</span><span class="op">$</span><span class="va">id</span></code></pre></div>
-<p>In this way we obtain spatially auto correlated features distributions. Thus, for example, the distribution of simulated feature 1 is:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">shp_mitchell</span><span class="op">$</span><span class="va">specie_distribution</span> <span class="op">&lt;-</span> <span class="va">rij_data</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>
-
-<span class="co">#Plot distribution with tmap library</span>
-<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"specie_distribution"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"seagreen"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
-<p><img src="MitchellRiver_files/figure-html/unnamed-chunk-5-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>Instead, the distribution of simulated threat 1 is:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Simulation of 4 threats distribution</span>
-<span class="va">dist_threats</span> <span class="op">&lt;-</span> <span class="fu">prioritizr</span><span class="fu">::</span><span class="fu"><a href="https://prioritizr.net/reference/simulate_species.html">simulate_species</a></span><span class="op">(</span><span class="va">r</span>, <span class="fl">4</span>, model <span class="op">=</span>  <span class="fu">RandomFields</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RandomFields/man/RMgauss.html">RMgauss</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">40000</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; ....</span>
-
-<span class="co">#We project the simulated rasters to shapefile</span>
-<span class="va">threats_data</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/extract.html">extract</a></span><span class="op">(</span><span class="va">dist_threats</span>, <span class="va">shp_mitchell</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">threats_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>
-
-<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">threat_distribution</span> <span class="op">&lt;-</span> <span class="va">threats_data</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>
-
-<span class="co">#Plot distribution with tmap library</span>
-<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"threat_distribution"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"red4"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
-<p><img src="MitchellRiver_files/figure-html/unnamed-chunk-6-1.png" width="700" style="display: block; margin: auto;"></p>
-<div id="model-with-presence-absence-of-threats-and-features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-with-presence-absence-of-threats-and-features" class="anchor"></a>1) Model with presence / absence of threats and features</h2>
-<p>For the first prioritization exercise, we transform the amount data to values 0 and 1 for both features distribution and threats. In the case of features, a threshold of 0.5 was set, that is, if the value of the amount is equal to or greater than 0.5, it is considered that the features is present at the site. Instead, a threat is considered present if it has any non-zero amount value.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Modifying continuous to binary amount data of features</span>
-<span class="va">rij_data_binary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">rij_data</span> <span class="op">&gt;</span> <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>
-<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">feature_distribution</span> <span class="op">&lt;-</span> <span class="va">rij_data_binary</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>
-
-<span class="co">#Modifying continuous to binary amount data of threats</span>
-<span class="va">threats_data_binary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">threats_data</span> <span class="op">&gt;</span> <span class="fl">0.0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>
-
-<span class="co">#Plot example of feature distribution with tmap library</span>
-<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"feature_distribution"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"seagreen"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
-<p><img src="MitchellRiver_files/figure-html/unnamed-chunk-7-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>Then, we create the features and threat distribution inputs in the corresponding format that will be used by the <em>prioriactions</em> package. Also, we modify the <em>features_data</em> to set the target of each feature at 15%.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Feature distribution data-------------------------------------</span>
-<span class="co">#We get the extended matrix of distribution data for both cases, set the specific col names and we are left with only positive values</span>
-<span class="va">rij_data_binary_large</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/melt.html">melt</a></span><span class="op">(</span><span class="va">rij_data_binary</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">rij_data_binary_large</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pu"</span>, <span class="st">"species"</span>, <span class="st">"amount"</span><span class="op">)</span>
-<span class="va">rij_data_binary_large</span> <span class="op">&lt;-</span> <span class="va">rij_data_binary_large</span><span class="op">[</span><span class="va">rij_data_binary_large</span><span class="op">$</span><span class="va">amount</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="op">]</span>
-
-<span class="co">#threat distribution data-------------------------------------</span>
-<span class="va">threats_data_binary_large</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/melt.html">melt</a></span><span class="op">(</span><span class="va">threats_data_binary</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">threats_data_binary_large</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pu"</span>, <span class="st">"threats"</span>, <span class="st">"amount"</span><span class="op">)</span>
-<span class="va">threats_data_binary_large</span> <span class="op">&lt;-</span> <span class="va">threats_data_binary_large</span><span class="op">[</span><span class="va">threats_data_binary_large</span><span class="op">$</span><span class="va">amount</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="op">]</span>
-<span class="va">threats_data_binary_large</span><span class="op">$</span><span class="va">cost</span> <span class="op">&lt;-</span> <span class="fl">1</span>
-<span class="va">threats_data_binary_large</span><span class="op">$</span><span class="va">status</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-
-<span class="co">#features data-------------------------------------</span>
-<span class="va">features_data</span><span class="op">$</span><span class="va">target</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/rowSums.html">colSums</a></span><span class="op">(</span><span class="va">rij_data_binary</span><span class="op">)</span><span class="op">*</span><span class="fl">0.15</span></code></pre></div>
-</div>
-<div id="base-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#base-model" class="anchor"></a>Base model</h2>
-<p>The base model considers the prioritization of conservation actions using the presence / absence of features and threats. In addition, a target has been set for all features of 15% of their representatives in the basin. The model, for its part, does not consider spatial requirements to the actions (<em>blm</em> and <em>blm_actions</em> parameters equal to 0. Furthermore, there is no attempt to optimize that planning actions occur within the same planning units (i.e., the <em>curve</em> parameter is equal to 1). The solver was configured to stop when a gap of at least 5% is achieved (0% meaning that at least one of the optimal solutions has been found).</p>
-</div>
 </div>
   </div>
 

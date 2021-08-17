@@ -47,7 +47,7 @@ arma::sp_mat create_dist_threats_extended(DataFrame dist_threats_data, int units
   IntegerVector dist_threats_data_pu_id = dist_threats_data["internal_pu"];
   IntegerVector pu_id = clone(dist_threats_data_pu_id);
   pu_id = pu_id - 1;
-  IntegerVector dist_threats_data_threat_id = dist_threats_data["internal_threats"];
+  IntegerVector dist_threats_data_threat_id = dist_threats_data["internal_threat"];
   IntegerVector threat_id = clone(dist_threats_data_threat_id);
   threat_id = threat_id - 1;
 
@@ -72,7 +72,7 @@ arma::sp_mat create_dist_features_extended(DataFrame dist_features_data, int uni
   IntegerVector dist_features_data_pu_id = dist_features_data["internal_pu"];
   IntegerVector pu_id = clone(dist_features_data_pu_id);
   pu_id = pu_id - 1;
-  IntegerVector dist_features_data_feature_id = dist_features_data["internal_species"];
+  IntegerVector dist_features_data_feature_id = dist_features_data["internal_feature"];
   IntegerVector feature_id = clone(dist_features_data_feature_id);
   feature_id = feature_id - 1;
 
@@ -93,10 +93,10 @@ arma::sp_mat create_dist_features_extended(DataFrame dist_features_data, int uni
 
 arma::sp_mat create_sensitivity_extended(DataFrame sensitivity_data, int features, int threats){
 
-  IntegerVector sensitivity_data_feature_id = sensitivity_data["internal_species"];
+  IntegerVector sensitivity_data_feature_id = sensitivity_data["internal_feature"];
   IntegerVector feature_id = clone(sensitivity_data_feature_id);
   feature_id = feature_id - 1;
-  IntegerVector sensitivity_data_threat_id = sensitivity_data["internal_threats"];
+  IntegerVector sensitivity_data_threat_id = sensitivity_data["internal_threat"];
   IntegerVector threat_id = clone(sensitivity_data_threat_id);
   threat_id = threat_id - 1;
 
@@ -112,10 +112,10 @@ arma::sp_mat create_sensitivity_extended(DataFrame sensitivity_data, int feature
 
 arma::sp_mat create_sensitivity_param_extended(DataFrame sensitivity_data, int features, int threats, String param){
 
-  IntegerVector sensitivity_data_feature_id = sensitivity_data["internal_species"];
+  IntegerVector sensitivity_data_feature_id = sensitivity_data["internal_feature"];
   IntegerVector feature_id = clone(sensitivity_data_feature_id);
   feature_id = feature_id - 1;
-  IntegerVector sensitivity_data_threat_id = sensitivity_data["internal_threats"];
+  IntegerVector sensitivity_data_threat_id = sensitivity_data["internal_threat"];
   IntegerVector threat_id = clone(sensitivity_data_threat_id);
   threat_id = threat_id - 1;
 
@@ -149,7 +149,7 @@ arma::sp_mat create_actions_extended(DataFrame dist_threats_data, int units, int
   IntegerVector dist_threats_data_pu_id = dist_threats_data["internal_pu"];
   IntegerVector pu_id = clone(dist_threats_data_pu_id);
   pu_id = pu_id - 1;
-  IntegerVector dist_threats_data_threat_id = dist_threats_data["internal_threats"];
+  IntegerVector dist_threats_data_threat_id = dist_threats_data["internal_threat"];
   IntegerVector threat_id = clone(dist_threats_data_threat_id);
   threat_id = threat_id - 1;
 
