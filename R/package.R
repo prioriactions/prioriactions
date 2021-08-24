@@ -11,7 +11,7 @@ NULL
 #'
 #' @param data `list`. Input data list for `problem()` function.
 #'
-#' @param name_model `string`. Name of the type of model to create. With two possible values:
+#' @param name_model [character]. Name of the type of model to create. With two possible values:
 #' `"minimizeCosts"` and `"maximizeBenefits"`.
 #'
 #' @param ... arguments inherited from `problem()`, `minimizeCosts()`, `maximizeBenefits()`,
@@ -32,15 +32,16 @@ NULL
 #' sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
 #' sim_boundary_data)
 #'
-#' ## Create data list
-#' input <- list(
+#' ## Create data instance
+#' input <- problem(
 #'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
-#'   threats = sim_threats_data, dist_threats = sim_dist_threats_data, sensitivity = sim_sensitivity_data,
-#'   bound = sim_boundary_data
+#'   threats = sim_threats_data, dist_threats = sim_dist_threats_data,
+#'   sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
 #' )
 #'
 #' ## Create and solve optimization model
-#' s <- prioriactions(data = input, name_model = "minimizeCosts", blm = 0, output_file = FALSE, time_limit = 10)
+#' s <- prioriactions(data = input, name_model = "minimizeCosts",
+#'                    blm = 0, output_file = FALSE, time_limit = 10)
 #'
 #' print(s)
 #'

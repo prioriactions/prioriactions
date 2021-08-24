@@ -134,38 +134,45 @@ NULL
 #' prioriactions_path <- system.file("extdata/input/", package = "prioriactions")
 #'
 #' ## Load in planning unit data
-#' pu_data <- data.table::fread(paste0(prioriactions_path,"/pu.dat"), data.table = FALSE)
+#' pu_data <- data.table::fread(paste0(prioriactions_path,"/pu.dat"),
+#'                              data.table = FALSE)
 #' head(pu_data)
 #'
 #' ## Load in feature data
-#' features_data <- data.table::fread(paste0(prioriactions_path,"/features.dat"), data.table = FALSE)
+#' features_data <- data.table::fread(paste0(prioriactions_path,"/features.dat"),
+#'                                    data.table = FALSE)
 #' head(features_data)
 #'
 #' ## Load in planning unit vs feature data
-#' dist_features_data <- data.table::fread(paste0(prioriactions_path,"/dist_features.dat"), data.table = FALSE)
+#' dist_features_data <- data.table::fread(paste0(prioriactions_path,"/dist_features.dat"),
+#'                                         data.table = FALSE)
 #' head(dist_features_data)
 #'
 #' ## Load in the threats data
-#' threats_data <- data.table::fread(paste0(prioriactions_path,"/threats.dat"), data.table = FALSE)
+#' threats_data <- data.table::fread(paste0(prioriactions_path,"/threats.dat"),
+#'                                   data.table = FALSE)
 #' head(threats_data)
 #'
 #' ## Load in the threats distribution data
-#' dist_threats_data <- data.table::fread(paste0(prioriactions_path,"/dist_threats.dat"), data.table = FALSE)
+#' dist_threats_data <- data.table::fread(paste0(prioriactions_path,"/dist_threats.dat"),
+#'                                        data.table = FALSE)
 #' head(dist_threats_data)
 #'
 #' ## Load in the sensitivity data
-#' sensitivity_data <- data.table::fread(paste0(prioriactions_path,"/sensitivity.dat"), data.table = FALSE)
+#' sensitivity_data <- data.table::fread(paste0(prioriactions_path,"/sensitivity.dat"),
+#'                                       data.table = FALSE)
 #' head(sensitivity_data)
 #'
 #' ## Load in the boundary data
-#' boundary_data <- data.table::fread(paste0(prioriactions_path,"/boundary.dat"), data.table = FALSE)
+#' boundary_data <- data.table::fread(paste0(prioriactions_path,"/boundary.dat"),
+#'                                    data.table = FALSE)
 #' head(boundary_data)
 #'
 #' ## Create data instance
 #' problem_data <- problem(
-#'   pu = pu_data, features = features_data, dist_features = dist_features_data,
-#'   dist_threats = dist_threats_data, threats = threats_data, sensitivity = sensitivity_data,
-#'   boundary = boundary_data
+#'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
+#'   threats = sim_threats_data, dist_threats = sim_dist_threats_data,
+#'   sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
 #' )
 #'
 #' ## Summary
@@ -185,7 +192,8 @@ methods::setGeneric("problem",
 )
 
 #' @name problem
-#' @usage \S4method{problem}{data.frame}(pu, features, dist_features, threats, dist_threats, sensitivity = NULL, boundary = NULL)
+#' @usage \S4method{problem}{data.frame}(pu, features, dist_features, threats,
+#'                           dist_threats, sensitivity = NULL, boundary = NULL)
 #' @rdname problem
 methods::setMethod(
   "problem",
@@ -193,7 +201,8 @@ methods::setMethod(
     pu = "data.frame", features = "data.frame", dist_features = "data.frame",
     threats = "data.frame", dist_threats = "data.frame"
   ),
-  function(pu, features, dist_features, threats, dist_threats, sensitivity = NULL, boundary = NULL) {
+  function(pu, features, dist_features, threats, dist_threats,
+           sensitivity = NULL, boundary = NULL) {
 
     ## pu
     assertthat::assert_that(
@@ -351,7 +360,7 @@ methods::setMethod(
       )
     }
     else{
-      sensitivity <- expand.grid("feature" = features$id, "threat" = threats$id)
+      sensitivity <- base::expand.grid("feature" = features$id, "threat" = threats$id)
     }
 
     if ("a" %in% names(sensitivity)) {
@@ -368,7 +377,7 @@ methods::setMethod(
         assertthat::noNA(sensitivity$b)
       )
     } else {
-      max_intensities <- dist_threats %>% dplyr::group_by(threat) %>% dplyr::summarise(value = max(amount))
+      max_intensities <- dist_threats %>% dplyr::group_by(.data$threat) %>% dplyr::summarise(value = max(.data$amount))
 
       sensitivity$b <- 1
       for(i in seq_len(nrow(max_intensities))){

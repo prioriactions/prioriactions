@@ -40,7 +40,9 @@ Imports:
     dplyr,
     reshape2,
     Rcpp,
-    ggplot2
+    ggplot2,
+    tibble,
+    rlang
 Suggests: 
   knitr,
   gurobi (>= 9.0),

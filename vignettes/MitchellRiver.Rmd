@@ -27,7 +27,6 @@ The Mitchell River is a river located in Far North Queensland, Australia. The ri
 We started loading libraries:
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE}
-library(prioritizr) #To use the simulate features distribution
 library(prioriactions)
 library(raster) #To plot of shapefiles
 library(tmap) #To create cool maps
@@ -39,4 +38,4 @@ library(viridis) #To use viridis pallete
 
 # Preparing data inputs
 
-We divided the whole catchment (71,630 km2 into 2316 sites (i.e., sub-catchments), each one included the portion of river length between two consecutive river connections. We considered four major threats to freshwater fish species in the catchment: water buffalo (Bubalis bubalis), cane toad (Bufo marinus), river flow alteration (caused by impoundments, channels for water extractions and levee banks) and grazing land use. Also, we used the modelled spatial distribution of 45 fish species in the Mitchell river catchment as our conservation features. The distribution of features and threats () will be simulated while the other input files a *prioriactions* will be loaded directly from the package as follows:
+We divided the whole catchment (71,630 km2 into 2316 sites (i.e., sub-catchments), each one included the portion of river length between two consecutive river connections. We considered four major threats to freshwater fish species in the catchment: water buffalo (Bubalis bubalis), cane toad (Bufo marinus), river flow alteration (caused by impoundments, channels for water extractions and levee banks) and grazing land use. Also, we used the modelled spatial distribution of 45 fish species in the Mitchell river catchment as our conservation features. The distribution of features and threats will be simulated while the other input files a *prioriactions* will be loaded directly from the package as follows:

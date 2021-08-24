@@ -2,92 +2,51 @@
 % Please edit documentation in R/evalTarget.R
 \name{evalTarget}
 \alias{evalTarget}
-\title{sensitivityAnalysisBlm}
+\title{Evaluate multiple target values}
 \usage{
 evalTarget(data = list(), prop = 1, ...)
 }
 \arguments{
-\item{x}{Object of class \code{\link[=ConservationProblem-class]{ConservationProblem-class()}} that
-specifies the basic data used in a problem of prioritization of multiple
-conservation actions. This object must be created using the
-\code{\link[=problem]{problem()}} function.}
+\item{data}{\code{list}. Input data list for \code{problem()} function.}
 
-\item{blm}{A \code{numeric} value that indicates the penalty factor
-associated to the spatial fragmentation of planning units, similar to
-\strong{Boundary Length Modifier (BLM)} in \emph{Marxan}. This argument
-only has an effect when the \code{\link[=bound]{bound()}} argument of
-\code{\link[=problem]{problem()}} function is a \code{data.frame} object. \strong{The
-default argument is zero}.}
+\item{prop}{\code{numeric}. Proportion of maximum value of benefit to achieve. This
+information can be getting with \code{getBenefit()} function.
+More than one value is needed.}
 
-\item{blm_actions}{A \code{numeric} value that indicates the penalty factor
-associated to the spatial fragmentation of actions. \strong{The default
-argument is zero}.}
-
-\item{curve}{An \code{integer} value that selects the type of continuous
-curve that will represent the expression (linear or non-linear) associated
-with a specific constraint in this model. Therefore, the curve can
-represent a linear (1), quadratic (2) or cubic (3) function. \strong{The
-default argument is 3 and it is not recommended to change this value unless
-you have advanced knowledge of the linearization of mathematical model}.}
-
-\item{segments}{An \code{integer} value that selects the number of
-segments (1, 2 or 3) that will have the \emph{piecewise linear function}
-in charge of approximating the non-linear expression contained in a
-specific constraint of this model. \strong{The default argument is 3 and it
-is not recommended to change this value unless you have advanced knowledge
-of the linearization of mathematical model}.}
+\item{...}{arguments inherited from \code{problem()}, \code{minimizeCosts()},
+and \code{solve()} functions.}
 }
 \value{
-An object of class \code{\link[=OptimizationProblem-class]{OptimizationProblem-class()}}.
+An object of class \linkS4class{portfolio}.
 }
 \description{
-Create an optimization model for the multi-action conservation
-planning problem, following the mathematical formulations used in
-Salgado-Rojas \emph{et al.} (2020). This function is used to specify model
-configuration parameters related to connectivity issues and its internal
-\emph{modus operandi}.
-
-Connectivity parameters (\code{blm} and \code{blm_actions}) manipulate the
-spatial fragmentation of planning units and/or action management to improve
-the compactness of the reserve solutions. Likewise, the other parameters
-(\code{curve} and \code{segments}) affect the linearization strategy
-used by the model internally in order to be solved under a linear
-programming approach. \strong{It is not recommended to modify the default
-values of the later ones}.
+Provides multiple solutions for different values of target. This function
+assumes that you are working with the \emph{minimizeCosts} model. Like
+\code{prioriactions()} function, It inherits all arguments from \code{problem()},
+\code{minimizeCosts()} and \code{solve()}.
 }
 \details{
-\strong{Put details here! The details may include the mathematical
-formulation of the optimization model associated with this conservation
-problem and/or a rough description of the mathematical model, and/or what
-happens when the parameters are set in one way or another.}
+\code{evalTarget()} creates and solves multiple multi-actions planning
+problems for different values of targets You can do this by manually running
+\code{prioriactions()} function with these different target values (i.e., running
+once by target). However, the \code{evalTarget()} function has two advantages
+over their counterpart: 1) it is more efficient to create the models.
+This is because the model is once created and then updated with the
+new information; 2) the output is a portfolio object, which allows
+obtaining information about the group of solutions, including, all \emph{get}
+functions and also different types of plots.
 }
 \examples{
-## Create an optimization model for the multi-action conservation
-## planning problem using a data instance that has been created in R.
-## This example uses input files included into package.
-
-## Load package
-library(prioriactions)
+# set seed for reproducibility
+set.seed(14)
 
 ## Load data
-data(example_pu_data, example_features_data, example_dist_features_data, example_dist_threats_data, example_threats_data, example_sensitivity_data, example_bound_data)
+inputs <- list(sim_pu_data, sim_features_data, sim_dist_features_data,
+sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
+sim_boundary_data)
 
-## Create data instance
-input <- list(
-  pu = example_pu_data, features = example_features_data, dist_features = example_dist_features_data,
-  threats = example_threats_data, dist_threats = example_dist_threats_data, sensitivity = example_sensitivity_data,
-  bound = example_bound_data
-)
+## Create model and solve
+port <- evalTarget(data = inputs, prop = c(0.1, 0.3, 0.5), time_limit = 50, output_file = FALSE)
 
-## Create optimization model
-portfolio <- evalTarget(data = input, prop = c(0.1, 0.2), output_file = FALSE, time_limit = 10)
-
-}
-\seealso{
-For more information regarding the arguments \code{blm} and
-\code{blm_actions}, see the \href{https://marxansolutions.org}{official \emph{Marxan} website} and the article by Salgado-Rojas \emph{et al.}
-(2020), respectively. Also, for more information regarding the arguments
-\code{curve} and \code{segments}, see the supplementary material
-associated with the article by Salgado-Rojas \emph{et al.} (2020), which can
-be found online at \url{https://doi.org/10.1016/j.ecolmodel.2019.108901}.
+plot(port)
 }

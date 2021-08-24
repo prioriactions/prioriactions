@@ -40,8 +40,8 @@
 #' ## Create data instance
 #' problem_data <- problem(
 #'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
-#'   threats = sim_threats_data, dist_threats = sim_dist_threats_data, sensitivity = sim_sensitivity_data,
-#'   boundary = sim_boundary_data
+#'   threats = sim_threats_data, dist_threats = sim_dist_threats_data,
+#'   sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
 #' )
 #'
 #' ## Get maximum benefits to obtain

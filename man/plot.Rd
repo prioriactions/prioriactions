@@ -3,12 +3,16 @@
 \name{plot}
 \alias{plot}
 \alias{plot.Portfolio}
-\title{Plot}
+\title{Plot portfolio}
 \usage{
-\method{plot}{Portfolio}(x, type = "connectivity_vs_cost", text = TRUE, ...)
+\method{plot}{Portfolio}(x, type = "connectivity_vs_cost", ...)
 }
 \arguments{
-\item{x}{Any object.}
+\item{x}{\code{Portfolio-class}.}
+
+\item{type}{\link{character}. Type of plot. The following types
+can be used: \emph{connectivity_vs_cost}, \emph{connectivity_vs_benefit} and
+\emph{cost_vs_benefit}.}
 
 \item{...}{Not used.}
 }
@@ -16,7 +20,22 @@
 None.
 }
 \description{
-Display information about an object.
+Plot information about an group of solutions.
+}
+\examples{
+# set seed for reproducibility
+set.seed(14)
+
+## Load data
+inputs <- list(sim_pu_data, sim_features_data, sim_dist_features_data,
+sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
+sim_boundary_data)
+
+## Create model and solve
+port <- evalTarget(data = inputs, prop = c(0.5, 0.6), gap_limit = 0.01, output_file = FALSE)
+
+plot(port)
+
 }
 \seealso{
 \code{\link[graphics:plot.default]{graphics::plot()}}.

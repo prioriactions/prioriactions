@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot — plot • prioriactions</title>
+<title>Plot portfolio — plot • prioriactions</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="Plot — plot" />
-<meta property="og:description" content="Display information about an object." />
+<meta property="og:title" content="Plot portfolio — plot" />
+<meta property="og:description" content="Plot information about an group of solutions." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -166,24 +166,30 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot</h1>
+    <h1>Plot portfolio</h1>
     <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/plot.R'><code>R/plot.R</code></a></small>
     <div class="hidden name"><code>plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Display information about an object.</p>
+    <p>Plot information about an group of solutions.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for Portfolio</span>
-<span class='fu'>plot</span><span class='op'>(</span><span class='va'>x</span>, type <span class='op'>=</span> <span class='st'>"connectivity_vs_cost"</span>, text <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>plot</span><span class='op'>(</span><span class='va'>x</span>, type <span class='op'>=</span> <span class='st'>"connectivity_vs_cost"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Any object.</p></td>
+      <td><p><code>Portfolio-class</code>.</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p><a href='https://rdrr.io/r/base/character.html'>character</a>. Type of plot. The following types
+can be used: <em>connectivity_vs_cost</em>, <em>connectivity_vs_benefit</em> and
+<em>cost_vs_benefit</em>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -198,6 +204,157 @@
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/r/graphics/plot.default.html'>graphics::plot()</a></code>.</p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='r-in'><span class='co'># set seed for reproducibility</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>14</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load data</span></span>
+<span class='r-in'><span class='va'>inputs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>sim_pu_data</span>, <span class='va'>sim_features_data</span>, <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'><span class='va'>sim_threats_data</span>, <span class='va'>sim_dist_threats_data</span>, <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Create model and solve</span></span>
+<span class='r-in'><span class='va'>port</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evalTarget.html'>evalTarget</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>inputs</span>, prop <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.6</span><span class='op'>)</span>, gap_limit <span class='op'>=</span> <span class='fl'>0.01</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>  Iteration 1 of 2: Prop0.5</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The blm argument was set to 0, so the boundary data has no effect</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 280 rows, 589 columns and 822 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x1766737a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 176 general constraints</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 237 integer (237 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [1e+00, 1e+01]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [2e+01, 3e+01]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 1002.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve added 289 rows and 635 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.00s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 569 rows, 1224 columns, 2970 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 176 SOS constraint(s)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 1056 continuous, 168 integer (162 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 3.605000e+02, 201 iterations, 0.00 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  360.50000    0   30 1002.00000  360.50000  64.0%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     918.0000000  360.50000  60.7%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  370.00000    0    6  918.00000  370.00000  59.7%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     384.0000000  370.00000  3.65%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  370.00000    0    4  384.00000  370.00000  3.65%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     377.0000000  370.00000  1.86%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  370.00000    0    3  377.00000  370.00000  1.86%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  370.00000    0    3  377.00000  370.00000  1.86%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  370.00000    0    3  377.00000  370.00000  1.86%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     2  370.00000    0    3  377.00000  370.00000  1.86%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   3608  1420  372.00000   20   13  377.00000  371.00000  1.59%   2.4    1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   7380  2504  375.00000   33    3  377.00000  372.00000  1.33%   2.5    2s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  12723  4196  376.00000   28    3  377.00000  372.00000  1.33%   2.6    3s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  18012  4959     cutoff   25       377.00000  373.00000  1.06%   2.8    4s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  23252  5714     cutoff   27       377.00000  373.00000  1.06%   2.9    5s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Gomory: 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Flow cover: 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Inf proof: 7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 28794 nodes (83349 simplex iterations) in 6.00 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 4: 377 384 918 1002 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 1.00e-02)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 3.770000000000e+02, best bound 3.740000000000e+02, gap 0.7958%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>  Iteration 2 of 2: Prop0.6</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 280 rows, 589 columns and 822 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0xb9ce2335</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 176 general constraints</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 237 integer (237 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [1e+00, 1e+01]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [2e+01, 4e+01]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 1002.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve added 289 rows and 635 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.00s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 569 rows, 1224 columns, 2970 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 176 SOS constraint(s)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 1056 continuous, 168 integer (162 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 4.544000e+02, 187 iterations, 0.00 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  454.40000    0   41 1002.00000  454.40000  54.7%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     932.0000000  454.40000  51.2%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  462.70000    0   12  932.00000  462.70000  50.4%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     472.0000000  462.70000  1.97%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  462.70000    0   13  472.00000  462.70000  1.97%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  463.30818    0   19  472.00000  463.30818  1.84%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  463.33254    0   27  472.00000  463.33254  1.84%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  463.40687    0   20  472.00000  463.40687  1.82%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  463.44797    0   21  472.00000  463.44797  1.81%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  463.46399    0   24  472.00000  463.46399  1.81%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  463.55032    0   22  472.00000  463.55032  1.79%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  463.87200    0   20  472.00000  463.87200  1.72%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  463.90314    0   27  472.00000  463.90314  1.72%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  463.90314    0   25  472.00000  463.90314  1.72%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  464.06782    0   20  472.00000  464.06782  1.68%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  464.07509    0   21  472.00000  464.07509  1.68%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  464.40000    0   19  472.00000  464.40000  1.61%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  464.60000    0   14  472.00000  464.60000  1.57%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  464.66039    0   23  472.00000  464.66039  1.56%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  464.73454    0   23  472.00000  464.73454  1.54%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  464.73454    0   26  472.00000  464.73454  1.54%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  464.98454    0   23  472.00000  464.98454  1.49%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.13798    0   34  472.00000  465.13798  1.45%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.13798    0   34  472.00000  465.13798  1.45%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.37434    0   38  472.00000  465.37434  1.40%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.62894    0   30  472.00000  465.62894  1.35%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.63427    0   30  472.00000  465.63427  1.35%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.75769    0   45  472.00000  465.75769  1.32%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.90898    0   31  472.00000  465.90898  1.29%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.90898    0   34  472.00000  465.90898  1.29%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.92479    0   38  472.00000  465.92479  1.29%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.92705    0   35  472.00000  465.92705  1.29%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.92946    0   23  472.00000  465.92946  1.29%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.93096    0   35  472.00000  465.93096  1.29%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.94196    0   40  472.00000  465.94196  1.28%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  465.94196    0   25  472.00000  465.94196  1.28%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     2  465.94196    0   25  472.00000  465.94196  1.28%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Gomory: 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Cover: 19</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Implied bound: 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   MIR: 7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Flow cover: 83</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Relax-and-lift: 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 459 nodes (2540 simplex iterations) in 0.46 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 3: 472 932 1002 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 1.00e-02)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 4.720000000000e+02, best bound 4.680000000000e+02, gap 0.8475%</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>plot</span><span class='op'>(</span><span class='va'>port</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='plot-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

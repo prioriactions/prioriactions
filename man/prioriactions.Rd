@@ -9,7 +9,7 @@ prioriactions(data = list(), name_model = "minimizeCosts", ...)
 \arguments{
 \item{data}{\code{list}. Input data list for \code{problem()} function.}
 
-\item{name_model}{\code{string}. Name of the type of model to create. With two possible values:
+\item{name_model}{\link{character}. Name of the type of model to create. With two possible values:
 \code{"minimizeCosts"} and \code{"maximizeBenefits"}.}
 
 \item{...}{arguments inherited from \code{problem()}, \code{minimizeCosts()}, \code{maximizeBenefits()},
@@ -34,15 +34,16 @@ data(sim_pu_data, sim_features_data, sim_dist_features_data,
 sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
 sim_boundary_data)
 
-## Create data list
-input <- list(
+## Create data instance
+input <- problem(
   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
-  threats = sim_threats_data, dist_threats = sim_dist_threats_data, sensitivity = sim_sensitivity_data,
-  bound = sim_boundary_data
+  threats = sim_threats_data, dist_threats = sim_dist_threats_data,
+  sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
 )
 
 ## Create and solve optimization model
-s <- prioriactions(data = input, name_model = "minimizeCosts", blm = 0, output_file = FALSE, time_limit = 10)
+s <- prioriactions(data = input, name_model = "minimizeCosts",
+                   blm = 0, output_file = FALSE, time_limit = 10)
 
 print(s)
 

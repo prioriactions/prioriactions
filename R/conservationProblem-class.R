@@ -64,31 +64,38 @@ NULL
 #' prioriactions_path <- system.file("extdata/input/", package = "prioriactions")
 #'
 #' ## Load in planning unit data
-#' pu_data <- data.table::fread(paste0(prioriactions_path,"/pu.dat"), data.table = FALSE)
+#' pu_data <- data.table::fread(paste0(prioriactions_path,"/pu.dat"),
+#'                              data.table = FALSE)
 #' head(pu_data)
 #'
 #' ## Load in feature data
-#' features_data <- data.table::fread(paste0(prioriactions_path,"/features.dat"), data.table = FALSE)
+#' features_data <- data.table::fread(paste0(prioriactions_path,"/features.dat"),
+#'                                    data.table = FALSE)
 #' head(features_data)
 #'
 #' ## Load in planning unit vs feature data
-#' dist_features_data <- data.table::fread(paste0(prioriactions_path,"/dist_features.dat"), data.table = FALSE)
+#' dist_features_data <- data.table::fread(paste0(prioriactions_path,"/dist_features.dat"),
+#'                                         data.table = FALSE)
 #' head(dist_features_data)
 #'
 #' ## Load in the threats data
-#' threats_data <- data.table::fread(paste0(prioriactions_path,"/threats.dat"), data.table = FALSE)
+#' threats_data <- data.table::fread(paste0(prioriactions_path,"/threats.dat"),
+#'                                   data.table = FALSE)
 #' head(threats_data)
 #'
 #' ## Load in the threats distribution data
-#' dist_threats_data <- data.table::fread(paste0(prioriactions_path,"/dist_threats.dat"), data.table = FALSE)
+#' dist_threats_data <- data.table::fread(paste0(prioriactions_path,"/dist_threats.dat"),
+#'                                        data.table = FALSE)
 #' head(dist_threats_data)
 #'
 #' ## Load in the sensitivity data
-#' sensitivity_data <- data.table::fread(paste0(prioriactions_path,"/sensitivity.dat"), data.table = FALSE)
+#' sensitivity_data <- data.table::fread(paste0(prioriactions_path,"/sensitivity.dat"),
+#'                                       data.table = FALSE)
 #' head(sensitivity_data)
 #'
 #' ## Load in the boundary data
-#' boundary_data <- data.table::fread(paste0(prioriactions_path,"/boundary.dat"), data.table = FALSE)
+#' boundary_data <- data.table::fread(paste0(prioriactions_path,"/boundary.dat"),
+#'                                    data.table = FALSE)
 #' head(boundary_data)
 #'
 #' ## Create data instance

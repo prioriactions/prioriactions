@@ -14,61 +14,56 @@ NULL
 #'
 #' @section Fields:
 #' \describe{
-#' \item{$data}{`list` object containing data on the results of the optimization process.}
+#' \item{$data}{
+#' `list`. Object containing data on the results of the optimization process.}
 #' }
 #'
 #' @section Methods:
 #' \describe{
-#' \item{$getGap( )}{returns a `string` label indicating the optimality gap achieved for the MIP model.}
+#' \item{getGap()}{
+#' `numeric`. Label indicating the optimality gap achieved for the MIP model.}
 #'
 
-#' \item{$getObjectiveValue( )}{returns a `numeric` number indicating the value of the objective function at the optimum.}
+#' \item{getObjectiveValue()}{
+#' `numeric`. Number indicating the value of the objective function of the solution.}
 #'
-#' \item{$getSolutionActions( )}{
-#' returns a `data.frame` object interpreting the optimal solution of the MIP model
-#' that relates to the conservation actions. It contains information on the conservation actions
-#' that are suggested (value 1) and those that are not suggested (value 0) within the conservation plan.}
+#' \item{print()}{
+#' Print basic information of the model solution.}
 #'
-#' \item{$getSolutionUnits( )}{
-#' returns a `data.frame` object interpreting the optimal solution of the MIP model
-#' that relates to the planning units. It contains information on the planning units that are
-#' suggested to be included (value 1) and not included (value 0) within the conservation plan.}
-#'
-#' \item{$print( )}{print basic information of the model solution.}
-#'
-#' \item{$show( )}{call print method.}
+#' \item{show()}{
+#' Call print method.}
 #'
 #' }
 #'
 #' @examples
-#' ## Examples of how to use the methods of a Solution class object.
+#' # set seed for reproducibility
+#' set.seed(14)
 #'
 #' ## Load data
-#' data(example_pu_data, example_features_data, example_rij_data, example_threats_data, example_sensitivity_data, example_bound_data)
+#' data(sim_pu_data, sim_features_data, sim_dist_features_data,
+#' sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
+#' sim_boundary_data)
 #'
 #' ## Create data instance
 #' problem_data <- problem(
-#'   pu = example_pu_data, features = example_features_data, rij = example_rij_data,
-#'   threats = example_threats_data, sensitivity = example_sensibility_data,
-#'   bound = example_bound_data
+#'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
+#'   threats = sim_threats_data, dist_threats = sim_dist_threats_data,
+#'   sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
 #' )
 #'
 #' ## Create optimization model
-#' problem_model <- min_costs(problem_data, blm = 1, blm_actions = 1)
+#' problem_model <- minimizeCosts(x = problem_data, blm = 1)
 #'
-#' ## Solve the optimization model using a default solver
-#' model_solution <- solve(a = problem_model, verbose = FALSE)
+#' ## Solve the optimization model
+#' s <- solve(a = problem_model, solver = "gurobi", gap_limit = 0.01, output_file = FALSE)
 #'
 #' ## Use class methods
-#' model_solution$getGap()
+#' s$getGap()
 #'
-#' model_solution$getObjectiveValue()
+#' s$getObjectiveValue()
 #'
-#' head(model_solution$getSolutionActions())
+#' s$print()
 #'
-#' head(model_solution$getSolutionUnits())
-#'
-#' model_solution$print()
 #' @name solution-class
 #'
 #' @aliases Solution
