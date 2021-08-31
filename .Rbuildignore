@@ -6,5 +6,5 @@
 ^pkgdown$
 ^Makefile$
 ^LICENSE\.md$
-^doc$
 ^Meta$
+^doc$

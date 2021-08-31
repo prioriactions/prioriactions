@@ -6,16 +6,14 @@ NULL
 
 #' Optimization problem class
 #'
-#' This class is used to represent an optimization model. This includes several
-#' methods for obtaining model information. It is created used models functions
-#' (i.e. `minimizeCosts()` and `maximizeBenefits()` functions).
+#' This class encodes the corresponding optimization model. It is created
+#' using `model()`` function.
 #'
 #' @section Fields: \describe{ \item{$data}{`list` object containing data
 #'   of the mathematical model.}
 #'
 #'   \item{$ConservationClass}{object of class
-#'   [conservationProblem-class()] that contain the data instance.}
-#'
+#'   [conservationProblem-class()] that contains the data structure.}
 #'   }
 #'
 #' @section Methods: \describe{
@@ -27,8 +25,8 @@ NULL
 #'
 #'   \item{getDataList()}{
 #'    [list()] of
-#'   [vector()]. Object stored in the `data`. It correspond to set
-#'   of data stored associated to the mathematical model.}
+#'   [vector()]. Object stored in the `data`. It contains all information relative
+#'   to the mathematical model, such as "obj", "rhs", etc.
 #'
 #'   \item{getModelSense()}{
 #'   `character`. Indicate whether the
@@ -99,7 +97,7 @@ OptimizationProblem <- pproto(
       message(
         "Optimization Problem",
         "\n  model sense: ", getModelSense(self),
-        "\n  dimensions:  ", getNconstraints(self), ", ", getNvariables(self), ", ", getSizeA(self), " Mb",
+        "\n  dimensions:  ", getNconstraints(self), ", ", getNvariables(self), ", ", getSizeA(self),
         " (nrow, ncol, size)",
         "\n  variables:   ", getNvariables(self)
       )

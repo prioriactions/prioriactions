@@ -5,17 +5,15 @@
 \alias{OptimizationProblem}
 \title{Optimization problem class}
 \description{
-This class is used to represent an optimization model. This includes several
-methods for obtaining model information. It is created used models functions
-(i.e. \code{minimizeCosts()} and \code{maximizeBenefits()} functions).
+This class encodes the corresponding optimization model. It is created
+using `model()`` function.
 }
 \section{Fields}{
  \describe{ \item{$data}{\code{list} object containing data
 of the mathematical model.}
 
 \item{$ConservationClass}{object of class
-\code{\link[=conservationProblem-class]{conservationProblem-class()}} that contain the data instance.}
-
+\code{\link[=conservationProblem-class]{conservationProblem-class()}} that contains the data structure.}
 }
 }
 
@@ -29,8 +27,8 @@ following: "obj", "rhs", "sense", "vtype", "A", "bounds" or "modelsense".}
 
 \item{getDataList()}{
 \code{\link[=list]{list()}} of
-\code{\link[=vector]{vector()}}. Object stored in the \code{data}. It correspond to set
-of data stored associated to the mathematical model.}
+\code{\link[=vector]{vector()}}. Object stored in the \code{data}. It contains all information relative
+to the mathematical model, such as "obj", "rhs", etc.
 
 \item{getModelSense()}{
 \code{character}. Indicate whether the

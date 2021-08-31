@@ -1,6 +1,6 @@
 #' @title Get cost of planning units
 #'
-#' @description Provides the total cost of selected planning units in a solution.
+#' @description Provides the total cost value of selected planning units in a solution.
 #'
 #' @param x [solution-class] or [portfolio-class] object.
 #'

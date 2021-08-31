@@ -13,8 +13,8 @@ getTotalBenefit(x)
 \link{numeric}.
 }
 \description{
-Provides the sum of all the benefits achieved for all the features
-in a planning exercise.
+Returns the total sum of the benefits achieved by the solution
+(for all features and across the whole planning area).
 }
 \examples{
 # set seed for reproducibility

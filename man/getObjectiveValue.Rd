@@ -13,8 +13,9 @@ getObjectiveValue(x)
 \link{numeric}.
 }
 \description{
-Provides the objective value of a solution. More information about objective functions
-in \code{minimizeCosts()} and \code{maximizeBenefits()} functions.
+Returns the value of the objective function associated with a given solution.
+More information about objective functions
+in \code{model()} function.
 }
 \examples{
 # set seed for reproducibility

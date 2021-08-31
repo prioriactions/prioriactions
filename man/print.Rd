@@ -25,7 +25,7 @@
 None.
 }
 \description{
-Display information about an object.
+Displays information about an object.
 }
 \seealso{
 \code{\link[base:print]{base::print()}}.

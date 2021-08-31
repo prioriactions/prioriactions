@@ -16,7 +16,7 @@ getStatus(x)
 Provides the status of solver at the end of the optimization period.
 }
 \details{
-\code{GetStatus}can have five states:
+\code{GetStatus} can have five states:
 \enumerate{
 \item \emph{Optimal solution (according to gap tolerance)} : When the resolution of the model stop
 when the quality of the solution (\emph{gap}) is less than or equal to

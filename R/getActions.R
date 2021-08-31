@@ -1,11 +1,12 @@
 #' @title Get actions
 #'
-#' @description Provides the selected actions in a solution.
+#' @description Returns the spatial deployment of the actions for each planning unit of
+#' the corresponding solution.
 #'
 #' @param x [solution-class] or [portfolio-class] object.
 #'
-#' @param format `string`. Output format of the action matrix. `"wide"` format
-#' shows one column per action, while `"large"` format shows three columns: pu,
+#' @param format `character`. Output format of the action matrix; `wide` format
+#' shows one column per action, while `large` format shows three columns: pu,
 #' threat and solution.
 #'
 #' @return [data.frame].

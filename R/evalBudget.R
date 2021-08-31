@@ -4,32 +4,34 @@ NULL
 
 #' @title Evaluate multiple budget values
 #'
-#' @description Provides multiple solutions for different values of budgets. This function
-#' assumes that you are working with the *maximizeBenefits* model. Like
-#' `prioriactions()` function, It inherits all arguments from `problem()`,
-#' `maximizeBenefits()` and `solve()`.
+#' @description Provides multiple solutions for different values of budgets. This
+#' function assumes that the *maximizeBenefits* option is being used (note that
+#' the *minimizeCosts* option does not require setting a maximum budget). Like
+#' `prioriactions()` function, it inherits all arguments from `problem()`,
+#' `model()` and `solve()`.
 #'
 #' @param data `list`. Input data list for `problem()` function.
 #'
-#' @param budget `numeric`. Values of budget to verify. more than one value is
+#' @param values `numeric`. Values of budget to verify. More than one value is
 #' needed.
 #'
 #' @param ... arguments inherited from `problem()`, `maximizeBenefits()`,
 #'   and `solve()` functions.
-
+#'
 #' @name evalBudget
 #'
 #' @return An object of class [portfolio-class].
 #'
-#' @details `evalBudget()` creates and solves multiple multi-actions planning
-#' problems for different values of budgets. You can do this by manually running
-#' `prioriactions()` function with these different budget values (i.e., running
-#' once by budget). However, the `evalBudget()` function has two advantages
-#' over their counterpart: 1) it is more efficient to create the models.
-#' This is because the model is once created and then updated with the
-#' new information; 2) the output is a portfolio object, which allows
-#' obtaining information about the group of solutions, including, all *get*
-#' functions and also different types of plots.
+#' @details `evalBudget()` creates and solves multiple instances, of the corresponding
+#' multi-actions planning problem, for different values of maximum budgets. Alternatively, this
+#' could be obtained by executing function `prioriactions()` or by steps the `problem()`,
+#' `model()` and `solve()` functions; using, in each run, different budgtes values.
+#' However, the `evalBudget()` function has two advantages with
+#' respect to this manual approach: : 1)
+#' it is more efficient to create the models (this is because the model is created
+#' just once and, at each iteration, only the budget values are updated); and 2) the
+#' output is a portfolio object, which allows
+#' obtaining information about the group of solutions (including all *get* functions).
 #'
 #' @examples
 #' # set seed for reproducibility
@@ -41,13 +43,11 @@ NULL
 #' sim_boundary_data)
 #'
 #' ## Create model and solve
-#' port <- evalBudget(data = inputs, budget = c(1, 10, 50, 100), time_limit = 50, output_file = FALSE)
-#'
-#' plot(port)
+#' port <- evalBudget(data = inputs, values = c(1, 10, 50, 100), time_limit = 50, output_file = FALSE)
 #'
 #' @rdname evalBudget
 #' @export
-evalBudget <- function(data = list(), ...) {
+evalBudget <- function(data = list(), values = c(), ...) {
 
   # assert that arguments are valid
   assertthat::assert_that(
@@ -59,16 +59,10 @@ evalBudget <- function(data = list(), ...) {
   conservation_model <- do.call(problem, args = data)
 
   #verifying budget length
-  if(any(names(params) %in% "budget")){
-    assertthat::assert_that(
-      is.numeric(params$budget),
-      length(params$budget) > 1
-    )
-  }
-  else{
-    stop("budget param not defined")
-  }
-
+  assertthat::assert_that(
+    is.numeric(values),
+    length(values) > 1
+  )
 
   params_solve <- c("solver", "gap_limit", "time_limit", "solution_limit", "cores",
                     "verbose", "name_output_file", "output_file")
@@ -77,7 +71,7 @@ evalBudget <- function(data = list(), ...) {
   name_model <- "maximizeBenefits"
 
   #number of replications
-  repl <- length(params$budget)
+  repl <- length(values)
 
   #verifying input parameters
   if(!all(names(params) %in% c(params_solve, params_model))){
@@ -86,12 +80,11 @@ evalBudget <- function(data = list(), ...) {
     stop(paste0("The following params are not defined in this function: ", paste(names(params)[id_error], collapse = " ")))
   }
 
-
   #running
   it = 1
   name_iter = ""
 
-  for(budget in params$budget){
+  for(budget in values){
 
     name_iter <- paste0("Budget", budget)
     params_iter <- params

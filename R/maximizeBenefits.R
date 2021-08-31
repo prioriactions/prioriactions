@@ -32,11 +32,11 @@ NULL
 #' where threats are not found (i.e. no co-occurrence between the feature and
 #' its threats on that site).
 #'
-
-#' @name maximizeBenefits
-#'
 #' @return An object of class [optimizationProblem-class].
 #'
+#' @name maximizeBenefits
+NULL
+
 #' @details The maximize benefits model seeks to find the set of actions that
 #' maximizes the sum of benefits of all features, while the cost of performing
 #' actions does not exceed a certain budget.

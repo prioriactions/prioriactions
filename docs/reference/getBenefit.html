@@ -126,10 +126,10 @@ by the amount of features in each planning unit." />
     <li class="divider"></li>
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="../articles/sensitivities.html">Sensitivities</a>
+      <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li>
-      <a href="../articles/analysis.html">Analysis</a>
+      <a href="../articles/recovery.html">Recovery model</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -201,15 +201,16 @@ affect said feature with respect to all possible actions to do. This value is mu
 the amount of feature in that planning unit. For more information on its calculation, see the
 <a href='https://prioriactions.github.io/prioriactions/reference/getBenefit.html'>getBenefit</a>
 reference.</p>
-<p>The benefit can be expressed
+<p>The benefit for a given feature can be expressed
 mathematically for a set of planning units
 \(I\) indexed by \(i\), and
 a set of threats \(K\) indexed by \(k\) as:</p>
 <p>$$
 \sum_{i \in I_s} \frac{ \sum_{k \in K_i \cap K_s}{x_{ik}}}{|K_i \cap K_s|} r_{is}
 $$</p>
-<p>Here, \(x_{ik}\) is the decisions variable that specify whether action to abate the
-threat \(k\) in the planning unit \(i\) has been selected (1) or not (0), \(r_{is}\)
+<p>Where, \(x_{ik}\) is a decisions variable that specifies
+whether an action to address threat \(k\)  has been selected in planning unit
+\(i\) (1) or not (0), \(r_{is}\)
 is the amount of feature \(s\) in planning unit \(i\).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -224,8 +225,8 @@ is the amount of feature \(s\) in planning unit \(i\).</p>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
 <span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='problem.html'>problem</a></span><span class='op'>(</span></span>
 <span class='r-in'>  pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>,</span>
-<span class='r-in'>  boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
+<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>,</span>
+<span class='r-in'>  sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>, boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Get maximum benefits to obtain</span></span>
@@ -255,7 +256,7 @@ is the amount of feature \(s\) in planning unit \(i\).</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [1e+00, 2e+01]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 52870.722212</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve added 352 rows and 698 columns</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.20s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.16s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 30332 rows, 11187 columns, 72396 nonzeros</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 176 SOS constraint(s)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 1056 continuous, 10131 integer (10125 binary)</span>
@@ -263,10 +264,10 @@ is the amount of feature \(s\) in planning unit \(i\).</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Root simplex log...</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Iteration    Objective       Primal Inf.    Dual Inf.      Time</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     5461    1.7234075e+04   2.480000e+02   0.000000e+00      1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     6397    1.7422984e+04   1.340000e+02   0.000000e+00      1s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     7998    1.7570872e+04   0.000000e+00   0.000000e+00      1s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 1.757087e+04, 7998 iterations, 1.17 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 1.757087e+04, 7998 iterations, 1.10 seconds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
@@ -276,7 +277,7 @@ is the amount of feature \(s\) in planning unit \(i\).</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                    17810.201891 17570.8718  1.34%     -    1s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17579.3062    0 4602 17810.2019 17579.3062  1.30%     -    2s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17579.3062    0 2083 17810.2019 17579.3062  1.30%     -    3s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17596.7487    0 2038 17810.2019 17596.7487  1.20%     -    4s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17596.7487    0 2038 17810.2019 17596.7487  1.20%     -    3s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17597.1098    0 2040 17810.2019 17597.1098  1.20%     -    4s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17631.6491    0 2013 17810.2019 17631.6491  1.00%     -    4s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17662.6335    0 1619 17810.2019 17662.6335  0.83%     -    5s</span>
@@ -291,7 +292,7 @@ is the amount of feature \(s\) in planning unit \(i\).</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   RLT: 1463</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   BQP: 551</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (16454 simplex iterations) in 5.65 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (16454 simplex iterations) in 5.51 seconds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 3: 17810.2 18997.7 52870.7 </span>

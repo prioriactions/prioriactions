@@ -1,7 +1,6 @@
 #' @title Get model solving time
 #'
-#' @description Provides the solving time of the mathematical model. This agree
-#' with `time_limit` in the case of being this positive (parameter of the `solve` function).
+#' @description Provides the solving time of the mathematical model.
 #'
 #' @param x [solution-class] or [portfolio-class] object.
 #'

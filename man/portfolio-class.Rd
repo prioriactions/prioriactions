@@ -5,8 +5,8 @@
 \alias{Portfolio}
 \title{Portfolio class}
 \description{
-This class is used to represent multiple solutions of the MIP (Mixed-Integer Programming) model
-related to the multi-action conservation planning problem. This includes several methods
+This class encodes for the solutions obtained when solving
+multiple instances. This includes several methods
 to obtain information about both the optimization process and the solution associated with
 the planning units and conservation actions. It is created using the \emph{eval} functions
 (e.g. \code{evalTarget()} or \code{evalBudget()}).
@@ -22,11 +22,8 @@ the planning units and conservation actions. It is created using the \emph{eval}
 \section{Methods}{
 
 \describe{
-\item{getGap()}{
-\code{numeric}. Label indicating the optimality gap achieved for the MIP model.}
-
-\item{getObjectiveValue()}{
-\code{numeric}. Number indicating the value of the objective function of the solution.}
+\item{getNames()}{
+\code{character}. Label indicating the name of solutions.}
 
 \item{print()}{
 Print basic information of the model solution.}
@@ -49,15 +46,11 @@ sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
 sim_boundary_data)
 
 ## Create model and solve
-port <- evalTarget(data = inputs, prop = c(0.5, 0.6), gap_limit = 0.01, output_file = FALSE)
+port <- evalTarget(data = inputs, values = c(0.5, 0.6), gap_limit = 0.01, output_file = FALSE)
 
 ## Use class methods
-port$getGap()
-
-port$getObjectiveValue()
+port$getNames()
 
 port$print()
-
-port$plot()
 
 }

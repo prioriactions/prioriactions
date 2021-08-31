@@ -3,7 +3,7 @@ NULL
 
 #' @title Show
 #'
-#' @description Display information about an object.
+#' @description Displays information about an object.
 #'
 #' @param x Any object.
 #' @param ... Not used.

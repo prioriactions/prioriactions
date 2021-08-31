@@ -6,9 +6,12 @@ NULL
 
 #' Conservation problem class
 #'
-#' This class is used to represent a data instance for the multi-action
-#' conservation planning problem. This includes several methods for obtaining
-#' instance information. It is created using the [problem()] function.
+#' This class is used to represent a data of the instances of the corresponding
+#' multi-action planning problem. It includes several methods for retrieving the information
+#' of the instance (such as the spatial allocation of threats and species, the cost
+#' of management actions or the structure of the spatial connectivity across
+#' the area where the planning is carried out. This class is created using the
+#' [problem()] function.
 #'
 #'
 #' @section Fields: \describe{
@@ -35,7 +38,7 @@ NULL
 #'   `character`. Names of features.}
 #'
 #'   \item{getPlanningUnitCosts()}{
-#'   `numeric` [vector()]. Cost of allocating each planning unit.}
+#'   `numeric` [vector()]. Cost of selecting each planning unit.}
 #'
 #'   \item{getPlanningUnitsAmount()}{
 #'   `integer`. Number of planning units.}
@@ -61,7 +64,7 @@ NULL
 #' set.seed(14)
 #'
 #' ## Set prioriactions path
-#' prioriactions_path <- system.file("extdata/input/", package = "prioriactions")
+#' prioriactions_path <- system.file("extdata/example_input/", package = "prioriactions")
 #'
 #' ## Load in planning unit data
 #' pu_data <- data.table::fread(paste0(prioriactions_path,"/pu.dat"),
@@ -98,7 +101,7 @@ NULL
 #'                                    data.table = FALSE)
 #' head(boundary_data)
 #'
-#' ## Create data instance
+#' ## Create instance
 #' problem_data <- problem(
 #'   pu = pu_data, features = features_data, dist_features = dist_features_data,
 #'   dist_threats = dist_threats_data, threats = threats_data, sensitivity = sensitivity_data,

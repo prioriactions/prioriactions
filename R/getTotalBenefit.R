@@ -1,7 +1,7 @@
 #' @title Get total benefits
 #'
-#' @description Provides the sum of all the benefits achieved for all the features
-#'in a planning exercise.
+#' @description Returns the total sum of the benefits achieved by the solution
+#' (for all features and across the whole planning area).
 #'
 #' @param x [solution-class] or [portfolio-class] object.
 #'

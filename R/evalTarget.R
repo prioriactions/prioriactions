@@ -4,15 +4,15 @@ NULL
 
 #' @title Evaluate multiple target values
 #'
-#' @description Provides multiple solutions for different values of target. This function
-#' assumes that you are working with the *minimizeCosts* model. Like
-#' `prioriactions()` function, It inherits all arguments from `problem()`,
-#' `minimizeCosts()` and `solve()`.
+#' @description Provides multiple solutions for different targets values. This
+#' function assumes that the *minimizeCosts* model is being used. As well as the
+#' `prioriactions()` function, it inherits all arguments from `problem()`,
+#' `model()` and `solve()`.
 #'
 #' @param data `list`. Input data list for `problem()` function.
 #'
-#' @param prop `numeric`. Proportion of maximum value of benefit to achieve. This
-#' information can be getting with `getBenefit()` function.
+#' @param values `numeric`. Proportion of maximum value of benefit to verify.
+#' This information can be getting with `getBenefit()` function.
 #' More than one value is needed.
 #'
 #' @param ... arguments inherited from `problem()`, `minimizeCosts()`,
@@ -22,15 +22,17 @@ NULL
 #'
 #' @return An object of class [portfolio-class].
 #'
-#' @details `evalTarget()` creates and solves multiple multi-actions planning
-#' problems for different values of targets You can do this by manually running
-#' `prioriactions()` function with these different target values (i.e., running
-#' once by target). However, the `evalTarget()` function has two advantages
-#' over their counterpart: 1) it is more efficient to create the models.
-#' This is because the model is once created and then updated with the
-#' new information; 2) the output is a portfolio object, which allows
-#' obtaining information about the group of solutions, including, all *get*
-#' functions and also different types of plots.
+#' @details `evalTarget()` creates and solves multiple instances, of the corresponding
+#' multi-actions planning problem, for different proportions of maximum benefit values
+#' as target values. Alternatively, this
+#' could be obtained by executing function `prioriactions()` or by steps the `problem()`,
+#' `model()` and `solve()` functions; using, in each run, different budgtes values.
+#' However, the `evalTarget()` function has two advantages with
+#' respect to this manual approach: : 1)
+#' it is more efficient to create the models (this is because the model is created
+#' just once and, at each iteration, only the target values are updated); and 2) the
+#' output is a portfolio object, which allows
+#' obtaining information about the group of solutions (including all *get* functions).
 #'
 #' @examples
 #' # set seed for reproducibility
@@ -42,13 +44,12 @@ NULL
 #' sim_boundary_data)
 #'
 #' ## Create model and solve
-#' port <- evalTarget(data = inputs, prop = c(0.1, 0.3, 0.5), time_limit = 50, output_file = FALSE)
+#' port <- evalTarget(data = inputs, values = c(0.1, 0.3, 0.5), time_limit = 50, output_file = FALSE)
 #'
-#' plot(port)
 
 #' @rdname evalTarget
 #' @export
-evalTarget <- function(data = list(), prop = 1, ...) {
+evalTarget <- function(data = list(), values = c(), ...) {
 
   # assert that arguments are valid
   assertthat::assert_that(
@@ -61,12 +62,12 @@ evalTarget <- function(data = list(), prop = 1, ...) {
 
   #verifying prop length
   assertthat::assert_that(
-      is.numeric(prop),
-      length(prop) > 1
+      is.numeric(values),
+      length(values) > 1
   )
 
   #prop_Target
-  if(any(prop < 0) || any(prop > 1)){
+  if(any(values < 0) || any(values > 1)){
     stop("invalid prop param")
   }
 
@@ -85,7 +86,7 @@ evalTarget <- function(data = list(), prop = 1, ...) {
   name_model <- "minimizeCosts"
 
   #number of replications
-  repl <- length(prop)
+  repl <- length(values)
 
   #verifying input parameters
   if(!all(names(params) %in% c(params_solve, params_model))){
@@ -93,7 +94,6 @@ evalTarget <- function(data = list(), prop = 1, ...) {
 
     stop(paste0("The following params are not defined in this function: ", paste(names(params)[id_error], collapse = " ")))
   }
-
 
   #running
   it = 1
@@ -106,7 +106,7 @@ evalTarget <- function(data = list(), prop = 1, ...) {
     maximum_target <- getBenefit(conservation_model)$benefit.total
   }
 
-  for(i in prop){
+  for(i in values){
 
     name_iter <- paste0("Prop", i)
     params_iter <- params

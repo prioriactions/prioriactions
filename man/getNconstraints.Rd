@@ -13,7 +13,8 @@ getNconstraints(x)
 \link{numeric}.
 }
 \description{
-Provides the number of constraints of mathematical model.
+Returns the number of constraints in the corresponding mathematical
+optimization model.
 }
 \examples{
 # set seed for reproducibility

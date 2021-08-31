@@ -6,10 +6,10 @@ NULL
 
 #' Solution class
 #'
-#' This class is used to represent the solution of the MIP (Mixed-Integer Programming) model
-#' related to the multi-action conservation planning problem. This includes several methods
+#' This class is used to represent the solution of the MIP (Mixed-Integer Programming) model.
+#' This includes several methods
 #' to obtain information about both the optimization process and the solution associated with
-#' the planning units and conservation actions. It is created using the [solve()]
+#' the planning units and actions. It is created using the [solve()]
 #' function.
 #'
 #' @section Fields:
@@ -20,13 +20,6 @@ NULL
 #'
 #' @section Methods:
 #' \describe{
-#' \item{getGap()}{
-#' `numeric`. Label indicating the optimality gap achieved for the MIP model.}
-#'
-
-#' \item{getObjectiveValue()}{
-#' `numeric`. Number indicating the value of the objective function of the solution.}
-#'
 #' \item{print()}{
 #' Print basic information of the model solution.}
 #'

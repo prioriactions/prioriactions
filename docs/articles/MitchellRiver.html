@@ -74,10 +74,7 @@
 <li class="divider">
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="../articles/sensitivities.html">Sensitivities</a>
-    </li>
-    <li>
-      <a href="../articles/analysis.html">Analysis</a>
+      <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Study cases</li>
@@ -126,11 +123,10 @@
 
     
     
-<p>The Mitchell River is a river located in Far North Queensland, Australia. The river rises on the Atherton Tableland about 50 kilometres (31 mi) northwest of Cairns, and flows about 750 kilometres (470 mi) northwest across Cape York Peninsula from Mareeba to the Gulf of Carpentaria. we will use this case study to present some functionalities of the ´prioriactions´ package.</p>
+<p>The Mitchell River is a river located in Far North Queensland, Australia. The river rises on the Atherton Tableland about 50 kilometres (31 mi) northwest of Cairns, and flows about 750 kilometres (470 mi) northwest across Cape York Peninsula from Mareeba to the Gulf of Carpentaria. we will use this case study to present some functionalities of the <code>prioriactions</code> package.</p>
 <p>We started loading libraries:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://prioritizr.net">prioritizr</a></span><span class="op">)</span> <span class="co">#To use the simulate features distribution</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://prioriactions.github.io/prioriactions">prioriactions</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://prioriactions.github.io/prioriactions">prioriactions</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span> <span class="co">#To plot of shapefiles</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mtennekes/tmap">tmap</a></span><span class="op">)</span> <span class="co">#To create cool maps</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org">scales</a></span><span class="op">)</span> <span class="co">#To standardize the value of amount</span>
@@ -140,7 +136,731 @@
 <div id="preparing-data-inputs" class="section level1">
 <h1 class="hasAnchor">
 <a href="#preparing-data-inputs" class="anchor"></a>Preparing data inputs</h1>
-<p>We divided the whole catchment (71,630 km2 into 2316 sites (i.e., sub-catchments), each one included the portion of river length between two consecutive river connections. We considered four major threats to freshwater fish species in the catchment: water buffalo (Bubalis bubalis), cane toad (Bufo marinus), river flow alteration (caused by impoundments, channels for water extractions and levee banks) and grazing land use. Also, we used the modelled spatial distribution of 45 fish species in the Mitchell river catchment as our conservation features. The distribution of features and threats () will be simulated while the other input files a <em>prioriactions</em> will be loaded directly from the package as follows:</p>
+<p>We divided the whole catchment (71,630 km2 into 2316 sites (i.e., sub-catchments), each one included the portion of river length between two consecutive river connections. We considered four major threats to freshwater fish species in the catchment: water buffalo (Bubalis bubalis), cane toad (Bufo marinus), river flow alteration (caused by impoundments, channels for water extractions and levee banks) and grazing land use. Also, we used the modelled spatial distribution of 45 fish species in the Mitchell river catchment as our conservation features. The distribution of features and threats will be simulated while the other input files a <code>prioriactions</code> will be loaded directly from the package as follows:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/mitchell_vignette_data/"</span>, package <span class="op">=</span> <span class="st">"prioriactions"</span><span class="op">)</span>
+
+<span class="va">pu_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"pu_mitchell.csv"</span><span class="op">)</span>, data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">features_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"features_mitchell.csv"</span><span class="op">)</span>, data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">dist_features_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"dist_features_mitchell.csv"</span><span class="op">)</span>, data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">threats_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"threats_mitchell.csv"</span><span class="op">)</span>, data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">dist_threats_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"dist_threats_mitchell.csv"</span><span class="op">)</span>, data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">bound_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"boundary_mitchell.csv"</span><span class="op">)</span>, data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">sensitivity_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,<span class="st">"sensibility_mitchell.csv"</span><span class="op">)</span>, data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<p>We load the shapefile of the case study also included as part of the package installation:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#reading shapefile</span>
+<span class="va">shp_mitchell</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/shapefile.html">shapefile</a></span><span class="op">(</span><span class="st">"data/Fish_Mitchell.shp"</span><span class="op">)</span>
+
+<span class="fu">sp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sp/man/spplot.html">spplot</a></span><span class="op">(</span><span class="va">shp_mitchell</span>, zcol <span class="op">=</span> <span class="st">"Shape_Area"</span>, names.attr <span class="op">=</span> <span class="st">"Area"</span>,
+      main <span class="op">=</span> <span class="st">"Planning unit areas"</span>, col.regions <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html">viridis</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="figure/MR3-1.png" title="plot of chunk MR3" alt="plot of chunk MR3" style="display: block; margin: auto;"></p>
+<p>Now, we can plot different distributions of features or threats on the shapefile loaded. To do it, we can assign the values from tabular input to some shapefile field:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># load amount of dist_features data</span>
+<span class="va">dist_features</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html">dcast</a></span><span class="op">(</span><span class="va">dist_features_data</span>, <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,value.var <span class="op">=</span> <span class="st">"amount"</span>, 
+                                 fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+
+<span class="co">#Assign the distribution of first feature to feature_distribution field in the shapefile</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">feature_distribution</span> <span class="op">&lt;-</span> <span class="va">dist_features</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>
+
+<span class="co">#Plot distribution with tmap library</span>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"feature_distribution"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"seagreen"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<p><img src="figure/MR4-1.png" title="plot of chunk MR4" alt="plot of chunk MR4" style="display: block; margin: auto;"></p>
+<p>In the same way, we can observe the distributions of some threats:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># load amount of dist_threats data</span>
+<span class="va">dist_threats</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html">dcast</a></span><span class="op">(</span><span class="va">dist_threats_data</span>, <span class="va">pu</span><span class="op">~</span><span class="va">threat</span>,value.var <span class="op">=</span> <span class="st">"amount"</span>, fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+
+<span class="co">#Assign the distribution of third threat to feature_distribution field in the shapefile</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">threat_distribution</span> <span class="op">&lt;-</span> <span class="va">dist_threats</span><span class="op">[</span>, <span class="fl">4</span><span class="op">]</span>
+
+<span class="co">#Plot distribution with tmap library</span>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"threat_distribution"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"red4"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<p><img src="figure/MR5-1.png" title="plot of chunk MR5" alt="plot of chunk MR5" style="display: block; margin: auto;"></p>
+<div id="base-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#base-model" class="anchor"></a>Base model</h2>
+<p>First, our base model considers the prioritization of conservation actions using previously loaded data. Note that for both features and threats we have presence/absence values (binary values). Some of the characteristics of the base model are the following:</p>
+<ol style="list-style-type: decimal">
+<li>We use <code>minimiCosts()</code> function to minimize costs by reaching 15% of the maximum target per feature.</li>
+<li>We use a <strong>conservation</strong> problem, i.e. there are benefits for a feature when selecting a site where that feature is free of threats (we use <code>recovery</code> param equal to <code>FALSE</code>).</li>
+<li>The model does not consider spatial requirements to the actions (<em>blm</em> and <em>blm_actions</em> parameters equal to 0).</li>
+<li>There is no attempt to optimize that planning actions occur within the same planning units (i.e., the <em>curve</em> parameter is equal to 1).</li>
+</ol>
+<p>We proceed to Step 1, loading the data in the <code>prioriactions</code> package:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">input_data</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span>
+  pu <span class="op">=</span> <span class="va">pu_data</span>, features <span class="op">=</span> <span class="va">features_data</span>, dist_features <span class="op">=</span> <span class="va">dist_features_data</span>,
+  threats <span class="op">=</span> <span class="va">threats_data</span>, dist_threats <span class="op">=</span> <span class="va">dist_threats_data</span>, sensitivity <span class="op">=</span> <span class="va">sensitivity_data</span>,
+  bound <span class="op">=</span> <span class="va">bound_data</span>
+<span class="op">)</span>
+
+<span class="va">input_data</span>
+<span class="co">#&gt; Conservation Problem</span>
+<span class="co">#&gt;   planning units: data.frame (2316 units)</span>
+<span class="co">#&gt;   unit costs:     min: 1, max: 1</span>
+<span class="co">#&gt;   features:       scl_ja, nem_er, thr_sc, ... (45 features)</span>
+<span class="co">#&gt;   threats:        threat1, threat2, threat3, threat4 (4 threats)</span>
+<span class="co">#&gt;   threat costs:   min: 1, max: 1</span></code></pre></div>
+<p>Note that currently, the target values are not located at 15%. For this, we can use the <code>getbenefit()</code> function and assign it to the corresponding column of the feature data input and create the object <code>ConservationProblem-class</code> again.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">maximum_benefits</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/getBenefit.html">getBenefit</a></span><span class="op">(</span><span class="va">input_data</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">maximum_benefits</span><span class="op">)</span>
+<span class="co">#&gt;   feature dist dist_threatened benefit.nothing benefit.recovery benefit.total</span>
+<span class="co">#&gt; 1       1  692             692               0              692           692</span>
+<span class="co">#&gt; 2       2 1052            1052               0             1052          1052</span>
+<span class="co">#&gt; 3       3  416             416               0              416           416</span>
+<span class="co">#&gt; 4       4  653             653               0              653           653</span>
+<span class="co">#&gt; 5       5  238             238               0              238           238</span>
+<span class="co">#&gt; 6       6  276             276               0              276           276</span></code></pre></div>
+<p>Then,</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">features_data</span><span class="op">$</span><span class="va">target</span> <span class="op">&lt;-</span> <span class="va">maximum_benefits</span><span class="op">$</span><span class="va">benefit.total</span> <span class="op">*</span> <span class="fl">0.15</span>
+
+<span class="va">input_data</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span>
+  pu <span class="op">=</span> <span class="va">pu_data</span>, features <span class="op">=</span> <span class="va">features_data</span>, dist_features <span class="op">=</span> <span class="va">dist_features_data</span>,
+  threats <span class="op">=</span> <span class="va">threats_data</span>, dist_threats <span class="op">=</span> <span class="va">dist_threats_data</span>, sensitivity <span class="op">=</span> <span class="va">sensitivity_data</span>,
+  bound <span class="op">=</span> <span class="va">bound_data</span>
+<span class="op">)</span>
+
+<span class="va">input_data</span>
+<span class="co">#&gt; Conservation Problem</span>
+<span class="co">#&gt;   planning units: data.frame (2316 units)</span>
+<span class="co">#&gt;   unit costs:     min: 1, max: 1</span>
+<span class="co">#&gt;   features:       scl_ja, nem_er, thr_sc, ... (45 features)</span>
+<span class="co">#&gt;   threats:        threat1, threat2, threat3, threat4 (4 threats)</span>
+<span class="co">#&gt;   threat costs:   min: 1, max: 1</span></code></pre></div>
+<p>Now, we can proceed to Step 2 and to create the mathematical model. Fot this, we use <code><a href="../reference/minimizeCosts.html">minimizeCosts()</a></code> function with <code>curve = 1</code> and <code>recovery = FALSE</code> parameters.`</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model.base</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/minimizeCosts.html">minimizeCosts</a></span><span class="op">(</span><span class="va">input_data</span>, blm <span class="op">=</span> <span class="fl">0</span>, curve <span class="op">=</span> <span class="fl">1</span>, recovery <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; Warning: The blm argument was set to 0, so the boundary data has no effect</span>
+<span class="co">#&gt; Warning: Some blm_actions argument were set to 0, so the boundary data has no</span>
+<span class="co">#&gt; effect for these cases</span>
+
+<span class="va">model.base</span>
+<span class="co">#&gt; Optimization Problem</span>
+<span class="co">#&gt;   model sense: minimization</span>
+<span class="co">#&gt;   dimensions:  37326, 43180, 2232.44 kB (nrow, ncol, size)</span>
+<span class="co">#&gt;   variables:   43180</span></code></pre></div>
+<p>Note that the dimensions of the model are 37326 mathematical constraints and 43180 variables. For Step 3, the solver was configured to stop when a gap of at least 5% is achieved (0% meaning that at least one of the optimal solutions has been found).</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">solution.base</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.base</span>, gap_limit <span class="op">=</span> <span class="fl">0.05</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">#&gt; Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">#&gt; Optimize a model with 37326 rows, 43180 columns and 136566 nonzeros</span>
+<span class="co">#&gt; Model fingerprint: 0x5d86b8f8</span>
+<span class="co">#&gt; Variable types: 34965 continuous, 8215 integer (8215 binary)</span>
+<span class="co">#&gt; Coefficient statistics:</span>
+<span class="co">#&gt;   Matrix range     [3e-01, 4e+00]</span>
+<span class="co">#&gt;   Objective range  [1e+00, 1e+00]</span>
+<span class="co">#&gt;   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">#&gt;   RHS range        [8e-01, 3e+02]</span>
+<span class="co">#&gt; Found heuristic solution: objective 7947.0000000</span>
+<span class="co">#&gt; Found heuristic solution: objective 2501.0000000</span>
+<span class="co">#&gt; Presolve removed 32114 rows and 32399 columns</span>
+<span class="co">#&gt; Presolve time: 0.14s</span>
+<span class="co">#&gt; Presolved: 5212 rows, 10781 columns, 52398 nonzeros</span>
+<span class="co">#&gt; Variable types: 0 continuous, 10781 integer (7911 binary)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Root relaxation: objective 8.547500e+02, 8349 iterations, 0.17 seconds</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">#&gt;  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;      0     0  854.75000    0  390 2501.00000  854.75000  65.8%     -    0s</span>
+<span class="co">#&gt; H    0     0                    1023.0000000  854.75000  16.4%     -    0s</span>
+<span class="co">#&gt; H    0     0                     994.0000000  854.75000  14.0%     -    0s</span>
+<span class="co">#&gt;      0     0  869.82540    0  434  994.00000  869.82540  12.5%     -    0s</span>
+<span class="co">#&gt;      0     0  870.30922    0  437  994.00000  870.30922  12.4%     -    0s</span>
+<span class="co">#&gt;      0     0  908.25926    0  517  994.00000  908.25926  8.63%     -    1s</span>
+<span class="co">#&gt;      0     0  914.53704    0  382  994.00000  914.53704  7.99%     -    1s</span>
+<span class="co">#&gt;      0     0  942.50000    0  144  994.00000  942.50000  5.18%     -    1s</span>
+<span class="co">#&gt; H    0     0                     991.0000000  942.50000  4.89%     -    1s</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Cutting planes:</span>
+<span class="co">#&gt;   Gomory: 297</span>
+<span class="co">#&gt;   Cover: 665</span>
+<span class="co">#&gt;   Implied bound: 821</span>
+<span class="co">#&gt;   Clique: 3</span>
+<span class="co">#&gt;   MIR: 188</span>
+<span class="co">#&gt;   Flow cover: 1285</span>
+<span class="co">#&gt;   Relax-and-lift: 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Explored 1 nodes (17828 simplex iterations) in 1.49 seconds</span>
+<span class="co">#&gt; Thread count was 2 (of 4 available processors)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Solution count 5: 991 994 1023 ... 7947</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Optimal solution found (tolerance 5.00e-02)</span>
+<span class="co">#&gt; Best objective 9.910000000000e+02, best bound 9.430000000000e+02, gap 4.8436%</span></code></pre></div>
+<p>We have achieved a gap of 4.44% and a objective value of 989. To obtain the distribution of conservation actions we use the <code><a href="../reference/getActions.html">getActions()</a></code> function, while that to obtain the vector of units that are incorporated into the conservation plan we use the <code><a href="../reference/getPlanningUnits.html">getPlanningUnits()</a></code> function. Note that since we not use a <strong>recovery</strong> model, the planning units may be selected without performing actions on it.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#Getting unit distribution selected</span>
+<span class="va">solution_units.base</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/getPlanningUnits.html">getPlanningUnits</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span>
+
+<span class="co">#Assign solution to shapefile field to plot it</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">sol.base</span> <span class="op">&lt;-</span>  <span class="va">solution_units.base</span><span class="op">$</span><span class="va">solution</span>
+
+<span class="co">#Plot of action 1 distribution</span>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"sol.base"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"gray40"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<p><img src="figure/MR11-1.png" title="plot of chunk MR11" alt="plot of chunk MR11" style="display: block; margin: auto;"></p>
+<p>Whereas, if we want to obtain the actions to be carried out within the sites:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#Getting action distribution</span>
+<span class="va">solution_actions.base</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">solution.base</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
+
+<span class="co">#Assign solution to shapefile field to plot it</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_1.base</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`1`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_2.base</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`2`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_3.base</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`3`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_4.base</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`4`</span>
+
+<span class="co">#Actions plots</span>
+<span class="va">plot_action1.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_1.base"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="va">plot_action2.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_2.base"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="va">plot_action3.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_3.base"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="va">plot_action4.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_4.base"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot_action1.base</span> , <span class="va">plot_action2.base</span> , <span class="va">plot_action3.base</span> , <span class="va">plot_action4.base</span><span class="op">)</span></code></pre></div>
+<p><img src="figure/MR12-1.png" title="plot of chunk MR12" alt="plot of chunk MR12" style="display: block; margin: auto;"></p>
+<p>Or the distribution of the sum of the actions (higher density of actions):</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">shp_mitchell</span><span class="op">$</span><span class="va">sum_actions.base</span> <span class="op">&lt;-</span>  <span class="va">solution_units.base</span><span class="op">$</span><span class="va">solution</span> <span class="op">+</span> <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`1`</span> <span class="op">+</span> <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`2`</span> <span class="op">+</span> <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`3`</span> <span class="op">+</span> <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`4`</span>
+
+<span class="co">#Plot som of actions with tmap library</span>
+<span class="va">plot.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.base"</span>, palette<span class="op">=</span><span class="st">"viridis"</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>, <span class="st">"pu selected without actions"</span>, <span class="st">"one action"</span>, <span class="st">"two actions"</span>, <span class="st">"three actions"</span>, <span class="st">"four actions"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="va">plot.base</span></code></pre></div>
+<p><img src="figure/MR13-1.png" title="plot of chunk MR13" alt="plot of chunk MR13" style="display: block; margin: auto;"> The results of this base model will be compared with the subsequent models generated.</p>
+</div>
+<div id="model-with-different-curve-param" class="section level2">
+<h2 class="hasAnchor">
+<a href="#model-with-different-curve-param" class="anchor"></a>Model with different <em>curve</em> param</h2>
+<p>This model differs from the previous one in that it tries to group conservation actions within the selected sites as part of the management plan (through a non-linear relationship in the calculation of benefits). The latter is done by adding a value other than 1 to the <em>curve</em> parameter. Where: (1) indicates that there is a linear relationship between the quotient between the actions carried out with respect to the possible actions to be carried out with respect to the benefit obtained by a characteristic. (2) indicates a quadratic relationship between these values, and (3) a cubic relationship. In simple terms, the cubic relationship further penalizes not performing all conservation actions at a site for a particular feature.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model.curve</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/minimizeCosts.html">minimizeCosts</a></span><span class="op">(</span><span class="va">input_data</span>, blm <span class="op">=</span> <span class="fl">0</span>, curve <span class="op">=</span> <span class="fl">3</span>, recovery <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; Warning: The blm argument was set to 0, so the boundary data has no effect</span>
+<span class="co">#&gt; Warning: Some blm_actions argument were set to 0, so the boundary data has no</span>
+<span class="co">#&gt; effect for these cases</span>
+
+<span class="va">model.curve</span>
+<span class="co">#&gt; Optimization Problem</span>
+<span class="co">#&gt;   model sense: minimization</span>
+<span class="co">#&gt;   dimensions:  37326, 78145, 2372.296 kB (nrow, ncol, size)</span>
+<span class="co">#&gt;   variables:   78145</span></code></pre></div>
+<p>Note that the new model increased its dimensions compared to the previous one (from 43180 to 78145 variables), and therefore, increasing its resolution complexity. In this way, we obtain a value of the objective function of 1052 (greater than the previous one) but with a quality of 9.78%.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">solution.curve</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.curve</span>, gap_limit <span class="op">=</span> <span class="fl">0.1</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">#&gt; Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">#&gt; Optimize a model with 37326 rows, 78145 columns and 136566 nonzeros</span>
+<span class="co">#&gt; Model fingerprint: 0x066274b7</span>
+<span class="co">#&gt; Model has 34965 general constraints</span>
+<span class="co">#&gt; Variable types: 69930 continuous, 8215 integer (8215 binary)</span>
+<span class="co">#&gt; Coefficient statistics:</span>
+<span class="co">#&gt;   Matrix range     [3e-01, 4e+00]</span>
+<span class="co">#&gt;   Objective range  [1e+00, 1e+00]</span>
+<span class="co">#&gt;   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">#&gt;   RHS range        [8e-01, 3e+02]</span>
+<span class="co">#&gt; Found heuristic solution: objective 8215.0000000</span>
+<span class="co">#&gt; Presolve added 72781 rows and 142426 columns</span>
+<span class="co">#&gt; Presolve time: 0.84s</span>
+<span class="co">#&gt; Presolved: 110107 rows, 220571 columns, 576873 nonzeros</span>
+<span class="co">#&gt; Presolved model has 34965 SOS constraint(s)</span>
+<span class="co">#&gt; Found heuristic solution: objective 7947.0000000</span>
+<span class="co">#&gt; Variable types: 209790 continuous, 10781 integer (7911 binary)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Deterministic concurrent LP optimizer: primal and dual simplex</span>
+<span class="co">#&gt; Showing first log only...</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Root simplex log...</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Iteration    Objective       Primal Inf.    Dual Inf.      Time</span>
+<span class="co">#&gt;        0    0.0000000e+00   5.244750e+03   2.723276e+10      2s</span>
+<span class="co">#&gt;     7465    9.9451774e+02   3.100000e+01   6.200683e+07      2s</span>
+<span class="co">#&gt;    13086    8.7915756e+02   0.000000e+00   1.379465e+02      3s</span>
+<span class="co">#&gt;    19052    8.6380893e+02   0.000000e+00   3.635683e+01      4s</span>
+<span class="co">#&gt;    22220    8.5643689e+02   0.000000e+00   9.846525e+01      5s</span>
+<span class="co">#&gt;    25615    8.5417500e+02   0.000000e+00   0.000000e+00      6s</span>
+<span class="co">#&gt;    25615    8.5417500e+02   0.000000e+00   0.000000e+00      6s</span>
+<span class="co">#&gt; Concurrent spin time: 4.33s</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Solved with primal simplex</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Root relaxation: objective 8.541750e+02, 25615 iterations, 8.98 seconds</span>
+<span class="co">#&gt; Total elapsed time = 11.33s</span>
+<span class="co">#&gt; Total elapsed time = 12.45s</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">#&gt;  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;      0     0  854.17500    0 4596 7947.00000  854.17500  89.3%     -   13s</span>
+<span class="co">#&gt; H    0     0                    7926.0000000  854.17500  89.2%     -   13s</span>
+<span class="co">#&gt;      0     0  858.60000    0 6922 7926.00000  858.60000  89.2%     -   16s</span>
+<span class="co">#&gt; H    0     0                    1738.0000000  858.60000  50.6%     -   18s</span>
+<span class="co">#&gt;      0     0  865.12576    0 8858 1738.00000  865.12576  50.2%     -   20s</span>
+<span class="co">#&gt;      0     0  875.84799    0 5982 1738.00000  875.84799  49.6%     -   21s</span>
+<span class="co">#&gt;      0     0  876.30324    0 5927 1738.00000  876.30324  49.6%     -   21s</span>
+<span class="co">#&gt;      0     0  893.25556    0 6142 1738.00000  893.25556  48.6%     -   24s</span>
+<span class="co">#&gt;      0     0  914.94879    0 3416 1738.00000  914.94879  47.4%     -   26s</span>
+<span class="co">#&gt;      0     0  914.94879    0 3313 1738.00000  914.94879  47.4%     -   26s</span>
+<span class="co">#&gt;      0     0  925.64493    0 1764 1738.00000  925.64493  46.7%     -   29s</span>
+<span class="co">#&gt; H    0     0                    1131.0000000  925.64493  18.2%     -   37s</span>
+<span class="co">#&gt;      0     0  949.11667    0 1661 1131.00000  949.11667  16.1%     -   38s</span>
+<span class="co">#&gt;      0     0  949.11667    0 1431 1131.00000  949.11667  16.1%     -   38s</span>
+<span class="co">#&gt;      0     0  949.11667    0 1451 1131.00000  949.11667  16.1%     -   40s</span>
+<span class="co">#&gt; H    0     0                    1126.0000000  949.11667  15.7%     -   42s</span>
+<span class="co">#&gt;      0     0  949.11667    0 1875 1126.00000  949.11667  15.7%     -   42s</span>
+<span class="co">#&gt;      0     0  949.11667    0 1595 1126.00000  949.11667  15.7%     -   44s</span>
+<span class="co">#&gt;      0     0  949.11667    0 1371 1126.00000  949.11667  15.7%     -   47s</span>
+<span class="co">#&gt;      0     2  949.11667    0 1371 1126.00000  949.11667  15.7%     -   55s</span>
+<span class="co">#&gt;      1     4  949.11667    1 1424 1126.00000  949.11667  15.7%   965   56s</span>
+<span class="co">#&gt;      3     6  949.11667    2 1392 1126.00000  949.11667  15.7%   484   57s</span>
+<span class="co">#&gt;      5     8  949.11667    2 1377 1126.00000  949.11667  15.7%   542   58s</span>
+<span class="co">#&gt;      7    10  949.78333    3 1407 1126.00000  949.11667  15.7%   504   59s</span>
+<span class="co">#&gt;     14    17  949.78333    6 1411 1126.00000  949.11667  15.7%   265   60s</span>
+<span class="co">#&gt;     24    30  950.70000   10 1414 1126.00000  949.11667  15.7%   162   64s</span>
+<span class="co">#&gt; H   26    30                    1119.0000000  949.11667  15.2%   150   64s</span>
+<span class="co">#&gt; H   27    30                    1113.0000000  949.11667  14.7%   145   64s</span>
+<span class="co">#&gt;     29    45  950.70000   12 1413 1113.00000  949.11667  14.7%   136   66s</span>
+<span class="co">#&gt;     44    58  949.90000   18 1409 1113.00000  949.11667  14.7%  94.7   70s</span>
+<span class="co">#&gt; H   52    58                    1098.0000000  949.11667  13.6%  82.0   70s</span>
+<span class="co">#&gt;     57    76  950.70000   24 1421 1098.00000  949.11667  13.6%  75.8   71s</span>
+<span class="co">#&gt;     75    85  950.25000   34 1435 1098.00000  949.11667  13.6%  59.8   74s</span>
+<span class="co">#&gt; H   78    85                    1082.0000000  949.11667  12.3%  57.6   74s</span>
+<span class="co">#&gt;     84   106  950.25000   38 1437 1082.00000  949.11667  12.3%  54.6   75s</span>
+<span class="co">#&gt;    103   106  950.70000   11 1469 1082.00000  949.11667  12.3%  46.4   76s</span>
+<span class="co">#&gt; H  105   114                    1066.0000000  949.11667  11.0%  45.8   77s</span>
+<span class="co">#&gt; H  112   114                    1062.0000000  949.11667  10.6%  44.3   77s</span>
+<span class="co">#&gt;    113   135  950.25000   55 1478 1062.00000  949.11667  10.6%  43.9   83s</span>
+<span class="co">#&gt; H  132   135                    1055.0000000  949.11667  10.0%  38.5   83s</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Cutting planes:</span>
+<span class="co">#&gt;   Gomory: 294</span>
+<span class="co">#&gt;   Cover: 696</span>
+<span class="co">#&gt;   Implied bound: 23508</span>
+<span class="co">#&gt;   Clique: 45</span>
+<span class="co">#&gt;   MIR: 191</span>
+<span class="co">#&gt;   StrongCG: 1</span>
+<span class="co">#&gt;   Flow cover: 2252</span>
+<span class="co">#&gt;   Network: 6</span>
+<span class="co">#&gt;   RLT: 11</span>
+<span class="co">#&gt;   Relax-and-lift: 11129</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Explored 134 nodes (55056 simplex iterations) in 83.16 seconds</span>
+<span class="co">#&gt; Thread count was 2 (of 4 available processors)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Solution count 10: 1055 1062 1066 ... 1738</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Optimal solution found (tolerance 1.00e-01)</span>
+<span class="co">#&gt; Warning: max constraint violation (2.8000e-02) exceeds tolerance</span>
+<span class="co">#&gt; Warning: max general constraint violation (2.8000e-02) exceeds tolerance</span>
+<span class="co">#&gt;          (model may be infeasible or unbounded - try turning presolve off)</span>
+<span class="co">#&gt; Best objective 1.055000000000e+03, best bound 9.500000000000e+02, gap 9.9526%</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#Getting unit distribution selected</span>
+<span class="va">solution_units.curve</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/getPlanningUnits.html">getPlanningUnits</a></span><span class="op">(</span><span class="va">solution.curve</span><span class="op">)</span>
+
+<span class="co">#Getting action distribution</span>
+<span class="va">solution_actions.curve</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">solution.curve</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
+
+<span class="co">#Assign solution to shapefile field to plot it</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_1.curve</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.curve</span><span class="op">$</span><span class="va">`1`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_2.curve</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.curve</span><span class="op">$</span><span class="va">`2`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_3.curve</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.curve</span><span class="op">$</span><span class="va">`3`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_4.curve</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.curve</span><span class="op">$</span><span class="va">`4`</span>
+
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">sum_actions.curve</span> <span class="op">&lt;-</span>  <span class="va">solution_units.curve</span><span class="op">$</span><span class="va">solution</span> <span class="op">+</span> <span class="va">solution_actions.curve</span><span class="op">$</span><span class="va">`1`</span> <span class="op">+</span> <span class="va">solution_actions.curve</span><span class="op">$</span><span class="va">`2`</span> <span class="op">+</span> <span class="va">solution_actions.curve</span><span class="op">$</span><span class="va">`3`</span> <span class="op">+</span> <span class="va">solution_actions.curve</span><span class="op">$</span><span class="va">`4`</span>
+
+<span class="co">#Plot som of actions with tmap library</span>
+<span class="va">plot.curve</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.curve"</span>, palette<span class="op">=</span><span class="st">"viridis"</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>, <span class="st">"pu selected without actions"</span>, <span class="st">"one action"</span>, <span class="st">"two actions"</span>, <span class="st">"three actions"</span>, <span class="st">"four actions"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="co">#Comparative with base model solution</span>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.curve</span><span class="op">)</span></code></pre></div>
+<p><img src="figure/MR16-1.png" title="plot of chunk MR16" alt="plot of chunk MR16" style="display: block; margin: auto;"></p>
+<p>Thus, we can notice that there are a greater number of sites with a higher density of actions with respect to the previous model (for example, a greater number of units painted green).</p>
+</div>
+<div id="model-with-spatial-requirements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#model-with-spatial-requirements" class="anchor"></a>Model with spatial requirements</h2>
+<p>To add spatial requirements to the model, there are two key parameters: <code>blm</code> which works in the same way as the parameter of the same name in <em>marxan</em>, which tries to minimize fragmentation between the selected planning units (i.e. regardless if conservation actions are carried out within them). Next we will see what happens when this parameter is relevant in the creation of the model.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">input_data.spatial_req</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span>
+  pu <span class="op">=</span> <span class="va">pu_data</span>, features <span class="op">=</span> <span class="va">features_data</span>, dist_features <span class="op">=</span> <span class="va">dist_features_data</span>,
+  threats <span class="op">=</span> <span class="va">threats_data</span>, dist_threats <span class="op">=</span> <span class="va">dist_threats_data</span>, sensitivity <span class="op">=</span> <span class="va">sensitivity_data</span>,
+  bound <span class="op">=</span> <span class="va">bound_data</span>
+<span class="op">)</span>
+
+<span class="va">model.spatial_req</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/minimizeCosts.html">minimizeCosts</a></span><span class="op">(</span><span class="va">input_data.spatial_req</span>, blm <span class="op">=</span> <span class="fl">10</span>, curve <span class="op">=</span> <span class="fl">1</span>, recovery <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; Warning: Some blm_actions argument were set to 0, so the boundary data has no</span>
+<span class="co">#&gt; effect for these cases</span>
+
+<span class="va">solution.spatial_req</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.spatial_req</span>, gap_limit <span class="op">=</span> <span class="fl">0.2</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">#&gt; Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">#&gt; Optimize a model with 78522 rows, 56912 columns and 232690 nonzeros</span>
+<span class="co">#&gt; Model fingerprint: 0x2b05e365</span>
+<span class="co">#&gt; Variable types: 34965 continuous, 21947 integer (21947 binary)</span>
+<span class="co">#&gt; Coefficient statistics:</span>
+<span class="co">#&gt;   Matrix range     [3e-01, 4e+00]</span>
+<span class="co">#&gt;   Objective range  [1e+00, 1e+02]</span>
+<span class="co">#&gt;   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">#&gt;   RHS range        [8e-01, 3e+02]</span>
+<span class="co">#&gt; Found heuristic solution: objective 7947.0000000</span>
+<span class="co">#&gt; Presolve removed 32111 rows and 32396 columns</span>
+<span class="co">#&gt; Presolve time: 0.38s</span>
+<span class="co">#&gt; Presolved: 46411 rows, 24516 columns, 148528 nonzeros</span>
+<span class="co">#&gt; Variable types: 0 continuous, 24516 integer (21646 binary)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Deterministic concurrent LP optimizer: primal and dual simplex</span>
+<span class="co">#&gt; Showing first log only...</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Root simplex log...</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Iteration    Objective       Primal Inf.    Dual Inf.      Time</span>
+<span class="co">#&gt;    27245    5.5298828e+03   6.793807e+00   5.044280e+08      1s</span>
+<span class="co">#&gt;    30153    4.2629403e+03   0.000000e+00   1.448349e+05      1s</span>
+<span class="co">#&gt;    34730    2.5320077e+03   0.000000e+00   1.037299e+05      2s</span>
+<span class="co">#&gt;    36190    2.1013512e+03   0.000000e+00   6.335180e+05      3s</span>
+<span class="co">#&gt;    37728    2.0269917e+03   0.000000e+00   3.148997e+06      4s</span>
+<span class="co">#&gt;    39768    1.9878817e+03   0.000000e+00   3.994112e+05      5s</span>
+<span class="co">#&gt;    41910    1.9223530e+03   0.000000e+00   3.435388e+04      6s</span>
+<span class="co">#&gt;    43398    1.8607241e+03   0.000000e+00   6.474655e+06      7s</span>
+<span class="co">#&gt;    45102    1.7582637e+03   0.000000e+00   2.287548e+05      8s</span>
+<span class="co">#&gt;    46692    1.7290889e+03   0.000000e+00   2.168804e+05      9s</span>
+<span class="co">#&gt;    48014    1.6968222e+03   0.000000e+00   2.146552e+04     10s</span>
+<span class="co">#&gt;    49210    1.6809228e+03   0.000000e+00   1.499537e+04     11s</span>
+<span class="co">#&gt;    50403    1.6616111e+03   0.000000e+00   2.965768e+04     12s</span>
+<span class="co">#&gt;    51789    1.6361529e+03   0.000000e+00   5.031603e+04     13s</span>
+<span class="co">#&gt;    53277    1.6236838e+03   0.000000e+00   8.237168e+04     14s</span>
+<span class="co">#&gt;    54661    1.5945870e+03   0.000000e+00   2.045387e+05     15s</span>
+<span class="co">#&gt;    55993    1.5306734e+03   0.000000e+00   1.275190e+05     16s</span>
+<span class="co">#&gt; Concurrent spin time: 0.01s</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Solved with dual simplex</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Root relaxation: objective 9.428240e+02, 38190 iterations, 16.19 seconds</span>
+<span class="co">#&gt; Total elapsed time = 17.02s</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">#&gt;  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;      0     0  942.82396    0 17574 7947.00000  942.82396  88.1%     -   19s</span>
+<span class="co">#&gt; H    0     0                    3107.0000000  942.82396  69.7%     -   19s</span>
+<span class="co">#&gt; H    0     0                    3080.0000000  942.82396  69.4%     -   19s</span>
+<span class="co">#&gt;      0     0 1038.38167    0 18604 3080.00000 1038.38167  66.3%     -   38s</span>
+<span class="co">#&gt;      0     0 1038.38167    0 12121 3080.00000 1038.38167  66.3%     -   50s</span>
+<span class="co">#&gt; H    0     0                    3062.0000000 1038.38167  66.1%     -   50s</span>
+<span class="co">#&gt;      0     0 1038.38167    0 13384 3062.00000 1038.38167  66.1%     -   59s</span>
+<span class="co">#&gt;      0     0 1053.68392    0 13156 3062.00000 1053.68392  65.6%     -   63s</span>
+<span class="co">#&gt;      0     0 1053.68392    0 13157 3062.00000 1053.68392  65.6%     -   63s</span>
+<span class="co">#&gt;      0     0 1075.74609    0 14320 3062.00000 1075.74609  64.9%     -   68s</span>
+<span class="co">#&gt; H    0     0                    3059.0000000 1075.74609  64.8%     -   68s</span>
+<span class="co">#&gt;      0     0 1084.92127    0 14315 3059.00000 1084.92127  64.5%     -   70s</span>
+<span class="co">#&gt;      0     0 1085.89371    0 14375 3059.00000 1085.89371  64.5%     -   71s</span>
+<span class="co">#&gt;      0     0 1088.61247    0 14085 3059.00000 1088.61247  64.4%     -   72s</span>
+<span class="co">#&gt;      0     0 1089.20363    0 14116 3059.00000 1089.20363  64.4%     -   72s</span>
+<span class="co">#&gt;      0     0 1089.20363    0 14127 3059.00000 1089.20363  64.4%     -   72s</span>
+<span class="co">#&gt;      0     0 1098.28171    0 11723 3059.00000 1098.28171  64.1%     -   75s</span>
+<span class="co">#&gt;      0     0 1098.29197    0 11866 3059.00000 1098.29197  64.1%     -   76s</span>
+<span class="co">#&gt;      0     0 1098.34433    0 11944 3059.00000 1098.34433  64.1%     -   77s</span>
+<span class="co">#&gt; H    0     0                    3043.0000000 1098.34433  63.9%     -   77s</span>
+<span class="co">#&gt;      0     0 1098.62941    0 12597 3043.00000 1098.62941  63.9%     -   77s</span>
+<span class="co">#&gt;      0     0 1098.63736    0 12601 3043.00000 1098.63736  63.9%     -   77s</span>
+<span class="co">#&gt;      0     0 1098.68365    0 12605 3043.00000 1098.68365  63.9%     -   78s</span>
+<span class="co">#&gt;      0     0 1098.68365    0 12461 3043.00000 1098.68365  63.9%     -   83s</span>
+<span class="co">#&gt;      0     2 1098.68365    0 12330 3043.00000 1098.68365  63.9%     -   89s</span>
+<span class="co">#&gt;      1     4 1114.69570    1 12564 3043.00000 1098.76243  63.9% 10578   96s</span>
+<span class="co">#&gt;      3     6 1160.14758    2 13799 3043.00000 1114.72216  63.4% 11802  106s</span>
+<span class="co">#&gt;      5     8 1125.97496    2 12451 3043.00000 1125.97496  63.0% 11463  108s</span>
+<span class="co">#&gt;      7    10 1139.31183    3 13541 3043.00000 1126.83528  63.0%  8797  111s</span>
+<span class="co">#&gt;      9    12 1178.67775    3 10980 3043.00000 1139.37178  62.6%  7921  115s</span>
+<span class="co">#&gt;     11    14 1168.20687    4 13197 3043.00000 1139.41322  62.6%  7434  121s</span>
+<span class="co">#&gt;     13    16 1204.68550    4 10276 3043.00000 1160.19390  61.9%  6914  124s</span>
+<span class="co">#&gt;     15    18 1175.50044    5 13135 3043.00000 1160.19390  61.9%  6438  129s</span>
+<span class="co">#&gt;     17    20 1200.90131    6 12862 3043.00000 1160.19390  61.9%  6470  138s</span>
+<span class="co">#&gt;     19    22 1225.84941    6 12937 3043.00000 1160.19390  61.9%  6813  153s</span>
+<span class="co">#&gt;     21    25 1222.65999    7 13008 3043.00000 1160.19390  61.9%  6884  161s</span>
+<span class="co">#&gt;     24    29 1269.88168    7 12966 3043.00000 1160.19390  61.9%  7064  169s</span>
+<span class="co">#&gt; H   27    29                    3035.0000000 1160.19390  61.8%  6397  169s</span>
+<span class="co">#&gt;     28    33 1237.90206    8 12836 3035.00000 1160.19390  61.8%  6819  176s</span>
+<span class="co">#&gt; H   29    33                    1447.5397158 1160.19390  19.9%  6584  176s</span>
+<span class="co">#&gt; H   30    33                    1442.0867211 1160.19390  19.5%  6369  176s</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Cutting planes:</span>
+<span class="co">#&gt;   Cover: 1682</span>
+<span class="co">#&gt;   Implied bound: 532</span>
+<span class="co">#&gt;   Clique: 1</span>
+<span class="co">#&gt;   MIR: 77</span>
+<span class="co">#&gt;   Flow cover: 1199</span>
+<span class="co">#&gt;   Zero half: 3</span>
+<span class="co">#&gt;   RLT: 62</span>
+<span class="co">#&gt;   Relax-and-lift: 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Explored 32 nodes (320955 simplex iterations) in 176.43 seconds</span>
+<span class="co">#&gt; Thread count was 2 (of 4 available processors)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Solution count 9: 1442.09 1447.54 3035 ... 7947</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Optimal solution found (tolerance 2.00e-01)</span>
+<span class="co">#&gt; Best objective 1.442086721140e+03, best bound 1.160193901299e+03, gap 19.5476%</span></code></pre></div>
+<p>In the same way as what occurs in the previous model, it is naturally inferred that the spatial requirement implies higher costs in the management plan, as well as a model with greater computational complexity to resolve.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#Getting unit distribution selected</span>
+<span class="va">solution_units.spatial_req</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/getPlanningUnits.html">getPlanningUnits</a></span><span class="op">(</span><span class="va">solution.spatial_req</span><span class="op">)</span>
+
+<span class="co">#Getting action distribution</span>
+<span class="va">solution_actions.spatial_req</span><span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">solution.spatial_req</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
+
+<span class="co">#Assign solution to shapefile field to plot it</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_1.spatial_req</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.spatial_req</span><span class="op">$</span><span class="va">`1`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_2.spatial_req</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.spatial_req</span><span class="op">$</span><span class="va">`2`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_3.spatial_req</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.spatial_req</span><span class="op">$</span><span class="va">`3`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_4.spatial_req</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.spatial_req</span><span class="op">$</span><span class="va">`4`</span>
+
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">sum_actions.spatial_req</span> <span class="op">&lt;-</span>  <span class="va">solution_units.spatial_req</span><span class="op">$</span><span class="va">solution</span> <span class="op">+</span> <span class="va">solution_actions.spatial_req</span><span class="op">$</span><span class="va">`1`</span> <span class="op">+</span> <span class="va">solution_actions.spatial_req</span><span class="op">$</span><span class="va">`2`</span> <span class="op">+</span> <span class="va">solution_actions.spatial_req</span><span class="op">$</span><span class="va">`3`</span> <span class="op">+</span> <span class="va">solution_actions.spatial_req</span><span class="op">$</span><span class="va">`4`</span>
+
+<span class="co">#Plot som of actions with tmap library</span>
+<span class="va">plot.spatial_req</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.spatial_req"</span>, palette<span class="op">=</span><span class="st">"viridis"</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>, <span class="st">"pu selected without actions"</span>, <span class="st">"one action"</span>, <span class="st">"two actions"</span>, <span class="st">"three actions"</span>, <span class="st">"four actions"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="co">#Comparative with base model solution</span>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.spatial_req</span><span class="op">)</span></code></pre></div>
+<p><img src="figure/MR18-1.png" title="plot of chunk MR18" alt="plot of chunk MR18" style="display: block; margin: auto;"></p>
+<p>As seen, minimizing fragmentation produced a more closely related conservation plan compared to the base model.</p>
+<p>Another parameter to take into account is the <code>blm_actions</code> that adds the minimization of fragmentation between the same conservation actions, this means that it tries to spatially bring the management actions closer together and therefore, independently achieve a management plan as well related.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">threats_data</span><span class="op">$</span><span class="va">blm_actions</span> <span class="op">&lt;-</span> <span class="fl">10</span>
+
+<span class="va">input_data.spatial_req_actions</span><span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span>
+  pu <span class="op">=</span> <span class="va">pu_data</span>, features <span class="op">=</span> <span class="va">features_data</span>, dist_features <span class="op">=</span> <span class="va">dist_features_data</span>,
+  threats <span class="op">=</span> <span class="va">threats_data</span>, dist_threats <span class="op">=</span> <span class="va">dist_threats_data</span>, sensitivity <span class="op">=</span> <span class="va">sensitivity_data</span>,
+  bound <span class="op">=</span> <span class="va">bound_data</span>
+<span class="op">)</span>
+
+<span class="va">model.spatial_req_actions</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/minimizeCosts.html">minimizeCosts</a></span><span class="op">(</span><span class="va">input_data.spatial_req_actions</span>, blm <span class="op">=</span> <span class="fl">0</span>, curve <span class="op">=</span> <span class="fl">1</span>, recovery <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; Warning: The blm argument was set to 0, so the boundary data has no effect</span>
+
+<span class="va">solution.spatial_req_actions</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.spatial_req_actions</span>, gap_limit <span class="op">=</span> <span class="fl">0.2</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">#&gt; Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">#&gt; Optimize a model with 141192 rows, 77802 columns and 378920 nonzeros</span>
+<span class="co">#&gt; Model fingerprint: 0x67179e14</span>
+<span class="co">#&gt; Variable types: 34965 continuous, 42837 integer (42837 binary)</span>
+<span class="co">#&gt; Coefficient statistics:</span>
+<span class="co">#&gt;   Matrix range     [3e-01, 4e+00]</span>
+<span class="co">#&gt;   Objective range  [1e+00, 1e+02]</span>
+<span class="co">#&gt;   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">#&gt;   RHS range        [8e-01, 3e+02]</span>
+<span class="co">#&gt; Found heuristic solution: objective 8210.0000000</span>
+<span class="co">#&gt; Presolve removed 32132 rows and 32138 columns</span>
+<span class="co">#&gt; Presolve time: 0.76s</span>
+<span class="co">#&gt; Presolved: 109060 rows, 45664 columns, 295258 nonzeros</span>
+<span class="co">#&gt; Variable types: 0 continuous, 45664 integer (42827 binary)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Deterministic concurrent LP optimizer: primal and dual simplex</span>
+<span class="co">#&gt; Showing first log only...</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Root simplex log...</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Iteration    Objective       Primal Inf.    Dual Inf.      Time</span>
+<span class="co">#&gt;        0    2.1928866e+04   3.615000e+02   7.801616e+09      1s</span>
+<span class="co">#&gt;    63343    1.3387872e+04   1.492605e-05   1.549946e+07      2s</span>
+<span class="co">#&gt;    63345    1.3424953e+04   0.000000e+00   5.003932e+05      2s</span>
+<span class="co">#&gt;    66034    1.1306564e+04   0.000000e+00   2.545237e+05      3s</span>
+<span class="co">#&gt;    67682    9.8907290e+03   0.000000e+00   2.020764e+05      4s</span>
+<span class="co">#&gt;    69332    9.2768115e+03   0.000000e+00   2.625131e+05      5s</span>
+<span class="co">#&gt;    70613    9.1578137e+03   0.000000e+00   4.017736e+05      6s</span>
+<span class="co">#&gt;    71894    8.8697742e+03   0.000000e+00   2.440327e+05      7s</span>
+<span class="co">#&gt;    73358    8.5565034e+03   0.000000e+00   5.000476e+06      8s</span>
+<span class="co">#&gt;    74456    8.2738148e+03   0.000000e+00   1.865611e+06      9s</span>
+<span class="co">#&gt;    75920    7.6047502e+03   0.000000e+00   2.031292e+05     10s</span>
+<span class="co">#&gt;    77201    7.0135642e+03   0.000000e+00   8.821535e+05     11s</span>
+<span class="co">#&gt;    78482    6.6727378e+03   0.000000e+00   8.018432e+05     12s</span>
+<span class="co">#&gt;    79946    6.1933319e+03   0.000000e+00   1.670280e+05     13s</span>
+<span class="co">#&gt;    81410    5.4420837e+03   0.000000e+00   4.311989e+05     14s</span>
+<span class="co">#&gt;    82508    5.1505450e+03   0.000000e+00   1.885740e+05     15s</span>
+<span class="co">#&gt;    83972    4.9434004e+03   0.000000e+00   1.620003e+05     16s</span>
+<span class="co">#&gt;    85436    4.5816829e+03   0.000000e+00   1.377514e+06     17s</span>
+<span class="co">#&gt; Concurrent spin time: 0.00s</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Solved with dual simplex</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Root relaxation: objective 1.036301e+03, 16795 iterations, 17.12 seconds</span>
+<span class="co">#&gt; Total elapsed time = 18.27s</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">#&gt;  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;      0     0 1036.30087    0 17601 8210.00000 1036.30087  87.4%     -   22s</span>
+<span class="co">#&gt; H    0     0                    5899.4514563 1036.30087  82.4%     -   22s</span>
+<span class="co">#&gt; H    0     0                    5323.0589268 1036.30087  80.5%     -   22s</span>
+<span class="co">#&gt;      0     0 1089.47364    0 22840 5323.05893 1089.47364  79.5%     -   37s</span>
+<span class="co">#&gt;      0     0 1089.47364    0 11423 5323.05893 1089.47364  79.5%     -   51s</span>
+<span class="co">#&gt; H    0     0                    5260.2276502 1089.47364  79.3%     -   51s</span>
+<span class="co">#&gt;      0     0 1152.46366    0 20716 5260.22765 1152.46366  78.1%     -   63s</span>
+<span class="co">#&gt;      0     0 1185.44991    0 24369 5260.22765 1185.44991  77.5%     -   73s</span>
+<span class="co">#&gt;      0     0 1188.17687    0 24370 5260.22765 1188.17687  77.4%     -   75s</span>
+<span class="co">#&gt;      0     0 1217.73579    0 24185 5260.22765 1217.73579  76.9%     -   89s</span>
+<span class="co">#&gt; H    0     0                    5054.1809312 1217.73579  75.9%     -   89s</span>
+<span class="co">#&gt; H    0     0                    4911.9232477 1217.73579  75.2%     -   89s</span>
+<span class="co">#&gt;      0     0 1239.23711    0 21409 4911.92325 1239.23711  74.8%     -   99s</span>
+<span class="co">#&gt; H    0     0                    4828.4509550 1239.23711  74.3%     -  100s</span>
+<span class="co">#&gt;      0     0 1239.24548    0 21397 4828.45095 1239.24548  74.3%     -  100s</span>
+<span class="co">#&gt;      0     0 1239.24548    0 21397 4828.45095 1239.24548  74.3%     -  102s</span>
+<span class="co">#&gt; H    0     0                    4712.0859668 1239.24548  73.7%     -  102s</span>
+<span class="co">#&gt;      0     0 1239.27221    0 21397 4712.08597 1239.27221  73.7%     -  102s</span>
+<span class="co">#&gt;      0     0 1245.59406    0 21400 4712.08597 1245.59406  73.6%     -  105s</span>
+<span class="co">#&gt;      0     0 1245.91882    0 21400 4712.08597 1245.91882  73.6%     -  106s</span>
+<span class="co">#&gt;      0     0 1245.91882    0 21400 4712.08597 1245.91882  73.6%     -  122s</span>
+<span class="co">#&gt; H    0     0                    2355.9130676 1245.91882  47.1%     -  137s</span>
+<span class="co">#&gt; H    0     2                    2298.1528588 1245.91882  45.8%     -  138s</span>
+<span class="co">#&gt;      0     2 1245.91882    0 21400 2298.15286 1245.91882  45.8%     -  138s</span>
+<span class="co">#&gt;      1     4 1256.62566    1 21519 2298.15286 1245.97686  45.8%   879  143s</span>
+<span class="co">#&gt;      3     6 1279.74001    2 22340 2298.15286 1256.63712  45.3%  1635  150s</span>
+<span class="co">#&gt;      5     8 1276.72310    2 21064 2298.15286 1276.72310  44.4%  1482  156s</span>
+<span class="co">#&gt;      7    10 1277.95366    3 20620 2298.15286 1276.76804  44.4%  1351  158s</span>
+<span class="co">#&gt;      9    12 1300.84251    4 20601 2298.15286 1276.76804  44.4%  1311  163s</span>
+<span class="co">#&gt;     11    14 1354.03680    4 18684 2298.15286 1276.76804  44.4%  1310  165s</span>
+<span class="co">#&gt;     13    16 1305.62423    5 19922 2298.15286 1276.76804  44.4%  1205  171s</span>
+<span class="co">#&gt;     15    18 1347.31910    5 16335 2298.15286 1276.76804  44.4%  1333  175s</span>
+<span class="co">#&gt;     17    20 1358.75810    6 22876 2298.15286 1276.76804  44.4%  1343  181s</span>
+<span class="co">#&gt;     19    22 1319.81759    6 20073 2298.15286 1276.76804  44.4%  1309  183s</span>
+<span class="co">#&gt;     21    24 1320.05391    7 20019 2298.15286 1276.76804  44.4%  1235  185s</span>
+<span class="co">#&gt;     23    26 1328.33067    8 19791 2298.15286 1276.76804  44.4%  1195  188s</span>
+<span class="co">#&gt;     25    28 1333.48918    9 17159 2298.15286 1276.76804  44.4%  1159  191s</span>
+<span class="co">#&gt;     27    31 1338.37853   10 16702 2298.15286 1276.76804  44.4%  1130  195s</span>
+<span class="co">#&gt;     30    33 1385.52814   11 15554 2298.15286 1276.76804  44.4%  1128  198s</span>
+<span class="co">#&gt;     32    35 1371.26206   12 16799 2298.15286 1276.76804  44.4%  1118  201s</span>
+<span class="co">#&gt;     34    37 1404.26374   12 16270 2298.15286 1276.76804  44.4%  1141  205s</span>
+<span class="co">#&gt;     36    41 1378.62122   13 17150 2298.15286 1276.76804  44.4%  1125  210s</span>
+<span class="co">#&gt;     40    44 1387.61024   14 15685 2298.15286 1276.76804  44.4%  1094  214s</span>
+<span class="co">#&gt;     43    47 1434.22899   16 12509 2298.15286 1276.76804  44.4%  1109  218s</span>
+<span class="co">#&gt;     46    50 1417.10820   16 18027 2298.15286 1276.76804  44.4%  1089  223s</span>
+<span class="co">#&gt;     49    54 1425.49399   18 14761 2298.15286 1276.76804  44.4%  1088  227s</span>
+<span class="co">#&gt;     53    57 1486.64023   19 18261 2298.15286 1276.76804  44.4%  1082  231s</span>
+<span class="co">#&gt; H   56    59                    1872.2638082 1276.76804  31.8%  1057  236s</span>
+<span class="co">#&gt;     58    62 1440.96208   21 14385 1872.26381 1276.76804  31.8%  1054  240s</span>
+<span class="co">#&gt;     61    66 1454.98231   22 13226 1872.26381 1276.76804  31.8%  1073  245s</span>
+<span class="co">#&gt;     65    73 1478.74238   24 12925 1872.26381 1276.76804  31.8%  1064  251s</span>
+<span class="co">#&gt;     72    75 1511.93016   27 6949 1872.26381 1276.76804  31.8%  1037  283s</span>
+<span class="co">#&gt;     74    82 1493.21815   28 14488 1872.26381 1276.76804  31.8%  1016  289s</span>
+<span class="co">#&gt;     81    89 1563.20690   30 13901 1872.26381 1276.76804  31.8%   998  297s</span>
+<span class="co">#&gt; H   86    89                    1871.2638082 1276.76804  31.8%   976  297s</span>
+<span class="co">#&gt; H   87    89                    1762.5746672 1276.76804  27.6%   967  297s</span>
+<span class="co">#&gt;     88   101 1585.41330   32 8892 1762.57467 1276.76804  27.6%   965  303s</span>
+<span class="co">#&gt;    100   112 1544.62536   36 4292 1762.57467 1276.76804  27.6%   905  310s</span>
+<span class="co">#&gt;    111   123 1594.87943   40 2319 1762.57467 1276.76804  27.6%   875  320s</span>
+<span class="co">#&gt; H  114   123                    1658.9372959 1276.76804  23.0%   857  320s</span>
+<span class="co">#&gt;    122   137 1622.72903   46 7377 1658.93730 1276.76804  23.0%   843  328s</span>
+<span class="co">#&gt;    136   163 1577.97854   54 5126 1658.93730 1276.76804  23.0%   799  334s</span>
+<span class="co">#&gt; H  159   163                    1653.8662281 1276.76804  22.8%   717  334s</span>
+<span class="co">#&gt;    162   179 1591.73469   66 2742 1653.86623 1276.76804  22.8%   713  340s</span>
+<span class="co">#&gt;    178   192 1624.03105   71 1660 1653.86623 1276.76804  22.8%   687  347s</span>
+<span class="co">#&gt;    195   200 1627.03774   81 4288 1653.86623 1276.76804  22.8%   660  354s</span>
+<span class="co">#&gt; H  217   201                    1652.8662281 1276.76804  22.8%   616  364s</span>
+<span class="co">#&gt; H  228   199                    1647.7107986 1279.78155  22.3%   600  364s</span>
+<span class="co">#&gt;    230   202 1312.16626    4 24136 1647.71080 1279.78155  22.3%   612  373s</span>
+<span class="co">#&gt;    233   206 1343.77528    6 23901 1647.71080 1279.78155  22.3%   624  385s</span>
+<span class="co">#&gt; H  236   206                    1645.7107986 1279.78155  22.2%   633  385s</span>
+<span class="co">#&gt;    237   209 1364.42930    7 24057 1645.71080 1279.78155  22.2%   643  398s</span>
+<span class="co">#&gt;    240   213 1396.06494    6 23026 1645.71080 1279.78155  22.2%   661  409s</span>
+<span class="co">#&gt;    244   217 1418.37869    8 19921 1645.71080 1279.78155  22.2%   675  418s</span>
+<span class="co">#&gt;    248   224 1446.00535    9 11171 1645.71080 1279.78155  22.2%   684  427s</span>
+<span class="co">#&gt;    255   232 1515.05232   11 7848 1645.71080 1279.78155  22.2%   693  437s</span>
+<span class="co">#&gt;    263   250 1551.40713   15 5422 1645.71080 1279.78155  22.2%   701  447s</span>
+<span class="co">#&gt;    281   263 1569.48525   22 15048 1645.71080 1279.78155  22.2%   691  455s</span>
+<span class="co">#&gt; H  286   259                    1638.6397308 1279.78155  21.9%   687  455s</span>
+<span class="co">#&gt;    294   271 1572.28274   27 11997 1638.63973 1279.78155  21.9%   685  464s</span>
+<span class="co">#&gt;    312   286 1582.69012   38 4277 1638.63973 1279.78155  21.9%   674  475s</span>
+<span class="co">#&gt;    333   307 1603.23878   53   65 1638.63973 1279.78155  21.9%   666  491s</span>
+<span class="co">#&gt; H  357   251                    1613.7951603 1279.78155  20.7%   640  491s</span>
+<span class="co">#&gt;    361   250     cutoff   66      1613.79516 1299.30296  19.5%   647  505s</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Cutting planes:</span>
+<span class="co">#&gt;   Cover: 1488</span>
+<span class="co">#&gt;   Implied bound: 71</span>
+<span class="co">#&gt;   Clique: 8579</span>
+<span class="co">#&gt;   MIR: 8</span>
+<span class="co">#&gt;   Flow cover: 1092</span>
+<span class="co">#&gt;   Zero half: 2</span>
+<span class="co">#&gt;   RLT: 34</span>
+<span class="co">#&gt;   BQP: 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Explored 371 nodes (290270 simplex iterations) in 505.82 seconds</span>
+<span class="co">#&gt; Thread count was 2 (of 4 available processors)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Solution count 10: 1613.8 1638.64 1645.71 ... 1872.26</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Optimal solution found (tolerance 2.00e-01)</span>
+<span class="co">#&gt; Best objective 1.613795160280e+03, best bound 1.299302959022e+03, gap 19.4877%</span></code></pre></div>
+<p>The effect of incorporating this parameter (<code>blm_actions</code>) can be seen better in the action distributions:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#Getting unit distribution selected</span>
+<span class="va">solution_units.spatial_req_actions</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/getPlanningUnits.html">getPlanningUnits</a></span><span class="op">(</span><span class="va">solution.spatial_req_actions</span><span class="op">)</span>
+
+<span class="co">#Getting action distribution</span>
+<span class="va">solution_actions.spatial_req_actions</span><span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">solution.spatial_req_actions</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
+
+<span class="co">#Assign solution to shapefile field to plot it</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_1.spatial_req_actions</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.spatial_req_actions</span><span class="op">$</span><span class="va">`1`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_2.spatial_req_actions</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.spatial_req_actions</span><span class="op">$</span><span class="va">`2`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_3.spatial_req_actions</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.spatial_req_actions</span><span class="op">$</span><span class="va">`3`</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_4.spatial_req_actions</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.spatial_req_actions</span><span class="op">$</span><span class="va">`4`</span>
+
+<span class="co">#Actions plots</span>
+<span class="va">plot_action1.spatial_req_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_1.spatial_req_actions"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="va">plot_action2.spatial_req_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_2.spatial_req_actions"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="va">plot_action3.spatial_req_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_3.spatial_req_actions"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="va">plot_action4.spatial_req_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_4.spatial_req_actions"</span>, pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot_action1.spatial_req_actions</span> , <span class="va">plot_action2.spatial_req_actions</span> , <span class="va">plot_action3.spatial_req_actions</span> , <span class="va">plot_action4.spatial_req_actions</span><span class="op">)</span></code></pre></div>
+<p><img src="figure/MR20-1.png" title="plot of chunk MR20" alt="plot of chunk MR20" style="display: block; margin: auto;"></p>
+</div>
+<div id="conclusions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#conclusions" class="anchor"></a>Conclusions</h2>
+<p>The previously resolved models show part of the characteristics of the <code>prioriactions</code> package. In this vignette, we specifically explore how we can obtain 15% representativeness of the species by modifying different input parameters. For the base case, we have assumed no spatial requirement for the solutions; this implies a less complex model than the later ones. The next measure incorporated a cubic relationship into the benefit calculation (parameter <code>curve = 3</code>)(see more about the benefit calculate in the <a href="https://prioriactions.github.io/prioriactions/articles/sensitivities.html">sensitivities</a> vignette.), which was reduced to solutions with higher and more expensive actions densities. While the last two models assumed spatial requirements in the solutions (through the <code>blm</code> and <code>blm_actions</code> parameters), which again increase costs compared to the base case.</p>
+<p>Note that the stopping criterion of all the models was by obtaining a minimum gap (<code>gap_limit</code> parameter). However, the solutions obtained gaps with important differences, and some, far from 0% (optimal solution), which implies that the comparison between different solutions should be done carefully and not generalize. To obtain lower gaps, it is suggested to use a longer resolution time.</p>
+</div>
 </div>
   </div>
 

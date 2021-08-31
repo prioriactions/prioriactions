@@ -1,9 +1,11 @@
 #' @title Get planning units
 #'
-#' @description Provides the selected planning units in a solution. If is a `recovery` model,
-#' then all planning unit selected have at least one action to perform on it.
+#' @description Returns a *data.frame* with planning unit *ids* and the
+#' distribution of actions in a given solution. If the solution comes from a
+#' `recovery` model,
+#' then all planning units selected have at least one action selected.
 #' More information about of recovery models in
-#' `minimizeCosts()` and `maximizeBenefits()` functions.
+#' `model()` function.
 #'
 #' @param x [solution-class] or [portfolio-class] object.
 #'

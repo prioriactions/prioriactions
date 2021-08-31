@@ -30,11 +30,10 @@ reference:
   - title: Create and solve problems
     desc: Functions for creating new problems and solving them
     contents:
-      - problem
-      - minimizeCosts
-      - maximizeBenefits
-      - solve
       - prioriactions
+      - problem
+      - model
+      - solve
 
   - title: Evaluate params
     desc: Function for evaluate differents params for a specific problem
@@ -79,10 +78,14 @@ reference:
       - Solution
       - Portfolio
 
+  - title: Data
+    desc: Simulated datasets distributed with the package
+    contents:
+      - sim_data
+
   - title: Miscellaneous
     desc: Various useful functions
     contents:
-      - plot
       - print
       - show
 
@@ -90,7 +93,7 @@ articles:
 
   - title: Introduction of prioriactions
     navbar: Introduction
-    contents: [sensitivities, analysis]
+    contents: [sensitivities, recovery]
 
   - title: Study cases of prioriactions
     navbar: Study cases

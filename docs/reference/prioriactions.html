@@ -54,7 +54,7 @@
 
 <meta property="og:title" content="Create and solve multi-actions planning problems — prioriactions" />
 <meta property="og:description" content="Create and solve a multi-actions planning problem. It can be used
-instead of following the sequence of the problem(), minimizeCosts()/maximizeBenefits()
+instead of following the sequence of the problem(), model()
 and solve() functions." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
@@ -126,10 +126,10 @@ and solve() functions." />
     <li class="divider"></li>
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="../articles/sensitivities.html">Sensitivities</a>
+      <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li>
-      <a href="../articles/analysis.html">Analysis</a>
+      <a href="../articles/recovery.html">Recovery model</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -175,11 +175,11 @@ and solve() functions." />
 
     <div class="ref-description">
     <p>Create and solve a multi-actions planning problem. It can be used
-instead of following the sequence of the <code><a href='problem.html'>problem()</a></code>, <code><a href='minimizeCosts.html'>minimizeCosts()</a></code>/<code><a href='maximizeBenefits.html'>maximizeBenefits()</a></code>
+instead of following the sequence of the <code><a href='problem.html'>problem()</a></code>, <code><a href='model.html'>model()</a></code>
 and <code><a href='solve.html'>solve()</a></code> functions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,14 +189,8 @@ and <code><a href='solve.html'>solve()</a></code> functions.</p>
       <td><p><code>list</code>. Input data list for <code><a href='problem.html'>problem()</a></code> function.</p></td>
     </tr>
     <tr>
-      <th>name_model</th>
-      <td><p><a href='https://rdrr.io/r/base/character.html'>character</a>. Name of the type of model to create. With two possible values:
-<code>"minimizeCosts"</code> and <code>"maximizeBenefits"</code>.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>arguments inherited from <code><a href='problem.html'>problem()</a></code>, <code><a href='minimizeCosts.html'>minimizeCosts()</a></code>, <code><a href='maximizeBenefits.html'>maximizeBenefits()</a></code>,
-and <code><a href='solve.html'>solve()</a></code> functions.</p></td>
+      <td><p>arguments inherited from <code><a href='problem.html'>problem()</a></code>, <code><a href='model.html'>model()</a></code> and <code><a href='solve.html'>solve()</a></code> functions.</p></td>
     </tr>
     </table>
 
@@ -215,21 +209,22 @@ and <code><a href='solve.html'>solve()</a></code> functions.</p></td>
 <span class='r-in'><span class='va'>sim_threats_data</span>, <span class='va'>sim_dist_threats_data</span>, <span class='va'>sim_sensitivity_data</span>,</span>
 <span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Create data list</span></span>
+<span class='r-in'><span class='co'>## Create data instance</span></span>
 <span class='r-in'><span class='va'>input</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
 <span class='r-in'>  pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>,</span>
-<span class='r-in'>  bound <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
+<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>,</span>
+<span class='r-in'>  sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>, boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create and solve optimization model</span></span>
-<span class='r-in'><span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>input</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>, blm <span class='op'>=</span> <span class='fl'>0</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span>, time_limit <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>input</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>,</span>
+<span class='r-in'>                   blm <span class='op'>=</span> <span class='fl'>0</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span>, time_limit <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The blm argument was set to 0, so the boundary data has no effect</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 280 rows, 589 columns and 822 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x9475cbf3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x9859ddb0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 176 general constraints</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 237 integer (237 binary)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>

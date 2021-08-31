@@ -32,7 +32,7 @@ sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
 sim_boundary_data)
 
 ## Create model and solve
-port <- evalTarget(data = inputs, prop = c(0.5, 0.6), gap_limit = 0.01, output_file = FALSE)
+port <- evalTarget(data = inputs, values = c(0.5, 0.6), gap_limit = 0.01, output_file = FALSE)
 
 plot(port)
 

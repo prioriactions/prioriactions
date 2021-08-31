@@ -53,7 +53,8 @@
 
 
 <meta property="og:title" content="Get actions — getActions" />
-<meta property="og:description" content="Provides the selected actions in a solution." />
+<meta property="og:description" content="Returns the spatial deployment of the actions for each planning unit of
+the corresponding solution." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -124,10 +125,10 @@
     <li class="divider"></li>
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="../articles/sensitivities.html">Sensitivities</a>
+      <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li>
-      <a href="../articles/analysis.html">Analysis</a>
+      <a href="../articles/recovery.html">Recovery model</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -172,7 +173,8 @@
     </div>
 
     <div class="ref-description">
-    <p>Provides the selected actions in a solution.</p>
+    <p>Returns the spatial deployment of the actions for each planning unit of
+the corresponding solution.</p>
     </div>
 
     <pre class="usage"><span class='fu'>getActions</span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"large"</span><span class='op'>)</span></pre>
@@ -186,8 +188,8 @@
     </tr>
     <tr>
       <th>format</th>
-      <td><p><code>string</code>. Output format of the action matrix. <code>"wide"</code> format
-shows one column per action, while <code>"large"</code> format shows three columns: pu,
+      <td><p><code>character</code>. Output format of the action matrix; <code>wide</code> format
+shows one column per action, while <code>large</code> format shows three columns: pu,
 threat and solution.</p></td>
     </tr>
     </table>
@@ -208,8 +210,8 @@ threat and solution.</p></td>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
 <span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='problem.html'>problem</a></span><span class='op'>(</span></span>
 <span class='r-in'>  pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>, sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>,</span>
-<span class='r-in'>  boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
+<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>,</span>
+<span class='r-in'>  sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>, boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create optimization model</span></span>
@@ -239,7 +241,7 @@ threat and solution.</p></td>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Root simplex log...</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Iteration    Objective       Primal Inf.    Dual Inf.      Time</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     6189    1.7388096e+04   2.006667e+02   0.000000e+00      1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     6293    1.7409220e+04   1.435000e+02   0.000000e+00      1s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     7998    1.7570872e+04   0.000000e+00   0.000000e+00      1s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 1.757087e+04, 7998 iterations, 1.11 seconds</span>
@@ -255,7 +257,7 @@ threat and solution.</p></td>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17596.7487    0 2038 17810.2019 17596.7487  1.20%     -    4s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17597.1098    0 2040 17810.2019 17597.1098  1.20%     -    4s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17631.6491    0 2013 17810.2019 17631.6491  1.00%     -    4s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17662.6335    0 1619 17810.2019 17662.6335  0.83%     -    6s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0 17662.6335    0 1619 17810.2019 17662.6335  0.83%     -    5s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Gomory: 3</span>
@@ -267,7 +269,7 @@ threat and solution.</p></td>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   RLT: 1463</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   BQP: 551</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (16454 simplex iterations) in 6.06 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (16454 simplex iterations) in 5.51 seconds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 3: 17810.2 18997.7 52870.7 </span>
@@ -277,7 +279,7 @@ threat and solution.</p></td>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># get actions information in large format</span></span>
 <span class='r-in'><span class='va'>actions</span> <span class='op'>&lt;-</span> <span class='fu'>getActions</span><span class='op'>(</span><span class='va'>s</span>, format <span class='op'>=</span> <span class='st'>"large"</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>actions</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/headtail.html'>head</a></span><span class='op'>(</span><span class='va'>actions</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     pu threat solution</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1    1      1        0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 101  1      2        0</span>
@@ -288,7 +290,7 @@ threat and solution.</p></td>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># get actions information in wide format</span></span>
 <span class='r-in'><span class='va'>actions</span> <span class='op'>&lt;-</span> <span class='fu'>getActions</span><span class='op'>(</span><span class='va'>s</span>, format <span class='op'>=</span> <span class='st'>"wide"</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>actions</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/headtail.html'>head</a></span><span class='op'>(</span><span class='va'>actions</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   pu 1 2</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1 0 0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2 0 0</span>

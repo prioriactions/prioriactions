@@ -9,15 +9,16 @@ getActions(x, format = "large")
 \arguments{
 \item{x}{\linkS4class{solution} or \linkS4class{portfolio} object.}
 
-\item{format}{\code{string}. Output format of the action matrix. \code{"wide"} format
-shows one column per action, while \code{"large"} format shows three columns: pu,
+\item{format}{\code{character}. Output format of the action matrix; \code{wide} format
+shows one column per action, while \code{large} format shows three columns: pu,
 threat and solution.}
 }
 \value{
 \link{data.frame}.
 }
 \description{
-Provides the selected actions in a solution.
+Returns the spatial deployment of the actions for each planning unit of
+the corresponding solution.
 }
 \examples{
 # set seed for reproducibility

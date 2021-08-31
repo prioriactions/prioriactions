@@ -6,7 +6,7 @@
 #'
 #' @return [character].
 #'
-#' @details `GetStatus`can have five states:
+#' @details `GetStatus` can have five states:
 #'
 #' 1) *Optimal solution (according to gap tolerance)* : When the resolution of the model stop
 #' when the quality of the solution (*gap*) is less than or equal to

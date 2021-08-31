@@ -1,6 +1,7 @@
 #' @title Get size of matrix A of model
 #'
-#' @description Provides the size of matrix A of mathematical model. Contains all
+#' @description Returns the size of the constraints' coefficients matrix A
+#' (number of constraints and number of variables). Contains all
 #' the variables and constraints of the model.
 #'
 #' @param x [optimizationProblem-class], [solution-class] or [portfolio-class] object.

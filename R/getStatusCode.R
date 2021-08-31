@@ -1,6 +1,6 @@
 #' @title Get status code
 #'
-#' @description Provides the status code of solver at the end of the optimization period.
+#' @description Returns the status of the solver when the optimization process is completed
 #'
 #' @param x [solution-class] or [portfolio-class] object.
 #'

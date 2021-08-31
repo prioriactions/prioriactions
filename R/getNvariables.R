@@ -1,6 +1,7 @@
 #' @title Get number of variables
 #'
-#' @description Provides the number of variables of mathematical model.
+#' @description Returns the number of variables in the corresponding mathematical
+#' optimization model.
 #'
 #' @param x [optimizationProblem-class], [solution-class] or [portfolio-class] object.
 #'

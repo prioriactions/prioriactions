@@ -4,37 +4,38 @@
 \alias{evalBlm}
 \title{Evaluate multiple blm values}
 \usage{
-evalBlm(data = list(), name_model = "minimizeCosts", ...)
+evalBlm(data = list(), name_model = "minimizeCosts", values = c(), ...)
 }
 \arguments{
 \item{data}{\code{list}. Input data list for \code{problem()} function.}
 
-\item{name_model}{\link{character}. Name of the type of model to create. With two possible values:
-\code{"minimizeCosts"} and \code{"maximizeBenefits"}.}
+\item{name_model}{\link{character}. Name of the type of model to create. With two
+possible values: \code{"minimizeCosts"} and \code{"maximizeBenefits"}.}
+
+\item{values}{\code{numeric}. Values of blm to verify. More than one value is needed.}
 
 \item{...}{arguments inherited from \code{problem()}, \code{minimizeCosts()}, \code{maximizeBenefits()},
 and \code{solve()} functions.}
-
-\item{blm}{\code{numeric}. Values of blm to verify. More than one value is needed.}
 }
 \value{
 An object of class \linkS4class{portfolio}.
 }
 \description{
 Provides multiple solutions for different values of blm. Like
-\code{prioriactions()} function, It inherits all arguments from \code{problem()},
-\code{minimizeCosts()}, \code{maximizeBenefits()} and \code{solve()}.
+\code{prioriactions()} function, it inherits all arguments from \code{problem()},
+\code{model()} and \code{solve()}.
 }
 \details{
-\code{evalblm()} creates and solves multiple multi-actions planning
-problems for different values of blm. You can do this by manually running
-\code{prioriactions()} function with these different blm values (i.e., running
-once by blm). However, the \code{evalblm()} function has two advantages
-over their counterpart: 1) it is more efficient to create the models.
-This is because the model is once created and then updated with the
-new information; 2) the output is a portfolio object, which allows
-obtaining information about the group of solutions, including, all \emph{get}
-functions and also different types of plots.
+\code{evalblm()} creates and solves multiple instances, of the corresponding
+multi-actions planning problem, for different values of blm. Alternatively, this
+could be obtained by executing function \code{prioriactions()} or by steps the \code{problem()},
+\code{model()} and \code{solve()} functions; using, in each run, different blm values.
+However, the \code{evalblm()} function has two advantages with
+respect to this manual approach: : 1)
+it is more efficient to create the models (this is because the model is created
+just once and, at each iteration, only the blm values are updated); and 2) the
+output is a portfolio object, which allows
+obtaining information about the group of solutions (including all \emph{get} functions).
 }
 \examples{
 # set seed for reproducibility
@@ -46,9 +47,8 @@ sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
 sim_boundary_data)
 
 ## Create model and solve
-port <- evalBlm(data = inputs, blm = c(0.0, 0.5, 4, 8),
+port <- evalBlm(data = inputs, values = c(0.0, 0.5, 4, 8),
                 name_model = "minimizeCosts", time_limit = 50, output_file = FALSE)
 
-plot(port)
 
 }

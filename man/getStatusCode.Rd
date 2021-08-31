@@ -13,7 +13,7 @@ getStatusCode(x)
 \link{numeric}.
 }
 \description{
-Provides the status code of solver at the end of the optimization period.
+Returns the status of the solver when the optimization process is completed
 }
 \details{
 \code{GetStatusCode}can have five states:

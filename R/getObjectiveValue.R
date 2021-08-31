@@ -1,7 +1,8 @@
 #' @title Get objective value
 #'
-#' @description Provides the objective value of a solution. More information about objective functions
-#' in `minimizeCosts()` and `maximizeBenefits()` functions.
+#' @description Returns the value of the objective function associated with a given solution.
+#' More information about objective functions
+#' in `model()` function.
 #'
 #' @param x [solution-class] or [portfolio-class] object.
 #'

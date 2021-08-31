@@ -13,9 +13,10 @@ getGap(x)
 \link{numeric}.
 }
 \description{
-Provides the relative MIP gap of a solution. It is measured as the relation
-between the best integer objective and the objective of the best node remaining in
-the optimization process.
+Returns the relative MIP optimality gap of a solution. It is measured as
+the ratio between the objective function induced by the best known (primal solution)
+integer solution and the objective function induced by the best node in the search
+tree (dual solution).
 }
 \examples{
 # set seed for reproducibility

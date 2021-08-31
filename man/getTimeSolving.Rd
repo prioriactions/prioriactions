@@ -13,8 +13,7 @@ getTimeSolving(x)
 \link{numeric}.
 }
 \description{
-Provides the solving time of the mathematical model. This agree
-with \code{time_limit} in the case of being this positive (parameter of the \code{solve} function).
+Provides the solving time of the mathematical model.
 }
 \examples{
 # set seed for reproducibility

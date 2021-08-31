@@ -1,7 +1,7 @@
 #' @title Get model sense
 #'
-#' @description Provides the model sense. Identify whether the objective
-#' of the model is `minimization` or `maximization`.
+#' @description Returns the optimization sense (i.e., it indicates whether the
+#' objective function is `minimized` or `maximized`).
 #'
 #' @param x [optimizationProblem-class], [solution-class] or [portfolio-class] object.
 #'

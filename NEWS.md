@@ -1,6 +1,23 @@
+# prioriactions 0.2.0
+
+- Update *Mitchell River*, *Benefits and sensitivities* and *Get started* vignettes.
+- Update all functions documentation.
+- Add `threat` input with information on different threats within the exercise.
+- Now rcpp functions work with pointers which allows to use less memory.
+- Add parameters *a*, *b*, *c*, *d* for `sensitivity` input added. These parameters
+allow work with different sensitivities curves of threats-features. In addition to the possibility to work with non-binary threat intensities.
+- Now the `sensitivity` is an optional input.
+- New `maximizeBenefits()` model function.
+- Rename`min_costs` model function as `minimizeCosts()` model function for consistency.
+- New `portfolio-class` objects to handle multiple solutions.
+- New `evalBlm()` function to create and solve multiple models with different `blm` parameters.
+- New `evalTarget()` function to create and solve multiple models with different `target` parameters.
+- New `evalBudget()` function to create and solve multiple models with different `budget` parameters.
+- Now all methods of the `solution-class` are available as functions for the `solution-class` and `porfolio-class`.
+
 # prioriactions 0.1.2
 
-- Update *Mitchel River* vignette.
+- Update *Mitchell River* vignette.
 - Add three new parameters to the function `solve()`; *name_output_file* is the name of the main output that is exported only if the *output_file* parameter is TRUE, and *name_log* is the name of the solver log (only using gurobi solver) that is exported only if the *log_file* parameter is TRUE.
 - Fix `getSolutionActions()` and `getSolutionUnits()` functions of the `solution` object. Now these round the values assigned to each variable to the integer nearest.
 - Fix `benefit()` function of the `solution` object. Now the calculation considers the amount of features and threats other than 1 and 0.

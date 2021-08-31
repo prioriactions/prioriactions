@@ -13,7 +13,8 @@ getNvariables(x)
 \link{numeric}.
 }
 \description{
-Provides the number of variables of mathematical model.
+Returns the number of variables in the corresponding mathematical
+optimization model.
 }
 \examples{
 # set seed for reproducibility

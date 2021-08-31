@@ -1,7 +1,7 @@
 #' @include internal.R
 NULL
 
-#' @title Create the conservation planning problem
+#' @title Creates the multi-action planning problem
 #'
 #' @description
 #' Create the [conservationProblem-class] object with information about the multi-action
@@ -10,9 +10,9 @@ NULL
 #' data, threats data, and their spatial distributions.)
 #'
 #' @param pu Object of class [data.frame()] that specifies the planning units (PU)
-#' to use in the design exercise and their corresponding cost and status. Each
-#' row corresponds to a different planning unit (following the conventions used by
-#'  *Marxan*). It must also contain the following columns:
+#' of the corresponding instance and their corresponding cost and status. Each
+#' row corresponds to a different planning unit. This file is inherited from the
+#' *pu.dat* in *Marxan*. It must contain the following columns:
 #' \describe{
 #'    \item{`id`}{`integer` unique identifier for each planning unit.}
 #'    \item{`cost`}{`numeric` cost of including each planning unit in the reserve system.}
@@ -22,8 +22,8 @@ NULL
 #'    }
 #'
 #' @param features Object of class [data.frame()] that specifies the conservation
-#' features to consider in the design exercise. Each row corresponds to a different
-#' feature. This file is inherited from marxan's *spec.dat*. It must also contain
+#' features to consider in the optimization problem. Each row corresponds to a different
+#' feature. This file is inherited from marxan's *spec.dat*. It must contain
 #' the following columns:
 #' \describe{
 #'    \item{`id`}{`integer` unique identifier for each conservation feature.}
@@ -35,7 +35,7 @@ NULL
 #' @param dist_features Object of class [data.frame()] that specifies the spatial
 #' distribution of conservation features across planning units. Each row corresponds
 #' to a combination of planning unit and feature. This file is inherited from marxan's
-#' *puvspr.dat*. It must also contain the following columns:
+#' *puvspr.dat*. It must contain the following columns:
 #' \describe{
 #'    \item{`pu`}{`integer` *id* of a planning unit where the conservation feature
 #'    listed on the same row occurs.}
@@ -45,7 +45,7 @@ NULL
 #'    }
 #'
 #' @param threats Object of class [data.frame()] that specifies the threats to consider in
-#' the design exercise. Each row corresponds to a different threats. It must also contain
+#' the optimization exercise. Each row corresponds to a different threats. It must contain
 #' the following columns:
 #' \describe{
 #'    \item{`id`}{`integer` unique identifier for each threat.}
@@ -56,7 +56,7 @@ NULL
 #'
 #' @param dist_threats Object of class [data.frame()] that specifies the spatial
 #' distribution of threats across planning units. Each row corresponds
-#' to a combination of planning unit and threat. It must also contain the following
+#' to a combination of planning unit and threat. It must contain the following
 #' columns:
 #' \describe{
 #'    \item{`pu`}{`integer` *id* of a planning unit where the threat listed on the
@@ -67,61 +67,58 @@ NULL
 #'    that feature sensitivities to threats be established (more info in
 #'    [sensitivities](https://prioriactions.github.io/prioriactions/articles/sensitivities.html)
 #'    vignette).}
-#'    \item{`cost`}{`numeric` cost of applying an action to eliminate the threat
-#'    in this planning unit.}
-#'    \item{`status`}{`integer` (**optional**) value that indicate if each action
-#'    to abate the threat should be available to be selected (0), *locked-in* (2)
-#'    as part of the solution, or *locked-out* (3) and excluded from the solution.}
+#'    \item{`cost`}{`numeric` cost of an action to abate the threat
+#'    in each planning unit.}
+#'    \item{`status`}{`integer` (**optional**) value that indicates if each action
+#'    to abate the threat is available to be selected (0), *locked-in* (2)
+#'    as part of the solution, or *locked-out* (3) and therefore excluded from the solution.}
 #'    }
 #'
 #' @param sensitivity (**optional**) Object of class [data.frame()] that specifies
-#' the species-threats sensitivity, i.e., which threats affect the persistence of
-#' endangered conservation features (e.g., species). Each row corresponds
+#' the sensitivity of each feature to each threat. Each row corresponds
 #' to a combination of feature and threat. If not informed, all features
 #' are assumed to be sensitive to all threats. We strongly recommend reviewing the
 #' [sensitivities](https://prioriactions.github.io/prioriactions/articles/sensitivities.html)
-#' vignette. It must also contain the following
+#' vignette. It must contain the following
 #' columns:
 #'    \describe{
 #'    \item{`feature`}{`integer` *id* of each conservation feature.}
 #'    \item{`threat`}{`integer` *id* of each threat.}
-#'    \item{`a`}{`numeric` (**optional**) minimum intensity threshold value.
-#'    Value at which the intensity of the threat stops causing positive changes in the
-#'    response of the species (achieving a maximum response `d`). Default is 0.}
-#'    \item{`b`}{`numeric` (**optional**) maximum intensity threshold value.
-#'    Value at which the intensity of the threat stops causing negative changes in the
-#'    response of the species (achieving a minimum response `c`). If it is not established,
+#'    \item{`a`}{`numeric` (**optional**) the minimum intensity of the threat at
+#'    which the features probability of persistence starts to decline. The more
+#'    sensitive the feature is to the threat, the lowest this value will be. Default
+#'    is 0.}
+#'    \item{`b`}{`numeric` (**optional**) the value of intensity of the threat
+#'    over which the feature has a probability of persistence of 0. If it is not
+#'    established,it is assumed as the **maximum value of the threat across all planning units**
+#'    in the study area.
+#'    Note that this might overestimate the sensitivity of species to threats,
+#'    as they will only be assumed to disappear from planning units if the
+#'    threats reach the maximum intensity value in the study area.
+#'
 #'    it is assumed as the **maximum intensity value of this threat in all planning units**.}
-#'    \item{`c`}{`numeric` (**optional**) response of the feature to the
-#'    maximum value of intensity of the threat. Default is 0.}
-#'    \item{`d`}{`numeric` (**optional**) response of the feature to the
-#'    minimum value of intensity of the threat. Default is 1.}
+#'    \item{`c`}{`numeric` (**optional**) minimum probability of persistence of a
+#'    features when a threat reaches its maximum intensity value. Default is 0.}
+#'    \item{`d`}{`numeric` (**optional**) maximum probability of persistence of a
+#'    features in absence of a given threat. Default is 1.}
 #'    }
 #'
 #' @param boundary (**optional**) Object of class [data.frame()] that specifies
-#' the boundaries of the planning units, i.e., the spatial relationship between two units,
-#'  such as the "length" of the shared boundary between them. Each row corresponds
+#' the spatial relationship between pair of planning units. Each row corresponds
 #' to a combination of planning unit. This file is inherited from marxan's
-#' *bound.dat*. It must also contain the following columns:
+#' *bound.dat*. It must contain the following columns:
 #'   \describe{
 #'   \item{`id1`}{`integer` *id* of each planning unit.}
 #'   \item{`id2`}{`integer` *id* of each planning unit.}
-#'   \item{`boundary`}{`numeric` shared boundary between the planning
-#'   units identified on the same row.}
+#'   \item{`boundary`}{`numeric` penalty applied in the objective function
+#'   when only one of the planning units is present in the solution.}
 #'   }
+#'
+#' @param ... not used.
 #'
 #' @name problem
 #'
 #' @return An object of class [conservationProblem-class].
-#'
-#' @details If you are familiar with using conservation planning software called
-#' *Marxan*, you should know that most of the arguments in this function
-#' follow the conventions used by the Marxan input files. This means that,
-#' `pu` corresponds to the data in the **Planning Unit File** (typically called `"pu.dat"`);
-#' `features` corresponds to the data in the **Conservation Feature File** (typically
-#' called `"spec.dat"`); `dist_features` corresponds to the data in the **Planning Unit versus
-#' Conservation Feature File** (typically called `"dist_features.dat"`); and `boundary` corresponds
-#' to the data in the **Boundary Length File** (typically called `"bound.dat"`).
 #'
 #' @seealso For more information on the correct format for *Marxan* input data, see the
 #' [official *Marxan* website](https://marxansolutions.org) and Ball *et al.* (2009).
@@ -131,7 +128,7 @@ NULL
 #' set.seed(14)
 #'
 #' ## Set prioriactions path
-#' prioriactions_path <- system.file("extdata/input/", package = "prioriactions")
+#' prioriactions_path <- system.file("extdata/example_input/", package = "prioriactions")
 #'
 #' ## Load in planning unit data
 #' pu_data <- data.table::fread(paste0(prioriactions_path,"/pu.dat"),
@@ -191,9 +188,6 @@ methods::setGeneric("problem",
                     function(pu, features, dist_features, threats, dist_threats, ...) standardGeneric("problem")
 )
 
-#' @name problem
-#' @usage \S4method{problem}{data.frame}(pu, features, dist_features, threats,
-#'                           dist_threats, sensitivity = NULL, boundary = NULL)
 #' @rdname problem
 methods::setMethod(
   "problem",

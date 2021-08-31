@@ -6,16 +6,12 @@ NULL
 #' @title Create and solve multi-actions planning problems
 #'
 #' @description Create and solve a multi-actions planning problem. It can be used
-#' instead of following the sequence of the `problem()`, `minimizeCosts()`/`maximizeBenefits()`
+#' instead of following the sequence of the `problem()`, `model()`
 #' and `solve()` functions.
 #'
 #' @param data `list`. Input data list for `problem()` function.
 #'
-#' @param name_model [character]. Name of the type of model to create. With two possible values:
-#' `"minimizeCosts"` and `"maximizeBenefits"`.
-#'
-#' @param ... arguments inherited from `problem()`, `minimizeCosts()`, `maximizeBenefits()`,
-#'   and `solve()` functions.
+#' @param ... arguments inherited from `problem()`, `model()` and `solve()` functions.
 
 #' @name prioriactions
 #'
@@ -33,7 +29,7 @@ NULL
 #' sim_boundary_data)
 #'
 #' ## Create data instance
-#' input <- problem(
+#' input <- list(
 #'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
 #'   threats = sim_threats_data, dist_threats = sim_dist_threats_data,
 #'   sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
@@ -47,7 +43,7 @@ NULL
 #'
 #' @rdname prioriactions
 #' @export
-prioriactions <- function(data = list(), name_model = "minimizeCosts", ...) {
+prioriactions <- function(data = list(), ...) {
 
   # assert that arguments are valid
   assertthat::assert_that(
@@ -55,21 +51,12 @@ prioriactions <- function(data = list(), name_model = "minimizeCosts", ...) {
   )
   params = list(...)
 
-  #Verifying name models
-  if (!name_model %in% c("minimizeCosts", "maximizeBenefits")) {
-    stop("invalid name model")
-  }
-
   #verifying boundary presence
   conservation_model <- do.call(problem, args = data)
 
   params_solve <- c("solver", "gap_limit", "time_limit", "solution_limit", "cores",
                     "verbose", "name_output_file", "output_file")
-  params_model <- c("blm", "curve", "segments", "recovery")
-
-  if(name_model == "maximizeBenefits"){
-    params_model <- c(params_model, "budget")
-  }
+  params_model <- c("blm", "curve", "segments", "recovery", "name_model", "budget")
 
   #verifying input parameters
   if(!all(names(params) %in% c(params_solve, params_model))){
@@ -79,7 +66,7 @@ prioriactions <- function(data = list(), name_model = "minimizeCosts", ...) {
   }
 
   #Creating mathematical model--------------------------------------------------
-  optimization_model <- do.call(name_model, args = append(x = conservation_model,
+  optimization_model <- do.call(model, args = append(x = conservation_model,
                                                           params[names(params) %in% params_model]))
 
 

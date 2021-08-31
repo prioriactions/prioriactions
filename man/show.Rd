@@ -29,7 +29,7 @@
 None.
 }
 \description{
-Display information about an object.
+Displays information about an object.
 }
 \examples{
 a <- 1:4

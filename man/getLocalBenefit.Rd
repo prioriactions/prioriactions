@@ -31,8 +31,10 @@ a set of threats \eqn{K} indexed by \eqn{k} as:
 \sum_{i \in I_s} \frac{ \sum_{k \in K_i \cap K_s}{x_{ik}}}{|K_i \cap K_s|}
 }
 
-Here, \eqn{x_{ik}} is the decisions variable that specify whether action to abate the
-threat \eqn{k} in the planning unit \eqn{i} has been selected (1) or not (0).
+Where, \eqn{x_{ik}} is a decisions variable that specifies
+whether an action to address threat \eqn{k}  has been selected in planning unit
+\eqn{i} (1) or not (0), \eqn{r_{is}}
+is the amount of feature \eqn{s} in planning unit \eqn{i}.
 }
 \examples{
 # set seed for reproducibility

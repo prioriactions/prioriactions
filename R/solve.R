@@ -3,7 +3,7 @@ NULL
 
 #' @title Solve mathematical models
 #'
-#' @description Solve the optimization model associated with the multi-action
+#' @description Solves the optimization model associated with the multi-action
 #'   conservation planning problem. This function is used to solve
 #'   the mathematical model created by the `minimizeCosts()` or `maximizeBenefits()`
 #'   functions.
@@ -16,7 +16,7 @@ NULL
 #'   solve the model. The following solvers are supported:
 #'   [`"gurobi"`](http://gurobi.com)(requires the \pkg{gurobi} package), and
 #'   [`"symphony"`](https://projects.coin-or.org/SYMPHONY)(requires the \pkg{Rsymphony} package).
-#'   We highly recommend using gurobi (for more information on how to obtain an academic license
+#'   We recommend using gurobi (for more information on how to obtain an academic license
 #'   [here](https://prioritizr.net/articles/gurobi_installation.html)).
 #'
 #' @param gap_limit `numeric`. Value between 0 and 1 that represents the gap
@@ -24,10 +24,11 @@ NULL
 #'   terminate when the difference between the upper and lower objective
 #'   function bounds is less than the gap times the upper bound. For example, a
 #'   value of 0.01 will result in the optimizer stopping when the difference
-#'   between the bounds is 1 percent of the upper bound.
+#'   between the bounds is 1 percent of the upper bound. Default is 0.0.
 #'
 #' @param time_limit `numeric`. Time limit to run the optimizer (in seconds).
 #'   The solver will return the current best solution when this time limit is exceeded.
+#'   Default is the maximum integer number of your machine.
 #'
 #' @param solution_limit `logical`. Indicates if the solution process
 #' should be stopped after the first feasible solution is found (`TRUE`),

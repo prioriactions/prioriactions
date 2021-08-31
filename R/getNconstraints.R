@@ -1,6 +1,7 @@
 #' @title Get number of constraints
 #'
-#' @description Provides the number of constraints of mathematical model.
+#' @description Returns the number of constraints in the corresponding mathematical
+#' optimization model.
 #'
 #' @param x [optimizationProblem-class], [solution-class] or [portfolio-class] object.
 #'

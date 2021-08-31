@@ -47,7 +47,7 @@
 #' s <- solve(a = problem_model, solver = "gurobi", gap_limit = 0.01, output_file = FALSE)
 #'
 #' # get connectivity of units
-#' getUnitConnectivity(s)
+#' getPlanningUnitsConnectivity(s)
 #'
 #' @name getPlanningUnitsConnectivity
 NULL

@@ -5,15 +5,15 @@ NULL
 #' @title Evaluate multiple blm values
 #'
 #' @description Provides multiple solutions for different values of blm. Like
-#' `prioriactions()` function, It inherits all arguments from `problem()`,
-#' `minimizeCosts()`, `maximizeBenefits()` and `solve()`.
+#' `prioriactions()` function, it inherits all arguments from `problem()`,
+#' `model()` and `solve()`.
 #'
 #' @param data `list`. Input data list for `problem()` function.
 #'
-#' @param name_model [character]. Name of the type of model to create. With two possible values:
-#' `"minimizeCosts"` and `"maximizeBenefits"`.
+#' @param name_model [character]. Name of the type of model to create. With two
+#' possible values: `"minimizeCosts"` and `"maximizeBenefits"`.
 #'
-#' @param blm `numeric`. Values of blm to verify. More than one value is needed.
+#' @param values `numeric`. Values of blm to verify. More than one value is needed.
 #'
 #' @param ... arguments inherited from `problem()`, `minimizeCosts()`, `maximizeBenefits()`,
 #'   and `solve()` functions.
@@ -22,15 +22,16 @@ NULL
 #'
 #' @return An object of class [portfolio-class].
 #'
-#' @details `evalblm()` creates and solves multiple multi-actions planning
-#' problems for different values of blm. You can do this by manually running
-#' `prioriactions()` function with these different blm values (i.e., running
-#' once by blm). However, the `evalblm()` function has two advantages
-#' over their counterpart: 1) it is more efficient to create the models.
-#' This is because the model is once created and then updated with the
-#' new information; 2) the output is a portfolio object, which allows
-#' obtaining information about the group of solutions, including, all *get*
-#' functions and also different types of plots.
+#' @details `evalblm()` creates and solves multiple instances, of the corresponding
+#' multi-actions planning problem, for different values of blm. Alternatively, this
+#' could be obtained by executing function `prioriactions()` or by steps the `problem()`,
+#' `model()` and `solve()` functions; using, in each run, different blm values.
+#' However, the `evalblm()` function has two advantages with
+#' respect to this manual approach: : 1)
+#' it is more efficient to create the models (this is because the model is created
+#' just once and, at each iteration, only the blm values are updated); and 2) the
+#' output is a portfolio object, which allows
+#' obtaining information about the group of solutions (including all *get* functions).
 #'
 #' @examples
 #' # set seed for reproducibility
@@ -42,14 +43,13 @@ NULL
 #' sim_boundary_data)
 #'
 #' ## Create model and solve
-#' port <- evalBlm(data = inputs, blm = c(0.0, 0.5, 4, 8),
+#' port <- evalBlm(data = inputs, values = c(0.0, 0.5, 4, 8),
 #'                 name_model = "minimizeCosts", time_limit = 50, output_file = FALSE)
 #'
-#' plot(port)
 #'
 #' @rdname evalBlm
 #' @export
-evalBlm <- function(data = list(), name_model = "minimizeCosts", ...) {
+evalBlm <- function(data = list(), name_model = "minimizeCosts", values = c(), ...) {
 
   # assert that arguments are valid
   assertthat::assert_that(
@@ -66,23 +66,17 @@ evalBlm <- function(data = list(), name_model = "minimizeCosts", ...) {
   conservation_model <- do.call(problem, args = data)
 
   #verifying blm length
-  if(any(names(params) %in% "blm")){
-    assertthat::assert_that(
-      is.numeric(params$blm),
-      length(params$blm) > 1
-    )
-  }
-  else{
-    stop("blm param not defined")
-  }
-
+  assertthat::assert_that(
+    is.numeric(values),
+    length(values) > 1
+  )
 
   params_solve <- c("solver", "gap_limit", "time_limit", "solution_limit", "cores",
                     "verbose", "name_output_file", "output_file")
   params_model <- c("blm", "curve", "segments", "recovery")
 
   #number of replications
-  repl <- length(params$blm)
+  repl <- length(values)
 
   if(name_model == "maximizeBenefits"){
     params_model <- c(params_model, "budget")
@@ -95,12 +89,11 @@ evalBlm <- function(data = list(), name_model = "minimizeCosts", ...) {
     stop(paste0("The following params are not defined in this function: ", paste(names(params)[id_error], collapse = " ")))
   }
 
-
   #running
   it = 1
   name_iter = ""
 
-  for(blm in params$blm){
+  for(blm in values){
 
     name_iter <- paste0("Blm", blm)
     params_iter <- params

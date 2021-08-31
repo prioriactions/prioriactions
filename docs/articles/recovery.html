@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Analysis • prioriactions</title>
+<title>Recovery model • prioriactions</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Analysis">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Recovery model">
 <meta property="og:description" content="prioriactions">
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -74,10 +74,10 @@
 <li class="divider">
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="../articles/sensitivities.html">Sensitivities</a>
+      <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li>
-      <a href="../articles/analysis.html">Analysis</a>
+      <a href="../articles/recovery.html">Recovery model</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Study cases</li>
@@ -113,44 +113,48 @@
 
       
 
-      </header><script src="analysis_files/header-attrs-2.10.1/header-attrs.js"></script><div class="row">
+      </header><script src="recovery_files/header-attrs-2.10.1/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Analysis</h1>
+      <h1 data-toc-skip>Recovery model</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/prioriactions/prioriactions/blob/master/vignettes/analysis.Rmd"><code>vignettes/analysis.Rmd</code></a></small>
-      <div class="hidden name"><code>analysis.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/prioriactions/prioriactions/blob/master/vignettes/recovery.Rmd"><code>vignettes/recovery.Rmd</code></a></small>
+      <div class="hidden name"><code>recovery.Rmd</code></div>
 
     </div>
 
     
     
-<div id="github-documents" class="section level2">
+<p>The expected <strong>benefit</strong> of carrying out conservation actions in the face of threats has been the subject of study due to its importance when deciding on management policies. Works like <span class="citation">(Chadés et al. 2014)</span>, <span class="citation">(Carwardine et al. 2012)</span> or <span class="citation">(Carwardine et al. 2018)</span> they help to measure the individual benefits involved in different management strategies through expert prediction. However, it is assumed that there are no interactions in the strategies due to the complexity of determining the resulting benefits.</p>
+<p>For its part, <code>prioriactions</code> uses as a reference <span class="citation">(Cattarino et al. 2015)</span> work, that assumes that the benefit for each species, at each site, depends on the number of threats, which affect the species at the site, and which had been abated, divided by the total number of threats affecting the species at the site. This is an approximation that assumes a series of assumptions:</p>
+<ul>
+<li><p>Threats are binary (presence/absence)</p></li>
+<li><p>There is only one action per threat.</p></li>
+<li><p>Actions are fully effective, that is, an action against a threat eliminates it completely.</p></li>
+<li><p>All species are equally sensitive to threats.</p></li>
+<li><p>The benefit or probability of persistence of the species is proportional to the number of actions you take concerning the total number of actions available.</p></li>
+</ul>
+<p>The expected <strong>local benefit</strong> can be expressed mathematically for a set of planning units <span class="math inline">\(I\)</span> indexed by <span class="math inline">\(i\)</span>, a set of threats <span class="math inline">\(K\)</span> indexed by <span class="math inline">\(k\)</span> and a set of features <span class="math inline">\(S\)</span> indexed by <span class="math inline">\(s\)</span> as:</p>
+<p><span class="math inline">\(b_{is} = \frac{ \sum_{k \in K_i \cap K_s}{x_{ik}}}{|K_i \cap K_s|} r_{is}\)</span></p>
+<p>Here, <span class="math inline">\(x_{ik}\)</span> is the decisions variable that specify whether action to abate the threat <span class="math inline">\(k\)</span> in the planning unit <span class="math inline">\(i\)</span> has been selected (1) or not (0), <span class="math inline">\(r_{is}\)</span> is the amount of feature <span class="math inline">\(s\)</span> in planning unit <span class="math inline">\(i\)</span>, <span class="math inline">\(K_i\)</span> is the set of all threats that exists in <span class="math inline">\(i\)</span> and <span class="math inline">\(K_s\)</span> is the set of all threats the feature <span class="math inline">\(s\)</span> is sensitive. Note that <span class="math inline">\(|K_i \cap K_s|\)</span> indicates the intersection between these two sets, that is, the threats that exist on the site <span class="math inline">\(i\)</span> and that, in turn, the features <span class="math inline">\(s\)</span> is sensitive. In the case that said the intersection is zero, the <strong>local benefit</strong> is 1. This means that feature <span class="math inline">\(s\)</span> does not coexist with any of its threats.</p>
+<div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
-<a href="#github-documents" class="anchor"></a>GitHub Documents</h2>
-<p>This is an R Markdown format used for publishing markdown documents to GitHub. When you click the <strong>Knit</strong> button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.</p>
+<a href="#references" class="anchor"></a>References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-carwardine2018" class="csl-entry">
+Carwardine, Josie, Tara G. Martin, Jennifer Firn, Rocio Ponce Reyes, Sam Nicol, Andrew Reeson, Hedley S. Grantham, Danial Stratford, Laura Kehoe, and Iadine Chadès. 2018. <span>“Priority Threat Management for Biodiversity Conservation: A Handbook.”</span> Edited by Tien Ming Lee. <em>Journal of Applied Ecology</em> 56 (2): 481–90. <a href="https://doi.org/10.1111/1365-2664.13268">https://doi.org/10.1111/1365-2664.13268</a>.
 </div>
-<div id="including-code" class="section level2">
-<h2 class="hasAnchor">
-<a href="#including-code" class="anchor"></a>Including Code</h2>
-<p>You can include R code in the document as follows:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></code></pre></div>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<div id="ref-carwardine2012" class="csl-entry">
+Carwardine, Josie, Trudy O’Connor, Sarah Legge, Brendan Mackey, Hugh P. Possingham, and Tara G. Martin. 2012. <span>“Prioritizing Threat Management for Biodiversity Conservation.”</span> <em>Conservation Letters</em> 5 (3): 196–204. <a href="https://doi.org/10.1111/j.1755-263x.2012.00228.x">https://doi.org/10.1111/j.1755-263x.2012.00228.x</a>.
 </div>
-<div id="including-plots" class="section level2">
-<h2 class="hasAnchor">
-<a href="#including-plots" class="anchor"></a>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="analysis_files/figure-html/pressure-1.png" width="700"></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+<div id="ref-cattarino2015" class="csl-entry">
+Cattarino, Lorenzo, Virgilio Hermoso, Josie Carwardine, Mark J. Kennard, and Simon Linke. 2015. <span>“Multi-Action Planning for Threat Management: A Novel Approach for the Spatial Prioritization of Conservation Actions.”</span> Edited by Duccio Rocchini. <em>PLOS ONE</em> 10 (5): e0128027. <a href="https://doi.org/10.1371/journal.pone.0128027">https://doi.org/10.1371/journal.pone.0128027</a>.
+</div>
+<div id="ref-chadés2014" class="csl-entry">
+Chadés, Iadine , Sam Nicol, Stephen van Leeuwen, Belinda Walters, Jennifer Firn, Andrew Reeson, Tara G. Martin, and Josie Carwardine. 2014. <span>“Benefits of Integrating Complementarity into Priority Threat Management.”</span> <em>Conservation Biology</em> 29 (2): 525–36. <a href="https://doi.org/10.1111/cobi.12413">https://doi.org/10.1111/cobi.12413</a>.
+</div>
+</div>
 </div>
   </div>
 

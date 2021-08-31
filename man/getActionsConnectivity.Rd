@@ -16,8 +16,8 @@ getActionsConnectivity(x)
 Provides the connectivity value of all actions in a solution.
 }
 \details{
-The actions connectivity is calculated as the sum of all
-boundaries unreached by each action in the solution. This can be expressed
+The connectivity among actions is calculated as the sum of all
+connectivity penalties by each action in the solution. This can be expressed
 mathematically for a set of planning units
 \eqn{I} indexed by \eqn{i} and \eqn{j}, and
 a set of threats \eqn{K} indexed by \eqn{k} as:
@@ -26,9 +26,10 @@ a set of threats \eqn{K} indexed by \eqn{k} as:
 \sum_{k \in K}\sum_{i \in I_k}\sum_{j \in I_k} x_{ik} (1 - x_{jk})cv_{ij}
 }
 
-Here, \eqn{x_{ik}} is the decisions variable that specify whether action to abate the
-threat \eqn{k} in the planning unit \eqn{i} has been selected (1) or not (0), \eqn{cv_{ij}}
-is the large of boundary that share the planning units \eqn{i} and \eqn{j}.
+Where, \eqn{x_{ik}} is the decisions variable that specify
+whether an action has been selected to abate threat \eqn{k} in planning unit
+\eqn{i} (1) or not (0), \eqn{cv_{ij}} is the connectivity penalty that applies
+when a solution contains planning unit \eqn{i} but not \eqn{j} o viceversa.
 }
 \examples{
 # set seed for reproducibility

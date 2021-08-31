@@ -4,36 +4,38 @@
 \alias{evalBudget}
 \title{Evaluate multiple budget values}
 \usage{
-evalBudget(data = list(), ...)
+evalBudget(data = list(), values = c(), ...)
 }
 \arguments{
 \item{data}{\code{list}. Input data list for \code{problem()} function.}
 
+\item{values}{\code{numeric}. Values of budget to verify. More than one value is
+needed.}
+
 \item{...}{arguments inherited from \code{problem()}, \code{maximizeBenefits()},
 and \code{solve()} functions.}
-
-\item{budget}{\code{numeric}. Values of budget to verify. more than one value is
-needed.}
 }
 \value{
 An object of class \linkS4class{portfolio}.
 }
 \description{
-Provides multiple solutions for different values of budgets. This function
-assumes that you are working with the \emph{maximizeBenefits} model. Like
-\code{prioriactions()} function, It inherits all arguments from \code{problem()},
-\code{maximizeBenefits()} and \code{solve()}.
+Provides multiple solutions for different values of budgets. This
+function assumes that the \emph{maximizeBenefits} option is being used (note that
+the \emph{minimizeCosts} option does not require setting a maximum budget). Like
+\code{prioriactions()} function, it inherits all arguments from \code{problem()},
+\code{model()} and \code{solve()}.
 }
 \details{
-\code{evalBudget()} creates and solves multiple multi-actions planning
-problems for different values of budgets. You can do this by manually running
-\code{prioriactions()} function with these different budget values (i.e., running
-once by budget). However, the \code{evalBudget()} function has two advantages
-over their counterpart: 1) it is more efficient to create the models.
-This is because the model is once created and then updated with the
-new information; 2) the output is a portfolio object, which allows
-obtaining information about the group of solutions, including, all \emph{get}
-functions and also different types of plots.
+\code{evalBudget()} creates and solves multiple instances, of the corresponding
+multi-actions planning problem, for different values of maximum budgets. Alternatively, this
+could be obtained by executing function \code{prioriactions()} or by steps the \code{problem()},
+\code{model()} and \code{solve()} functions; using, in each run, different budgtes values.
+However, the \code{evalBudget()} function has two advantages with
+respect to this manual approach: : 1)
+it is more efficient to create the models (this is because the model is created
+just once and, at each iteration, only the budget values are updated); and 2) the
+output is a portfolio object, which allows
+obtaining information about the group of solutions (including all \emph{get} functions).
 }
 \examples{
 # set seed for reproducibility
@@ -45,8 +47,6 @@ sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
 sim_boundary_data)
 
 ## Create model and solve
-port <- evalBudget(data = inputs, budget = c(1, 10, 50, 100), time_limit = 50, output_file = FALSE)
-
-plot(port)
+port <- evalBudget(data = inputs, values = c(1, 10, 50, 100), time_limit = 50, output_file = FALSE)
 
 }

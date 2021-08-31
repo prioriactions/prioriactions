@@ -13,8 +13,8 @@ getModelSense(x)
 \link{character}.
 }
 \description{
-Provides the model sense. Identify whether the objective
-of the model is \code{minimization} or \code{maximization}.
+Returns the optimization sense (i.e., it indicates whether the
+objective function is \code{minimized} or \code{maximized}).
 }
 \examples{
 # set seed for reproducibility

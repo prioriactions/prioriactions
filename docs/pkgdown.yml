@@ -3,10 +3,10 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   MitchellRiver: MitchellRiver.html
-  analysis: analysis.html
   prioriactions: prioriactions.html
+  recovery: recovery.html
   sensitivities: sensitivities.html
-last_built: 2021-08-17T14:07Z
+last_built: 2021-09-02T11:37Z
 urls:
   reference: https://prioriactions.github.io/prioriactions//reference
   article: https://prioriactions.github.io/prioriactions//articles

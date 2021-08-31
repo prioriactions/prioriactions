@@ -53,11 +53,11 @@
 
 
 <meta property="og:title" content="Portfolio class — portfolio-class" />
-<meta property="og:description" content="This class is used to represent multiple solutions of the MIP (Mixed-Integer Programming) model
-related to the multi-action conservation planning problem. This includes several methods
+<meta property="og:description" content="This class encodes for the solutions obtained when solving
+multiple instances. This includes several methods
 to obtain information about both the optimization process and the solution associated with
 the planning units and conservation actions. It is created using the eval functions
-(e.g. evalTarget() or evalBudget()." />
+(e.g. evalTarget() or evalBudget())." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -128,10 +128,10 @@ the planning units and conservation actions. It is created using the eval functi
     <li class="divider"></li>
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="../articles/sensitivities.html">Sensitivities</a>
+      <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li>
-      <a href="../articles/analysis.html">Analysis</a>
+      <a href="../articles/recovery.html">Recovery model</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -176,11 +176,11 @@ the planning units and conservation actions. It is created using the eval functi
     </div>
 
     <div class="ref-description">
-    <p>This class is used to represent multiple solutions of the MIP (Mixed-Integer Programming) model
-related to the multi-action conservation planning problem. This includes several methods
+    <p>This class encodes for the solutions obtained when solving
+multiple instances. This includes several methods
 to obtain information about both the optimization process and the solution associated with
 the planning units and conservation actions. It is created using the <em>eval</em> functions
-(e.g. <code><a href='evalTarget.html'>evalTarget()</a></code> or <code><a href='evalBudget.html'>evalBudget()</a></code>.</p>
+(e.g. <code><a href='evalTarget.html'>evalTarget()</a></code> or <code><a href='evalBudget.html'>evalBudget()</a></code>).</p>
     </div>
 
 
@@ -199,9 +199,7 @@ the planning units and conservation actions. It is created using the <em>eval</e
     
 
 <dl>
-<dt>getGap()</dt><dd><p><code>numeric</code>. Label indicating the optimality gap achieved for the MIP model.</p></dd>
-
-<dt>getObjectiveValue()</dt><dd><p><code>numeric</code>. Number indicating the value of the objective function of the solution.</p></dd>
+<dt>getNames()</dt><dd><p><code>character</code>. Label indicating the name of solutions.</p></dd>
 
 <dt>print()</dt><dd><p>Print basic information of the model solution.</p></dd>
 
@@ -222,7 +220,7 @@ the planning units and conservation actions. It is created using the <em>eval</e
 <span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create model and solve</span></span>
-<span class='r-in'><span class='va'>port</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evalTarget.html'>evalTarget</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>inputs</span>, prop <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.6</span><span class='op'>)</span>, gap_limit <span class='op'>=</span> <span class='fl'>0.01</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>port</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evalTarget.html'>evalTarget</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>inputs</span>, values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.6</span><span class='op'>)</span>, gap_limit <span class='op'>=</span> <span class='fl'>0.01</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>  Iteration 1 of 2: Prop0.5</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
@@ -261,18 +259,19 @@ the planning units and conservation actions. It is created using the <em>eval</e
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  370.00000    0    3  377.00000  370.00000  1.86%     -    0s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  370.00000    0    3  377.00000  370.00000  1.86%     -    0s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     2  370.00000    0    3  377.00000  370.00000  1.86%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   3258  1238  371.00000   19   14  377.00000  371.00000  1.59%   2.4    1s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   7380  2504  375.00000   33    3  377.00000  372.00000  1.33%   2.5    2s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  12489  4166     cutoff   30       377.00000  372.00000  1.33%   2.6    3s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  17621  4935  374.50000   24   14  377.00000  373.00000  1.06%   2.8    4s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  23252  5714     cutoff   27       377.00000  373.00000  1.06%   2.9    5s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   4082  1624     cutoff   27       377.00000  371.50000  1.46%   2.3    1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   7878  2672     cutoff   28       377.00000  372.00000  1.33%   2.6    2s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  13025  4306  374.00000   31    3  377.00000  372.50000  1.19%   2.6    3s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  17083  4840  375.75000   35   21  377.00000  373.00000  1.06%   2.8    4s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  21698  5449  376.00000   26   11  377.00000  373.00000  1.06%   2.9    5s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  27192  6244     cutoff   33       377.00000  373.00000  1.06%   2.9    6s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Gomory: 2</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Flow cover: 4</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Inf proof: 7</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 28794 nodes (83349 simplex iterations) in 5.99 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 28794 nodes (83349 simplex iterations) in 6.26 seconds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 4: 377 384 918 1002 </span>
@@ -360,18 +359,12 @@ the planning units and conservation actions. It is created using the <em>eval</e
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 4.720000000000e+02, best bound 4.680000000000e+02, gap 0.8475%</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Use class methods</span></span>
-<span class='r-in'><span class='va'>port</span><span class='op'>$</span><span class='fu'>getGap</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.7958 0.8475</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='va'>port</span><span class='op'>$</span><span class='fu'>getObjectiveValue</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 377 472</span>
+<span class='r-in'><span class='va'>port</span><span class='op'>$</span><span class='fu'>getNames</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Prop0.5" "Prop0.6"</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>port</span><span class='op'>$</span><span class='fu'>print</span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Portfolio overview</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   solutions: 2</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='va'>port</span><span class='op'>$</span><span class='fu'>plot</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-plt'><img src='portfolio-class-1.png' alt='' width='700' height='433' /></span>
 <span class='r-in'></span>
 </pre>
   </div>

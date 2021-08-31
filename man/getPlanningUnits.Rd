@@ -13,10 +13,12 @@ getPlanningUnits(x)
 \link{data.frame}.
 }
 \description{
-Provides the selected planning units in a solution. If is a \code{recovery} model,
-then all planning unit selected have at least one action to perform on it.
+Returns a \emph{data.frame} with planning unit \emph{ids} and the
+distribution of actions in a given solution. If the solution comes from a
+\code{recovery} model,
+then all planning units selected have at least one action selected.
 More information about of recovery models in
-\code{minimizeCosts()} and \code{maximizeBenefits()} functions.
+\code{model()} function.
 }
 \examples{
 # set seed for reproducibility

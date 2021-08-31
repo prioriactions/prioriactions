@@ -53,10 +53,10 @@
 
 
 <meta property="og:title" content="Evaluate multiple target values — evalTarget" />
-<meta property="og:description" content="Provides multiple solutions for different values of target. This function
-assumes that you are working with the minimizeCosts model. Like
-prioriactions() function, It inherits all arguments from problem(),
-minimizeCosts() and solve()." />
+<meta property="og:description" content="Provides multiple solutions for different targets values. This
+function assumes that the minimizeCosts model is being used. As well as the
+prioriactions() function, it inherits all arguments from problem(),
+model() and solve()." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -127,10 +127,10 @@ minimizeCosts() and solve()." />
     <li class="divider"></li>
     <li class="dropdown-header">Introduction</li>
     <li>
-      <a href="../articles/sensitivities.html">Sensitivities</a>
+      <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li>
-      <a href="../articles/analysis.html">Analysis</a>
+      <a href="../articles/recovery.html">Recovery model</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -175,13 +175,13 @@ minimizeCosts() and solve()." />
     </div>
 
     <div class="ref-description">
-    <p>Provides multiple solutions for different values of target. This function
-assumes that you are working with the <em>minimizeCosts</em> model. Like
-<code><a href='prioriactions.html'>prioriactions()</a></code> function, It inherits all arguments from <code><a href='problem.html'>problem()</a></code>,
-<code><a href='minimizeCosts.html'>minimizeCosts()</a></code> and <code><a href='solve.html'>solve()</a></code>.</p>
+    <p>Provides multiple solutions for different targets values. This
+function assumes that the <em>minimizeCosts</em> model is being used. As well as the
+<code><a href='prioriactions.html'>prioriactions()</a></code> function, it inherits all arguments from <code><a href='problem.html'>problem()</a></code>,
+<code><a href='model.html'>model()</a></code> and <code><a href='solve.html'>solve()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>evalTarget</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, prop <span class='op'>=</span> <span class='fl'>1</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>evalTarget</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -191,9 +191,9 @@ assumes that you are working with the <em>minimizeCosts</em> model. Like
       <td><p><code>list</code>. Input data list for <code><a href='problem.html'>problem()</a></code> function.</p></td>
     </tr>
     <tr>
-      <th>prop</th>
-      <td><p><code>numeric</code>. Proportion of maximum value of benefit to achieve. This
-information can be getting with <code><a href='getBenefit.html'>getBenefit()</a></code> function.
+      <th>values</th>
+      <td><p><code>numeric</code>. Proportion of maximum value of benefit to verify.
+This information can be getting with <code><a href='getBenefit.html'>getBenefit()</a></code> function.
 More than one value is needed.</p></td>
     </tr>
     <tr>
@@ -205,18 +205,20 @@ and <code><a href='solve.html'>solve()</a></code> functions.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>Portfolio-class()</code>.</p>
+    <p>An object of class <a href='portfolio-class.html'>portfolio</a>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>evalTarget()</code> creates and solves multiple multi-actions planning
-problems for different values of targets You can do this by manually running
-<code><a href='prioriactions.html'>prioriactions()</a></code> function with these different target values (i.e., running
-once by target). However, the <code>evalTarget()</code> function has two advantages
-over their counterpart: 1) it is more efficient to create the models.
-This is because the model is once created and then updated with the
-new information; 2) the output is a portfolio object, which allows
-obtaining information about the group of solutions, including, all <em>get</em>
-functions and also different types of plots.</p>
+    <p><code>evalTarget()</code> creates and solves multiple instances, of the corresponding
+multi-actions planning problem, for different proportions of maximum benefit values
+as target values. Alternatively, this
+could be obtained by executing function <code><a href='prioriactions.html'>prioriactions()</a></code> or by steps the <code><a href='problem.html'>problem()</a></code>,
+<code><a href='model.html'>model()</a></code> and <code><a href='solve.html'>solve()</a></code> functions; using, in each run, different budgtes values.
+However, the <code>evalTarget()</code> function has two advantages with
+respect to this manual approach: : 1)
+it is more efficient to create the models (this is because the model is created
+just once and, at each iteration, only the target values are updated); and 2) the
+output is a portfolio object, which allows
+obtaining information about the group of solutions (including all <em>get</em> functions).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># set seed for reproducibility</span></span>
@@ -228,7 +230,7 @@ functions and also different types of plots.</p>
 <span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create model and solve</span></span>
-<span class='r-in'><span class='va'>port</span> <span class='op'>&lt;-</span> <span class='fu'>evalTarget</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>inputs</span>, prop <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.3</span>, <span class='fl'>0.5</span><span class='op'>)</span>, time_limit <span class='op'>=</span> <span class='fl'>50</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>port</span> <span class='op'>&lt;-</span> <span class='fu'>evalTarget</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>inputs</span>, values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.3</span>, <span class='fl'>0.5</span><span class='op'>)</span>, time_limit <span class='op'>=</span> <span class='fl'>50</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>  Iteration 1 of 3: Prop0.1</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
@@ -292,7 +294,7 @@ functions and also different types of plots.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Inf proof: 1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Relax-and-lift: 1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 428 nodes (2081 simplex iterations) in 0.38 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 428 nodes (2081 simplex iterations) in 0.34 seconds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 7: 62 63 68 ... 1002</span>
@@ -347,9 +349,9 @@ functions and also different types of plots.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  199.20370    0   25  205.00000  199.20370  2.83%     -    0s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  199.20370    0   18  205.00000  199.20370  2.83%     -    0s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     2  199.20370    0   18  205.00000  199.20370  2.83%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   1208   425  201.94493    8   15  205.00000  201.11111  1.90%   3.9    1s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   3749   668 infeasible   30       205.00000  201.64034  1.64%   4.0    2s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   6959   237  204.00000   28    5  205.00000  203.20000  0.88%   4.1    3s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   2223   648  202.63333   24   19  205.00000  201.64034  1.64%   3.8    1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   4536   570  202.33750   29   22  205.00000  201.77222  1.57%   3.9    2s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   8382   218  203.60000   36    7  205.00000  203.60000  0.68%   3.9    3s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Gomory: 4</span>
@@ -358,7 +360,7 @@ functions and also different types of plots.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Flow cover: 25</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Inf proof: 9</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 10318 nodes (39779 simplex iterations) in 3.56 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 10318 nodes (39779 simplex iterations) in 3.32 seconds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 4: 205 208 957 1002 </span>
@@ -384,7 +386,7 @@ functions and also different types of plots.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [2e+01, 3e+01]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 1002.0000000</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve added 289 rows and 635 columns</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.01s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.00s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 569 rows, 1224 columns, 2970 nonzeros</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 176 SOS constraint(s)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 1056 continuous, 168 integer (162 binary)</span>
@@ -404,28 +406,32 @@ functions and also different types of plots.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  370.00000    0    3  377.00000  370.00000  1.86%     -    0s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  370.00000    0    3  377.00000  370.00000  1.86%     -    0s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      0     2  370.00000    0    3  377.00000  370.00000  1.86%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   4270  1674  374.00000   25   23  377.00000  371.50000  1.46%   2.3    1s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   8781  2979  375.49999   32    6  377.00000  372.00000  1.33%   2.6    2s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  14963  4697  373.50000   28   10  377.00000  372.50000  1.19%   2.7    3s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  19019  5078     cutoff   35       377.00000  373.00000  1.06%   2.8    4s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  23834  5783     cutoff   34       377.00000  373.00000  1.06%   2.9    5s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  29951  6625  376.00000   32    3  377.00000  373.50000  0.93%   2.9    6s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  33350  7126     cutoff   29       377.00000  373.50000  0.93%   2.9    7s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  38433  6708     cutoff   27       377.00000  374.00000  0.80%   3.0    8s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  42968  6481  374.50000   28    7  377.00000  374.00000  0.80%   3.1    9s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  48210  6562  376.00000   28    7  377.00000  374.00000  0.80%   3.1   10s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  53173  6069  375.00000   28    5  377.00000  374.50000  0.66%   3.2   11s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  57992  4473  375.00000   30   10  377.00000  375.00000  0.53%   3.2   12s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  62232  3701  375.50000   28    8  377.00000  375.00000  0.53%   3.3   13s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  66030  2518  375.50000   33   10  377.00000  375.50000  0.40%   3.3   14s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  68484  1138     cutoff   27       377.00000  376.00000  0.27%   3.3   15s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   2287   796     cutoff   31       377.00000  371.00000  1.59%   2.3    1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   6869  2370  375.69388   27   13  377.00000  372.00000  1.33%   2.5    2s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  10754  3675  374.00000   24    4  377.00000  372.00000  1.33%   2.6    3s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  15184  4713  374.50000   30   17  377.00000  372.63910  1.16%   2.7    4s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  19588  5149  375.00000   26    3  377.00000  373.00000  1.06%   2.8    5s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  23525  5756  376.00000   34   14  377.00000  373.00000  1.06%   2.9    6s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  27192  6244     cutoff   33       377.00000  373.00000  1.06%   2.9    7s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  32090  6944  374.00000   27    3  377.00000  373.50000  0.93%   2.9    8s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  35124  7144     cutoff   29       377.00000  374.00000  0.80%   2.9    9s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  38977  6629  374.00000   24   11  377.00000  374.00000  0.80%   3.0   10s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  42076  6462  375.50000   30   10  377.00000  374.00000  0.80%   3.1   11s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  45541  6483     cutoff   32       377.00000  374.00000  0.80%   3.1   12s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  49754  6516     cutoff   28       377.00000  374.25000  0.73%   3.1   13s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  53494  6023  376.00000   30    4  377.00000  374.50000  0.66%   3.2   14s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  57361  4662     cutoff   25       377.00000  375.00000  0.53%   3.2   15s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  61100  3876  376.00000   31    9  377.00000  375.00000  0.53%   3.2   16s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  64285  3298     cutoff   27       377.00000  375.00000  0.53%   3.3   17s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  66032  2396  376.00000   34    3  377.00000  375.50000  0.40%   3.3   18s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  68781   868     cutoff   26       377.00000  376.00000  0.27%   3.3   19s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Gomory: 2</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Flow cover: 4</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Inf proof: 23</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 70348 nodes (234405 simplex iterations) in 15.39 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 70348 nodes (234405 simplex iterations) in 19.35 seconds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 4: 377 384 918 1002 </span>
@@ -433,8 +439,6 @@ functions and also different types of plots.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 3.770000000000e+02, best bound 3.770000000000e+02, gap 0.0000%</span>
 <span class='r-in'></span>
-<span class='r-in'><span class='fu'><a href='plot.html'>plot</a></span><span class='op'>(</span><span class='va'>port</span><span class='op'>)</span></span>
-<span class='r-plt'><img src='evalTarget-1.png' alt='' width='700' height='433' /></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

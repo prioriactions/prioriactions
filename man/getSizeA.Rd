@@ -13,7 +13,8 @@ getSizeA(x)
 \link{character}.
 }
 \description{
-Provides the size of matrix A of mathematical model. Contains all
+Returns the size of the constraints' coefficients matrix A
+(number of constraints and number of variables). Contains all
 the variables and constraints of the model.
 }
 \examples{

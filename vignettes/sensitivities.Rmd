@@ -1,30 +1,39 @@
 ---
-title: "Sensitivities"
-output: github_document
+title: "Benefits and sensitivities"
+output:
+  rmarkdown::html_vignette
+fontsize: 11pt
+bibliography: references.bib
+vignette: >
+  %\VignetteIndexEntry{Benefits and sensitivities}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## GitHub Documents
+The expected **benefit** of carrying out conservation actions in the face of threats has been the subject of study due to its importance when deciding on management policies. Works like [@chadés2014], [@carwardine2012] or [@carwardine2018] they help to measure the individual benefits involved in different management strategies through expert prediction. However, it is assumed that there are no interactions in the strategies due to the complexity of determining the resulting benefits.
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+For its part, `prioriactions` uses as a reference [@cattarino2015] work, that assumes that the benefit for each species, at each site, depends on the number of threats, which affect the species at the site, and which had been abated, divided by the total number of threats affecting the species at the site. This is an approximation that assumes a series of assumptions:
 
-## Including Code
+-   Threats are binary (presence/absence)
 
-You can include R code in the document as follows:
+-   There is only one action per threat.
 
-```{r cars}
-summary(cars)
-```
+-   Actions are fully effective, that is, an action against a threat eliminates it completely.
 
-## Including Plots
+-   All species are equally sensitive to threats.
 
-You can also embed plots, for example:
+-   The benefit or probability of persistence of the species is proportional to the number of actions you take with respect to the total number of actions available.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+The expected **local benefit** (benefit of a feature in an unit) can be expressed mathematically for a set of planning units $I$ indexed by $i$, a set of threats $K$ indexed by $k$ and a set of features $S$ indexed by $s$ as:
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+$$
+b_{is} = \frac{\sum_{k \in K_i \cap K_s} {x_{ik}}}{|K_i \cap K_s|}
+$$
+
+Here, $x_{ik}$ is the decisions variable that specify whether action to abate the threat $k$ in the planning unit $i$ has been selected (1) or not (0), $K_i$ is the set of all threats that exists in $i$ and $K_s$ is the set of all threats the feature $s$ is sensitive. Note that $|K_i \cap K_s|$ indicates the intersection between these two sets, that is, the threats that exist on the site $i$ and that, in turn, the features $s$ is sensitive. In the case that said the intersection is zero, this means that feature $s$ does not coexist with any of its threats, and thus the **local benefit** is 1. The participation of this **local benefit** in the contribution of the target will depend exclusively on the `recovery` parameter (if `recovery = TRUE`, it is assumed that it does not contribute to the target, that is, the **local benefit** becomes zero, otherwise, when `recovery = FALSE`, the **local benefit** remains at 1). More information about this important parameter in [recovery model](https://prioriactions.github.io/prioriactions/articles/recovery.html) vignette.
+
+## References

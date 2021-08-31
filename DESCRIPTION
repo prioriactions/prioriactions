@@ -2,18 +2,13 @@ Package: prioriactions
 Type: Package
 Version: 0.2.0
 Title: Multi-action conservation planning             
-Description: The prioriactions R package uses a mixed integer mathematical programming (MIP)
-        approach for building and solving multi-action conservation planning problems, 
+Description: The package prioriactions uses a mixed integer mathematical programming (MIP)
+        approach for building and solving multi-action planning problems, 
         where the goal is to find an optimal combination of management actions that
         abate threats, in an efficient way while accounting for connectivity. 
-        Furthermore, the flexibility of the package interface allows implementing an
-        extended version of the base model for minimizing fragmentation between 
-        different actions. Once built a multi-action conservation problem, the next step
-        is to solve it. For this, the package has a variety of commercial and 
-        open-source exact algorithm solvers that guarantee to find optimal solutions. 
-        The models implemented here have three advantages over their heuristic 
-        counterparts: shorter execution times, higher solutions quality, and a solution 
-        quality guarantee.
+        Thus, optimizing the spatial coherence and conservation effectiveness of 
+        the prioritized units and of the deployed actions.The package is capable of 
+        handling different commercial and non-commercial MIP solvers. 
 Authors@R: c(person(c('Jose'), 'Salgado-Rojas',
              email='jose.salgado.rojas@hotmail.com', role = c('aut','cre')),
              person(c('Irlanda'), 'Ceballos-Fuentealba',
@@ -48,7 +43,12 @@ Suggests:
   gurobi (>= 9.0),
   roxygen2,
   rmarkdown,
-  testthat
+  testthat,
+  raster,
+  tmap,
+  sp,
+  viridis,
+  markdown
 LinkingTo: 
   Rcpp, 
   RcppArmadillo, 
@@ -66,6 +66,7 @@ Collate:
     'RcppExports.R'
     'internal.R'
     'conservationProblem-class.R'
+    'data.R'
     'writeOutputs.R'
     'optimizationProblem-class.R'
     'presolve.R'
@@ -94,6 +95,7 @@ Collate:
     'getTotalCost.R'
     'maximizeBenefits.R'
     'minimizeCosts.R'
+    'model.R'
     'package.R'
     'plot.R'
     'portfolio-class.R'

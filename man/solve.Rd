@@ -25,7 +25,7 @@ created using the \code{minimizeCosts()} or \code{maximizeBenefits()} functions.
 solve the model. The following solvers are supported:
 \href{http://gurobi.com}{\code{"gurobi"}}(requires the \pkg{gurobi} package), and
 \href{https://projects.coin-or.org/SYMPHONY}{\code{"symphony"}}(requires the \pkg{Rsymphony} package).
-We highly recommend using gurobi (for more information on how to obtain an academic license
+We recommend using gurobi (for more information on how to obtain an academic license
 \href{https://prioritizr.net/articles/gurobi_installation.html}{here}).}
 
 \item{gap_limit}{\code{numeric}. Value between 0 and 1 that represents the gap
@@ -33,10 +33,11 @@ to optimality, i.e., a relative number that cause the optimizer to
 terminate when the difference between the upper and lower objective
 function bounds is less than the gap times the upper bound. For example, a
 value of 0.01 will result in the optimizer stopping when the difference
-between the bounds is 1 percent of the upper bound.}
+between the bounds is 1 percent of the upper bound. Default is 0.0.}
 
 \item{time_limit}{\code{numeric}. Time limit to run the optimizer (in seconds).
-The solver will return the current best solution when this time limit is exceeded.}
+The solver will return the current best solution when this time limit is exceeded.
+Default is the maximum integer number of your machine.}
 
 \item{solution_limit}{\code{logical}. Indicates if the solution process
 should be stopped after the first feasible solution is found (\code{TRUE}),
@@ -59,7 +60,7 @@ and the optimization engine log.}
 An object of class \linkS4class{solution}.
 }
 \description{
-Solve the optimization model associated with the multi-action
+Solves the optimization model associated with the multi-action
 conservation planning problem. This function is used to solve
 the mathematical model created by the \code{minimizeCosts()} or \code{maximizeBenefits()}
 functions.

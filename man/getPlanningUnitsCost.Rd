@@ -13,7 +13,7 @@ getPlanningUnitsCost(x)
 \link{numeric}.
 }
 \description{
-Provides the total cost of selected planning units in a solution.
+Provides the total cost value of selected planning units in a solution.
 }
 \examples{
 # set seed for reproducibility

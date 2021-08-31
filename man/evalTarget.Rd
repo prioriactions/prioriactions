@@ -4,13 +4,13 @@
 \alias{evalTarget}
 \title{Evaluate multiple target values}
 \usage{
-evalTarget(data = list(), prop = 1, ...)
+evalTarget(data = list(), values = c(), ...)
 }
 \arguments{
 \item{data}{\code{list}. Input data list for \code{problem()} function.}
 
-\item{prop}{\code{numeric}. Proportion of maximum value of benefit to achieve. This
-information can be getting with \code{getBenefit()} function.
+\item{values}{\code{numeric}. Proportion of maximum value of benefit to verify.
+This information can be getting with \code{getBenefit()} function.
 More than one value is needed.}
 
 \item{...}{arguments inherited from \code{problem()}, \code{minimizeCosts()},
@@ -20,21 +20,23 @@ and \code{solve()} functions.}
 An object of class \linkS4class{portfolio}.
 }
 \description{
-Provides multiple solutions for different values of target. This function
-assumes that you are working with the \emph{minimizeCosts} model. Like
-\code{prioriactions()} function, It inherits all arguments from \code{problem()},
-\code{minimizeCosts()} and \code{solve()}.
+Provides multiple solutions for different targets values. This
+function assumes that the \emph{minimizeCosts} model is being used. As well as the
+\code{prioriactions()} function, it inherits all arguments from \code{problem()},
+\code{model()} and \code{solve()}.
 }
 \details{
-\code{evalTarget()} creates and solves multiple multi-actions planning
-problems for different values of targets You can do this by manually running
-\code{prioriactions()} function with these different target values (i.e., running
-once by target). However, the \code{evalTarget()} function has two advantages
-over their counterpart: 1) it is more efficient to create the models.
-This is because the model is once created and then updated with the
-new information; 2) the output is a portfolio object, which allows
-obtaining information about the group of solutions, including, all \emph{get}
-functions and also different types of plots.
+\code{evalTarget()} creates and solves multiple instances, of the corresponding
+multi-actions planning problem, for different proportions of maximum benefit values
+as target values. Alternatively, this
+could be obtained by executing function \code{prioriactions()} or by steps the \code{problem()},
+\code{model()} and \code{solve()} functions; using, in each run, different budgtes values.
+However, the \code{evalTarget()} function has two advantages with
+respect to this manual approach: : 1)
+it is more efficient to create the models (this is because the model is created
+just once and, at each iteration, only the target values are updated); and 2) the
+output is a portfolio object, which allows
+obtaining information about the group of solutions (including all \emph{get} functions).
 }
 \examples{
 # set seed for reproducibility
@@ -46,7 +48,6 @@ sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
 sim_boundary_data)
 
 ## Create model and solve
-port <- evalTarget(data = inputs, prop = c(0.1, 0.3, 0.5), time_limit = 50, output_file = FALSE)
+port <- evalTarget(data = inputs, values = c(0.1, 0.3, 0.5), time_limit = 50, output_file = FALSE)
 
-plot(port)
 }
