@@ -9,8 +9,7 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
                              DataFrame threats_data,
                              DataFrame dist_threats_data,
                              DataFrame sensitivity_data,
-                             std::vector<double> solution,
-                             bool recovery){
+                             std::vector<double> solution){
   // initialization
   //variables
   int number_of_threats = threats_data.nrows();
@@ -18,7 +17,10 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
   int number_of_features = features_data.nrows();
   int large_solution = solution.size();
 
-  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data, number_of_units, number_of_threats);
+  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data,
+                                                                    number_of_units,
+                                                                    number_of_threats,
+                                                                    dist_threats_data["amount"]);
   arma::sp_mat dist_features_extended = create_dist_features_extended(dist_features_data, number_of_units, number_of_features);
   arma::sp_mat sensitivity_extended = create_sensitivity_extended(sensitivity_data, number_of_features, number_of_threats);
   arma::sp_mat sensitivity_a_extended = create_sensitivity_param_extended(sensitivity_data, number_of_features, number_of_threats, "a");
@@ -159,32 +161,19 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
   DataFrame df;
 
   if(large_solution != 1){
-    if(recovery){
-        df = DataFrame::create(Named("feature") = features_data["id"],
-                               Named("dist") = specie_distribution,
-                               Named("dist_threatened") = specie_distribution_threatened,
-                               Named("benefit.recovery") = Rcpp::round(benefit_maximum_recovery, 4),
-                               Named("benefit.recovery.") = Rcpp::round(benefit_solution_recovery, 4));
-    }
-    else{
-        df = DataFrame::create(Named("feature") = features_data["id"],
-                               Named("dist") = specie_distribution,
-                               Named("dist_threatened") = specie_distribution_threatened,
-                               Named("benefit.nothing") = Rcpp::round(benefit_maximum_nothing, 4),
-                               Named("benefit.recovery") = Rcpp::round(benefit_maximum_recovery, 4),
-                               Named("benefit.total") = Rcpp::round(benefit_maximum_recovery + benefit_maximum_nothing, 4),
-                               Named("benefit.nothing.") = Rcpp::round(benefit_solution_nothing, 4),
-                               Named("benefit.recovery.") = Rcpp::round(benefit_solution_recovery,4),
-                               Named("benefit.total.") = Rcpp::round(benefit_solution_recovery + benefit_solution_nothing, 4));
-    }
+        df = DataFrame::create(Named("solution_name") = "",
+                               Named("feature") = features_data["id"],
+                               Named("benefit.conservation") = Rcpp::round(benefit_solution_nothing, 4),
+                               Named("benefit.recovery") = Rcpp::round(benefit_solution_recovery,4),
+                               Named("benefit.total") = Rcpp::round(benefit_solution_recovery + benefit_solution_nothing, 4));
   }
   else{
       df = DataFrame::create(Named("feature") = features_data["id"],
                              Named("dist") = specie_distribution,
                              Named("dist_threatened") = specie_distribution_threatened,
-                             Named("benefit.nothing") = Rcpp::round(benefit_maximum_nothing, 4),
-                             Named("benefit.recovery") = Rcpp::round(benefit_maximum_recovery, 4),
-                             Named("benefit.total") = Rcpp::round(benefit_maximum_recovery + benefit_maximum_nothing, 4));
+                             Named("maximum.conservation.benefit") = Rcpp::round(benefit_maximum_nothing, 4),
+                             Named("maximum.recovery.benefit") = Rcpp::round(benefit_maximum_recovery, 4),
+                             Named("maximum.benefit") = Rcpp::round(benefit_maximum_recovery + benefit_maximum_nothing, 4));
   }
   return df;
 }

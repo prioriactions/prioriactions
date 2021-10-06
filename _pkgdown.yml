@@ -30,45 +30,36 @@ reference:
   - title: Create and solve problems
     desc: Functions for creating new problems and solving them
     contents:
-      - prioriactions
+      - inputData
       - problem
-      - model
       - solve
+      - prioriactions
 
   - title: Evaluate params
-    desc: Function for evaluate differents params for a specific problem
+    desc: Functions for evaluate differents params for a specific problem
     contents:
       - evalBlm
       - evalTarget
       - evalBudget
 
+  - title: Get input data information
+    desc: Function to obtain information about the maximum benefits to achieve
+    contents:
+      - getPotentialBenefit
+
+  - title: Get mathematical model information
+    desc: Function to obtain information about the mathematical model
+    contents:
+      - getModelInfo
+
   - title: Get solution information
     desc: Functions to obtain various information about the solution
     contents:
       - getActions
-      - getActionsConnectivity
-      - getActionsCost
-      - getPlanningUnits
-      - getPlanningUnitsConnectivity
-      - getPlanningUnitsCost
-      - getBenefit
-      - getLocalBenefit
-      - getTotalBenefit
-      - getGap
-      - getObjectiveValue
-      - getStatus
-      - getStatusCode
-      - getTimeSolving
-      - getTotalConnectivity
-      - getTotalCost
-
-  - title: Get mathematical model information
-    desc: Functions to obtain various information about the mathematical model
-    contents:
-      - getModelSense
-      - getNconstraints
-      - getNvariables
-      - getSizeA
+      - getPerformance
+      - getConnectivityPenalty
+      - getCost
+      - getSolutionBenefit
 
   - title: Class definitions
     desc: Classes for handle mathematical problems
@@ -93,7 +84,7 @@ articles:
 
   - title: Introduction of prioriactions
     navbar: Introduction
-    contents: [sensitivities, recovery]
+    contents: [sensitivities, objectives]
 
   - title: Study cases of prioriactions
     navbar: Study cases

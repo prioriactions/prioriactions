@@ -4,33 +4,32 @@
 \alias{evalTarget}
 \title{Evaluate multiple target values}
 \usage{
-evalTarget(data = list(), values = c(), ...)
+evalTarget(values = c(), ...)
 }
 \arguments{
-\item{data}{\code{list}. Input data list for \code{problem()} function.}
+\item{values}{\code{numeric}. Proportion of maximum value of benefits to verify (both
+recovery and conservation benefits). This information can be obtained with
+\code{getPotentialBenefit()} function. More than one value is needed.}
 
-\item{values}{\code{numeric}. Proportion of maximum value of benefit to verify.
-This information can be getting with \code{getBenefit()} function.
-More than one value is needed.}
-
-\item{...}{arguments inherited from \code{problem()}, \code{minimizeCosts()},
+\item{...}{arguments inherited from \code{inputData()}, \code{problem()},
 and \code{solve()} functions.}
 }
 \value{
 An object of class \linkS4class{portfolio}.
 }
 \description{
-Provides multiple solutions for different targets values. This
+Return one solution per instance for different targets values. This
 function assumes that the \emph{minimizeCosts} model is being used. As well as the
-\code{prioriactions()} function, it inherits all arguments from \code{problem()},
-\code{model()} and \code{solve()}.
+\code{prioriactions()} function, it inherits all arguments from \code{inputData()},
+\code{problem()} and \code{solve()}.
 }
 \details{
 \code{evalTarget()} creates and solves multiple instances, of the corresponding
 multi-actions planning problem, for different proportions of maximum benefit values
-as target values. Alternatively, this
-could be obtained by executing function \code{prioriactions()} or by steps the \code{problem()},
-\code{model()} and \code{solve()} functions; using, in each run, different budgtes values.
+as target values. It is assumed that the same proportion is applied for the maximum
+benefit in recovery and conservation. Alternatively, this
+could be obtained by executing function \code{prioriactions()} or by steps the \code{inputData()},
+\code{problem()} and \code{solve()} functions; using, in each run, different targets values.
 However, the \code{evalTarget()} function has two advantages with
 respect to this manual approach: : 1)
 it is more efficient to create the models (this is because the model is created
@@ -39,15 +38,22 @@ output is a portfolio object, which allows
 obtaining information about the group of solutions (including all \emph{get} functions).
 }
 \examples{
+\dontrun{
 # set seed for reproducibility
 set.seed(14)
 
-## Load data
-inputs <- list(sim_pu_data, sim_features_data, sim_dist_features_data,
-sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
-sim_boundary_data)
-
 ## Create model and solve
-port <- evalTarget(data = inputs, values = c(0.1, 0.3, 0.5), time_limit = 50, output_file = FALSE)
+port <- evalTarget(pu = sim_pu_data, features = sim_features_data,
+                dist_features = sim_dist_features_data,
+                threats = sim_threats_data,
+                dist_threats = sim_dist_threats_data,
+                sensitivity = sim_sensitivity_data,
+                boundary = sim_boundary_data,
+                values = c(0.1, 0.3, 0.5),
+                time_limit = 50,
+                output_file = FALSE)
+
+getCost(port)
+}
 
 }

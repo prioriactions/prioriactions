@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@
       <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li>
-      <a href="../articles/recovery.html">Recovery model</a>
+      <a href="../articles/objectives.html">Planning objectives</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -191,19 +191,13 @@
       <tr>
         
         <td>
-          <p><code><a href="prioriactions.html">prioriactions()</a></code> </p>
-        </td>
-        <td><p>Create and solve multi-actions planning problems</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="problem.html">problem()</a></code> </p>
+          <p><code><a href="inputData.html">inputData()</a></code> </p>
         </td>
         <td><p>Creates the multi-action planning problem</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="model.html">model()</a></code> </p>
+          <p><code><a href="problem.html">problem()</a></code> </p>
         </td>
         <td><p>Create mathematical model</p></td>
       </tr><tr>
@@ -212,12 +206,18 @@
           <p><code><a href="solve.html">solve()</a></code> </p>
         </td>
         <td><p>Solve mathematical models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="prioriactions.html">prioriactions()</a></code> </p>
+        </td>
+        <td><p>Create and solve multi-actions planning problems</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
           <h2 id="section-evaluate-params" class="hasAnchor"><a href="#section-evaluate-params" class="anchor"></a>Evaluate params</h2>
-          <p class="section-desc"><p>Function for evaluate differents params for a specific problem</p></p>
+          <p class="section-desc"><p>Functions for evaluate differents params for a specific problem</p></p>
         </th>
       </tr>
       
@@ -247,6 +247,44 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-get-input-data-information" class="hasAnchor"><a href="#section-get-input-data-information" class="anchor"></a>Get input data information</h2>
+          <p class="section-desc"><p>Function to obtain information about the maximum benefits to achieve</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="getPotentialBenefit.html">getPotentialBenefit()</a></code> </p>
+        </td>
+        <td><p>Extract potential benefit of features</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-get-mathematical-model-information" class="hasAnchor"><a href="#section-get-mathematical-model-information" class="anchor"></a>Get mathematical model information</h2>
+          <p class="section-desc"><p>Function to obtain information about the mathematical model</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="getModelInfo.html">getModelInfo()</a></code> </p>
+        </td>
+        <td><p>Extract general information about mathematical model</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-get-solution-information" class="hasAnchor"><a href="#section-get-solution-information" class="anchor"></a>Get solution information</h2>
           <p class="section-desc"><p>Functions to obtain various information about the solution</p></p>
         </th>
@@ -261,134 +299,31 @@
         <td>
           <p><code><a href="getActions.html">getActions()</a></code> </p>
         </td>
-        <td><p>Get actions</p></td>
+        <td><p>Extract action information</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="getActionsConnectivity.html">getActionsConnectivity()</a></code> </p>
+          <p><code><a href="getPerformance.html">getPerformance()</a></code> </p>
         </td>
-        <td><p>Get connectivity of actions</p></td>
+        <td><p>Extract general information about solution</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="getActionsCost.html">getActionsCost()</a></code> </p>
+          <p><code><a href="getConnectivityPenalty.html">getConnectivityPenalty()</a></code> </p>
         </td>
-        <td><p>Get cost of actions</p></td>
+        <td><p>Extract connectivity penalty values</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="getPlanningUnits.html">getPlanningUnits()</a></code> </p>
+          <p><code><a href="getCost.html">getCost()</a></code> </p>
         </td>
-        <td><p>Get planning units</p></td>
+        <td><p>Extract cost values</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="getPlanningUnitsConnectivity.html">getPlanningUnitsConnectivity()</a></code> </p>
+          <p><code><a href="getSolutionBenefit.html">getSolutionBenefit()</a></code> </p>
         </td>
-        <td><p>Get connectivity of planning units</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getPlanningUnitsCost.html">getPlanningUnitsCost()</a></code> </p>
-        </td>
-        <td><p>Get cost of planning units</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getBenefit.html">getBenefit()</a></code> </p>
-        </td>
-        <td><p>Get benefit</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getLocalBenefit.html">getLocalBenefit()</a></code> </p>
-        </td>
-        <td><p>Get local benefits</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getTotalBenefit.html">getTotalBenefit()</a></code> </p>
-        </td>
-        <td><p>Get total benefits</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getGap.html">getGap()</a></code> </p>
-        </td>
-        <td><p>Get gap</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getObjectiveValue.html">getObjectiveValue()</a></code> </p>
-        </td>
-        <td><p>Get objective value</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getStatus.html">getStatus()</a></code> </p>
-        </td>
-        <td><p>Get status</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getStatusCode.html">getStatusCode()</a></code> </p>
-        </td>
-        <td><p>Get status code</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getTimeSolving.html">getTimeSolving()</a></code> </p>
-        </td>
-        <td><p>Get model solving time</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getTotalConnectivity.html">getTotalConnectivity()</a></code> </p>
-        </td>
-        <td><p>Get total connectivity</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getTotalCost.html">getTotalCost()</a></code> </p>
-        </td>
-        <td><p>Get total cost</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-get-mathematical-model-information" class="hasAnchor"><a href="#section-get-mathematical-model-information" class="anchor"></a>Get mathematical model information</h2>
-          <p class="section-desc"><p>Functions to obtain various information about the mathematical model</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="getModelSense.html">getModelSense()</a></code> </p>
-        </td>
-        <td><p>Get model sense</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getNconstraints.html">getNconstraints()</a></code> </p>
-        </td>
-        <td><p>Get number of constraints</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getNvariables.html">getNvariables()</a></code> </p>
-        </td>
-        <td><p>Get number of variables</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getSizeA.html">getSizeA()</a></code> </p>
-        </td>
-        <td><p>Get size of matrix A of model</p></td>
+        <td><p>Extract benefit values</p></td>
       </tr>
     </tbody><tbody>
       <tr>

@@ -9,8 +9,7 @@ bool rcpp_constraint_benefit(SEXP x,
                             DataFrame dist_features_data,
                             DataFrame threats_data,
                             DataFrame dist_threats_data,
-                            DataFrame sensitivity_data,
-                            bool recovery){
+                            DataFrame sensitivity_data){
   // initialization
   Rcpp::XPtr<OptimizationProblem> op = Rcpp::as<Rcpp::XPtr<OptimizationProblem>>(x);
 
@@ -19,8 +18,12 @@ bool rcpp_constraint_benefit(SEXP x,
   int number_of_units = pu_data.nrows();
   int number_of_features = features_data.nrows();
   int number_of_actions = dist_threats_data.nrows();
+  int number_of_dist_features = dist_features_data.nrows();
 
-  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data, number_of_units, number_of_threats);
+  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data,
+                                                                    number_of_units,
+                                                                    number_of_threats,
+                                                                    dist_threats_data["amount"]);
   arma::sp_mat dist_features_extended = create_dist_features_extended(dist_features_data, number_of_units, number_of_features);
   arma::sp_mat sensitivity_extended = create_sensitivity_extended(sensitivity_data, number_of_features, number_of_threats);
   arma::sp_mat sensitivity_a_extended = create_sensitivity_param_extended(sensitivity_data, number_of_features, number_of_threats, "a");
@@ -33,6 +36,7 @@ bool rcpp_constraint_benefit(SEXP x,
   int threat_id;
   int row_constraint = op->_rhs.size();
   int col_constraint = number_of_units + number_of_actions;
+  int col_constraint_conservation = number_of_units + number_of_actions + number_of_dist_features;
   int col_action = 0;
 
   double response_coef_variable;
@@ -59,6 +63,14 @@ bool rcpp_constraint_benefit(SEXP x,
       op->_A_x.push_back(1);
       op->_rhs.push_back(0);
       op->_sense.push_back("==");
+
+      // z_is
+      op->_A_i.push_back(row_constraint + 1);
+      op->_A_j.push_back(col_constraint_conservation);
+      op->_A_x.push_back(1);
+      op->_rhs.push_back(0);
+      op->_sense.push_back("<=");
+
 
       for (auto it_threats = dist_threats_extended.begin_row(pu_id);
            it_threats != dist_threats_extended.end_row(pu_id); ++it_threats) {
@@ -135,25 +147,22 @@ bool rcpp_constraint_benefit(SEXP x,
             op->_A_x.push_back(-1*(response_coef_variable * alpha)/sum_alpha);
 
             // w_i
-            if(recovery == false){
-              op->_A_i.push_back(row_constraint);
-              op->_A_j.push_back(pu_id);
-              op->_A_x.push_back(-1*(response_coef_constant * alpha)/sum_alpha);
-            }
+            op->_A_i.push_back(row_constraint + 1);
+            op->_A_j.push_back(pu_id);
+            op->_A_x.push_back(-1*(response_coef_constant * alpha)/sum_alpha);
           }
         }
       }
 
       if(sum_alpha == 0.0){
         //z variables
-        if(recovery == false){
-          op->_A_i.push_back(row_constraint);
-          op->_A_j.push_back(pu_id);
-          op->_A_x.push_back(-1);
-        }
+        op->_A_i.push_back(row_constraint + 1);
+        op->_A_j.push_back(pu_id);
+        op->_A_x.push_back(-1);
       }
-      row_constraint = row_constraint + 1;
-      col_constraint = col_constraint + 1;
+      row_constraint = row_constraint + 2;
+      col_constraint++;
+      col_constraint_conservation++;
     }
   }
   return true;

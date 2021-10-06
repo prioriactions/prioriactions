@@ -26,20 +26,17 @@ bool rcpp_objective_max_coverage(SEXP x,
   NumericVector connectivity_units(number_of_units);
   arma::sp_mat matrix_boundary_extended;
 
-  if(boundary_size != 0 && blm != 0){
+  if(boundary_size != 0){
     matrix_boundary_extended = create_boundary_matrix_extended(boundary_data, number_of_units);
+  }
 
-    IntegerVector boundary_data_id1 = boundary_data["internal_id1"];
-    IntegerVector pu_id1 = clone(boundary_data_id1);
-    pu_id1 = pu_id1 - 1;
-    IntegerVector boundary_data_id2 = boundary_data["internal_id2"];
-    IntegerVector pu_id2 = clone(boundary_data_id2);
-    pu_id2 = pu_id2 - 1;
-    NumericVector bound = boundary_data["boundary"];
+  if(boundary_size != 0 && blm != 0){
+    arma::sp_mat z = matrix_boundary_extended.t();
 
-    for(int i = 0; i < boundary_size; i++){
-      connectivity_units[pu_id1[i]] = connectivity_units[pu_id1[i]] + bound[i];
-      connectivity_units[pu_id2[i]] = connectivity_units[pu_id2[i]] + bound[i];
+    for(arma::sp_mat::const_iterator it = z.begin(); it != z.end(); ++it) {
+      if(it.row() != it.col()){
+        connectivity_units[it.col()] = connectivity_units[it.col()] + (*it);
+      }
     }
   }
 
@@ -68,8 +65,10 @@ bool rcpp_objective_max_coverage(SEXP x,
   IntegerVector threat_id = clone(dist_threats_data_threat_id);
   threat_id = threat_id - 1;
 
-  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data, number_of_units, number_of_threats);
-
+  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data,
+                                                                    number_of_units,
+                                                                    number_of_threats,
+                                                                    dist_threats_data["amount"]);
   for(int a = 0; a < number_of_actions; a++){
     if(boundary_size != 0 && blm_actions[threat_id[a]]){
       int pu_id2_threat;
@@ -120,6 +119,24 @@ bool rcpp_objective_max_coverage(SEXP x,
   }
 
   //------------------------------------------------------------------------------------------
+  //--------------------- (coefficients associated with z[i,s] variables) --------------------
+  //------------------------------------------------------------------------------------------
+
+  //variables
+  for(int s = 0; s < number_of_features; s++){
+    for (auto it_species = dist_features_extended.begin_col(s);
+         it_species != dist_features_extended.end_col(s); ++it_species) {
+      pu_id = it_species.row();
+      feature_intensity = dist_features_extended(pu_id, s);
+
+      op->_obj.push_back(0);
+      op->_vtype.push_back("C");
+      op->_lb.push_back(0);
+      op->_ub.push_back(1);
+    }
+  }
+
+  //------------------------------------------------------------------------------------------
   //--------------------- (coefficients associated with b'[i,s] variables) --------------------
   //------------------------------------------------------------------------------------------
 
@@ -145,8 +162,8 @@ bool rcpp_objective_max_coverage(SEXP x,
         op->_A_j.push_back(col_constraint);
         op->_A_x.push_back(0);
 
-        row_constraint = row_constraint + 1;
-        col_constraint = col_constraint + 1;
+        //row_constraint++;
+        col_constraint++;
       }
     }
   }

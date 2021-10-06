@@ -46,8 +46,6 @@ writeOutputs.Solution <- function(x, name = "output", ...) {
     "\n",
     "segments: ", x$OptimizationClass$data$args$segments,
     "\n",
-    "recovery: ", x$OptimizationClass$data$args$recovery,
-    "\n",
     "solver:  ", x$data$arg$solver,
     "\n",
     "gap_limit:  ", paste0(x$data$arg$gap, "%"),
@@ -80,9 +78,9 @@ writeOutputs.Solution <- function(x, name = "output", ...) {
     "\n",
     "Type of model:  ", x$OptimizationClass$data$args$name_model,
     "\n",
-    "Number of variables:  ", getNvariables(x),
+    "Number of variables:  ", base::ncol(x$OptimizationClass$data$A),
     "\n",
-    "Number of constraints:  ", getNconstraints(x),
+    "Number of constraints:  ", base::nrow(x$OptimizationClass$data$A),
     "\n"
   )
 
@@ -93,13 +91,9 @@ writeOutputs.Solution <- function(x, name = "output", ...) {
 
   #writing benefits
   name_output_benefits <- paste0(name,"_benefits.txt")
-  utils::write.csv(getBenefit(x), file = name_output_benefits, row.names = FALSE)
+  utils::write.csv(getSolutionBenefit(x), file = name_output_benefits, row.names = FALSE)
 
   #writing actions
   name_output_actions <- paste0(name,"_actions.txt")
   utils::write.csv(getActions(x), file = name_output_actions, row.names = FALSE)
-
-  #writing PU
-  name_output_pu <- paste0(name,"_PU.txt")
-  utils::write.csv(getPlanningUnits(x), file = name_output_pu, row.names = FALSE)
 }

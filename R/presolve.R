@@ -22,11 +22,14 @@ presolve <- function(x, ...) UseMethod("presolve", x)
 #' @rdname presolve
 #' @method presolve ConservationProblem
 #' @noRd
-presolve.ConservationProblem <- function(x, name_model = "minimizeCosts", recovery = TRUE, budget = 0) {
+presolve.ConservationProblem <- function(x, ...) {
 
   assertthat::assert_that(inherits(x, "ConservationProblem"))
 
-  if (name_model == "minimizeCosts") {
+  params = list(...)
+
+
+  if (params$model_type == "minimizeCosts") {
 
     pu <- x$getData("pu")
     locked_out_units <- pu$id[c(which(pu$status == 3))]
@@ -39,60 +42,52 @@ presolve.ConservationProblem <- function(x, name_model = "minimizeCosts", recove
     dist_threats$solution <- 1
     dist_threats$solution[locked_out_actions] <- 0
 
-    targets <- x$data$features$target
-
-    a <- rcpp_stats_benefit(x$data$pu,
-                                      x$data$features,
-                                      x$data$dist_features,
-                                      x$data$threats,
-                                      x$data$dist_threats,
-                                      x$data$sensitivity,
-                                      c(pu$solution, dist_threats$solution),
-                                      recovery)
+    a <- getPotentialBenefit(x)
 
 
-    if(recovery){
+    targets_recovery <- x$data$features$target_recovery
 
-      diff_features <- which(targets > a$benefit.recovery)
+    diff_features <- which(targets_recovery > a$maximum.recovery.benefit)
 
-      if(length(diff_features) > 0){
-        warning(paste0("Infeasible model. There is not enough representativeness to achieve the targets required of following features: ", paste(a$feature[diff_features], collapse = " ")),
-                call.=FALSE, immediate. = TRUE)
+    if(length(diff_features) > 0){
+      warning(paste0("Infeasible model. There is not enough representativeness to achieve the targets of recovery required of following features: ",
+                     paste(a$feature[diff_features], collapse = " "), ". \n For more information on the maximum benefits use the getPotentialBenefit() function."),
+              call.=FALSE, immediate. = TRUE)
 
-        x$data$features$target[diff_features] <- a$benefit.recovery[diff_features] - 10**(-4)
-        warning("The targets for these features will be set to the maximum benefit values", call.=FALSE, immediate. = TRUE)
-      }
+      x$data$features$target_recovery[diff_features] <- a$maximum.recovery.benefit[diff_features] - 10**(-4)
+      warning("The targets of recovery for these features will be set to the maximum recovery benefit values", call.=FALSE, immediate. = TRUE)
     }
-    else{
-      diff_features <- which(targets > a$benefit.total)
 
-      if(length(diff_features) > 0){
-        warning(paste0("Infeasible model. There is not enough representativeness to achieve the targets required of following features: ", paste(a$feature[diff_features], collapse = " ")),
-                call.=FALSE, immediate. = TRUE)
+    targets_conservation <- x$data$features$target_conservation
+    diff_features <- which(targets_conservation > a$maximum.conservation.benefit)
 
-        x$data$features$target[diff_features] <- a$benefit.total[diff_features]- 10**(-4)
+    if(length(diff_features) > 0){
+      warning(paste0("Infeasible model. There is not enough representativeness to achieve the targets of conservation required of following features: ",
+                     paste(a$feature[diff_features], collapse = " "), ". \n For more information on the maximum benefits use the getPotentialBenefit() function."),
+              call.=FALSE, immediate. = TRUE)
 
-        warning("The targets for these features will be set to the maximum benefit values", call.=FALSE, immediate. = TRUE)
-      }
+      x$data$features$target_conservation[diff_features] <- a$maximum.conservation.benefit[diff_features] - 10**(-4)
+      warning("The targets of conservation for these features will be set to the maximum recovery benefit values", call.=FALSE, immediate. = TRUE)
     }
+
   }
-  else if(name_model == "maximizeBenefits"){
+  else if(params$model_type == "maximizeBenefits"){
+
     pu <- x$getData("pu")
     locked_in_units <- pu$id[c(which(pu$status == 2))]
     pu$solution <- 0
     pu$solution[locked_in_units] <- 1
 
-
+    threats <- x$getData("threats")
     dist_threats <- x$getData("dist_threats")
     locked_in_actions <- pu$id[c(which(dist_threats$status == 2))]
     dist_threats$solution <- 0
     dist_threats$solution[locked_in_actions] <- 1
 
-
     costs_units <- rcpp_stats_costs_units(pu, pu$solution)
-    costs_actions <- rcpp_stats_costs_actions(dist_threats, dist_threats$solution)
+    costs_actions <- rcpp_stats_costs_actions(pu, threats, dist_threats, dist_threats$solution)
 
-    if(budget < sum(costs_actions) + sum(costs_units)){
+    if(params$budget < sum(costs_actions) + sum(costs_units)){
       warning("Infeasible model. There is not enough budget to achieve the actions required (lock-in)",
               call.=FALSE, immediate. = TRUE)
 
@@ -101,7 +96,7 @@ presolve.ConservationProblem <- function(x, name_model = "minimizeCosts", recove
       return(sum(costs_actions) + sum(costs_units))
     }
     else{
-      return(budget)
+      return(params$budget)
     }
   }
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Creates the multi-action planning problem — problem • prioriactions</title>
+<title>Create mathematical model — problem • prioriactions</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,11 +52,10 @@
 
 
 
-<meta property="og:title" content="Creates the multi-action planning problem — problem" />
-<meta property="og:description" content="Create the conservationProblem object with information about the multi-action
-conservation planning problem. This function is used to specify all the data
-that defines the spatial prioritization problem (planning units data, feature
-data, threats data, and their spatial distributions.)" />
+<meta property="og:title" content="Create mathematical model — problem" />
+<meta property="og:description" content="Create an optimization model for the multi-action conservation
+planning problem, following the mathematical formulations used in
+Salgado-Rojas et al. (2020)." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -99,7 +98,7 @@ data, threats data, and their spatial distributions.)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -130,7 +129,7 @@ data, threats data, and their spatial distributions.)" />
       <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li>
-      <a href="../articles/recovery.html">Recovery model</a>
+      <a href="../articles/objectives.html">Planning objectives</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -169,275 +168,159 @@ data, threats data, and their spatial distributions.)" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Creates the multi-action planning problem</h1>
+    <h1>Create mathematical model</h1>
     <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/problem.R'><code>R/problem.R</code></a></small>
     <div class="hidden name"><code>problem.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create the <a href='conservationProblem-class.html'>conservationProblem</a> object with information about the multi-action
-conservation planning problem. This function is used to specify all the data
-that defines the spatial prioritization problem (planning units data, feature
-data, threats data, and their spatial distributions.)</p>
+    <p>Create an optimization model for the multi-action conservation
+planning problem, following the mathematical formulations used in
+Salgado-Rojas <em>et al.</em> (2020).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>problem</span><span class='op'>(</span><span class='va'>pu</span>, <span class='va'>features</span>, <span class='va'>dist_features</span>, <span class='va'>threats</span>, <span class='va'>dist_threats</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S4 method for data.frame,data.frame,data.frame,data.frame,data.frame</span>
-<span class='fu'>problem</span><span class='op'>(</span>
-  <span class='va'>pu</span>,
-  <span class='va'>features</span>,
-  <span class='va'>dist_features</span>,
-  <span class='va'>threats</span>,
-  <span class='va'>dist_threats</span>,
-  sensitivity <span class='op'>=</span> <span class='cn'>NULL</span>,
-  boundary <span class='op'>=</span> <span class='cn'>NULL</span>
+    <pre class="usage"><span class='fu'>problem</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  model_type <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>,
+  budget <span class='op'>=</span> <span class='fl'>0</span>,
+  blm <span class='op'>=</span> <span class='fl'>0</span>,
+  curve <span class='op'>=</span> <span class='fl'>1</span>,
+  segments <span class='op'>=</span> <span class='fl'>3</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pu</th>
-      <td><p>Object of class <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code> that specifies the planning units (PU)
-of the corresponding instance and their corresponding cost and status. Each
-row corresponds to a different planning unit. This file is inherited from the
-<em>pu.dat</em> in <em>Marxan</em>. It must contain the following columns:</p><dl>
-<dt><code>id</code></dt><dd><p><code>integer</code> unique identifier for each planning unit.</p></dd>
-<dt><code>cost</code></dt><dd><p><code>numeric</code> cost of including each planning unit in the reserve system.</p></dd>
-<dt><code>status</code></dt><dd><p><code>integer</code> (<strong>optional</strong>) value that indicate if each planning unit
-should be available to be selected (0), <em>locked-in</em> (2) as part of the
-solution, or <em>locked-out</em> (3) and excluded from the solution.</p></dd>
-
-</dl></td>
+      <th>x</th>
+      <td><p><a href='conservationProblem-class.html'>conservationProblem</a> object. Data used in a problem of
+prioritization of multiple conservation actions. This object must be created using the
+<code>problem()</code> function.</p></td>
     </tr>
     <tr>
-      <th>features</th>
-      <td><p>Object of class <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code> that specifies the conservation
-features to consider in the optimization problem. Each row corresponds to a different
-feature. This file is inherited from marxan's <em>spec.dat</em>. It must contain
-the following columns:</p><dl>
-<dt><code>id</code></dt><dd><p><code>integer</code> unique identifier for each conservation feature.</p></dd>
-<dt><code>target</code></dt><dd><p><code>numeric</code> target amount to achieve for each conservation feature.
-This field is <strong>required</strong> if a <code><a href='minimizeCosts.html'>minimizeCosts()</a></code> model is used.</p></dd>
-<dt><code>name</code></dt><dd><p><code>character</code> (<strong>optional</strong>) name for each conservation feature.</p></dd>
-
-</dl></td>
+      <th>model_type</th>
+      <td><p><code>character</code>. Name of the type of model to create. With two possible values:
+<code>minimizeCosts</code> and <code>maximizeBenefits</code>.</p></td>
     </tr>
     <tr>
-      <th>dist_features</th>
-      <td><p>Object of class <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code> that specifies the spatial
-distribution of conservation features across planning units. Each row corresponds
-to a combination of planning unit and feature. This file is inherited from marxan's
-<em>puvspr.dat</em>. It must contain the following columns:</p><dl>
-<dt><code>pu</code></dt><dd><p><code>integer</code> <em>id</em> of a planning unit where the conservation feature
-listed on the same row occurs.</p></dd>
-<dt><code>feature</code></dt><dd><p><code>integer</code> <em>id</em> of each conservation feature.</p></dd>
-<dt><code>amount</code></dt><dd><p><code>numeric</code> amount of the feature in the planning unit. Set
-to 1 to work with presence/absence.</p></dd>
-
-</dl></td>
+      <th>budget</th>
+      <td><p><code>numeric</code>. Maximum budget allowed. This field is used only if a
+model of the type <code>maximizeBenefits</code> is applied.</p></td>
     </tr>
     <tr>
-      <th>threats</th>
-      <td><p>Object of class <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code> that specifies the threats to consider in
-the optimization exercise. Each row corresponds to a different threats. It must contain
-the following columns:</p><dl>
-<dt><code>id</code></dt><dd><p><code>integer</code> unique identifier for each threat.</p></dd>
-<dt><code>blm_actions</code></dt><dd><p><code>numeric</code> (<strong>optional</strong>) penalty of connectivity between threats.
-Default is 0.</p></dd>
-<dt><code>name</code></dt><dd><p><code>character</code> (<strong>optional</strong>) name for each threat.</p></dd>
-
-</dl></td>
+      <th>blm</th>
+      <td><p><code>numeric</code>. Weight factor applied to the sum of connectivity penalties
+for missed connections in a solution, similar to Boundary Length Modifier (BLM) in <em>Marxan</em>. This argument
+only has an effect when the <code>boundary</code> is available.</p></td>
     </tr>
     <tr>
-      <th>dist_threats</th>
-      <td><p>Object of class <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code> that specifies the spatial
-distribution of threats across planning units. Each row corresponds
-to a combination of planning unit and threat. It must contain the following
-columns:</p><dl>
-<dt><code>pu</code></dt><dd><p><code>integer</code> <em>id</em> of a planning unit where the threat listed on the
-same row occurs.</p></dd>
-<dt><code>threat</code></dt><dd><p><code>integer</code> <em>id</em> of each threat.</p></dd>
-<dt><code>amount</code></dt><dd><p><code>numeric</code> amount of the threat in the planning unit. Set
-to 1 to work with presence/absence. Continuous amount values require
-that feature sensitivities to threats be established (more info in
-<a href='https://prioriactions.github.io/prioriactions/articles/sensitivities.html'>sensitivities</a>
-vignette).</p></dd>
-<dt><code>cost</code></dt><dd><p><code>numeric</code> cost of an action to abate the threat
-in each planning unit.</p></dd>
-<dt><code>status</code></dt><dd><p><code>integer</code> (<strong>optional</strong>) value that indicates if each action
-to abate the threat is available to be selected (0), <em>locked-in</em> (2)
-as part of the solution, or <em>locked-out</em> (3) and therefore excluded from the solution.</p></dd>
-
-</dl></td>
+      <th>curve</th>
+      <td><p><code>integer</code>. Type of continuous curve used to represent benefit expression. It can
+be a linear (<code>1</code>), quadratic (<code>2</code>) or cubic (<code>3</code>) function.
+See <strong>Details</strong> for more information.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>not used.</p></td>
-    </tr>
-    <tr>
-      <th>sensitivity</th>
-      <td><p>(<strong>optional</strong>) Object of class <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code> that specifies
-the sensitivity of each feature to each threat. Each row corresponds
-to a combination of feature and threat. If not informed, all features
-are assumed to be sensitive to all threats. We strongly recommend reviewing the
-<a href='https://prioriactions.github.io/prioriactions/articles/sensitivities.html'>sensitivities</a>
-vignette. It must contain the following
-columns:</p><dl>
-<dt><code>feature</code></dt><dd><p><code>integer</code> <em>id</em> of each conservation feature.</p></dd>
-<dt><code>threat</code></dt><dd><p><code>integer</code> <em>id</em> of each threat.</p></dd>
-<dt><code>a</code></dt><dd><p><code>numeric</code> (<strong>optional</strong>) the minimum intensity of the threat at
-which the features probability of persistence starts to decline. The more
-sensitive the feature is to the threat, the lowest this value will be. Default
-is 0.</p></dd>
-<dt><code>b</code></dt><dd><p><code>numeric</code> (<strong>optional</strong>) the value of intensity of the threat
-over which the feature has a probability of persistence of 0. If it is not
-established,it is assumed as the <strong>maximum value of the threat across all planning units</strong>
-in the study area.
-Note that this might overestimate the sensitivity of species to threats,
-as they will only be assumed to disappear from planning units if the
-threats reach the maximum intensity value in the study area.it is assumed as the <strong>maximum intensity value of this threat in all planning units</strong>.</p></dd>
-<dt><code>c</code></dt><dd><p><code>numeric</code> (<strong>optional</strong>) minimum probability of persistence of a
-features when a threat reaches its maximum intensity value. Default is 0.</p></dd>
-<dt><code>d</code></dt><dd><p><code>numeric</code> (<strong>optional</strong>) maximum probability of persistence of a
-features in absence of a given threat. Default is 1.</p></dd>
-
-</dl></td>
-    </tr>
-    <tr>
-      <th>boundary</th>
-      <td><p>(<strong>optional</strong>) Object of class <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code> that specifies
-the spatial relationship between pair of planning units. Each row corresponds
-to a combination of planning unit. This file is inherited from marxan's
-<em>bound.dat</em>. It must contain the following columns:</p><dl>
-<dt><code>id1</code></dt><dd><p><code>integer</code> <em>id</em> of each planning unit.</p></dd>
-<dt><code>id2</code></dt><dd><p><code>integer</code> <em>id</em> of each planning unit.</p></dd>
-<dt><code>boundary</code></dt><dd><p><code>numeric</code> penalty applied in the objective function
-when only one of the planning units is present in the solution.</p></dd>
-
-</dl></td>
+      <th>segments</th>
+      <td><p><code>integer</code>. Number of segments (<code>1</code>, <code>2</code>, <code>3</code>, <code>4</code> or <code>5</code>) used to approximate the non-linear
+expression (<code>curve</code>) in the calculate benefits. See <strong>Details</strong> for more information.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <a href='conservationProblem-class.html'>conservationProblem</a>.</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <p>An object of class <a href='optimizationProblem-class.html'>optimizationProblem</a>.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    
-<ul>
-<li><p>Ball I, Possingham H, Watts, M. <em>Marxan and relatives: software for spatial
-conservation prioritization</em>. Spatial conservation prioritisation: quantitative
-methods and computational tools 2009.</p></li>
-</ul>
+    <p>Currently the problem function allows you to create two types of mathematical programming models:</p><dl>
+<dt><strong>minimize cost (minimizeCosts)</strong>:</dt><dd><p>This model seeks to find the set of actions that
+minimizes the overall planning costs, while meeting a set of representation targets
+for the conservation features.This model can be expressed mathematically for a set of planning units
+\(I\) indexed by \(i\) a set of features \(S\) indexed by \(s\), and
+a set of threats \(K\) indexed by \(k\) as:
+$$
+\min \space \sum_{i \in I}\sum_{k \in K_i} x_{ik} c_{ik} + \sum_{i \in I} x_{i \cdot} c'_{i} + blm \cdot connectivity\\
+\mathit{s.t.} \\
+\sum_{i \in I_s} p_{is} r_{is} \geq t_s \space \forall \space s \in S
+$$
+Where, \(x_{ik}\) is a decisions variable that specifies whether an action to abate
+threat \(k\) in planning unit \(i\) has been selected (1) or not (0), \(c_{ik}\)
+is the cost of the action to abate the threat \(k\) in the planning unit \(i\),
+\(c'_{i}\) is the monitoring cost of planning unit \(i\),
+\(p_{is}\) is the probability of persistence of the feature \(s\) in the planning unit \(i\)
+(ranging between 0 and 1), \(r_{is}\) is the amount of
+feature \(s\) in planning unit \(i\). \(t_s\) is the <strong>recovery target</strong> for feature \(s\).
+In the case of working with <strong>conservation target</strong>, the following constraint is necessary:$$
+\sum_{i \in I_s: |K_{s} \cap K_{i}| \neq 0} z_{is} r_{is} \geq t'_s \space \forall \space s \in S
+$$
+With, \(z_{is}\)  as the probability of persistence by conservation of the feature s in the planning unit i
+(ranging between 0 and 1). It is only present when there is no spatial co-occurrence between
+a feature and its threats (i.e. \(|K_{s} \cap K_{i}| \neq 0\)). In the case of binary threat
+intensities it is assumed as 1.  \(t'_s\) is the
+<strong>conservation target</strong> for feature \(s\).</p></dd>
 
+<dt><strong>maximize benefits (maximizeBenefits)</strong>:</dt><dd><p>The maximize benefits model seeks
+to find the set of actions that maximizes the sum of benefits of
+all features, while the cost of performing actions and monitoring does not exceed a certain budget.
+Using the terminology presented above, this model can be expressed mathematically as:$$
+\max \space \sum_{i \in I}\sum_{s \in S_i} b_{is} - blm \cdot connectivity\\
+\mathit{s.t.} \\
+\sum_{i \in I} \sum_{k \in K_i} x_{ik} c_{ik} + \sum_{i \in I} x_{i \cdot} c'_{i} \leq budget
+$$</p></dd>
+</dl>
+
+<p>Where \(b_{is}\) is the benefit of the feature \(s\) in a planning unit \(i\) and it
+is calculated by multiplying the probability of persistence of the feature in the
+unit by its corresponding amount, i.e., \(b_{is} = p_{is} r_{is}\). When we talk about
+recovering, the probability of persistence is a measure of the number of actions taken against the threats that
+affect said feature. For more information on its calculation, see the
+<code><a href='getSolutionBenefit.html'>getSolutionBenefit()</a></code> or <code><a href='getPotentialBenefit.html'>getPotentialBenefit()</a></code> functions references.</p>
+<p>As a way of including the risk associated with calculating our probability of
+persistence of the features and in turn, avoiding that many low probabilities
+of persistence end up reaching the proposed targets, is that we add the <code>curve</code>
+parameter. That incorporates an exponent (values of 1: linear, 2: quadratic
+or 3: cubic) to the calculation of the probability of persistence. Thus penalizing
+the low probabilities in the sum of the benefits achieved.
+Since <code>prioriactions</code> works with linear models, we use a piecewise linearization strategy to
+work with non-linear curves in \(b_{is}\). The <code>segments</code> parameter indicates how well the expression
+approximates the curved used in \(b_{is}\). A higher number implies a better
+approximation but increases the resolution complexity. Note that for a linear curve
+(<code>curve</code> = 1) it is not necessary to set a <code>segment</code> parameter.</p>
+<p>Parameters <code>blm</code> and <code>blm_actions</code> allow controlling the spatial connectivity
+of the selected units and of the deployed actions, respectively (similar to BLM in Marxan).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>For more information on the correct format for <em>Marxan</em> input data, see the
-<a href='https://marxansolutions.org'>official <em>Marxan</em> website</a> and Ball <em>et al.</em> (2009).</p></div>
+    <div class='dont-index'><p>For more information regarding the arguments
+<code>curve</code> and <code>segments</code>, see the supplementary material
+of Salgado-Rojas <em>et al.</em> (2020), which can
+be found online at doi: <a href='https://doi.org/10.1016/j.ecolmodel.2019.108901'>10.1016/j.ecolmodel.2019.108901</a>
+.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'>## set seed for reproducibility</span></span>
+    <pre class="examples"><span class='r-in'><span class='co'>## This example uses input files included into package.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## set seed for reproducibility</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>14</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Set prioriactions path</span></span>
-<span class='r-in'><span class='va'>prioriactions_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/example_input/"</span>, package <span class='op'>=</span> <span class='st'>"prioriactions"</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>## Load in planning unit data</span></span>
-<span class='r-in'><span class='va'>pu_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/pu.dat"</span><span class='op'>)</span>,</span>
-<span class='r-in'>                             data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>pu_data</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   id cost status</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1    2      0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2    2      0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  3    2      0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  4    2      0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  5    2      0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  6    2      0</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>## Load in feature data</span></span>
-<span class='r-in'><span class='va'>features_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/features.dat"</span><span class='op'>)</span>,</span>
-<span class='r-in'>                                   data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>features_data</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   id target     name</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1     11 feature1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2     16 feature2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  3      8 feature3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  4      9 feature4</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>## Load in planning unit vs feature data</span></span>
-<span class='r-in'><span class='va'>dist_features_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/dist_features.dat"</span><span class='op'>)</span>,</span>
-<span class='r-in'>                                        data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>dist_features_data</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   pu feature amount</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1       3      1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2       3      1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  3       3      1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  4       3      1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  5       3      1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  6       3      1</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>## Load in the threats data</span></span>
-<span class='r-in'><span class='va'>threats_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/threats.dat"</span><span class='op'>)</span>,</span>
-<span class='r-in'>                                  data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>threats_data</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   id    name blm_actions</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1 threat1           0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2 threat2           0</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>## Load in the threats distribution data</span></span>
-<span class='r-in'><span class='va'>dist_threats_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/dist_threats.dat"</span><span class='op'>)</span>,</span>
-<span class='r-in'>                                       data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>dist_threats_data</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   pu threat amount cost status</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1      1      1    4      0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  1      2      1    3      0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  2      1      1    4      0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  2      2      1    2      0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  3      1      1    4      0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  3      2      1    2      0</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>## Load in the sensitivity data</span></span>
-<span class='r-in'><span class='va'>sensitivity_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/sensitivity.dat"</span><span class='op'>)</span>,</span>
-<span class='r-in'>                                      data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>sensitivity_data</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   feature threat</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       1      1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       2      1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3       3      1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4       4      1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 5       1      2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 6       2      2</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>## Load in the boundary data</span></span>
-<span class='r-in'><span class='va'>boundary_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/boundary.dat"</span><span class='op'>)</span>,</span>
-<span class='r-in'>                                   data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>boundary_data</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   id1 id2 boundary</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   1   1        0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   2   1        1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   3   1        2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   4   1        3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 5   5   1        4</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 6   6   1        5</span>
+<span class='r-in'><span class='co'>## Load data</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_pu_data</span>, <span class='va'>sim_features_data</span>, <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'><span class='va'>sim_threats_data</span>, <span class='va'>sim_dist_threats_data</span>, <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
-<span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'>problem</span><span class='op'>(</span></span>
+<span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='inputData.html'>inputData</a></span><span class='op'>(</span></span>
 <span class='r-in'>  pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
 <span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>,</span>
 <span class='r-in'>  sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>, boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Summary</span></span>
-<span class='r-in'><span class='fu'><a href='print.html'>print</a></span><span class='op'>(</span><span class='va'>problem_data</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> Conservation Problem</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   planning units: data.frame (100 units)</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   unit costs:     min: 1, max: 10</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   features:       feature1, feature2, feature3, feature4 (4 features)</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   threats:        threat1, threat2 (2 threats)</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   threat costs:   min: 1, max: 10</span>
+<span class='r-in'><span class='co'>## Create minimizeCosts model</span></span>
+<span class='r-in'><span class='va'>model_min</span> <span class='op'>&lt;-</span> <span class='fu'>problem</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>problem_data</span>, blm <span class='op'>=</span> <span class='fl'>1</span>, model_type <span class='op'>=</span> <span class='st'>"minimizeCosts"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
 <span class='r-in'></span>
+<span class='r-in'><span class='co'>#' ## Create maximazeBenefits model</span></span>
+<span class='r-in'><span class='va'>model_max</span> <span class='op'>&lt;-</span> <span class='fu'>problem</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>problem_data</span>, model_type <span class='op'>=</span> <span class='st'>"maximizeBenefits"</span>, budget <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The blm argument was set to 0, so the boundary data has no effect</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

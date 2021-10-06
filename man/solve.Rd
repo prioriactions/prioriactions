@@ -19,11 +19,11 @@ solve(
 \arguments{
 \item{a}{\linkS4class{optimizationProblem} object. Optimization model created
 for the problem of prioritization of multiple conservation actions. This object must be
-created using the \code{minimizeCosts()} or \code{maximizeBenefits()} functions.}
+created using the \code{problem()} function.}
 
 \item{solver}{\code{string}. Name of solver to use to
 solve the model. The following solvers are supported:
-\href{http://gurobi.com}{\code{"gurobi"}}(requires the \pkg{gurobi} package), and
+\href{https://www.gurobi.com/}{\code{"gurobi"}}(requires the \pkg{gurobi} package), and
 \href{https://projects.coin-or.org/SYMPHONY}{\code{"symphony"}}(requires the \pkg{Rsymphony} package).
 We recommend using gurobi (for more information on how to obtain an academic license
 \href{https://prioritizr.net/articles/gurobi_installation.html}{here}).}
@@ -62,14 +62,13 @@ An object of class \linkS4class{solution}.
 \description{
 Solves the optimization model associated with the multi-action
 conservation planning problem. This function is used to solve
-the mathematical model created by the \code{minimizeCosts()} or \code{maximizeBenefits()}
-functions.
+the mathematical model created by the \code{problem()} function.
 }
 \details{
 The solvers supported by the \code{\link[=solve]{solve()}} function are
 described below. \describe{
 
-\item{\verb{Gurobi solver}}{ \href{http://gurobi.com}{\emph{Gurobi}} is a
+\item{\verb{Gurobi solver}}{ \href{https://www.gurobi.com/}{\emph{Gurobi}} is a
 state-of-the-art commercial optimization software with an R package
 interface. It is by far the fastest of the solvers available in this
 package, however, it is also the only solver that is not freely available.
@@ -87,6 +86,7 @@ interface to COIN-OR and is available on CRAN. This solver uses the
 \pkg{Rsymphony} package to solve problems.}}
 }
 \examples{
+\dontrun{
 ## This example uses input files included into package.
 
 ## Load data
@@ -95,26 +95,31 @@ sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
 sim_boundary_data)
 
 ## Create data instance
-problem_data <- problem(
+problem_data <- inputData(
   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
   threats = sim_threats_data, dist_threats = sim_dist_threats_data,
   sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
 )
 
 ## Create optimization model
-problem_model <- minimizeCosts(x = problem_data, blm = 1)
+problem_model <- problem(x = problem_data, blm = 1)
 
 ## Solve the optimization model using a gap_limit and gurobi solver
 ## NOTE: The Gurobi solver must be previously installed and must have a valid license!
-s <- solve(a = problem_model, solver = "gurobi", gap_limit = 0.01, output_file = FALSE)
+s1 <- solve(a = problem_model, solver = "gurobi", gap_limit = 0.01, output_file = FALSE)
 
-print(s)
+print(s1)
+
+## Solve the optimization model using a gap_limit and symphony solver
+s2 <- solve(a = problem_model, solver = "symphony", gap_limit = 0.01, output_file = FALSE)
+
+print(s2)
 
 ## Solve the optimization model using a time_limit and gurobi solver
-s <- solve(a = problem_model, solver = "gurobi", time_limit = 10, output_file = FALSE)
+s3 <- solve(a = problem_model, solver = "gurobi", time_limit = 10, output_file = FALSE)
 
-print(s)
-
+print(s3)
+}
 }
 \seealso{
 For more information on how to install and obtain an academic

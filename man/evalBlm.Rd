@@ -4,32 +4,27 @@
 \alias{evalBlm}
 \title{Evaluate multiple blm values}
 \usage{
-evalBlm(data = list(), name_model = "minimizeCosts", values = c(), ...)
+evalBlm(values = c(), ...)
 }
 \arguments{
-\item{data}{\code{list}. Input data list for \code{problem()} function.}
-
-\item{name_model}{\link{character}. Name of the type of model to create. With two
-possible values: \code{"minimizeCosts"} and \code{"maximizeBenefits"}.}
-
 \item{values}{\code{numeric}. Values of blm to verify. More than one value is needed.}
 
-\item{...}{arguments inherited from \code{problem()}, \code{minimizeCosts()}, \code{maximizeBenefits()},
+\item{...}{arguments inherited from \code{inputData()}, \code{problem()}
 and \code{solve()} functions.}
 }
 \value{
 An object of class \linkS4class{portfolio}.
 }
 \description{
-Provides multiple solutions for different values of blm. Like
-\code{prioriactions()} function, it inherits all arguments from \code{problem()},
-\code{model()} and \code{solve()}.
+Return one solution per instance for different values of blm. Like
+\code{prioriactions()} function, it inherits all arguments from \code{inputData()},
+\code{problem()} and \code{solve()}.
 }
 \details{
 \code{evalblm()} creates and solves multiple instances, of the corresponding
 multi-actions planning problem, for different values of blm. Alternatively, this
-could be obtained by executing function \code{prioriactions()} or by steps the \code{problem()},
-\code{model()} and \code{solve()} functions; using, in each run, different blm values.
+could be obtained by executing function \code{prioriactions()} or by steps the \code{inputData()},
+\code{problem()} and \code{solve()} functions; using, in each run, different blm values.
 However, the \code{evalblm()} function has two advantages with
 respect to this manual approach: : 1)
 it is more efficient to create the models (this is because the model is created
@@ -38,17 +33,23 @@ output is a portfolio object, which allows
 obtaining information about the group of solutions (including all \emph{get} functions).
 }
 \examples{
+\dontrun{
 # set seed for reproducibility
 set.seed(14)
 
-## Load data
-inputs <- list(sim_pu_data, sim_features_data, sim_dist_features_data,
-sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
-sim_boundary_data)
-
 ## Create model and solve
-port <- evalBlm(data = inputs, values = c(0.0, 0.5, 4, 8),
-                name_model = "minimizeCosts", time_limit = 50, output_file = FALSE)
+port <- evalBlm(pu = sim_pu_data, features = sim_features_data,
+                dist_features = sim_dist_features_data,
+                threats = sim_threats_data,
+                dist_threats = sim_dist_threats_data,
+                sensitivity = sim_sensitivity_data,
+                boundary = sim_boundary_data,
+                values = c(0.0, 0.01, 0.02, 0.03),
+                model_type = "minimizeCosts",
+                time_limit = 50,
+                output_file = FALSE)
 
+getConnectivityPenalty(port)
+}
 
 }

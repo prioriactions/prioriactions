@@ -2,16 +2,12 @@
 title: "Introduction to prioriactions"
 output:
   rmarkdown::html_document
-editor_options: 
-  markdown: 
-    wrap: 72
 fontsize: 11pt
 bibliography: references.bib
-documentclass: article
 vignette: >
-  %\VignetteIndexEntry{prioriactions}
+  %\VignetteIndexEntry{Introduction to prioriactions}
   %\VignetteEngine{knitr::knitr}
-  %\usepackage[UTF-8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
 
 
@@ -22,74 +18,59 @@ Taking advantage of the benefits offered by these models over heuristics
 models (find much cheaper solutions in a much shorter period of time)
 [@beyer2016]. This helps to identify what actions to take against which threats to achieve ecological targets while minimizing the costs of the action or maximizing the benefits achieved given a certain available budget. The `prioriactions` package has the functionality of reading input data
 formatted in a similar way to that of the widely used conservation
-planning program called [Marxan](https://https://marxansolutions.org/)
+planning program called [Marxan](https://marxansolutions.org/)
 [@watts2009].
+
+This package is designed to assist in planning conservation actions. Specifically, the prioritizations are generated using mathematical programming models and then solved employing optimizers (gurobi or rsymphony). Structurally, models comprise an objective function that is generally minimized or maximized and a series of constraints. The `prioriactions` package currently can create two types of models: cost minimization and benefit maximization—both with an internally defined structure.
+
+In addition, an essential part of the model is made up of the variables; these generally define the decisions to be made concerning the input data of the model. This data includes spatial information on planning units, conservation features, threats to those features, and, if it is the case, the sensitivities of those features to those threats.
+
+One of the complexities when optimizing conservation actions is the little knowledge about the effectiveness of actions against threats and how these actions benefit or increase the probability of persistence of conservation features. If it is complex to know these behaviors for a single pair of feature threats, it is even more so if multiple features and multiple threats are considered overlapping each other in space, and even more, if we assume that these features have different sensitivities to threats. Concerning what was described above, the `prioriactions` package takes a series of assumptions:
+
+* Threats can be binary (presence/absence) or continuous (with levels of intensity).
+* There is only one action per threat.
+* Actions are fully effective, that is, an action against a threat eliminates it completely.
+* The probability of persistence of the features is proportional to the number of actions you take with respect to the total number of actions available. More information on the calculation of the probability of persistence in different conditions is presented in the [benefits](https://prioriactions.github.io/prioriactions/articles/sensitivities.html) vignette.
+
+Another essential aspect directly related to the probability of persistence of the features is the planning objectives that is independent of the objective function of the mathematical model. We define two types: if the aim is to **recover** threatened features ultimately or if the aim includes non-threatened features through their **conservation**. In simple terms, a conservation feature may be threatened in 80% of the planning units where it is established, but in the other 20%, it is not threatened. What do we do with that 20%? Can it be part of the conservation plan? What if these units help establish a more connected management plan? To solve this problem, we set two targets as inputs (set in the *features data*): the **recovery target**; where the user indicates how much proportion of that 80% is the one that he wants to solve through actions, and the **conservation target**; where it is revealed how much proportion of that 20% is the one to be incorporated. Because the package prioritizes conservation actions against threats, a recovery target is mandatory, while conservation is optional. If the objective is to maximize benefits, it is assumed that it is required to maximize only the benefits related to recovery (prioritization of actions).
+For more information about these types of planning objectives see the [planning objectives](https://prioriactions.github.io/prioriactions/articles/objectives.html)
+vignette.
 
 ## Overview
 
-The `prioriactions` package uses two main types of functions: The
-creation and solution functions of mathematical models; and the
-functions to obtain information about the solution(s) (see
-[references](https://prioriactions.github.io/prioriactions/reference/index.html)
-section).
+The `prioriactions` package is characterized by using two main types of functions: The
+creation and solve functions of mathematical models (through three-steps logic); and the
+functions to obtain information about the objects created (e.g. `getActions()`). The first
+group of functions is comprised of three clear steps:
 
-The creation and resolution of a mathematical model can follow two
-forms: 1) the *extended* form (by steps); and 2) the *compressed* form:
+1) **Input data validation**, using the `inputData()` function. This function return a [conservationProblem-class](https://prioriactions.github.io/prioriactions/reference/conservationProblem-class.html) object that contains all the information about data.
 
-1)  The *extended* form uses a simple three-step logic: the creation of
-    a [conservation
-    problem](https://prioriactions.github.io/prioriactions/reference/conservationProblem-class.html)
-    object by the `problem()` function, the creation of an [optimization
-    problem](https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html)
-    object by the `minimizeCosts()` or `maximizeBenefits()`
-    functions and its
-    [solution](https://prioriactions.github.io/prioriactions/reference/solution-class.html)
-    by the `solve()` function.
+2) **Create mathematical model**, using the `problem()` function. This function return a 
+[optimizationProblem-class](https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html) object that contains information related to the mathematical model created.
 
-2)  The *compressed* form allows with a single function called
-    `prioriactions()` to compress the three steps presented in the
-    *extended* form.
+3) **solve model**, using the `solve()` function. This function return a [solution-class](https://prioriactions.github.io/prioriactions/reference/solution-class.html)
+object that contains information related to the solution.
 
-We recommend using the *extended* form most of the time. This allows us to verify that all the steps are
-correct, and it can be helpful to check for errors without completely
-rerunning everything again.
+![](figures/prioriactions_steps.jpg){width=95%}
 
-Note that optimization models can take significant time to create
-(depending on how large the inputs are). The *extended* form allows to generate the [optimization
-problem](https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html)
-object (following the first two steps) and then experiment with
-different parameters for their resolution through the `solve()`
-function. In this way, repetitive creation is avoided in the case of
-use the compressed form.
-
-The `prioriactions` package also allows working with two types of models, **recovery** models, and purely **conservation** models; the first, assume that there are only benefits when taking action against threats and there is no benefit when selecting planning units where the species are not threatened; on the contrary, a conservation model does assume benefits by selecting units without threats. The above is exemplified in the following diagram:
-
-![](data/picture1.png){width=70%}
-
-The decision to work with any of these types must be informed through the `recovery` parameter of the `minimizeCosts()` and `maximizeBenefits()` functions. The calculation of the benefit for both cases is detailed in the [sensitivities](https://prioriactions.github.io/prioriactions/articles/sensitivities.html)
-vignette.
+These three concrete steps can be summarized into one using the `prioriactions()` function. However, we recommend the three step scheme due this allows us to verify that all the steps are correct, and it can be helpful to check for errors without completely
+rerunning everything again. For example, note that [optimizationProblem-class](https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html) object can take significant time to create
+(depending on how large the inputs are). therefore, the stepwise scheme allows us to generate the [optimizationProblem-class](https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html)
+object (following the first two steps) and then experiment with different parameters for solving through the `solve()` function. 
 
 ## Workflow
 
 The general workflow when working with `prioriactions` is:
 
-1)  Call the `problem()` function to verify that the inputs have a
+1)  Call the `inputData()` function to verify that the inputs have a
     correct structure.
-2)  Call a mathematical modeling function. At the moment there are two
-    types: `minimizeCosts()` and `maximizeBenefits()`. Both functions
-    have a series of parameters that allow you to control different
+2)  Call the `problem()` function to create a mathematical model. This has
+    a series of parameters that allow you to control different
     aspects of your model.
 3)  Call the `solve()` function to solve the model created in the
     previous step.
 4)  Get information about solutions with *get* prefix functions (e.g.
-    `getActions()` or `getBenefit()`).
-5)  To perform sensitivity analysis, repeat steps 2-4 modifying model or
-    solver parameters. Or use functions with *eval* prefix for this
-    purpose (e.g. `evalBudget()` or `evalTarget()`).
-
-Note that the first three steps correspond to the *extended* way of
-working. That is, it would only be a step if you work with the
-`prioriactions()` function.
+    `getActions()` or `getSolutionBenefit()`).
 
 ## Usage
 
@@ -116,15 +97,15 @@ incorporates information about the threats and their relationship with
 those species/features.
 
 All inputs in this package are in tabular format (i.e. `data.frame`). For more information on he mandatory fields in the input data,
-please see the help page for the `problem()` function.
+please see the help page for the `inputData()` function.
 
 Below is a basic example of using `prioriactions`.
 
 ### Planning units data
 
 First, we will load the **planning unit data** (`sim_pu_data`). This is
-a `data.frame` that contains information about the PU ids, costs, and
-status. The latter indicates if the PU can be part of the solution or
+a `data.frame` that contains information about the PU ids, monitoring costs, and
+status. Monitoring costs indicate how much it costs to select a planning unit to monitor if it is selected for reasons of recovery (taking action on it) or conservation. While status indicates if the PU can be part of the solution or
 not. 
 
 
@@ -134,40 +115,39 @@ data(sim_pu_data)
 
 # print first six rows of data
 head(sim_pu_data)
-#>   id cost status
-#> 1  1    2      0
-#> 2  2    2      0
-#> 3  3    2      0
-#> 4  4    2      0
-#> 5  5    2      0
-#> 6  6    2      0
+#>   id monitoring_cost status
+#> 1  1               2      0
+#> 2  2               2      0
+#> 3  3               2      0
+#> 4  4               2      0
+#> 5  5               2      0
+#> 6  6               2      0
 ```
 
-The example contains 100 planning units and with cost values ranging
-from 1 to 10. A `RasterLayer`object can be used to present the spatial
+The example contains 100 planning units, each with monitoring cost values ranging from 1 to 10 and all status of 0 (not locked). A `RasterLayer`object can be used to present this spatial
 information. Here, the planning units are represented as a raster (i.e.
 a `RasterLayer` object) and each pixel corresponds to the spatial extent
-of each panning unit. The pixel values correspond to the acquisition
+of each panning unit. Here, the pixel values correspond to the monitoring
 costs of each planning unit.
 
 
 ```r
-#plot planning unit costs
+#plot monitoring costs
 library(raster) 
 
 r <- raster(ncol=10, nrow=10, xmn=0, xmx=10, ymn=0, ymx=10)
-values(r) <- sim_pu_data$cost
+values(r) <- sim_pu_data$monitoring_cost
 plot(r)
 ```
 
-<img src="figure/P3-1.png" title="plot of chunk P3" alt="plot of chunk P3" style="display: block; margin: auto;" />
+<img src="figures/P3-1.png" title="plot of chunk P3" alt="plot of chunk P3" style="display: block; margin: auto;" />
 
 ### Features data
 
 The second data to be entered correspond to **features**
 (`sim_features_data` and `sim_dist_features_data`). The first one
-provides information about the features such as its id and target
-(mandatory to `minimizeCosts()`). And the second provides information on
+provides information about the features such as its id and targets
+(mandatory to minimize of costs). And the second provides information on
 the spatial distribution of these features.
 
 
@@ -177,11 +157,11 @@ data(sim_features_data, sim_dist_features_data)
 
 # print first six rows of data
 head(sim_features_data)
-#>   id target     name
-#> 1  1     11 feature1
-#> 2  2     16 feature2
-#> 3  3      8 feature3
-#> 4  4      9 feature4
+#>   id target_recovery     name
+#> 1  1              11 feature1
+#> 2  2              16 feature2
+#> 3  3               8 feature3
+#> 4  4               9 feature4
 head(sim_dist_features_data)
 #>     pu feature amount
 #> 201  1       3      1
@@ -194,11 +174,11 @@ head(sim_dist_features_data)
 
 To present the features, a `RasterStack` object (group of `RasterLayer`
 objects) is used. The pixel values in each layer correspond to the
-amount of suitable habitat available in a given planning unit. Note that
+amount of suitable feature available in a given planning unit. Note that
 our planning unit raster layer and our conservation feature stack have
 exactly the same spatial properties (i.e. resolution, extent, coordinate
 reference system) so their pixels line up perfectly. In turn, we assume
-binary values of amount (presence and absence). However, the amount
+binary values of amount (presence and absence of features). However, the amount
 could contain continuous values (for example, relative to the area of
 the PU).
 
@@ -218,16 +198,14 @@ names(group_rasters) <- c("feature 1", "feature 2", "feature 3", "feature 4")
 plot(group_rasters)
 ```
 
-<img src="figure/P5-1.png" title="plot of chunk P5" alt="plot of chunk P5" style="display: block; margin: auto;" />
+<img src="figures/P5-1.png" title="plot of chunk P5" alt="plot of chunk P5" style="display: block; margin: auto;" />
 
 ### Threats data
 
-Finally, the new inputs compared to marxan are those related to
-**threats**. (`sim_threats_data`, `sim_dist_threats_data` and
+Finally, there are inputs related to **threats**. (`sim_threats_data`, `sim_dist_threats_data` and
 `sim_sensitivity_data`). The first one provides information about the
 threats such as its id and name. The second provides information on the
-spatial distribution of these threats and the last one indicates the
-relationship between features and threats.
+spatial distribution of these threats and the last one indicates which features is sensitive with what threat.
 
 
 ```r
@@ -240,13 +218,13 @@ head(sim_threats_data)
 #> 1  1 threat1           0
 #> 2  2 threat2           0
 head(sim_dist_threats_data)
-#>     pu threat amount cost status
-#> 1    1      1      1    4      0
-#> 101  1      2      1    3      0
-#> 2    2      1      1    4      0
-#> 102  2      2      1    2      0
-#> 3    3      1      1    4      0
-#> 103  3      2      1    2      0
+#>     pu threat amount action_cost status
+#> 108  8      2      1           2      0
+#> 109  9      2      1           2      0
+#> 110 10      2      1           2      0
+#> 11  11      1      1           3      0
+#> 111 11      2      1           4      0
+#> 12  12      1      1           3      0
 head(sim_sensitivity_data)
 #>   feature threat
 #> 1       1      1
@@ -270,6 +248,7 @@ vignette).
 ```r
 # load amount of threat data
 threats <- reshape2::dcast(sim_dist_threats_data, pu~threat,value.var = "amount", fill = 0)
+threats <- tidyr::complete(threats, pu = 1:100)
 
 # create stack layer
 group_rasters <- raster::stack(r, r)
@@ -280,7 +259,7 @@ names(group_rasters) <- c("threat 1", "threat 2")
 plot(group_rasters)
 ```
 
-<img src="figure/P7-1.png" title="plot of chunk P7" alt="plot of chunk P7" style="display: block; margin: auto;" />
+<img src="figures/P7-1.png" title="plot of chunk P7" alt="plot of chunk P7" style="display: block; margin: auto;" />
 
 ### Boundary data
 
@@ -307,25 +286,31 @@ head(sim_boundary_data)
 
 ### Step 1: Initialize the problem
 
-After having loaded our planning unit and feature data, we will now
+After having loaded our data, we will now
 create the [conservation
 problem](https://prioriactions.github.io/prioriactions/reference/conservationProblem-class.html)
-object through the `problem()` function. With it you can check if all
+object through the `inputData()` function. With it you can check if all
 the fields of the different inputs are correct.
 
 
 ```r
 # create conservation problem
-p <- problem(sim_pu_data, sim_features_data, sim_dist_features_data, sim_threats_data, sim_dist_threats_data, sim_sensitivity_data, sim_boundary_data)
+b <- inputData(pu = sim_pu_data, 
+               features = sim_features_data, 
+               dist_features = sim_dist_features_data, 
+               threats = sim_threats_data, 
+               dist_threats = sim_dist_threats_data, 
+               sensitivity = sim_sensitivity_data, 
+               boundary = sim_boundary_data)
 
 # print problem
-print(p)
+print(b)
 #> Conservation Problem
 #>   planning units: data.frame (100 units)
-#>   unit costs:     min: 1, max: 10
+#>   monitoring costs:     min: 1, max: 10
 #>   features:       feature1, feature2, feature3, feature4 (4 features)
 #>   threats:        threat1, threat2 (2 threats)
-#>   threat costs:   min: 1, max: 10
+#>   action costs:   min: 1, max: 10
 ```
 
 Note that once the problem is created, we can obtain information from
@@ -336,71 +321,66 @@ can use some functions that are inside the object (e.g
 
 ```r
 # get information about object
-p$getThreatsAmount()
+b$getThreatsAmount()
 #> [1] 2
-p$getPlanningUnitsAmount()
+b$getPlanningUnitsAmount()
 #> [1] 100
 ```
 
-Furthermore, it is possible to observe the
-[benefit](https://prioriactions.github.io/prioriactions/articles/sensitivities.html)
-calculation before creating the mathematical model. Thus we can evaluate
-different targets and avoid creating an infeasible model where the
-targets exceed the benefit.
+These are only two of all the methods you can use to get quick information about your data. The others can be found along with [conservationProblem-class](https://prioriactions.github.io/prioriactions/reference/conservationProblem-class.html) information. 
+
+Furthermore, it is advisable to determine the maximum benefit to be obtained for each conservation feature through the `getPotentialBenefit()` function. Since this process can be carried out before the creation of the mathematical model, it can help establish recovery and conservation targets if the objective of the mathematical model is to minimize costs. In addition, this avoids creating an infeasible model where the targets exceed the benefit. 
 
 
 ```r
 # get benefit information
-getBenefit(p)
-#>   feature dist dist_threatened benefit.nothing benefit.recovery benefit.total
-#> 1       1   47              47               0               47            47
-#> 2       2   30              30               0               30            30
-#> 3       3   66              66               0               66            66
-#> 4       4   33              33               0               33            33
+getPotentialBenefit(b)
+#>   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit
+#> 1       1   47              47                            0                       47
+#> 2       2   30              28                            2                       28
+#> 3       3   66              56                           10                       56
+#> 4       4   33              33                            0                       33
+#>   maximum.benefit
+#> 1              47
+#> 2              30
+#> 3              66
+#> 4              33
 ```
 
 Note that the total distribution of the features (*dist*) and the
 threatened distribution (*dist_threatened*) is reported. That is, some
 features in some units could be benefited without carrying out
-conservation actions on them (*benefit*.*nothing*). The inclusion of
-these units in the solutions will depend on the **recovery** parameter
-(TRUE or FALSE) that is part of the `minimizeCosts()` and
-`maximizeBenefits()` function.
+conservation actions on them (*conservation.benefit*). The inclusion of
+these units in the solutions will depend on the **target_conservation** field
+in the input *feature data*.
 
 ### Step 2: Create the mathematical model
 
 The next step is create the [optimization
 problem](https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html)
 object with those data. We currently have two types of models:
-`minimizeCosts()` and `maximizeBenefits()`. The first one, minimize the
+`minimizeCosts` and `maximizeBenefits`. The first one, minimize the
 cost of the solution whilst ensuring that all targets are met. Instead,
 the second maximizes the benefits achieved by the features using a
-certain budget (all details on their respective reference pages).
+certain budget. The use of one or the other is set in the `type_model` parameter of the `problem()` function.
 
 
 ```r
 # create optimization problem
-op <- minimizeCosts(p, recovery = TRUE)
+c <- problem(b, model_type = "minimizeCosts")
 #> Warning: The blm argument was set to 0, so the boundary data has no effect
-#> Warning: Some blm_actions argument were set to 0, so the boundary data has no
-#> effect for these cases
+#> Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+#> cases
 
 # print problem
-print(op)
+print(c)
 #> Optimization Problem
 #>   model sense: minimization
-#>   dimensions:  280, 589, 13.72 kB (nrow, ncol, size)
-#>   variables:   589
+#>   dimensions:  460, 572, 19.528 kB (nrow, ncol, size)
+#>   variables:   572
 ```
 
-Both functions have the parameter *recovery* = TRUE by default. This
-important parameter indicates if your model will use cells (TRUE) or not
-(FALSE) without actions as benefits for the features (therefore, the
-units will count it in calculating the targets) only because there is no
-interaction between threats and features.
-
-Internally, the `minimizeCosts()` and `maximizeBenefits()` functions
-have a presolve that identifies these problems and prevents you from
+Internally, the `problem()` function has a presolve that identifies these problems and prevents you from
 continuing to the next steps. In the case of not reaching the target
 established for any feature, it is assumed that its new target will be
 the maximum value of the associated benefit.
@@ -412,8 +392,8 @@ solution), and therefore the input boundary file will have no effect.
 ### Step 3: Solve the model
 
 Finally, after creating the mathematical model, we can now solve it with
-the `solve()` function. To solve our model, we need an optimization
-engine. Currently, `prioriactions` have available two: *gurobi* (it
+the `solve()` function. To solve our model, we need an optimizer. 
+Currently, `prioriactions` have available two: *gurobi* (it
 needs a license to work) and *rsymphony* (free to use). We highly
 recommend using gurobi (for more information on how to obtain an
 academic license
@@ -422,46 +402,42 @@ academic license
 
 ```r
 # solve optimization problem
-s <- solve(op, solver = "gurobi", verbose = TRUE, output_file = FALSE)
+d <- solve(c, solver = "gurobi", verbose = TRUE, output_file = FALSE)
 #> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 #> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-#> Optimize a model with 280 rows, 589 columns and 822 nonzeros
-#> Model fingerprint: 0x9475cbf3
-#> Model has 176 general constraints
-#> Variable types: 352 continuous, 237 integer (237 binary)
+#> Optimize a model with 460 rows, 572 columns and 1137 nonzeros
+#> Model fingerprint: 0x994b3e28
+#> Variable types: 352 continuous, 220 integer (220 binary)
 #> Coefficient statistics:
 #>   Matrix range     [5e-01, 2e+00]
 #>   Objective range  [1e+00, 1e+01]
 #>   Bounds range     [1e+00, 1e+00]
 #>   RHS range        [8e+00, 2e+01]
-#> Found heuristic solution: objective 1002.0000000
-#> Presolve added 289 rows and 635 columns
+#> Found heuristic solution: objective 277.0000000
+#> Presolve removed 426 rows and 453 columns
 #> Presolve time: 0.00s
-#> Presolved: 569 rows, 1224 columns, 2970 nonzeros
-#> Presolved model has 176 SOS constraint(s)
-#> Variable types: 1056 continuous, 168 integer (162 binary)
+#> Presolved: 34 rows, 119 columns, 237 nonzeros
+#> Variable types: 0 continuous, 119 integer (101 binary)
 #> 
-#> Root relaxation: objective 1.455000e+02, 186 iterations, 0.00 seconds
+#> Root relaxation: objective 1.445000e+02, 22 iterations, 0.00 seconds
 #> 
 #>     Nodes    |    Current Node    |     Objective Bounds      |     Work
 #>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 #> 
-#>      0     0  145.50000    0   12 1002.00000  145.50000  85.5%     -    0s
-#> H    0     0                     973.0000000  145.50000  85.0%     -    0s
-#>      0     0  148.00000    0    6  973.00000  148.00000  84.8%     -    0s
-#> H    0     0                     162.0000000  148.00000  8.64%     -    0s
-#>      0     0  149.00000    0    6  162.00000  149.00000  8.02%     -    0s
-#> H    0     0                     152.0000000  149.00000  1.97%     -    0s
-#>      0     0  149.50000    0    5  152.00000  149.50000  1.64%     -    0s
-#> H    0     0                     150.0000000  149.50000  0.33%     -    0s
+#>      0     0  144.50000    0    2  277.00000  144.50000  47.8%     -    0s
+#> H    0     0                     149.0000000  144.50000  3.02%     -    0s
+#> *    0     0               0     146.0000000  146.00000  0.00%     -    0s
 #> 
-#> Explored 1 nodes (219 simplex iterations) in 0.05 seconds
+#> Cutting planes:
+#>   Cover: 2
+#> 
+#> Explored 1 nodes (26 simplex iterations) in 0.00 seconds
 #> Thread count was 2 (of 4 available processors)
 #> 
-#> Solution count 5: 150 152 162 ... 1002
+#> Solution count 3: 146 149 277 
 #> 
 #> Optimal solution found (tolerance 0.00e+00)
-#> Best objective 1.500000000000e+02, best bound 1.500000000000e+02, gap 0.0000%
+#> Best objective 1.460000000000e+02, best bound 1.460000000000e+02, gap 0.0000%
 ```
 
 Note that the log is shown by default with relevant information about
@@ -475,94 +451,100 @@ documentation](https://www.gurobi.com/documentation/9.1/refman/mip_logging.html)
 
 ```r
 # plot solution object
-print(s)
+print(d)
 #> Solution overview
 #>   name: sol
-#>   objective value: 150
+#>   objective value: 146
 #>   gap:  0
 #>   status:  Optimal solution (according to gap tolerance: 0)
-#>   runtime: 0.05 sec
+#>   runtime: 0.004 sec
 ```
 
-**These three steps can be shortened to just one with the
-`prioriactions` function. This function inherits all the parameters of
-the `problem()`, `minimizeCosts()`, `maximizeBenefits()` and `solve()`
-functions:**
+These three steps can be shortened to just one with the
+`prioriactions()` function. This function inherits all the parameters of
+the `inputData()`, `problem()`, and `solve()`
+functions:
 
 
 ```r
-# create a list with the data input
-inputs <- list(sim_pu_data, sim_features_data, sim_dist_features_data, sim_threats_data, sim_dist_threats_data, sim_sensitivity_data, sim_boundary_data)
-
-#execute prioriactions function
-s2 <- prioriactions(data = inputs, name_model = "minimizeCosts", solver = "gurobi", verbose = TRUE, output_file = FALSE)
+# use prioriactions function
+d2 <- prioriactions(pu = sim_pu_data, features = sim_features_data,
+                    dist_features = sim_dist_features_data,
+                    threats = sim_threats_data,
+                    dist_threats = sim_dist_threats_data,
+                    sensitivity = sim_sensitivity_data,
+                    boundary = sim_boundary_data,
+                    model_type = "minimizeCosts", 
+                    solver = "gurobi", 
+                    verbose = TRUE, 
+                    output_file = FALSE)
 #> Warning: The blm argument was set to 0, so the boundary data has no effect
-#> Warning: Some blm_actions argument were set to 0, so the boundary data has no
-#> effect for these cases
+#> Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+#> cases
 #> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 #> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-#> Optimize a model with 280 rows, 589 columns and 822 nonzeros
-#> Model fingerprint: 0x9475cbf3
-#> Model has 176 general constraints
-#> Variable types: 352 continuous, 237 integer (237 binary)
+#> Optimize a model with 460 rows, 572 columns and 1137 nonzeros
+#> Model fingerprint: 0x994b3e28
+#> Variable types: 352 continuous, 220 integer (220 binary)
 #> Coefficient statistics:
 #>   Matrix range     [5e-01, 2e+00]
 #>   Objective range  [1e+00, 1e+01]
 #>   Bounds range     [1e+00, 1e+00]
 #>   RHS range        [8e+00, 2e+01]
-#> Found heuristic solution: objective 1002.0000000
-#> Presolve added 289 rows and 635 columns
+#> Found heuristic solution: objective 277.0000000
+#> Presolve removed 426 rows and 453 columns
 #> Presolve time: 0.00s
-#> Presolved: 569 rows, 1224 columns, 2970 nonzeros
-#> Presolved model has 176 SOS constraint(s)
-#> Variable types: 1056 continuous, 168 integer (162 binary)
+#> Presolved: 34 rows, 119 columns, 237 nonzeros
+#> Variable types: 0 continuous, 119 integer (101 binary)
 #> 
-#> Root relaxation: objective 1.455000e+02, 186 iterations, 0.00 seconds
+#> Root relaxation: objective 1.445000e+02, 22 iterations, 0.00 seconds
 #> 
 #>     Nodes    |    Current Node    |     Objective Bounds      |     Work
 #>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 #> 
-#>      0     0  145.50000    0   12 1002.00000  145.50000  85.5%     -    0s
-#> H    0     0                     973.0000000  145.50000  85.0%     -    0s
-#>      0     0  148.00000    0    6  973.00000  148.00000  84.8%     -    0s
-#> H    0     0                     162.0000000  148.00000  8.64%     -    0s
-#>      0     0  149.00000    0    6  162.00000  149.00000  8.02%     -    0s
-#> H    0     0                     152.0000000  149.00000  1.97%     -    0s
-#>      0     0  149.50000    0    5  152.00000  149.50000  1.64%     -    0s
-#> H    0     0                     150.0000000  149.50000  0.33%     -    0s
+#>      0     0  144.50000    0    2  277.00000  144.50000  47.8%     -    0s
+#> H    0     0                     149.0000000  144.50000  3.02%     -    0s
+#> *    0     0               0     146.0000000  146.00000  0.00%     -    0s
 #> 
-#> Explored 1 nodes (219 simplex iterations) in 0.05 seconds
+#> Cutting planes:
+#>   Cover: 2
+#> 
+#> Explored 1 nodes (26 simplex iterations) in 0.00 seconds
 #> Thread count was 2 (of 4 available processors)
 #> 
-#> Solution count 5: 150 152 162 ... 1002
+#> Solution count 3: 146 149 277 
 #> 
 #> Optimal solution found (tolerance 0.00e+00)
-#> Best objective 1.500000000000e+02, best bound 1.500000000000e+02, gap 0.0000%
+#> Best objective 1.460000000000e+02, best bound 1.460000000000e+02, gap 0.0000%
 ```
 
 ### Getting information about solutions
 
-We can get the solutions with `getActions()` and `getPlanningUnits()`.
-`getActions()` shows what actions must be taken against which threats to
+We can get the solutions with `getActions()`.
+This function shows what actions must be taken against which threats to
 achieve the objective, which is to achieve the different representation
-targets. Instead `getPlanningUnits()` shows in which PU's such efforts
-were made.
+targets. In turn, it shows with a one which sites are selected only for conservation (in the case of having conservation targets) or zero in contrary case; the same form with a one which sites are selected only for connectivity (without taking action on them) or zero in contrary case.
 
 
 ```r
 # get actions from solution
-actions <- getActions(s, format = "wide")
+actions <- getActions(d, format = "wide")
 
 # print first six rows of data
 head(actions)
-#>   pu 1 2
-#> 1  1 0 0
-#> 2  2 0 0
-#> 3  3 0 0
-#> 4  4 0 0
-#> 5  5 0 0
-#> 6  6 0 0
+#>   solution_name pu 1 2 conservation connectivity
+#> 1           sol  1 0 0            0            0
+#> 2           sol  2 0 0            0            0
+#> 3           sol  3 0 0            0            0
+#> 4           sol  4 0 0            0            0
+#> 5           sol  5 0 0            0            0
+#> 6           sol  6 0 0            0            0
+```
 
+Note that the `getActions()` function automatically assumes that the index of the action corresponds to the threat *id* (since there is an action per threat), in this case, 1 and 2 respectively.
+
+
+```r
 # plot actions
 values(group_rasters[[1]]) <- actions$`1`
 values(group_rasters[[2]]) <- actions$`2`
@@ -571,35 +553,36 @@ names(group_rasters) <- c("action 1", "action 2")
 plot(group_rasters)
 ```
 
-<img src="figure/P16-1.png" title="plot of chunk P16" alt="plot of chunk P16" style="display: block; margin: auto;" />
+<img src="figures/P17-1.png" title="plot of chunk P17" alt="plot of chunk P17" style="display: block; margin: auto;" />
+
+You can also obtain information about the benefits achieved by
+feature with the `getSolutionBenefit()` function. 
 
 
 ```r
-# get planning units from solution
-pu <- getPlanningUnits(s)
+# get benefits of solution
+benefits <- getSolutionBenefit(d, type = "total")
 
-# plot planning units with actions inside
-values(r) <- pu$solution
-
-plot(r)
+# print first six rows of benefit data
+head(benefits)
+#>   solution_name feature benefit.conservation benefit.recovery benefit.total
+#> 1           sol       1                    0               11            11
+#> 2           sol       2                    0               16            16
+#> 3           sol       3                    0               10            10
+#> 4           sol       4                    0                9             9
 ```
+Here, it can be seen that we have only obtained **recovery** benefits (for doing actions to abate threats) and not **conservation** of sites. This is specifically due to the fact that we have not set any conservation target. If we compare the benefits obtained concerning the established recovery targets, we see that for feature 3, we got more benefits than expected (8). This is commonly achieved by complementary, where specific actions necessary to achieve the objective of a feature end up benefiting other features.
 
-<img src="figure/P17-1.png" title="plot of chunk P17" alt="plot of chunk P17" style="display: block; margin: auto;" />
-
-You can also obtain information about the total benefits achieved by
-feature with the `getBenefit()` function and the benefit of features in
-each site with the `getLocalBenefit()` function. More information on the
-specific calculation of the benefit in the
-[sensitivities](https://prioriactions.github.io/prioriactions/articles/sensitivities.html)
-vignette.
+The `getSolutionBenefit()` function also allows to obtain all the benefits achieved from each planning unit:
 
 
 ```r
-# get local benefits
-local_benefits <- getLocalBenefit(s)
-local_benefits <- reshape2::dcast(local_benefits, pu~feature,value.var = "local_benefit", fill = 0)
+# get benefits of solution
+local_benefits <- getSolutionBenefit(d, type = "local")
 
 # plot local benefits
+local_benefits <- reshape2::dcast(local_benefits, pu~feature,value.var = "benefit.total", fill = 0)
+
 group_rasters <- raster::stack(r, r, r, r)
 values(group_rasters[[1]]) <- local_benefits$`1`
 values(group_rasters[[2]]) <- local_benefits$`2`
@@ -610,21 +593,8 @@ names(group_rasters) <- c("feature 1", "feature 2", "feature 3", "feature 4")
 plot(group_rasters)
 ```
 
-<img src="figure/P18-1.png" title="plot of chunk P18" alt="plot of chunk P18" style="display: block; margin: auto;" />
-
-
-```r
-# get benefit from solution
-getBenefit(s)
-#>   feature dist dist_threatened benefit.recovery benefit.recovery.sol
-#> 1       1   47              47               47                   11
-#> 2       2   30              30               30                   16
-#> 3       3   66              66               66                   10
-#> 4       4   33              33               33                    9
-```
-
-If you need more information about the solution, you can use other *get*
-functions (e.g. `getGap()`, `getActionsConnectivity()`). More details in
+<img src="figures/P19-1.png" title="plot of chunk P19" alt="plot of chunk P19" style="display: block; margin: auto;" />
+There are three other functions that can be used to obtain some measure of the solution found: `getCost()` function to obtain the costs for each of the actions such as monitoring, `getConnectivityPenalty()` function to calculate the connectivity of the actions, and `getPerformance()` to obtain information about the solving process of the mathematical model. More details in
 the
 [references](https://prioriactions.github.io/prioriactions/reference/index.html)
 section.
@@ -643,7 +613,7 @@ because the model is once created and then updated with the new
 information; 2) the output is a
 [portfolio](https://prioriactions.github.io/prioriactions/reference/portfolio-class.html)
 object, which allows obtaining information about the group of solutions,
-including, all *get* functions.
+including, all *get* functions related with solutions objects.
 
 Now, we want to evaluate different levels of targets. For example, 20%,
 30% and 40% of the maximum benefit per feature. For this, we use the
@@ -652,228 +622,175 @@ Now, we want to evaluate different levels of targets. For example, 20%,
 
 ```r
 
-# Evaluate differents targets
-port <- evalTarget(data = inputs, values = c(0.2, 0.3, 0.4), output_file = FALSE, time_limit = 10)
+# evaluate differents targets
+port <- evalTarget(pu = sim_pu_data, features = sim_features_data,
+                   dist_features = sim_dist_features_data,
+                   threats = sim_threats_data,
+                   dist_threats = sim_dist_threats_data,
+                   sensitivity = sim_sensitivity_data,
+                   boundary = sim_boundary_data,
+                   values = c(0.2, 0.3, 0.4), 
+                   output_file = FALSE, 
+                   time_limit = 10)
 #> *********************************
 #>  Iteration 1 of 3: Prop0.2
 #> *********************************
 #> Warning: The blm argument was set to 0, so the boundary data has no effect
-#> Warning: Some blm_actions argument were set to 0, so the boundary data has no
-#> effect for these cases
+#> Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+#> cases
 #> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 #> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-#> Optimize a model with 280 rows, 589 columns and 822 nonzeros
-#> Model fingerprint: 0x1021d135
-#> Model has 176 general constraints
-#> Variable types: 352 continuous, 237 integer (237 binary)
+#> Optimize a model with 460 rows, 572 columns and 1137 nonzeros
+#> Model fingerprint: 0xd1a9ed8d
+#> Variable types: 352 continuous, 220 integer (220 binary)
 #> Coefficient statistics:
 #>   Matrix range     [5e-01, 2e+00]
 #>   Objective range  [1e+00, 1e+01]
 #>   Bounds range     [1e+00, 1e+00]
-#>   RHS range        [6e+00, 1e+01]
-#> Found heuristic solution: objective 1002.0000000
-#> Presolve added 289 rows and 635 columns
+#>   RHS range        [4e-01, 1e+01]
+#> Found heuristic solution: objective 201.0000000
+#> Presolve removed 426 rows and 453 columns
 #> Presolve time: 0.00s
-#> Presolved: 569 rows, 1224 columns, 2970 nonzeros
-#> Presolved model has 176 SOS constraint(s)
-#> Variable types: 1056 continuous, 168 integer (162 binary)
+#> Presolved: 34 rows, 119 columns, 237 nonzeros
+#> Found heuristic solution: objective 172.0000000
+#> Variable types: 0 continuous, 119 integer (101 binary)
 #> 
-#> Root relaxation: objective 1.161000e+02, 190 iterations, 0.00 seconds
+#> Root relaxation: objective 1.155000e+02, 30 iterations, 0.00 seconds
 #> 
 #>     Nodes    |    Current Node    |     Objective Bounds      |     Work
 #>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 #> 
-#>      0     0  116.10000    0   36 1002.00000  116.10000  88.4%     -    0s
-#> H    0     0                     989.0000000  116.10000  88.3%     -    0s
-#>      0     0  124.40000    0   16  989.00000  124.40000  87.4%     -    0s
-#> H    0     0                     144.0000000  124.40000  13.6%     -    0s
-#>      0     0  124.40000    0   22  144.00000  124.40000  13.6%     -    0s
-#>      0     0  124.46667    0   24  144.00000  124.46667  13.6%     -    0s
-#> H    0     0                     133.0000000  124.46667  6.42%     -    0s
-#>      0     0  124.46667    0   28  133.00000  124.46667  6.42%     -    0s
-#>      0     0  124.48500    0   30  133.00000  124.48500  6.40%     -    0s
-#>      0     0  124.80000    0   16  133.00000  124.80000  6.17%     -    0s
-#>      0     0  125.20000    0   21  133.00000  125.20000  5.86%     -    0s
-#>      0     0  125.60000    0   21  133.00000  125.60000  5.56%     -    0s
-#>      0     0  125.60000    0   17  133.00000  125.60000  5.56%     -    0s
-#>      0     0  125.60000    0    9  133.00000  125.60000  5.56%     -    0s
-#>      0     0  125.60000    0   14  133.00000  125.60000  5.56%     -    0s
-#>      0     0  125.60000    0   20  133.00000  125.60000  5.56%     -    0s
-#>      0     0  125.60000    0   14  133.00000  125.60000  5.56%     -    0s
-#>      0     0  125.60000    0   14  133.00000  125.60000  5.56%     -    0s
-#>      0     2  125.60000    0   14  133.00000  125.60000  5.56%     -    0s
-#>   1678   952  130.00000   38   10  133.00000  126.60000  4.81%   3.2    1s
-#>   7504  4347 infeasible   62       133.00000  126.60000  4.81%   3.3    2s
-#>  13830  7619  128.90000   32    9  133.00000  127.03158  4.49%   3.3    3s
-#>  20299 10589 infeasible   40       133.00000  127.45164  4.17%   3.4    4s
-#>  26679 13755     cutoff   43       133.00000  127.60000  4.06%   3.4    5s
-#>  32510 16047  130.20000   42   14  133.00000  127.90000  3.83%   3.5    6s
-#>  38480 18610  132.00000   47    3  133.00000  128.00000  3.76%   3.5    7s
-#>  44620 21240  129.17875   36   16  133.00000  128.20000  3.61%   3.6    8s
-#>  50379 23436  129.99999   21   17  133.00000  128.40000  3.46%   3.7    9s
-#>  55605 25109  130.16435   31   14  133.00000  128.50000  3.38%   3.7   10s
+#>      0     0  115.50000    0    6  172.00000  115.50000  32.8%     -    0s
+#> H    0     0                     134.0000000  115.50000  13.8%     -    0s
+#> H    0     0                     129.0000000  115.50000  10.5%     -    0s
+#>      0     0  118.50000    0    3  129.00000  118.50000  8.14%     -    0s
+#> H    0     0                     125.0000000  118.50000  5.20%     -    0s
+#> H    0     0                     123.0000000  118.50000  3.66%     -    0s
+#> *    0     0               0     120.0000000  120.00000  0.00%     -    0s
 #> 
 #> Cutting planes:
-#>   Gomory: 5
-#>   Cover: 27
-#>   MIR: 5
-#>   Flow cover: 10
-#>   Inf proof: 9
+#>   Gomory: 2
+#>   Cover: 8
+#>   MIR: 1
 #> 
-#> Explored 55811 nodes (208053 simplex iterations) in 10.00 seconds
+#> Explored 1 nodes (42 simplex iterations) in 0.01 seconds
 #> Thread count was 2 (of 4 available processors)
 #> 
-#> Solution count 4: 133 144 989 1002 
+#> Solution count 7: 120 123 125 ... 201
 #> 
-#> Time limit reached
-#> Best objective 1.330000000000e+02, best bound 1.290000000000e+02, gap 3.0075%
+#> Optimal solution found (tolerance 0.00e+00)
+#> Best objective 1.200000000000e+02, best bound 1.200000000000e+02, gap 0.0000%
 #> *********************************
 #>  Iteration 2 of 3: Prop0.3
 #> *********************************
 #> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 #> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-#> Optimize a model with 280 rows, 589 columns and 822 nonzeros
-#> Model fingerprint: 0x9ac23276
-#> Model has 176 general constraints
-#> Variable types: 352 continuous, 237 integer (237 binary)
+#> Optimize a model with 460 rows, 572 columns and 1137 nonzeros
+#> Model fingerprint: 0xed38e16c
+#> Variable types: 352 continuous, 220 integer (220 binary)
 #> Coefficient statistics:
 #>   Matrix range     [5e-01, 2e+00]
 #>   Objective range  [1e+00, 1e+01]
 #>   Bounds range     [1e+00, 1e+00]
-#>   RHS range        [9e+00, 2e+01]
-#> Found heuristic solution: objective 1002.0000000
-#> Presolve added 289 rows and 635 columns
+#>   RHS range        [6e-01, 2e+01]
+#> Found heuristic solution: objective 302.0000000
+#> Presolve removed 426 rows and 453 columns
 #> Presolve time: 0.00s
-#> Presolved: 569 rows, 1224 columns, 2970 nonzeros
-#> Presolved model has 176 SOS constraint(s)
-#> Variable types: 1056 continuous, 168 integer (162 binary)
+#> Presolved: 34 rows, 119 columns, 237 nonzeros
+#> Found heuristic solution: objective 271.0000000
+#> Variable types: 0 continuous, 119 integer (101 binary)
 #> 
-#> Root relaxation: objective 1.896000e+02, 224 iterations, 0.00 seconds
+#> Root relaxation: objective 1.865000e+02, 44 iterations, 0.00 seconds
 #> 
 #>     Nodes    |    Current Node    |     Objective Bounds      |     Work
 #>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 #> 
-#>      0     0  189.60000    0   40 1002.00000  189.60000  81.1%     -    0s
-#> H    0     0                     957.0000000  189.60000  80.2%     -    0s
-#>      0     0  198.52882    0   16  957.00000  198.52882  79.3%     -    0s
-#> H    0     0                     208.0000000  198.52882  4.55%     -    0s
-#>      0     0  198.52882    0   20  208.00000  198.52882  4.55%     -    0s
-#> H    0     0                     205.0000000  198.52882  3.16%     -    0s
-#>      0     0  198.52882    0   23  205.00000  198.52882  3.16%     -    0s
-#>      0     0  198.57686    0   25  205.00000  198.57686  3.13%     -    0s
-#>      0     0  198.57778    0   20  205.00000  198.57778  3.13%     -    0s
-#>      0     0  198.66000    0   20  205.00000  198.66000  3.09%     -    0s
-#>      0     0  198.75860    0   23  205.00000  198.75860  3.04%     -    0s
-#>      0     0  198.80699    0   24  205.00000  198.80699  3.02%     -    0s
-#>      0     0  198.89488    0   27  205.00000  198.89488  2.98%     -    0s
-#>      0     0  198.93333    0   17  205.00000  198.93333  2.96%     -    0s
-#>      0     0  198.93333    0   17  205.00000  198.93333  2.96%     -    0s
-#>      0     0  199.16000    0   15  205.00000  199.16000  2.85%     -    0s
-#>      0     0  199.16000    0   20  205.00000  199.16000  2.85%     -    0s
-#>      0     0  199.20370    0   20  205.00000  199.20370  2.83%     -    0s
-#>      0     0  199.20370    0   20  205.00000  199.20370  2.83%     -    0s
-#>      0     0  199.20370    0   25  205.00000  199.20370  2.83%     -    0s
-#>      0     0  199.20370    0   18  205.00000  199.20370  2.83%     -    0s
-#>      0     2  199.20370    0   18  205.00000  199.20370  2.83%     -    0s
-#>   2232   654  202.30526    9   27  205.00000  201.64034  1.64%   3.8    1s
-#>   5087   597     cutoff   30       205.00000  202.01666  1.46%   4.0    2s
-#>   8830   197 infeasible   26       205.00000  203.60000  0.68%   3.9    3s
+#>      0     0  186.50000    0    8  271.00000  186.50000  31.2%     -    0s
+#> H    0     0                     205.0000000  186.50000  9.02%     -    0s
+#> H    0     0                     199.0000000  186.50000  6.28%     -    0s
+#>      0     0  194.50000    0    3  199.00000  194.50000  2.26%     -    0s
+#>      0     0  195.00000    0    3  199.00000  195.00000  2.01%     -    0s
+#> H    0     0                     196.0000000  195.00000  0.51%     -    0s
 #> 
 #> Cutting planes:
-#>   Gomory: 4
-#>   Implied bound: 1
-#>   MIR: 6
-#>   Flow cover: 25
-#>   Inf proof: 9
+#>   Gomory: 2
+#>   Cover: 10
 #> 
-#> Explored 10318 nodes (39779 simplex iterations) in 3.25 seconds
+#> Explored 1 nodes (78 simplex iterations) in 0.01 seconds
 #> Thread count was 2 (of 4 available processors)
 #> 
-#> Solution count 4: 205 208 957 1002 
+#> Solution count 5: 196 199 205 ... 302
 #> 
 #> Optimal solution found (tolerance 0.00e+00)
-#> Warning: max constraint violation (2.8000e-02) exceeds tolerance
-#> Warning: max general constraint violation (2.8000e-02) exceeds tolerance
-#>          (model may be infeasible or unbounded - try turning presolve off)
-#> Best objective 2.050000000000e+02, best bound 2.050000000000e+02, gap 0.0000%
+#> Best objective 1.960000000000e+02, best bound 1.960000000000e+02, gap 0.0000%
 #> *********************************
 #>  Iteration 3 of 3: Prop0.4
 #> *********************************
 #> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 #> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-#> Optimize a model with 280 rows, 589 columns and 822 nonzeros
-#> Model fingerprint: 0xdcbe1adf
-#> Model has 176 general constraints
-#> Variable types: 352 continuous, 237 integer (237 binary)
+#> Optimize a model with 460 rows, 572 columns and 1137 nonzeros
+#> Model fingerprint: 0x102d2bd9
+#> Variable types: 352 continuous, 220 integer (220 binary)
 #> Coefficient statistics:
 #>   Matrix range     [5e-01, 2e+00]
 #>   Objective range  [1e+00, 1e+01]
 #>   Bounds range     [1e+00, 1e+00]
-#>   RHS range        [1e+01, 3e+01]
-#> Found heuristic solution: objective 1002.0000000
-#> Presolve added 289 rows and 635 columns
+#>   RHS range        [8e-01, 2e+01]
+#> Found heuristic solution: objective 395.0000000
+#> Presolve removed 426 rows and 453 columns
 #> Presolve time: 0.00s
-#> Presolved: 569 rows, 1224 columns, 2970 nonzeros
-#> Presolved model has 176 SOS constraint(s)
-#> Variable types: 1056 continuous, 168 integer (162 binary)
+#> Presolved: 34 rows, 119 columns, 237 nonzeros
+#> Found heuristic solution: objective 354.0000000
+#> Variable types: 0 continuous, 119 integer (101 binary)
 #> 
-#> Root relaxation: objective 2.716000e+02, 224 iterations, 0.00 seconds
+#> Root relaxation: objective 2.670000e+02, 40 iterations, 0.00 seconds
 #> 
 #>     Nodes    |    Current Node    |     Objective Bounds      |     Work
 #>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 #> 
-#>      0     0  271.60000    0   37 1002.00000  271.60000  72.9%     -    0s
-#> H    0     0                     975.0000000  271.60000  72.1%     -    0s
-#>      0     0  281.00000    0    7  975.00000  281.00000  71.2%     -    0s
-#> H    0     0                     293.0000000  281.00000  4.10%     -    0s
-#>      0     0  281.40000    0    9  293.00000  281.40000  3.96%     -    0s
-#>      0     0  281.40000    0   18  293.00000  281.40000  3.96%     -    0s
-#> H    0     0                     292.0000000  281.40000  3.63%     -    0s
-#>      0     0  281.40000    0   18  292.00000  281.40000  3.63%     -    0s
-#>      0     0  281.40000    0   19  292.00000  281.40000  3.63%     -    0s
-#>      0     0  281.40000    0   19  292.00000  281.40000  3.63%     -    0s
-#>      0     2  281.40000    0   19  292.00000  281.40000  3.63%     -    0s
-#>   1970   951  285.20000   20   13  292.00000  283.09600  3.05%   3.8    1s
-#>   7012  3961 infeasible   47       292.00000  283.40000  2.95%   3.3    2s
-#>  12295  7259  285.63333   71   14  292.00000  283.95500  2.76%   3.2    3s
-#>  18621 10984  286.50000   34   15  292.00000  284.00000  2.74%   3.2    4s
-#>  24189 14258  286.80000   53   13  292.00000  284.13418  2.69%   3.3    5s
-#>  29438 17228  290.20000   61    5  292.00000  284.20000  2.67%   3.4    6s
-#>  34408 20001  284.70000   33   15  292.00000  284.40000  2.60%   3.5    7s
-#>  39666 22959 infeasible   62       292.00000  284.40000  2.60%   3.5    8s
-#>  44979 25883  289.80000   52    5  292.00000  284.56667  2.55%   3.5    9s
-#>  49056 28032  285.60000   38   11  292.00000  284.60000  2.53%   3.5   10s
+#>      0     0  267.00000    0   10  354.00000  267.00000  24.6%     -    0s
+#> H    0     0                     298.0000000  267.00000  10.4%     -    0s
+#> H    0     0                     295.0000000  267.00000  9.49%     -    0s
+#> H    0     0                     287.0000000  267.00000  6.97%     -    0s
+#>      0     0  276.50000    0    2  287.00000  276.50000  3.66%     -    0s
+#>      0     0  276.50000    0    3  287.00000  276.50000  3.66%     -    0s
+#> H    0     0                     278.0000000  276.50000  0.54%     -    0s
+#>      0     0 infeasible    0       278.00000  278.00000  0.00%     -    0s
 #> 
 #> Cutting planes:
-#>   Gomory: 9
-#>   MIR: 4
-#>   Flow cover: 25
-#>   Inf proof: 3
+#>   Gomory: 1
+#>   Cover: 10
+#>   MIR: 3
+#>   Zero half: 1
 #> 
-#> Explored 49142 nodes (173673 simplex iterations) in 10.00 seconds
+#> Explored 1 nodes (65 simplex iterations) in 0.01 seconds
 #> Thread count was 2 (of 4 available processors)
 #> 
-#> Solution count 4: 292 293 975 1002 
+#> Solution count 6: 278 287 295 ... 395
 #> 
-#> Time limit reached
-#> Best objective 2.920000000000e+02, best bound 2.850000000000e+02, gap 2.3973%
+#> Optimal solution found (tolerance 0.00e+00)
+#> Best objective 2.780000000000e+02, best bound 2.780000000000e+02, gap 0.0000%
 ```
 
 Like the `prioriactions()` function, all *eval* functions inherit the
-parameters of the `problem()`, `minimizeCosts()`, `maximizeBenefits()`
-and `solve()` functions.
-
-Note that two of the three solutions do not have a *gap* of 0%. This
-means that it is not known with certainty that the solution found is
-optimal (*gap* of 0%). However, it could be. For this example, we have
-limited the run time to 10 seconds (`time_limit` = 10).
+parameters of the `inputData()`, `problem()`, and `solve()` functions.
 
 
 ```r
 
-# Get gap information of solutions inside portfolio
-getGap(port)
-#> [1] 3.0075 0.0000 2.3973
+# get cost of solutions inside portfolio
+getCost(port)
+#>   solution_name monitoring threat_1 threat_2
+#> 1       Prop0.2         63       10       47
+#> 2       Prop0.3         99       26       71
+#> 3       Prop0.4        139       50       89
+getConnectivityPenalty(port)
+#>   solution_name     units threat_1 threat_2
+#> 1       Prop0.2  8057.611  904.691  3229.66
+#> 2       Prop0.3 11224.228 1760.113 4375.366
+#> 3       Prop0.4 12728.999 2362.241 4711.007
 ```
+
+Note that increasing the target per feature naturally increases the number of actions to be taken to achieve it and therefore the associated cost. This, in turn, increases the connectivity values between conservation actions.
 
 ## References

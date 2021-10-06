@@ -21,8 +21,8 @@ bool rcpp_constraint_budget(SEXP x,
   int col_constraint = 0;
   int number_of_actions = dist_threats_data.nrows();
 
-  NumericVector action_costs = dist_threats_data["cost"];
-  NumericVector unit_costs = pu_data["cost"];
+  NumericVector action_costs = dist_threats_data["action_cost"];
+  NumericVector unit_costs = pu_data["monitoring_cost"];
 
   for(int i = 0; i < number_of_units; i++){
     op->_A_i.push_back(row_constraint);

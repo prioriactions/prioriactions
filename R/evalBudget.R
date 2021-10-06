@@ -4,18 +4,16 @@ NULL
 
 #' @title Evaluate multiple budget values
 #'
-#' @description Provides multiple solutions for different values of budgets. This
+#' @description Return one solution per instance for different values of budgets. This
 #' function assumes that the *maximizeBenefits* option is being used (note that
 #' the *minimizeCosts* option does not require setting a maximum budget). Like
-#' `prioriactions()` function, it inherits all arguments from `problem()`,
-#' `model()` and `solve()`.
-#'
-#' @param data `list`. Input data list for `problem()` function.
+#' `prioriactions()` function, it inherits all arguments from `inputData()`,
+#' `problem()` and `solve()`.
 #'
 #' @param values `numeric`. Values of budget to verify. More than one value is
 #' needed.
 #'
-#' @param ... arguments inherited from `problem()`, `maximizeBenefits()`,
+#' @param ... arguments inherited from `inputData()`, `problem()`,
 #'   and `solve()` functions.
 #'
 #' @name evalBudget
@@ -24,8 +22,8 @@ NULL
 #'
 #' @details `evalBudget()` creates and solves multiple instances, of the corresponding
 #' multi-actions planning problem, for different values of maximum budgets. Alternatively, this
-#' could be obtained by executing function `prioriactions()` or by steps the `problem()`,
-#' `model()` and `solve()` functions; using, in each run, different budgtes values.
+#' could be obtained by executing function `prioriactions()` or by steps the `inputData()`,
+#' `problem()` and `solve()` functions; using, in each run, different budgets values.
 #' However, the `evalBudget()` function has two advantages with
 #' respect to this manual approach: : 1)
 #' it is more efficient to create the models (this is because the model is created
@@ -34,29 +32,29 @@ NULL
 #' obtaining information about the group of solutions (including all *get* functions).
 #'
 #' @examples
+#' \dontrun{
 #' # set seed for reproducibility
 #' set.seed(14)
 #'
-#' ## Load data
-#' inputs <- list(sim_pu_data, sim_features_data, sim_dist_features_data,
-#' sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
-#' sim_boundary_data)
-#'
 #' ## Create model and solve
-#' port <- evalBudget(data = inputs, values = c(1, 10, 50, 100), time_limit = 50, output_file = FALSE)
+#' port <- evalBudget(pu = sim_pu_data, features = sim_features_data,
+#'                 dist_features = sim_dist_features_data,
+#'                 threats = sim_threats_data,
+#'                 dist_threats = sim_dist_threats_data,
+#'                 sensitivity = sim_sensitivity_data,
+#'                 boundary = sim_boundary_data,
+#'                 values = c(1, 10, 50, 100),
+#'                 time_limit = 50,
+#'                 output_file = FALSE)
+#'
+#' getSolutionBenefit(port)
+#' }
 #'
 #' @rdname evalBudget
 #' @export
-evalBudget <- function(data = list(), values = c(), ...) {
+evalBudget <- function(values = c(), ...) {
 
-  # assert that arguments are valid
-  assertthat::assert_that(
-    is.list(data)
-  )
   params = list(...)
-
-  #first step: problem
-  conservation_model <- do.call(problem, args = data)
 
   #verifying budget length
   assertthat::assert_that(
@@ -64,30 +62,27 @@ evalBudget <- function(data = list(), values = c(), ...) {
     length(values) > 1
   )
 
-  params_solve <- c("solver", "gap_limit", "time_limit", "solution_limit", "cores",
-                    "verbose", "name_output_file", "output_file")
-  params_model <- c("blm", "curve", "segments", "recovery", "budget")
+  params_data <- c(names(formals(inputData)), "sensitivity", "boundary")
+  params_model <- names(formals(problem))
+  params_solve <- names(formals(solve))
 
-  name_model <- "maximizeBenefits"
-
-  #number of replications
-  repl <- length(values)
-
-  #verifying input parameters
-  if(!all(names(params) %in% c(params_solve, params_model))){
-    id_error <- which(!names(params) %in% c(params_solve, params_model))
+    #verifying input parameters
+  if(!all(names(params) %in% c(params_data, params_solve, params_model))){
+    id_error <- which(!names(params) %in% c(params_data, params_solve, params_model))
 
     stop(paste0("The following params are not defined in this function: ", paste(names(params)[id_error], collapse = " ")))
   }
 
-  #running
+    #running
+  repl <- length(values)
   it = 1
   name_iter = ""
+  conservation_model <- do.call(inputData, args = params[names(params) %in% params_data])
 
   for(budget in values){
 
     name_iter <- paste0("Budget", budget)
-    params_iter <- params
+    params_iter <- c(params, model_type = "maximizeBenefits")
     params_iter$budget <- budget
 
     message(paste0(
@@ -98,8 +93,8 @@ evalBudget <- function(data = list(), values = c(), ...) {
 
     #Creating mathematical model--------------------------------------------------
     if(it == 1){
-      optimization_model <- do.call(name_model, args = append(x = conservation_model,
-                                                              params_iter[names(params_iter) %in% params_model]))
+      optimization_model <- do.call(problem, args = append(x = conservation_model,
+                                                           params_iter[names(params_iter) %in% params_model]))
     }
     else{
       rhs_size <- length(optimization_model$data$rhs)

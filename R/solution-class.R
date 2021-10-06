@@ -29,6 +29,7 @@ NULL
 #' }
 #'
 #' @examples
+#' \dontrun{
 #' # set seed for reproducibility
 #' set.seed(14)
 #'
@@ -38,24 +39,22 @@ NULL
 #' sim_boundary_data)
 #'
 #' ## Create data instance
-#' problem_data <- problem(
+#' problem_data <- inputData(
 #'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
 #'   threats = sim_threats_data, dist_threats = sim_dist_threats_data,
 #'   sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
 #' )
 #'
 #' ## Create optimization model
-#' problem_model <- minimizeCosts(x = problem_data, blm = 1)
+#' problem_model <- problem(x = problem_data, blm = 1)
 #'
 #' ## Solve the optimization model
-#' s <- solve(a = problem_model, solver = "gurobi", gap_limit = 0.01, output_file = FALSE)
+#' s <- solve(a = problem_model, time_limit = 2, output_file = FALSE)
 #'
 #' ## Use class methods
-#' s$getGap()
-#'
-#' s$getObjectiveValue()
 #'
 #' s$print()
+#' }
 #'
 #' @name solution-class
 #'
@@ -72,10 +71,10 @@ Solution <- pproto(
     message(
       "Solution overview",
       "\n  name: ", self$name,
-      "\n  objective value: ", getObjectiveValue(self),
-      "\n  gap:  ", getGap(self),
-      "\n  status:  ", getStatus(self),
-      "\n  runtime: ", paste0(getTimeSolving(self), " sec")
+      "\n  objective value: ", self$data$objval,
+      "\n  gap:  ", self$data$gap,
+      "\n  status:  ",  getStatus(self),
+      "\n  runtime: ", paste0(self$data$runtime, " sec")
     )
   },
   show = function(self) {

@@ -2,199 +2,143 @@
 % Please edit documentation in R/problem.R
 \name{problem}
 \alias{problem}
-\alias{problem,data.frame,data.frame,data.frame,data.frame,data.frame-method}
-\title{Creates the multi-action planning problem}
+\title{Create mathematical model}
 \usage{
-problem(pu, features, dist_features, threats, dist_threats, ...)
-
-\S4method{problem}{data.frame,data.frame,data.frame,data.frame,data.frame}(
-  pu,
-  features,
-  dist_features,
-  threats,
-  dist_threats,
-  sensitivity = NULL,
-  boundary = NULL
+problem(
+  x,
+  model_type = "minimizeCosts",
+  budget = 0,
+  blm = 0,
+  curve = 1,
+  segments = 3
 )
 }
 \arguments{
-\item{pu}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the planning units (PU)
-of the corresponding instance and their corresponding cost and status. Each
-row corresponds to a different planning unit. This file is inherited from the
-\emph{pu.dat} in \emph{Marxan}. It must contain the following columns:
-\describe{
-\item{\code{id}}{\code{integer} unique identifier for each planning unit.}
-\item{\code{cost}}{\code{numeric} cost of including each planning unit in the reserve system.}
-\item{\code{status}}{\code{integer} (\strong{optional}) value that indicate if each planning unit
-should be available to be selected (0), \emph{locked-in} (2) as part of the
-solution, or \emph{locked-out} (3) and excluded from the solution.}
-}}
+\item{x}{\linkS4class{conservationProblem} object. Data used in a problem of
+prioritization of multiple conservation actions. This object must be created using the
+\code{\link[=problem]{problem()}} function.}
 
-\item{features}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the conservation
-features to consider in the optimization problem. Each row corresponds to a different
-feature. This file is inherited from marxan's \emph{spec.dat}. It must contain
-the following columns:
-\describe{
-\item{\code{id}}{\code{integer} unique identifier for each conservation feature.}
-\item{\code{target}}{\code{numeric} target amount to achieve for each conservation feature.
-This field is \strong{required} if a \code{minimizeCosts()} model is used.}
-\item{\code{name}}{\code{character} (\strong{optional}) name for each conservation feature.}
-}}
+\item{model_type}{\code{character}. Name of the type of model to create. With two possible values:
+\code{minimizeCosts} and \code{maximizeBenefits}.}
 
-\item{dist_features}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the spatial
-distribution of conservation features across planning units. Each row corresponds
-to a combination of planning unit and feature. This file is inherited from marxan's
-\emph{puvspr.dat}. It must contain the following columns:
-\describe{
-\item{\code{pu}}{\code{integer} \emph{id} of a planning unit where the conservation feature
-listed on the same row occurs.}
-\item{\code{feature}}{\code{integer} \emph{id} of each conservation feature.}
-\item{\code{amount}}{\code{numeric} amount of the feature in the planning unit. Set
-to 1 to work with presence/absence.}
-}}
+\item{budget}{\code{numeric}. Maximum budget allowed. This field is used only if a
+model of the type \code{maximizeBenefits} is applied.}
 
-\item{threats}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the threats to consider in
-the optimization exercise. Each row corresponds to a different threats. It must contain
-the following columns:
-\describe{
-\item{\code{id}}{\code{integer} unique identifier for each threat.}
-\item{\code{blm_actions}}{\code{numeric} (\strong{optional}) penalty of connectivity between threats.
-Default is 0.}
-\item{\code{name}}{\code{character} (\strong{optional}) name for each threat.}
-}}
+\item{blm}{\code{numeric}. Weight factor applied to the sum of connectivity penalties
+for missed connections in a solution, similar to Boundary Length Modifier (BLM) in \emph{Marxan}. This argument
+only has an effect when the \code{boundary} is available.}
 
-\item{dist_threats}{Object of class \code{\link[=data.frame]{data.frame()}} that specifies the spatial
-distribution of threats across planning units. Each row corresponds
-to a combination of planning unit and threat. It must contain the following
-columns:
-\describe{
-\item{\code{pu}}{\code{integer} \emph{id} of a planning unit where the threat listed on the
-same row occurs.}
-\item{\code{threat}}{\code{integer} \emph{id} of each threat.}
-\item{\code{amount}}{\code{numeric} amount of the threat in the planning unit. Set
-to 1 to work with presence/absence. Continuous amount values require
-that feature sensitivities to threats be established (more info in
-\href{https://prioriactions.github.io/prioriactions/articles/sensitivities.html}{sensitivities}
-vignette).}
-\item{\code{cost}}{\code{numeric} cost of an action to abate the threat
-in each planning unit.}
-\item{\code{status}}{\code{integer} (\strong{optional}) value that indicates if each action
-to abate the threat is available to be selected (0), \emph{locked-in} (2)
-as part of the solution, or \emph{locked-out} (3) and therefore excluded from the solution.}
-}}
+\item{curve}{\code{integer}. Type of continuous curve used to represent benefit expression. It can
+be a linear (\code{1}), quadratic (\code{2}) or cubic (\code{3}) function.
+See \strong{Details} for more information.}
 
-\item{...}{not used.}
-
-\item{sensitivity}{(\strong{optional}) Object of class \code{\link[=data.frame]{data.frame()}} that specifies
-the sensitivity of each feature to each threat. Each row corresponds
-to a combination of feature and threat. If not informed, all features
-are assumed to be sensitive to all threats. We strongly recommend reviewing the
-\href{https://prioriactions.github.io/prioriactions/articles/sensitivities.html}{sensitivities}
-vignette. It must contain the following
-columns:
-\describe{
-\item{\code{feature}}{\code{integer} \emph{id} of each conservation feature.}
-\item{\code{threat}}{\code{integer} \emph{id} of each threat.}
-\item{\code{a}}{\code{numeric} (\strong{optional}) the minimum intensity of the threat at
-which the features probability of persistence starts to decline. The more
-sensitive the feature is to the threat, the lowest this value will be. Default
-is 0.}
-\item{\code{b}}{\code{numeric} (\strong{optional}) the value of intensity of the threat
-over which the feature has a probability of persistence of 0. If it is not
-established,it is assumed as the \strong{maximum value of the threat across all planning units}
-in the study area.
-Note that this might overestimate the sensitivity of species to threats,
-as they will only be assumed to disappear from planning units if the
-threats reach the maximum intensity value in the study area.
-
-it is assumed as the \strong{maximum intensity value of this threat in all planning units}.}
-\item{\code{c}}{\code{numeric} (\strong{optional}) minimum probability of persistence of a
-features when a threat reaches its maximum intensity value. Default is 0.}
-\item{\code{d}}{\code{numeric} (\strong{optional}) maximum probability of persistence of a
-features in absence of a given threat. Default is 1.}
-}}
-
-\item{boundary}{(\strong{optional}) Object of class \code{\link[=data.frame]{data.frame()}} that specifies
-the spatial relationship between pair of planning units. Each row corresponds
-to a combination of planning unit. This file is inherited from marxan's
-\emph{bound.dat}. It must contain the following columns:
-\describe{
-\item{\code{id1}}{\code{integer} \emph{id} of each planning unit.}
-\item{\code{id2}}{\code{integer} \emph{id} of each planning unit.}
-\item{\code{boundary}}{\code{numeric} penalty applied in the objective function
-when only one of the planning units is present in the solution.}
-}}
+\item{segments}{\code{integer}. Number of segments (\code{1}, \code{2}, \code{3}, \code{4} or \code{5}) used to approximate the non-linear
+expression (\code{curve}) in the calculate benefits. See \strong{Details} for more information.}
 }
 \value{
-An object of class \linkS4class{conservationProblem}.
+An object of class \linkS4class{optimizationProblem}.
 }
 \description{
-Create the \linkS4class{conservationProblem} object with information about the multi-action
-conservation planning problem. This function is used to specify all the data
-that defines the spatial prioritization problem (planning units data, feature
-data, threats data, and their spatial distributions.)
+Create an optimization model for the multi-action conservation
+planning problem, following the mathematical formulations used in
+Salgado-Rojas \emph{et al.} (2020).
+}
+\details{
+Currently the problem function allows you to create two types of mathematical programming models:
+\describe{
+\item{\strong{minimize cost (minimizeCosts)}:}{ This model seeks to find the set of actions that
+minimizes the overall planning costs, while meeting a set of representation targets
+for the conservation features.
+
+This model can be expressed mathematically for a set of planning units
+\eqn{I} indexed by \eqn{i} a set of features \eqn{S} indexed by \eqn{s}, and
+a set of threats \eqn{K} indexed by \eqn{k} as:
+\deqn{
+\min \space \sum_{i \in I}\sum_{k \in K_i} x_{ik} c_{ik} + \sum_{i \in I} x_{i \cdot} c'_{i} + blm \cdot connectivity\\
+\mathit{s.t.} \\
+\sum_{i \in I_s} p_{is} r_{is} \geq t_s \space \forall \space s \in S
+}
+Where, \eqn{x_{ik}} is a decisions variable that specifies whether an action to abate
+threat \eqn{k} in planning unit \eqn{i} has been selected (1) or not (0), \eqn{c_{ik}}
+is the cost of the action to abate the threat \eqn{k} in the planning unit \eqn{i},
+\eqn{c'_{i}} is the monitoring cost of planning unit \eqn{i},
+\eqn{p_{is}} is the probability of persistence of the feature \eqn{s} in the planning unit \eqn{i}
+(ranging between 0 and 1), \eqn{r_{is}} is the amount of
+feature \eqn{s} in planning unit \eqn{i}. \eqn{t_s} is the \strong{recovery target} for feature \eqn{s}.
+In the case of working with \strong{conservation target}, the following constraint is necessary:
+
+\deqn{
+\sum_{i \in I_s: |K_{s} \cap K_{i}| \neq 0} z_{is} r_{is} \geq t'_s \space \forall \space s \in S
+}
+With, \eqn{z_{is}}  as the probability of persistence by conservation of the feature s in the planning unit i
+(ranging between 0 and 1). It is only present when there is no spatial co-occurrence between
+a feature and its threats (i.e. \eqn{|K_{s} \cap K_{i}| \neq 0}). In the case of binary threat
+intensities it is assumed as 1.  \eqn{t'_s} is the
+\strong{conservation target} for feature \eqn{s}.
+}
+
+\item{\strong{maximize benefits (maximizeBenefits)}:}{ The maximize benefits model seeks
+to find the set of actions that maximizes the sum of benefits of
+all features, while the cost of performing actions and monitoring does not exceed a certain budget.
+Using the terminology presented above, this model can be expressed mathematically as:
+
+\deqn{
+\max \space \sum_{i \in I}\sum_{s \in S_i} b_{is} - blm \cdot connectivity\\
+\mathit{s.t.} \\
+\sum_{i \in I} \sum_{k \in K_i} x_{ik} c_{ik} + \sum_{i \in I} x_{i \cdot} c'_{i} \leq budget
+}
+
+}}
+
+Where \eqn{b_{is}} is the benefit of the feature \eqn{s} in a planning unit \eqn{i} and it
+is calculated by multiplying the probability of persistence of the feature in the
+unit by its corresponding amount, i.e., \eqn{b_{is} = p_{is} r_{is}}. When we talk about
+recovering, the probability of persistence is a measure of the number of actions taken against the threats that
+affect said feature. For more information on its calculation, see the
+\code{getSolutionBenefit()} or \code{getPotentialBenefit()} functions references.
+
+As a way of including the risk associated with calculating our probability of
+persistence of the features and in turn, avoiding that many low probabilities
+of persistence end up reaching the proposed targets, is that we add the \code{curve}
+parameter. That incorporates an exponent (values of 1: linear, 2: quadratic
+or 3: cubic) to the calculation of the probability of persistence. Thus penalizing
+the low probabilities in the sum of the benefits achieved.
+Since \code{prioriactions} works with linear models, we use a piecewise linearization strategy to
+work with non-linear curves in \eqn{b_{is}}. The \code{segments} parameter indicates how well the expression
+approximates the curved used in \eqn{b_{is}}. A higher number implies a better
+approximation but increases the resolution complexity. Note that for a linear curve
+(\code{curve} = 1) it is not necessary to set a \code{segment} parameter.
+
+Parameters \code{blm} and \code{blm_actions} allow controlling the spatial connectivity
+of the selected units and of the deployed actions, respectively (similar to BLM in Marxan).
 }
 \examples{
+## This example uses input files included into package.
+
 ## set seed for reproducibility
 set.seed(14)
 
-## Set prioriactions path
-prioriactions_path <- system.file("extdata/example_input/", package = "prioriactions")
-
-## Load in planning unit data
-pu_data <- data.table::fread(paste0(prioriactions_path,"/pu.dat"),
-                             data.table = FALSE)
-head(pu_data)
-
-## Load in feature data
-features_data <- data.table::fread(paste0(prioriactions_path,"/features.dat"),
-                                   data.table = FALSE)
-head(features_data)
-
-## Load in planning unit vs feature data
-dist_features_data <- data.table::fread(paste0(prioriactions_path,"/dist_features.dat"),
-                                        data.table = FALSE)
-head(dist_features_data)
-
-## Load in the threats data
-threats_data <- data.table::fread(paste0(prioriactions_path,"/threats.dat"),
-                                  data.table = FALSE)
-head(threats_data)
-
-## Load in the threats distribution data
-dist_threats_data <- data.table::fread(paste0(prioriactions_path,"/dist_threats.dat"),
-                                       data.table = FALSE)
-head(dist_threats_data)
-
-## Load in the sensitivity data
-sensitivity_data <- data.table::fread(paste0(prioriactions_path,"/sensitivity.dat"),
-                                      data.table = FALSE)
-head(sensitivity_data)
-
-## Load in the boundary data
-boundary_data <- data.table::fread(paste0(prioriactions_path,"/boundary.dat"),
-                                   data.table = FALSE)
-head(boundary_data)
+## Load data
+data(sim_pu_data, sim_features_data, sim_dist_features_data,
+sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
+sim_boundary_data)
 
 ## Create data instance
-problem_data <- problem(
+problem_data <- inputData(
   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
   threats = sim_threats_data, dist_threats = sim_dist_threats_data,
   sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
 )
 
-## Summary
-print(problem_data)
+## Create minimizeCosts model
+model_min <- problem(x = problem_data, blm = 1, model_type = "minimizeCosts")
 
-}
-\references{
-\itemize{
-\item Ball I, Possingham H, Watts, M. \emph{Marxan and relatives: software for spatial
-conservation prioritization}. Spatial conservation prioritisation: quantitative
-methods and computational tools 2009.
-}
+#' ## Create maximazeBenefits model
+model_max <- problem(x = problem_data, model_type = "maximizeBenefits", budget = 100)
 }
 \seealso{
-For more information on the correct format for \emph{Marxan} input data, see the
-\href{https://marxansolutions.org}{official \emph{Marxan} website} and Ball \emph{et al.} (2009).
+For more information regarding the arguments
+\code{curve} and \code{segments}, see the supplementary material
+of Salgado-Rojas \emph{et al.} (2020), which can
+be found online at \doi{https://doi.org/10.1016/j.ecolmodel.2019.108901}.
 }

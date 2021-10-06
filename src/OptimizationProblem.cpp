@@ -29,10 +29,6 @@ Rcpp::List rcpp_optimization_problem_as_list(SEXP x) {
   return Rcpp::List::create(
     Rcpp::Named("modelsense") = op->_modelsense,
     Rcpp::Named("A_i") = op->_A_i,
-    Rcpp::Named("A_i2") = Rcpp::IntegerVector(op->_A_i.begin(),
-                op->_A_i.end()),
-    Rcpp::Named("A_j2") = Rcpp::IntegerVector(op->_A_j.begin(),
-                            op->_A_j.end()),
     Rcpp::Named("A_j") = op->_A_j,
     Rcpp::Named("A_x") = op->_A_x,
     Rcpp::Named("obj") = op->_obj,
@@ -40,6 +36,7 @@ Rcpp::List rcpp_optimization_problem_as_list(SEXP x) {
     Rcpp::Named("rhs") = op->_rhs,
     Rcpp::Named("sense") = op->_sense,
     Rcpp::Named("vtype") = op->_vtype,
+    Rcpp::Named("name") = op->_name,
     Rcpp::Named("yvar") = op->_id_pow_variables,
     Rcpp::Named("xvar") = op->_id_variables);
 }

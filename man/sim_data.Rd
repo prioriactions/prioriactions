@@ -73,6 +73,7 @@ Simulated data for making prioritizations.
 }
 }
 \examples{
+\dontrun{
 # load data
 data(sim_pu_data, sim_features_data, sim_dist_features_data,
 sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
@@ -83,18 +84,13 @@ library(raster)
 r <- raster::raster(ncol=10, nrow=10, xmn=0, xmx=10, ymn=0, ymx=10)
 
 # plot cost of pu's
-values(r) <- sim_pu_data$cost
+values(r) <- sim_pu_data$monitoring_cost
 plot(r)
 
 # plot feature distribution of feature 1
-features <- reshape2::dcast(sim_dist_features_data, pu~feature,value.var = "amount", fill = 0)
+features <- tidyr::spread(data = sim_dist_features_data, key = feature, value = amount, fill = 0)
 values(r) <- features$'1'
 plot(r)
-
-# plot feature distribution of threat 1
-threats <- reshape2::dcast(sim_dist_threats_data, pu~threat,value.var = "amount", fill = 0)
-values(r) <- threats$'1'
-plot(r)
-
+}
 }
 \keyword{datasets}

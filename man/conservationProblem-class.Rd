@@ -5,12 +5,12 @@
 \alias{ConservationProblem}
 \title{Conservation problem class}
 \description{
-This class is used to represent a data of the instances of the corresponding
+This class is used to represent data of the instances of the corresponding
 multi-action planning problem. It includes several methods for retrieving the information
 of the instance (such as the spatial allocation of threats and species, the cost
 of management actions or the structure of the spatial connectivity across
 the area where the planning is carried out. This class is created using the
-\code{\link[=problem]{problem()}} function.
+\code{\link[=inputData]{inputData()}} function..
 }
 \section{Fields}{
  \describe{
@@ -22,41 +22,41 @@ the area where the planning is carried out. This class is created using the
 
 \section{Methods}{
  \describe{
-\item{getActionsAmount()}{
+\item{getActionsAmount():}{
 \code{integer}. Number of possible actions.}
 
-\item{getData(\code{character} name)}{
+\item{getData(\code{character} name):}{
 \code{\link[=data.frame]{data.frame()}}. Object stored in the \code{data} field with the corresponding \code{name}.
 The argument \code{name} indicates the name of arguments of the
 \code{problem} function ("pu", "features", "dist_features", "threats",
 "dist_threats", "sensitivity"
 or "boundary").}
 
-\item{getFeatureAmount()}{
+\item{getFeatureAmount():}{
 \code{integer}. Number of features.}
 
-\item{getFeatureNames()}{
+\item{getFeatureNames():}{
 \code{character}. Names of features.}
 
-\item{getPlanningUnitCosts()}{
-\code{numeric} \code{\link[=vector]{vector()}}. Cost of selecting each planning unit.}
+\item{getMonitoringCosts():}{
+\code{numeric} \code{\link[=vector]{vector()}}. Cost of monitoring each planning unit.}
 
-\item{getPlanningUnitsAmount()}{
+\item{getPlanningUnitsAmount():}{
 \code{integer}. Number of planning units.}
 
-\item{getThreatCosts()}{
+\item{getActionCosts():}{
 \code{numeric} \code{\link[=vector]{vector()}}. Cost of actions each planning unit and threat.}
 
-\item{getThreatNames()}{
+\item{getThreatNames():}{
 \code{character}. Names of threats.}
 
-\item{getThreatsAmount()}{
+\item{getThreatsAmount():}{
 \code{integer}. Number of threats.}
 
-\item{print()}{
+\item{print():}{
 Print basic information of the data instance.}
 
-\item{show()}{
+\item{show():}{
 Call print method.}
 }
 }
@@ -104,7 +104,7 @@ boundary_data <- data.table::fread(paste0(prioriactions_path,"/boundary.dat"),
 head(boundary_data)
 
 ## Create instance
-problem_data <- problem(
+problem_data <- inputData(
   pu = pu_data, features = features_data, dist_features = dist_features_data,
   dist_threats = dist_threats_data, threats = threats_data, sensitivity = sensitivity_data,
   boundary = boundary_data
@@ -120,11 +120,11 @@ problem_data$getFeatureAmount()
 
 problem_data$getFeatureNames()
 
-problem_data$getPlanningUnitCosts()
+problem_data$getMonitoringCosts()
 
 problem_data$getPlanningUnitsAmount()
 
-problem_data$getThreatCosts()
+problem_data$getActionCosts()
 
 problem_data$getThreatNames()
 

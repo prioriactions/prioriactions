@@ -6,14 +6,16 @@
 \title{Optimization problem class}
 \description{
 This class encodes the corresponding optimization model. It is created
-using `model()`` function.
+using \code{problem()} function.
 }
 \section{Fields}{
- \describe{ \item{$data}{\code{list} object containing data
+ \describe{
+
+\item{$data}{\code{list} object containing data
 of the mathematical model.}
 
 \item{$ConservationClass}{object of class
-\code{\link[=conservationProblem-class]{conservationProblem-class()}} that contains the data structure.}
+\code{\link[=conservationProblem-class]{conservationProblem-class()}} that contains the data input.}
 }
 }
 
@@ -28,20 +30,7 @@ following: "obj", "rhs", "sense", "vtype", "A", "bounds" or "modelsense".}
 \item{getDataList()}{
 \code{\link[=list]{list()}} of
 \code{\link[=vector]{vector()}}. Object stored in the \code{data}. It contains all information relative
-to the mathematical model, such as "obj", "rhs", etc.
-
-\item{getModelSense()}{
-\code{character}. Indicate whether the
-model is minimization or maximization.}
-
-\item{getNcol()}{
-\code{integer}. Number indicating the columns of matrix A.}
-
-\item{getNrow()}{
-\code{integer}. Number indicating the rows of matrix A.}
-
-\item{getSizeA()}{
-\code{character}. Number indicating the size of matrix A (in kilo Bytes).}
+to the mathematical model, such as "obj", "rhs", etc.}
 
 \item{print()}{
 Print basic information of the optimization model.}
@@ -62,27 +51,17 @@ sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
 sim_boundary_data)
 
 ## Create data instance
-problem_data <- problem(
+problem_data <- inputData(
   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
   threats = sim_threats_data, dist_threats = sim_dist_threats_data,
   sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
 )
 
 ## Create optimization model
-problem_model <- minimizeCosts(x = problem_data, blm = 1)
+problem_model <- problem(x = problem_data, blm = 1)
 
 ## Use class methods
 head(problem_model$getData("obj"))
-
-head(problem_model$getDataList()[7])
-
-problem_model$getModelSense()
-
-problem_model$getNconstraints()
-
-problem_model$getNvariables()
-
-problem_model$getSizeA()
 
 problem_model$print()
 }

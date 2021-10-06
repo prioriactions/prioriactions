@@ -54,7 +54,7 @@
 
 <meta property="og:title" content="Optimization problem class — optimizationProblem-class" />
 <meta property="og:description" content="This class encodes the corresponding optimization model. It is created
-using `model()`` function." />
+using problem() function." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -97,7 +97,7 @@ using `model()`` function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -128,7 +128,7 @@ using `model()`` function." />
       <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li>
-      <a href="../articles/recovery.html">Recovery model</a>
+      <a href="../articles/objectives.html">Planning objectives</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -174,7 +174,7 @@ using `model()`` function." />
 
     <div class="ref-description">
     <p>This class encodes the corresponding optimization model. It is created
-using `model()`` function.</p>
+using <code><a href='problem.html'>problem()</a></code> function.</p>
     </div>
 
 
@@ -182,11 +182,12 @@ using `model()`` function.</p>
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     <p></p><dl>
+
 <dt>$data</dt><dd><p><code>list</code> object containing data
 of the mathematical model.</p></dd>
 
 <dt>$ConservationClass</dt><dd><p>object of class
-<code><a href='conservationProblem-class.html'>conservationProblem-class()</a></code> that contains the data structure.</p></dd>
+<code><a href='conservationProblem-class.html'>conservationProblem-class()</a></code> that contains the data input.</p></dd>
 
 </dl>
 
@@ -200,30 +201,46 @@ following: "obj", "rhs", "sense", "vtype", "A", "bounds" or "modelsense".</p></d
 
 <dt>getDataList()</dt><dd><p><code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> of
 <code><a href='https://rdrr.io/r/base/vector.html'>vector()</a></code>. Object stored in the <code>data</code>. It contains all information relative
-to the mathematical model, such as "obj", "rhs", etc.getModelSense()
-<code>character</code>. Indicate whether the
-model is minimization or maximization.getNcol()
-<code>integer</code>. Number indicating the columns of matrix A.getNrow()
-<code>integer</code>. Number indicating the rows of matrix A.getSizeA()
-<code>character</code>. Number indicating the size of matrix A (in kilo Bytes).print()
-Print basic information of the optimization model.show()
-Call print method.</p></dd>
+to the mathematical model, such as "obj", "rhs", etc.</p></dd>
+
+<dt>print()</dt><dd><p>Print basic information of the optimization model.</p></dd>
+
+<dt>show()</dt><dd><p>Call print method.</p></dd>
+
 
 </dl>
 
-<p># set seed for reproducibility
-set.seed(14)## Load data
-data(sim_pu_data, sim_features_data, sim_dist_features_data,
-sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
-sim_boundary_data)## Create data instance
-problem_data &lt;- problem(
-  pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
-  threats = sim_threats_data, dist_threats = sim_dist_threats_data,
-  sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
-)## Create optimization model
-problem_model &lt;- minimizeCosts(x = problem_data, blm = 1)## Use class methods
-head(problem_model$getData("obj"))head(problem_model$getDataList()[7])problem_model$getModelSense()problem_model$getNconstraints()problem_model$getNvariables()problem_model$getSizeA()problem_model$print()</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='r-in'><span class='co'># set seed for reproducibility</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>14</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load data</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_pu_data</span>, <span class='va'>sim_features_data</span>, <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'><span class='va'>sim_threats_data</span>, <span class='va'>sim_dist_threats_data</span>, <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Create data instance</span></span>
+<span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='inputData.html'>inputData</a></span><span class='op'>(</span></span>
+<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>,</span>
+<span class='r-in'>  sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>, boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Create optimization model</span></span>
+<span class='r-in'><span class='va'>problem_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='problem.html'>problem</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>problem_data</span>, blm <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Use class methods</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>problem_model</span><span class='op'>$</span><span class='fu'>getData</span><span class='op'>(</span><span class='st'>"obj"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 702.3046 645.7165 602.0981 572.5119 557.5753 557.5753</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>problem_model</span><span class='op'>$</span><span class='fu'>print</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Optimization Problem</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   model sense: minimization</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   dimensions:  30160, 10472, 890.728 kB (nrow, ncol, size)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   variables:   10472</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

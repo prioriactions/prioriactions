@@ -4,32 +4,30 @@
 \alias{evalBudget}
 \title{Evaluate multiple budget values}
 \usage{
-evalBudget(data = list(), values = c(), ...)
+evalBudget(values = c(), ...)
 }
 \arguments{
-\item{data}{\code{list}. Input data list for \code{problem()} function.}
-
 \item{values}{\code{numeric}. Values of budget to verify. More than one value is
 needed.}
 
-\item{...}{arguments inherited from \code{problem()}, \code{maximizeBenefits()},
+\item{...}{arguments inherited from \code{inputData()}, \code{problem()},
 and \code{solve()} functions.}
 }
 \value{
 An object of class \linkS4class{portfolio}.
 }
 \description{
-Provides multiple solutions for different values of budgets. This
+Return one solution per instance for different values of budgets. This
 function assumes that the \emph{maximizeBenefits} option is being used (note that
 the \emph{minimizeCosts} option does not require setting a maximum budget). Like
-\code{prioriactions()} function, it inherits all arguments from \code{problem()},
-\code{model()} and \code{solve()}.
+\code{prioriactions()} function, it inherits all arguments from \code{inputData()},
+\code{problem()} and \code{solve()}.
 }
 \details{
 \code{evalBudget()} creates and solves multiple instances, of the corresponding
 multi-actions planning problem, for different values of maximum budgets. Alternatively, this
-could be obtained by executing function \code{prioriactions()} or by steps the \code{problem()},
-\code{model()} and \code{solve()} functions; using, in each run, different budgtes values.
+could be obtained by executing function \code{prioriactions()} or by steps the \code{inputData()},
+\code{problem()} and \code{solve()} functions; using, in each run, different budgets values.
 However, the \code{evalBudget()} function has two advantages with
 respect to this manual approach: : 1)
 it is more efficient to create the models (this is because the model is created
@@ -38,15 +36,22 @@ output is a portfolio object, which allows
 obtaining information about the group of solutions (including all \emph{get} functions).
 }
 \examples{
+\dontrun{
 # set seed for reproducibility
 set.seed(14)
 
-## Load data
-inputs <- list(sim_pu_data, sim_features_data, sim_dist_features_data,
-sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
-sim_boundary_data)
-
 ## Create model and solve
-port <- evalBudget(data = inputs, values = c(1, 10, 50, 100), time_limit = 50, output_file = FALSE)
+port <- evalBudget(pu = sim_pu_data, features = sim_features_data,
+                dist_features = sim_dist_features_data,
+                threats = sim_threats_data,
+                dist_threats = sim_dist_threats_data,
+                sensitivity = sim_sensitivity_data,
+                boundary = sim_boundary_data,
+                values = c(1, 10, 50, 100),
+                time_limit = 50,
+                output_file = FALSE)
+
+getSolutionBenefit(port)
+}
 
 }

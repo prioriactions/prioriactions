@@ -19,76 +19,34 @@
     <loc>https://prioriactions.github.io/prioriactions//reference/getActions.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getActionsConnectivity.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//reference/getConnectivity.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getActionsCost.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//reference/getConnectivityPenalty.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getBenefit.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//reference/getCost.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getGap.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//reference/getModelInfo.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getLocalBenefit.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//reference/getPerformance.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getModelSense.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//reference/getPotentialBenefit.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getNconstraints.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//reference/getSolutionBenefit.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getNvariables.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getObjectiveValue.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getPlanningUnits.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getPlanningUnitsConnectivity.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getPlanningUnitsCost.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getSizeA.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getStatus.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getStatusCode.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getTimeSolving.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getTotalBenefit.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getTotalConnectivity.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getTotalCost.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/maximizeBenefits.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/minimizeCosts.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//reference/inputData.html</loc>
   </url>
   <url>
     <loc>https://prioriactions.github.io/prioriactions//reference/optimizationProblem-class.html</loc>
   </url>
   <url>
     <loc>https://prioriactions.github.io/prioriactions//reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/plot.html</loc>
   </url>
   <url>
     <loc>https://prioriactions.github.io/prioriactions//reference/portfolio-class.html</loc>
@@ -118,10 +76,10 @@
     <loc>https://prioriactions.github.io/prioriactions//articles/MitchellRiver.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//articles/prioriactions.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//articles/objectives.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//articles/recovery.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//articles/prioriactions.html</loc>
   </url>
   <url>
     <loc>https://prioriactions.github.io/prioriactions//articles/sensitivities.html</loc>

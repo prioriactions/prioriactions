@@ -6,12 +6,12 @@ NULL
 
 #' Conservation problem class
 #'
-#' This class is used to represent a data of the instances of the corresponding
+#' This class is used to represent data of the instances of the corresponding
 #' multi-action planning problem. It includes several methods for retrieving the information
 #' of the instance (such as the spatial allocation of threats and species, the cost
 #' of management actions or the structure of the spatial connectivity across
 #' the area where the planning is carried out. This class is created using the
-#' [problem()] function.
+#' [inputData()] function..
 #'
 #'
 #' @section Fields: \describe{
@@ -21,41 +21,41 @@ NULL
 #'   }
 #'
 #' @section Methods: \describe{
-#'   \item{getActionsAmount()}{
+#'   \item{getActionsAmount():}{
 #'   `integer`. Number of possible actions.}
 #'
-#'   \item{getData(`character` name)}{
+#'   \item{getData(`character` name):}{
 #'   [data.frame()]. Object stored in the `data` field with the corresponding `name`.
 #'   The argument `name` indicates the name of arguments of the
 #'   `problem` function ("pu", "features", "dist_features", "threats",
 #'   "dist_threats", "sensitivity"
 #'   or "boundary").}
 #'
-#'   \item{getFeatureAmount()}{
+#'   \item{getFeatureAmount():}{
 #'   `integer`. Number of features.}
 #'
-#'   \item{getFeatureNames()}{
+#'   \item{getFeatureNames():}{
 #'   `character`. Names of features.}
 #'
-#'   \item{getPlanningUnitCosts()}{
-#'   `numeric` [vector()]. Cost of selecting each planning unit.}
+#'   \item{getMonitoringCosts():}{
+#'   `numeric` [vector()]. Cost of monitoring each planning unit.}
 #'
-#'   \item{getPlanningUnitsAmount()}{
+#'   \item{getPlanningUnitsAmount():}{
 #'   `integer`. Number of planning units.}
 #'
-#'   \item{getThreatCosts()}{
+#'   \item{getActionCosts():}{
 #'   `numeric` [vector()]. Cost of actions each planning unit and threat.}
 #'
-#'   \item{getThreatNames()}{
+#'   \item{getThreatNames():}{
 #'   `character`. Names of threats.}
 #'
-#'   \item{getThreatsAmount()}{
+#'   \item{getThreatsAmount():}{
 #'   `integer`. Number of threats.}
 #'
-#'   \item{print()}{
+#'   \item{print():}{
 #'   Print basic information of the data instance.}
 #'
-#'   \item{show()}{
+#'   \item{show():}{
 #'   Call print method.}
 #'   }
 #'
@@ -102,7 +102,7 @@ NULL
 #' head(boundary_data)
 #'
 #' ## Create instance
-#' problem_data <- problem(
+#' problem_data <- inputData(
 #'   pu = pu_data, features = features_data, dist_features = dist_features_data,
 #'   dist_threats = dist_threats_data, threats = threats_data, sensitivity = sensitivity_data,
 #'   boundary = boundary_data
@@ -118,11 +118,11 @@ NULL
 #'
 #' problem_data$getFeatureNames()
 #'
-#' problem_data$getPlanningUnitCosts()
+#' problem_data$getMonitoringCosts()
 #'
 #' problem_data$getPlanningUnitsAmount()
 #'
-#' problem_data$getThreatCosts()
+#' problem_data$getActionCosts()
 #'
 #' problem_data$getThreatNames()
 #'
@@ -139,16 +139,16 @@ ConservationProblem <- pproto(
   "ConservationProblem",
   data = list(),
   print = function(self) {
-    unit_cs <- round(range(self$getPlanningUnitCosts(), na.rm = TRUE), 5)
-    threat_cs <- round(range(self$getThreatCosts(), na.rm = TRUE), 5)
+    unit_cs <- round(range(self$getMonitoringCosts(), na.rm = TRUE), 5)
+    threat_cs <- round(range(self$getActionCosts(), na.rm = TRUE), 5)
     message(paste0(
       "Conservation Problem",
       "\n  planning units: ", class(self$data$pu)[1], " (",
       self$getPlanningUnitsAmount(), " units)",
-      "\n  unit costs:     min: ", unit_cs[1], ", max: ", unit_cs[2],
+      "\n  monitoring costs:     min: ", unit_cs[1], ", max: ", unit_cs[2],
       "\n  features:       ", repr_atomic(self$getFeatureNames(), "features"),
       "\n  threats:        ", repr_atomic(self$getThreatNames(), "threats"),
-      "\n  threat costs:   min: ", threat_cs[1], ", max: ", threat_cs[2]
+      "\n  action costs:   min: ", threat_cs[1], ", max: ", threat_cs[2]
     ))
   },
   show = function(self) {
@@ -165,65 +165,29 @@ ConservationProblem <- pproto(
     return(self$data[[x]])
   },
   getPlanningUnitsAmount = function(self) {
-    if (inherits(self$data$pu, "data.frame")) {
-      return(sum(rowSums(!is.na(as.matrix(
-        as.data.frame(self$data$pu$cost)
-      ))) > 0))
-    } else if (is.matrix(self$data$pu)) {
-      return(sum(rowSums(!is.na(self$data$pu)) > 0))
-    } else {
-      stop("cost is of unknown class")
-    }
+    return(sum(!is.na(self$data$pu$monitoring_cost)))
   },
-  getPlanningUnitCosts = function(self) {
-    if (inherits(self$data$pu, "data.frame")) {
-      m <- as.vector(self$data$pu$cost)
-    } else {
-      stop("cost is of unknown class")
-    }
+  getMonitoringCosts = function(self) {
+    m <- as.vector(self$data$pu$monitoring_cost)
     return(m)
   },
   getFeatureAmount = function(self) {
-    if (inherits(self$data$features, "data.frame")) {
-      return(nrow(self$data$features))
-    } else {
-      stop("feature data is of an unrecognized class")
-    }
+    return(nrow(self$data$features))
   },
   getFeatureNames = function(self) {
-    if (inherits(self$data$features, "data.frame")) {
-      return(as.character(self$data$features$name))
-    } else {
-      stop("feature data is of an unrecognized class")
-    }
+    return(as.character(self$data$features$name))
   },
   getThreatNames = function(self) {
-    if (inherits(self$data$threats, "data.frame")) {
-      return(as.character(self$data$threats$name))
-    } else {
-      stop("threats data is of an unrecognized class")
-    }
+    return(as.character(self$data$threats$name))
   },
   getThreatsAmount = function(self) {
-    if (inherits(self$data$threats, "data.frame")) {
-      return(nrow(self$data$threats))
-    } else {
-      stop("threats data is of an unrecognized class")
-    }
+    return(nrow(self$data$threats))
   },
-  getThreatCosts = function(self) {
-    if (inherits(self$data$dist_threats, "data.frame")) {
-      m <- as.vector(self$data$dist_threats$cost)
-    } else {
-      stop("cost is of unknown class")
-    }
+  getActionCosts = function(self) {
+    m <- as.vector(self$data$dist_threats$action_cost)
     return(m)
   },
   getActionsAmount = function(self) {
-    if (inherits(self$data$dist_threats, "data.frame")) {
-      return(nrow(self$data$dist_threats))
-    } else {
-      stop("threats data is of an unrecognized class")
-    }
+    return(nrow(self$data$dist_threats))
   }
 )

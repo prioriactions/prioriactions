@@ -7,13 +7,15 @@ NULL
 #' Optimization problem class
 #'
 #' This class encodes the corresponding optimization model. It is created
-#' using `model()`` function.
+#' using `problem()` function.
 #'
-#' @section Fields: \describe{ \item{$data}{`list` object containing data
+#' @section Fields: \describe{
+#'
+#'   \item{$data}{`list` object containing data
 #'   of the mathematical model.}
 #'
 #'   \item{$ConservationClass}{object of class
-#'   [conservationProblem-class()] that contains the data structure.}
+#'   [conservationProblem-class()] that contains the data input.}
 #'   }
 #'
 #' @section Methods: \describe{
@@ -26,20 +28,7 @@ NULL
 #'   \item{getDataList()}{
 #'    [list()] of
 #'   [vector()]. Object stored in the `data`. It contains all information relative
-#'   to the mathematical model, such as "obj", "rhs", etc.
-#'
-#'   \item{getModelSense()}{
-#'   `character`. Indicate whether the
-#'   model is minimization or maximization.}
-#'
-#'   \item{getNcol()}{
-#'   `integer`. Number indicating the columns of matrix A.}
-#'
-#'   \item{getNrow()}{
-#'   `integer`. Number indicating the rows of matrix A.}
-#'
-#'   \item{getSizeA()}{
-#'   `character`. Number indicating the size of matrix A (in kilo Bytes).}
+#'   to the mathematical model, such as "obj", "rhs", etc.}
 #'
 #'   \item{print()}{
 #'   Print basic information of the optimization model.}
@@ -59,27 +48,17 @@ NULL
 #' sim_boundary_data)
 #'
 #' ## Create data instance
-#' problem_data <- problem(
+#' problem_data <- inputData(
 #'   pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
 #'   threats = sim_threats_data, dist_threats = sim_dist_threats_data,
 #'   sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
 #' )
 #'
 #' ## Create optimization model
-#' problem_model <- minimizeCosts(x = problem_data, blm = 1)
+#' problem_model <- problem(x = problem_data, blm = 1)
 #'
 #' ## Use class methods
 #' head(problem_model$getData("obj"))
-#'
-#' head(problem_model$getDataList()[7])
-#'
-#' problem_model$getModelSense()
-#'
-#' problem_model$getNconstraints()
-#'
-#' problem_model$getNvariables()
-#'
-#' problem_model$getSizeA()
 #'
 #' problem_model$print()
 #' @name optimizationProblem-class
@@ -93,13 +72,13 @@ OptimizationProblem <- pproto(
   data = list(),
   ConservationClass = NULL,
   print = function(self) {
-    if (getNvariables(self) > 0) {
+    if (getModelInfo(self)$n_variables > 0) {
       message(
         "Optimization Problem",
-        "\n  model sense: ", getModelSense(self),
-        "\n  dimensions:  ", getNconstraints(self), ", ", getNvariables(self), ", ", getSizeA(self),
+        "\n  model sense: ", getModelInfo(self)$model_sense,
+        "\n  dimensions:  ", getModelInfo(self)$n_constraints, ", ", getModelInfo(self)$n_variables, ", ", getModelInfo(self)$size,
         " (nrow, ncol, size)",
-        "\n  variables:   ", getNvariables(self)
+        "\n  variables:   ", getModelInfo(self)$n_variables
       )
     } else {
       message("optimization problem (empty)")

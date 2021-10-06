@@ -37,7 +37,7 @@ arma::sp_mat create_boundary_matrix_extended(DataFrame boundary_data, int units)
   return boundary_matrix_extended;
 }
 
-arma::sp_mat create_dist_threats_extended(DataFrame dist_threats_data, int units, int threats){
+arma::sp_mat create_dist_threats_extended(DataFrame dist_threats_data, int units, int threats, NumericVector amount){
   IntegerVector dist_threats_data_pu_id = dist_threats_data["internal_pu"];
   IntegerVector pu_id = clone(dist_threats_data_pu_id);
   pu_id = pu_id - 1;
@@ -45,7 +45,8 @@ arma::sp_mat create_dist_threats_extended(DataFrame dist_threats_data, int units
   IntegerVector threat_id = clone(dist_threats_data_threat_id);
   threat_id = threat_id - 1;
 
-  NumericVector action_amount = dist_threats_data["amount"];
+  //NumericVector action_amount = dist_threats_data["amount"];
+  NumericVector action_amount = amount;
   int number_of_actions = dist_threats_data.nrows();
 
   arma::sp_mat dist_threats_extended(units, threats);

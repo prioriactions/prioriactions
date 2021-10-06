@@ -18,7 +18,11 @@ bool rcpp_constraint_activation(SEXP x,
   int subset_size = 0;
   int col_action = 0;
 
-  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data, number_of_units, number_of_threats);
+  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data,
+                                                                    number_of_units,
+                                                                    number_of_threats,
+                                                                    dist_threats_data["amount"]);
+
   arma::sp_mat actions_extended = create_actions_extended(dist_threats_data, number_of_units, number_of_threats);
 
   for(int i = 0; i < number_of_units; i++){
@@ -43,5 +47,11 @@ bool rcpp_constraint_activation(SEXP x,
     op->_rhs.push_back(0);
     op->_sense.push_back("<=");
   }
+
+
+
+
+
+
   return true;
 }

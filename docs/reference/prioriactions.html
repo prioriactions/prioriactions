@@ -54,7 +54,7 @@
 
 <meta property="og:title" content="Create and solve multi-actions planning problems — prioriactions" />
 <meta property="og:description" content="Create and solve a multi-actions planning problem. It can be used
-instead of following the sequence of the problem(), model()
+instead of following the sequence of the inputData(), problem()
 and solve() functions." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
@@ -98,7 +98,7 @@ and solve() functions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -129,7 +129,7 @@ and solve() functions." />
       <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li>
-      <a href="../articles/recovery.html">Recovery model</a>
+      <a href="../articles/objectives.html">Planning objectives</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -175,22 +175,18 @@ and solve() functions." />
 
     <div class="ref-description">
     <p>Create and solve a multi-actions planning problem. It can be used
-instead of following the sequence of the <code><a href='problem.html'>problem()</a></code>, <code><a href='model.html'>model()</a></code>
+instead of following the sequence of the <code><a href='inputData.html'>inputData()</a></code>, <code><a href='problem.html'>problem()</a></code>
 and <code><a href='solve.html'>solve()</a></code> functions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>prioriactions</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p><code>list</code>. Input data list for <code><a href='problem.html'>problem()</a></code> function.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>arguments inherited from <code><a href='problem.html'>problem()</a></code>, <code><a href='model.html'>model()</a></code> and <code><a href='solve.html'>solve()</a></code> functions.</p></td>
+      <td><p>arguments inherited from <code><a href='inputData.html'>inputData()</a></code>, <code><a href='problem.html'>problem()</a></code> and <code><a href='solve.html'>solve()</a></code> functions.</p></td>
     </tr>
     </table>
 
@@ -210,64 +206,60 @@ and <code><a href='solve.html'>solve()</a></code> functions.</p>
 <span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create data instance</span></span>
-<span class='r-in'><span class='va'>input</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
-<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>,</span>
-<span class='r-in'>  sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>, boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
-<span class='r-in'><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>## Create and solve optimization model</span></span>
-<span class='r-in'><span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>prioriactions</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>input</span>, name_model <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>,</span>
-<span class='r-in'>                   blm <span class='op'>=</span> <span class='fl'>0</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span>, time_limit <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>prioriactions</span><span class='op'>(</span>pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>,</span>
+<span class='r-in'>                dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'>                threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>,</span>
+<span class='r-in'>                dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>,</span>
+<span class='r-in'>                sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'>                boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span>,</span>
+<span class='r-in'>                model_type <span class='op'>=</span> <span class='st'>"minimizeCosts"</span>,</span>
+<span class='r-in'>                time_limit <span class='op'>=</span> <span class='fl'>50</span>,</span>
+<span class='r-in'>                output_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The blm argument was set to 0, so the boundary data has no effect</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 280 rows, 589 columns and 822 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x9859ddb0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 176 general constraints</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 237 integer (237 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 460 rows, 572 columns and 1137 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x994b3e28</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 220 integer (220 binary)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [1e+00, 1e+01]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [8e+00, 2e+01]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 1002.0000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve added 289 rows and 635 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 277.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve removed 426 rows and 453 columns</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.00s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 569 rows, 1224 columns, 2970 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 176 SOS constraint(s)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 1056 continuous, 168 integer (162 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 34 rows, 119 columns, 237 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 0 continuous, 119 integer (101 binary)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 1.455000e+02, 186 iterations, 0.00 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 1.445000e+02, 22 iterations, 0.00 seconds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  145.50000    0   12 1002.00000  145.50000  85.5%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     973.0000000  145.50000  85.0%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  148.00000    0    6  973.00000  148.00000  84.8%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     162.0000000  148.00000  8.64%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  149.00000    0    6  162.00000  149.00000  8.02%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     152.0000000  149.00000  1.97%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  149.50000    0    5  152.00000  149.50000  1.64%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     150.0000000  149.50000  0.33%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  144.50000    0    2  277.00000  144.50000  47.8%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     149.0000000  144.50000  3.02%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> *    0     0               0     146.0000000  146.00000  0.00%     -    0s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (219 simplex iterations) in 0.04 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Cover: 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (26 simplex iterations) in 0.00 seconds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 5: 150 152 162 ... 1002</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 3: 146 149 277 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 1.500000000000e+02, best bound 1.500000000000e+02, gap 0.0000%</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 1.460000000000e+02, best bound 1.460000000000e+02, gap 0.0000%</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'><a href='print.html'>print</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span></span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Solution overview</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   name: sol</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   objective value: 150</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   objective value: 146</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   gap:  0</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   status:  Optimal solution (according to gap tolerance: 0)</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 0.04 sec</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 0.003 sec</span>
 <span class='r-in'></span>
 </pre>
   </div>

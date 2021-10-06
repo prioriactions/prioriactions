@@ -4,18 +4,13 @@ NULL
 
 #' @title Evaluate multiple blm values
 #'
-#' @description Provides multiple solutions for different values of blm. Like
-#' `prioriactions()` function, it inherits all arguments from `problem()`,
-#' `model()` and `solve()`.
-#'
-#' @param data `list`. Input data list for `problem()` function.
-#'
-#' @param name_model [character]. Name of the type of model to create. With two
-#' possible values: `"minimizeCosts"` and `"maximizeBenefits"`.
+#' @description Return one solution per instance for different values of blm. Like
+#' `prioriactions()` function, it inherits all arguments from `inputData()`,
+#' `problem()` and `solve()`.
 #'
 #' @param values `numeric`. Values of blm to verify. More than one value is needed.
 #'
-#' @param ... arguments inherited from `problem()`, `minimizeCosts()`, `maximizeBenefits()`,
+#' @param ... arguments inherited from `inputData()`, `problem()`
 #'   and `solve()` functions.
 
 #' @name evalBlm
@@ -24,8 +19,8 @@ NULL
 #'
 #' @details `evalblm()` creates and solves multiple instances, of the corresponding
 #' multi-actions planning problem, for different values of blm. Alternatively, this
-#' could be obtained by executing function `prioriactions()` or by steps the `problem()`,
-#' `model()` and `solve()` functions; using, in each run, different blm values.
+#' could be obtained by executing function `prioriactions()` or by steps the `inputData()`,
+#' `problem()` and `solve()` functions; using, in each run, different blm values.
 #' However, the `evalblm()` function has two advantages with
 #' respect to this manual approach: : 1)
 #' it is more efficient to create the models (this is because the model is created
@@ -34,36 +29,30 @@ NULL
 #' obtaining information about the group of solutions (including all *get* functions).
 #'
 #' @examples
+#' \dontrun{
 #' # set seed for reproducibility
 #' set.seed(14)
 #'
-#' ## Load data
-#' inputs <- list(sim_pu_data, sim_features_data, sim_dist_features_data,
-#' sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
-#' sim_boundary_data)
-#'
 #' ## Create model and solve
-#' port <- evalBlm(data = inputs, values = c(0.0, 0.5, 4, 8),
-#'                 name_model = "minimizeCosts", time_limit = 50, output_file = FALSE)
+#' port <- evalBlm(pu = sim_pu_data, features = sim_features_data,
+#'                 dist_features = sim_dist_features_data,
+#'                 threats = sim_threats_data,
+#'                 dist_threats = sim_dist_threats_data,
+#'                 sensitivity = sim_sensitivity_data,
+#'                 boundary = sim_boundary_data,
+#'                 values = c(0.0, 0.01, 0.02, 0.03),
+#'                 model_type = "minimizeCosts",
+#'                 time_limit = 50,
+#'                 output_file = FALSE)
 #'
+#' getConnectivityPenalty(port)
+#' }
 #'
 #' @rdname evalBlm
 #' @export
-evalBlm <- function(data = list(), name_model = "minimizeCosts", values = c(), ...) {
+evalBlm <- function(values = c(), ...) {
 
-  # assert that arguments are valid
-  assertthat::assert_that(
-    is.list(data)
-  )
   params = list(...)
-
-  #Verifying name models
-  if (!name_model %in% c("minimizeCosts", "maximizeBenefits")) {
-    stop("invalid name model")
-  }
-
-  #verifying boundary presence
-  conservation_model <- do.call(problem, args = data)
 
   #verifying blm length
   assertthat::assert_that(
@@ -71,27 +60,22 @@ evalBlm <- function(data = list(), name_model = "minimizeCosts", values = c(), .
     length(values) > 1
   )
 
-  params_solve <- c("solver", "gap_limit", "time_limit", "solution_limit", "cores",
-                    "verbose", "name_output_file", "output_file")
-  params_model <- c("blm", "curve", "segments", "recovery")
-
-  #number of replications
-  repl <- length(values)
-
-  if(name_model == "maximizeBenefits"){
-    params_model <- c(params_model, "budget")
-  }
+  params_data <- c(names(formals(inputData)), "sensitivity", "boundary")
+  params_model <- names(formals(problem))
+  params_solve <- names(formals(solve))
 
   #verifying input parameters
-  if(!all(names(params) %in% c(params_solve, params_model))){
-    id_error <- which(!names(params) %in% c(params_solve, params_model))
+  if(!all(names(params) %in% c(params_data, params_solve, params_model))){
+    id_error <- which(!names(params) %in% c(params_data, params_solve, params_model))
 
     stop(paste0("The following params are not defined in this function: ", paste(names(params)[id_error], collapse = " ")))
   }
 
   #running
+  repl <- length(values)
   it = 1
   name_iter = ""
+  conservation_model <- do.call(inputData, args = params[names(params) %in% params_data])
 
   for(blm in values){
 
@@ -106,7 +90,7 @@ evalBlm <- function(data = list(), name_model = "minimizeCosts", values = c(), .
     )
 
     #Creating mathematical model--------------------------------------------------
-    optimization_model <- do.call(name_model, args = append(x = conservation_model,
+    optimization_model <- do.call(problem, args = append(x = conservation_model,
                                                             params_iter[names(params_iter) %in% params_model]))
 
     #changing name of output file

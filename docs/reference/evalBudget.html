@@ -53,11 +53,11 @@
 
 
 <meta property="og:title" content="Evaluate multiple budget values — evalBudget" />
-<meta property="og:description" content="Provides multiple solutions for different values of budgets. This
+<meta property="og:description" content="Return one solution per instance for different values of budgets. This
 function assumes that the maximizeBenefits option is being used (note that
 the minimizeCosts option does not require setting a maximum budget). Like
-prioriactions() function, it inherits all arguments from problem(),
-model() and solve()." />
+prioriactions() function, it inherits all arguments from inputData(),
+problem() and solve()." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -100,7 +100,7 @@ model() and solve()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -131,7 +131,7 @@ model() and solve()." />
       <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
     <li>
-      <a href="../articles/recovery.html">Recovery model</a>
+      <a href="../articles/objectives.html">Planning objectives</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Study cases</li>
@@ -176,22 +176,18 @@ model() and solve()." />
     </div>
 
     <div class="ref-description">
-    <p>Provides multiple solutions for different values of budgets. This
+    <p>Return one solution per instance for different values of budgets. This
 function assumes that the <em>maximizeBenefits</em> option is being used (note that
 the <em>minimizeCosts</em> option does not require setting a maximum budget). Like
-<code><a href='prioriactions.html'>prioriactions()</a></code> function, it inherits all arguments from <code><a href='problem.html'>problem()</a></code>,
-<code><a href='model.html'>model()</a></code> and <code><a href='solve.html'>solve()</a></code>.</p>
+<code><a href='prioriactions.html'>prioriactions()</a></code> function, it inherits all arguments from <code><a href='inputData.html'>inputData()</a></code>,
+<code><a href='problem.html'>problem()</a></code> and <code><a href='solve.html'>solve()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>evalBudget</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>evalBudget</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>data</th>
-      <td><p><code>list</code>. Input data list for <code><a href='problem.html'>problem()</a></code> function.</p></td>
-    </tr>
     <tr>
       <th>values</th>
       <td><p><code>numeric</code>. Values of budget to verify. More than one value is
@@ -199,7 +195,7 @@ needed.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>arguments inherited from <code><a href='problem.html'>problem()</a></code>, <code><a href='maximizeBenefits.html'>maximizeBenefits()</a></code>,
+      <td><p>arguments inherited from <code><a href='inputData.html'>inputData()</a></code>, <code><a href='problem.html'>problem()</a></code>,
 and <code><a href='solve.html'>solve()</a></code> functions.</p></td>
     </tr>
     </table>
@@ -211,8 +207,8 @@ and <code><a href='solve.html'>solve()</a></code> functions.</p></td>
 
     <p><code>evalBudget()</code> creates and solves multiple instances, of the corresponding
 multi-actions planning problem, for different values of maximum budgets. Alternatively, this
-could be obtained by executing function <code><a href='prioriactions.html'>prioriactions()</a></code> or by steps the <code><a href='problem.html'>problem()</a></code>,
-<code><a href='model.html'>model()</a></code> and <code><a href='solve.html'>solve()</a></code> functions; using, in each run, different budgtes values.
+could be obtained by executing function <code><a href='prioriactions.html'>prioriactions()</a></code> or by steps the <code><a href='inputData.html'>inputData()</a></code>,
+<code><a href='problem.html'>problem()</a></code> and <code><a href='solve.html'>solve()</a></code> functions; using, in each run, different budgets values.
 However, the <code>evalBudget()</code> function has two advantages with
 respect to this manual approach: : 1)
 it is more efficient to create the models (this is because the model is created
@@ -221,174 +217,23 @@ output is a portfolio object, which allows
 obtaining information about the group of solutions (including all <em>get</em> functions).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'># set seed for reproducibility</span></span>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='co'># set seed for reproducibility</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>14</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Load data</span></span>
-<span class='r-in'><span class='va'>inputs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>sim_pu_data</span>, <span class='va'>sim_features_data</span>, <span class='va'>sim_dist_features_data</span>,</span>
-<span class='r-in'><span class='va'>sim_threats_data</span>, <span class='va'>sim_dist_threats_data</span>, <span class='va'>sim_sensitivity_data</span>,</span>
-<span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
-<span class='r-in'></span>
 <span class='r-in'><span class='co'>## Create model and solve</span></span>
-<span class='r-in'><span class='va'>port</span> <span class='op'>&lt;-</span> <span class='fu'>evalBudget</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>inputs</span>, values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>10</span>, <span class='fl'>50</span>, <span class='fl'>100</span><span class='op'>)</span>, time_limit <span class='op'>=</span> <span class='fl'>50</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>  Iteration 1 of 4: Budget1</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The blm argument was set to 0, so the boundary data has no effect</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 277 rows, 589 columns and 883 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0xa2ead4ab</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 176 general constraints</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 237 integer (237 binary)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 1e+01]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [1e+00, 1e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [1e+00, 1e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective -0.0000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve removed 277 rows and 589 columns</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.00s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve: All rows and columns removed</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 0 nodes (0 simplex iterations) in 0.00 seconds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 1 (of 4 available processors)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 1: -0 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> No other solutions better than -0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective -0.000000000000e+00, best bound -0.000000000000e+00, gap 0.0000%</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>  Iteration 2 of 4: Budget10</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 277 rows, 589 columns and 883 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0xe554d2d7</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 176 general constraints</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 237 integer (237 binary)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 1e+01]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [1e+00, 1e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [1e+01, 1e+01]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective -0.0000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve added 0 rows and 136 columns</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve removed 8 rows and 0 columns</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.05s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 269 rows, 725 columns, 1439 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 121 SOS constraint(s)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 605 continuous, 120 integer (117 binary)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 6.666667e+00, 235 iterations, 0.00 seconds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0    6.66667    0    3   -0.00000    6.66667      -     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                       6.0000000    6.66667  11.1%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0    6.50000    0    3    6.00000    6.50000  8.33%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0    6.50000    0    3    6.00000    6.50000  8.33%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0     cutoff    0         6.00000    6.00000  0.00%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Gomory: 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Cover: 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (277 simplex iterations) in 0.06 seconds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 2: 6 -0 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 6.000000000000e+00, best bound 6.000000000000e+00, gap 0.0000%</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>  Iteration 3 of 4: Budget50</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 277 rows, 589 columns and 883 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0xdce53123</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 176 general constraints</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 237 integer (237 binary)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 1e+01]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [1e+00, 1e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [5e+01, 5e+01]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective -0.0000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve added 113 rows and 459 columns</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.00s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 390 rows, 1048 columns, 2082 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 176 SOS constraint(s)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 880 continuous, 168 integer (162 binary)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 2.640000e+01, 309 iterations, 0.00 seconds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0   26.40000    0    3   -0.00000   26.40000      -     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                      26.0000000   26.40000  1.54%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0   26.40000    0    3   26.00000   26.40000  1.54%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0   26.40000    0    3   26.00000   26.40000  1.54%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0     cutoff    0        26.00000   26.00000  0.00%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Cover: 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   MIR: 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   RLT: 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (369 simplex iterations) in 0.02 seconds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 2: 26 -0 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 2.600000000000e+01, best bound 2.600000000000e+01, gap 0.0000%</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>  Iteration 4 of 4: Budget100</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> *********************************</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 277 rows, 589 columns and 883 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x219109a4</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model has 176 general constraints</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 237 integer (237 binary)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 1e+01]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [1e+00, 1e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [1e+02, 1e+02]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective -0.0000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve added 113 rows and 459 columns</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.00s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 390 rows, 1048 columns, 2082 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved model has 176 SOS constraint(s)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 880 continuous, 168 integer (162 binary)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: objective 4.500000e+01, 370 iterations, 0.00 seconds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0   45.00000    0    4   -0.00000   45.00000      -     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                      44.0000000   45.00000  2.27%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> *    0     0               0      45.0000000   45.00000  0.00%     -    0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Cutting planes:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Gomory: 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   MIR: 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (372 simplex iterations) in 0.02 seconds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 3: 45 44 -0 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 4.500000000000e+01, best bound 4.500000000000e+01, gap 0.0000%</span>
+<span class='r-in'><span class='va'>port</span> <span class='op'>&lt;-</span> <span class='fu'>evalBudget</span><span class='op'>(</span>pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>,</span>
+<span class='r-in'>                dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
+<span class='r-in'>                threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>,</span>
+<span class='r-in'>                dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>,</span>
+<span class='r-in'>                sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>,</span>
+<span class='r-in'>                boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span>,</span>
+<span class='r-in'>                values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>10</span>, <span class='fl'>50</span>, <span class='fl'>100</span><span class='op'>)</span>,</span>
+<span class='r-in'>                time_limit <span class='op'>=</span> <span class='fl'>50</span>,</span>
+<span class='r-in'>                output_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='getSolutionBenefit.html'>getSolutionBenefit</a></span><span class='op'>(</span><span class='va'>port</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
 <span class='r-in'></span>
 </pre>
   </div>

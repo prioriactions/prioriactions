@@ -30,27 +30,29 @@ Print basic information of the model solution.}
 
 \item{show()}{
 Call print method.}
-
-\item{plot()}{
-Call plot method.}
 }
 }
 
 \examples{
+\dontrun{
 # set seed for reproducibility
 set.seed(14)
 
-## Load data
-inputs <- list(sim_pu_data, sim_features_data, sim_dist_features_data,
-sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
-sim_boundary_data)
-
 ## Create model and solve
-port <- evalTarget(data = inputs, values = c(0.5, 0.6), gap_limit = 0.01, output_file = FALSE)
+port <- evalBlm(pu = sim_pu_data, features = sim_features_data,
+                dist_features = sim_dist_features_data,
+                threats = sim_threats_data,
+                dist_threats = sim_dist_threats_data,
+                sensitivity = sim_sensitivity_data,
+                boundary = sim_boundary_data,
+                values = c(0.0, 0.01, 0.02, 0.03),
+                model_type = "minimizeCosts",
+                time_limit = 50,
+                output_file = FALSE)
 
 ## Use class methods
 port$getNames()
 
 port$print()
-
+}
 }

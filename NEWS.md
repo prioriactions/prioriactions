@@ -1,3 +1,16 @@
+# prioriactions 0.3.0
+
+- Update all functions documentation.
+- Rename `problem` function as `dataInput()` function for intuitiveness.
+- Add `problem()` function to create different mathematical models instead of `minimizeCosts` and `maximizeBenefits`.
+- Now `getPerformance()` function incorporate information of previous four functions (removed): `getGap`, `getStatus`, `getTimeSolving` and `getObjectiveValue`.
+- Now `getModelInfo()` function incorporate information of previous three functions (removed): `getModelSense()`, `getNconstraints` and `getNvariables`.
+- Add `getCost()` function to get information about the solution costs. The `getActionsCost`, `getPlanningUnitsCosts` and `getTotalCosts` functions are deprecated.
+- Add `getConnectivity()` function to get information about the solution connectivity. The `getPlanningUnitsConnectivity`, `getActionsConnectivity` and `getTotalConnectivity` are deprecated.
+- Add `getSolutionBenefit()` function to get information about the solution benefits. The `getBenefits` and `getTotalBenefits` functions are deprecated.
+- Add `getPotentialBenefit()` function to get maximum benefits to achieve given a data.
+- Add two different targets: recovery and conservation; the first related to the actions to abated threads, and the second related to keep planing units in benefit to features (without do actions).
+
 # prioriactions 0.2.0
 
 - Update *Mitchell River*, *Benefits and sensitivities* and *Get started* vignettes.

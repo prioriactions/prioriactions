@@ -4,19 +4,17 @@
 \alias{prioriactions}
 \title{Create and solve multi-actions planning problems}
 \usage{
-prioriactions(data = list(), ...)
+prioriactions(...)
 }
 \arguments{
-\item{data}{\code{list}. Input data list for \code{problem()} function.}
-
-\item{...}{arguments inherited from \code{problem()}, \code{model()} and \code{solve()} functions.}
+\item{...}{arguments inherited from \code{inputData()}, \code{problem()} and \code{solve()} functions.}
 }
 \value{
 An object of class \linkS4class{solution}.
 }
 \description{
 Create and solve a multi-actions planning problem. It can be used
-instead of following the sequence of the \code{problem()}, \code{model()}
+instead of following the sequence of the \code{inputData()}, \code{problem()}
 and \code{solve()} functions.
 }
 \examples{
@@ -31,15 +29,15 @@ sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
 sim_boundary_data)
 
 ## Create data instance
-input <- list(
-  pu = sim_pu_data, features = sim_features_data, dist_features = sim_dist_features_data,
-  threats = sim_threats_data, dist_threats = sim_dist_threats_data,
-  sensitivity = sim_sensitivity_data, boundary = sim_boundary_data
-)
-
-## Create and solve optimization model
-s <- prioriactions(data = input, name_model = "minimizeCosts",
-                   blm = 0, output_file = FALSE, time_limit = 10)
+s <- prioriactions(pu = sim_pu_data, features = sim_features_data,
+                dist_features = sim_dist_features_data,
+                threats = sim_threats_data,
+                dist_threats = sim_dist_threats_data,
+                sensitivity = sim_sensitivity_data,
+                boundary = sim_boundary_data,
+                model_type = "minimizeCosts",
+                time_limit = 50,
+                output_file = FALSE)
 
 print(s)
 

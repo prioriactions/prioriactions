@@ -23,9 +23,8 @@ bool rcpp_objective_min_set(SEXP x,
   //variables
   int number_of_units = pu_data.nrows();
   int boundary_size = boundary_data.nrows();
-  NumericVector unit_costs = pu_data["cost"];
+  NumericVector unit_costs = pu_data["monitoring_cost"];
   NumericVector connectivity_units(number_of_units);
-
   arma::sp_mat matrix_boundary_extended;
 
   if(boundary_size != 0){
@@ -33,17 +32,12 @@ bool rcpp_objective_min_set(SEXP x,
   }
 
   if(boundary_size != 0 && blm != 0){
-    IntegerVector boundary_data_id1 = boundary_data["internal_id1"];
-    IntegerVector pu_id1 = clone(boundary_data_id1);
-    pu_id1 = pu_id1 - 1;
-    IntegerVector boundary_data_id2 = boundary_data["internal_id2"];
-    IntegerVector pu_id2 = clone(boundary_data_id2);
-    pu_id2 = pu_id2 - 1;
-    NumericVector bound = boundary_data["boundary"];
+    arma::sp_mat z = matrix_boundary_extended.t();
 
-    for(int i = 0; i < boundary_size; i++){
-      connectivity_units[pu_id1[i]] = connectivity_units[pu_id1[i]] + bound[i];
-      connectivity_units[pu_id2[i]] = connectivity_units[pu_id2[i]] + bound[i];
+    for(arma::sp_mat::const_iterator it = z.begin(); it != z.end(); ++it) {
+      if(it.row() != it.col()){
+        connectivity_units[it.col()] = connectivity_units[it.col()] + (*it);
+      }
     }
   }
 
@@ -61,7 +55,7 @@ bool rcpp_objective_min_set(SEXP x,
   //variables
   int number_of_threats = threats_data.nrows();
   int number_of_actions = dist_threats_data.nrows();
-  NumericVector action_costs = dist_threats_data["cost"];
+  NumericVector action_costs = dist_threats_data["action_cost"];
   NumericVector blm_actions = threats_data["blm_actions"];
   NumericVector connectivity_actions(number_of_actions);
 
@@ -73,8 +67,10 @@ bool rcpp_objective_min_set(SEXP x,
   IntegerVector threat_id = clone(dist_threats_data_threat_id);
   threat_id = threat_id - 1;
 
-  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data, number_of_units, number_of_threats);
-
+  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data,
+                                                                    number_of_units,
+                                                                    number_of_threats,
+                                                                    dist_threats_data["amount"]);
   for(int a = 0; a < number_of_actions; a++){
     if(boundary_size != 0 && blm_actions[threat_id[a]] != 0){
       int pu_id2_threat;
@@ -105,6 +101,14 @@ bool rcpp_objective_min_set(SEXP x,
   for(int s = 0; s < number_of_features; s++){
     for (auto it_species = dist_features_extended.begin_col(s);
          it_species != dist_features_extended.end_col(s); ++it_species) {
+
+      //b_is
+      op->_obj.push_back(0);
+      op->_vtype.push_back("C");
+      op->_lb.push_back(0);
+      op->_ub.push_back(1);
+
+      //z_is
       op->_obj.push_back(0);
       op->_vtype.push_back("C");
       op->_lb.push_back(0);
@@ -131,7 +135,7 @@ bool rcpp_objective_min_set(SEXP x,
         //curve
         op->_id_pow_variables.push_back(col_constraint);
 
-        col_constraint = col_constraint + 1;
+        col_constraint++;
       }
     }
   }
@@ -171,7 +175,7 @@ bool rcpp_objective_min_set(SEXP x,
         op->_rhs.push_back(0);
         op->_sense.push_back("<=");
 
-        row_constraint = row_constraint + 1;
+        row_constraint++;
 
         //Constraint number 2 (Y[i1,i2] - W[i2] <= 0)
         op->_A_i.push_back(row_constraint);
@@ -185,7 +189,7 @@ bool rcpp_objective_min_set(SEXP x,
         op->_rhs.push_back(0);
         op->_sense.push_back("<=");
 
-        row_constraint = row_constraint + 1;
+        row_constraint++;
 
         //Constraint number 3 (Y[i1,i2] - W[i1] - W[i2] => -1)
         op->_A_i.push_back(row_constraint);
@@ -202,8 +206,8 @@ bool rcpp_objective_min_set(SEXP x,
         op->_rhs.push_back(-1);
         op->_sense.push_back(">=");
 
-        row_constraint = row_constraint + 1;
-        col_constraint = col_constraint + 1;
+        row_constraint++;
+        col_constraint++;
       }
     }
   }
@@ -250,7 +254,7 @@ bool rcpp_objective_min_set(SEXP x,
           op->_rhs.push_back(0);
           op->_sense.push_back("<=");
 
-          row_constraint = row_constraint + 1;
+          row_constraint++;
 
           //Constraint number 2 (P[i1,i2,k] - X[i2,k] <= 0)
           col_action = number_of_units + actions_extended(pu_id2_threat, threat_id[a]) - 1;
@@ -266,7 +270,7 @@ bool rcpp_objective_min_set(SEXP x,
           op->_rhs.push_back(0);
           op->_sense.push_back("<=");
 
-          row_constraint = row_constraint + 1;
+          row_constraint++;
 
           //Constraint number 3 (P[i1,i2,k] - X[i1,k] - X[i2,k] => -1)
           op->_A_i.push_back(row_constraint);
@@ -286,8 +290,8 @@ bool rcpp_objective_min_set(SEXP x,
           op->_rhs.push_back(-1);
           op->_sense.push_back(">=");
 
-          row_constraint = row_constraint + 1;
-          col_constraint = col_constraint + 1;
+          row_constraint++;
+          col_constraint++;
         }
       }
     }

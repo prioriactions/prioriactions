@@ -31,54 +31,53 @@ NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data,
   IntegerVector threat_id = clone(dist_threats_data_threat_id);
   threat_id = threat_id - 1;
 
-  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data, number_of_units, number_of_threats);
-
-  for(int a = 0; a < number_of_actions; a++){
-    if(boundary_size != 0){
-      matrix_boundary_extended = create_boundary_matrix_extended(boundary_data, number_of_units);
-
-      int pu_id2_threat;
-
-      for (auto it = dist_threats_extended.begin_col(threat_id[a]);
-           it != dist_threats_extended.end_col(threat_id[a]); ++it) {
-        pu_id2_threat = it.row();
-
-        if(pu_id1_threat[a] != pu_id2_threat && matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat) != 0){
-          connectivity_actions[a] = connectivity_actions[a] + matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat);
-        }
-      }
-    }
-    connectivity_actions_solution[a] = connectivity_actions_solution[a] + connectivity_actions[a]*solution[a];
-  }
-
-  //------------------------------------------------------------------------------------------
-  //--------------------- (coefficients associated with p[i1,i2,k] variables) ------------------
-  // auxiliary variables to normalize no-linear objective function
-  //------------------------------------------------------------------------------------------
+  arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data,
+                                                                    number_of_units,
+                                                                    number_of_threats,
+                                                                    dist_threats_data["amount"]);
 
   double connectivityCoeff;
   int id_action2;
   arma::sp_mat actions_extended = create_actions_extended(dist_threats_data, number_of_units, number_of_threats);
 
   for(int a = 0; a < number_of_actions; a++){
+    matrix_boundary_extended = create_boundary_matrix_extended(boundary_data, number_of_units);
 
-    if(boundary_size != 0){
-      int pu_id2_threat;
-      for (auto it = dist_threats_extended.begin_col(threat_id[a]);
-           it != dist_threats_extended.end_col(threat_id[a]); ++it) {
+    int pu_id2_threat;
 
-        pu_id2_threat = it.row();
-        if(pu_id1_threat[a] != pu_id2_threat && matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat) != 0){
-          connectivityCoeff = -1*matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat);
+    for (auto it = dist_threats_extended.begin_col(threat_id[a]);
+         it != dist_threats_extended.end_col(threat_id[a]); ++it) {
+      pu_id2_threat = it.row();
 
-          id_action2 = actions_extended(pu_id2_threat, threat_id[a]) - 1;
+      if(pu_id1_threat[a] != pu_id2_threat && matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat) != 0){
+        connectivity_actions[a] = connectivity_actions[a] + matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat);
 
-          if(solution[a] > 0.99 && solution[id_action2] > 0.99){
-            connectivity_actions_solution[a] = connectivity_actions_solution[a] + connectivityCoeff;
-          }
+        connectivityCoeff = -1*matrix_boundary_extended(pu_id1_threat[a], pu_id2_threat);
+        id_action2 = actions_extended(pu_id2_threat, threat_id[a]) - 1;
+
+        if(solution[a] > 0.99 && solution[id_action2] > 0.99){
+          connectivity_actions_solution[a] = connectivity_actions_solution[a] + connectivityCoeff;
         }
       }
     }
+    connectivity_actions_solution[a] = connectivity_actions_solution[a] + connectivity_actions[a]*solution[a];
   }
-  return connectivity_actions_solution;
+
+  // Getting sum of actions
+
+  NumericVector connectivity_by_actions(number_of_threats);
+  arma::sp_mat dist_threats_extended_connectivity = create_dist_threats_extended(dist_threats_data,
+                                                                    number_of_units,
+                                                                    number_of_threats,
+                                                                    connectivity_actions_solution);
+
+  for(int t = 0; t < number_of_threats; t++){
+    for (auto it = dist_threats_extended_connectivity.begin_col(t);
+         it != dist_threats_extended_connectivity.end_col(t); ++it) {
+
+      connectivity_by_actions[t] = connectivity_by_actions[t] + (*it);
+    }
+  }
+
+  return connectivity_by_actions;
 }
