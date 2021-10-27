@@ -105,6 +105,7 @@ getActions <- function(x, format = "wide") {
       complete_dist_threats <- merge(x = monitoring, y = actions, by.x = "id", by.y = "pu", all = TRUE)
       threats_data_extended <- complete_dist_threats %>% tidyr::spread(key = .data$action, value = .data$solution.y)
 
+      threats_data_extended$`0` <- 0
       sum_rows_threats <- rowSums(threats_data_extended[,!names(threats_data_extended) %in% c("id", "solution.x", "<NA>")], na.rm = TRUE)
       threats_units <- ifelse(sum_rows_threats > 0, 1, 0)
 

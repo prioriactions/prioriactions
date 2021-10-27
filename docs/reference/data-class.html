@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Conservation problem class — conservationProblem-class • prioriactions</title>
+<title>Data class — data-class • prioriactions</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,13 +52,13 @@
 
 
 
-<meta property="og:title" content="Conservation problem class — conservationProblem-class" />
+<meta property="og:title" content="Data class — data-class" />
 <meta property="og:description" content="This class is used to represent data of the instances of the corresponding
 multi-action planning problem. It includes several methods for retrieving the information
 of the instance (such as the spatial allocation of threats and species, the cost
 of management actions or the structure of the spatial connectivity across
 the area where the planning is carried out. This class is created using the
-inputData() function.." />
+inputData() function." />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -171,9 +171,9 @@ inputData() function.." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Conservation problem class</h1>
-    <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/conservationProblem-class.R'><code>R/conservationProblem-class.R</code></a></small>
-    <div class="hidden name"><code>conservationProblem-class.Rd</code></div>
+    <h1>Data class</h1>
+    <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/data-class.R'><code>R/data-class.R</code></a></small>
+    <div class="hidden name"><code>data-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -182,7 +182,7 @@ multi-action planning problem. It includes several methods for retrieving the in
 of the instance (such as the spatial allocation of threats and species, the cost
 of management actions or the structure of the spatial connectivity across
 the area where the planning is carried out. This class is created using the
-<code><a href='inputData.html'>inputData()</a></code> function..</p>
+<code><a href='inputData.html'>inputData()</a></code> function.</p>
     </div>
 
 
@@ -238,7 +238,7 @@ or "boundary").</p></dd>
 <span class='r-in'><span class='co'>## Load in planning unit data</span></span>
 <span class='r-in'><span class='va'>pu_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/pu.dat"</span><span class='op'>)</span>,</span>
 <span class='r-in'>                             data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>pu_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/headtail.html'>head</a></span><span class='op'>(</span><span class='va'>pu_data</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   id monitoring_cost status</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1               2      0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2               2      0</span>
@@ -250,7 +250,7 @@ or "boundary").</p></dd>
 <span class='r-in'><span class='co'>## Load in feature data</span></span>
 <span class='r-in'><span class='va'>features_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/features.dat"</span><span class='op'>)</span>,</span>
 <span class='r-in'>                                   data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>features_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/headtail.html'>head</a></span><span class='op'>(</span><span class='va'>features_data</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   id target_recovery     name</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1              11 feature1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2              16 feature2</span>
@@ -260,7 +260,7 @@ or "boundary").</p></dd>
 <span class='r-in'><span class='co'>## Load in planning unit vs feature data</span></span>
 <span class='r-in'><span class='va'>dist_features_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/dist_features.dat"</span><span class='op'>)</span>,</span>
 <span class='r-in'>                                        data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>dist_features_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/headtail.html'>head</a></span><span class='op'>(</span><span class='va'>dist_features_data</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   pu feature amount</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1       3      1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2       3      1</span>
@@ -272,7 +272,7 @@ or "boundary").</p></dd>
 <span class='r-in'><span class='co'>## Load in the threats data</span></span>
 <span class='r-in'><span class='va'>threats_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/threats.dat"</span><span class='op'>)</span>,</span>
 <span class='r-in'>                                  data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>threats_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/headtail.html'>head</a></span><span class='op'>(</span><span class='va'>threats_data</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   id    name blm_actions</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1 threat1           0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2 threat2           0</span>
@@ -280,7 +280,7 @@ or "boundary").</p></dd>
 <span class='r-in'><span class='co'>## Load in the threats distribution data</span></span>
 <span class='r-in'><span class='va'>dist_threats_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/dist_threats.dat"</span><span class='op'>)</span>,</span>
 <span class='r-in'>                                       data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>dist_threats_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/headtail.html'>head</a></span><span class='op'>(</span><span class='va'>dist_threats_data</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   pu threat amount action_cost status</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1  8      2      1           2      0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 2  9      2      1           2      0</span>
@@ -292,7 +292,7 @@ or "boundary").</p></dd>
 <span class='r-in'><span class='co'>## Load in the sensitivity data</span></span>
 <span class='r-in'><span class='va'>sensitivity_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/sensitivity.dat"</span><span class='op'>)</span>,</span>
 <span class='r-in'>                                      data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>sensitivity_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/headtail.html'>head</a></span><span class='op'>(</span><span class='va'>sensitivity_data</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   feature threat</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1       1      1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 2       2      1</span>
@@ -304,7 +304,7 @@ or "boundary").</p></dd>
 <span class='r-in'><span class='co'>## Load in the boundary data</span></span>
 <span class='r-in'><span class='va'>boundary_data</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>prioriactions_path</span>,<span class='st'>"/boundary.dat"</span><span class='op'>)</span>,</span>
 <span class='r-in'>                                   data.table <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>boundary_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/headtail.html'>head</a></span><span class='op'>(</span><span class='va'>boundary_data</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   id1 id2 boundary</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1   1   1        0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 2   2   1        1</span>
@@ -322,7 +322,7 @@ or "boundary").</p></dd>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Summary</span></span>
 <span class='r-in'><span class='fu'><a href='print.html'>print</a></span><span class='op'>(</span><span class='va'>problem_data</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> Conservation Problem</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Data</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   planning units: data.frame (100 units)</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   monitoring costs:     min: 1, max: 10</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   features:       feature1, feature2, feature3, feature4 (4 features)</span>
@@ -366,7 +366,7 @@ or "boundary").</p></dd>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>problem_data</span><span class='op'>$</span><span class='fu'>print</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> Conservation Problem</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Data</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   planning units: data.frame (100 units)</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   monitoring costs:     min: 1, max: 10</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   features:       feature1, feature2, feature3, feature4 (4 features)</span>

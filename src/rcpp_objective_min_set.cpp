@@ -108,11 +108,6 @@ bool rcpp_objective_min_set(SEXP x,
       op->_lb.push_back(0);
       op->_ub.push_back(1);
 
-      //z_is
-      op->_obj.push_back(0);
-      op->_vtype.push_back("C");
-      op->_lb.push_back(0);
-      op->_ub.push_back(1);
     }
   }
 

@@ -285,8 +285,17 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
 
     s$data$sol_monitoring <- base::round(s$data$sol[1:number_of_pu])
     s$data$sol_actions <- base::round(s$data$sol[(number_of_pu + 1):(number_of_pu + number_of_actions)])
-    s$data$sol_recovery <- s$data$sol[(number_of_pu + number_of_actions + 1):(number_of_pu + number_of_actions + number_of_dist_features)]
-    s$data$sol_conservation <- s$data$sol[(number_of_pu + number_of_actions + number_of_dist_features + 1):(number_of_pu + number_of_actions + 2*number_of_dist_features)]
+    #s$data$sol_recovery <- s$data$sol[(number_of_pu + number_of_actions + 1):(number_of_pu + number_of_actions + number_of_dist_features)]
+    list_recovery <- rcpp_stats_recovery(s$data$sol,
+                                         a$ConservationClass$getData("pu"),
+                                         a$ConservationClass$getData("features"),
+                                         a$ConservationClass$getData("dist_features"),
+                                         a$ConservationClass$getData("dist_threats"),
+                                         a$ConservationClass$getData("threats"),
+                                         a$ConservationClass$getData("sensitivity"))
+    s$data$sol_recovery <- list_recovery$recovery
+    s$data$sol_conservation <- list_recovery$conservation
+    #s$data$sol_conservation <- s$data$sol[(number_of_pu + number_of_actions + number_of_dist_features + 1):(number_of_pu + number_of_actions + 2*number_of_dist_features)]
 
     # Creating txt output
     if(isTRUE(output_file)){

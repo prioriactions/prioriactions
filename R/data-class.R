@@ -1,17 +1,17 @@
 #' @include internal.R
 
 #' @export
-if (!methods::isClass("ConservationProblem")) methods::setOldClass("ConservationProblem")
+if (!methods::isClass("Data")) methods::setOldClass("Data")
 NULL
 
-#' Conservation problem class
+#' Data class
 #'
 #' This class is used to represent data of the instances of the corresponding
 #' multi-action planning problem. It includes several methods for retrieving the information
 #' of the instance (such as the spatial allocation of threats and species, the cost
 #' of management actions or the structure of the spatial connectivity across
 #' the area where the planning is carried out. This class is created using the
-#' [inputData()] function..
+#' [inputData()] function.
 #'
 #'
 #' @section Fields: \describe{
@@ -129,20 +129,20 @@ NULL
 #' problem_data$getThreatsAmount()
 #'
 #' problem_data$print()
-#' @name conservationProblem-class
+#' @name data-class
 #'
-#' @aliases ConservationProblem
+#' @aliases Data
 NULL
 
 #' @export
-ConservationProblem <- pproto(
-  "ConservationProblem",
+Data <- pproto(
+  "Data",
   data = list(),
   print = function(self) {
     unit_cs <- round(range(self$getMonitoringCosts(), na.rm = TRUE), 5)
     threat_cs <- round(range(self$getActionCosts(), na.rm = TRUE), 5)
     message(paste0(
-      "Conservation Problem",
+      "Data",
       "\n  planning units: ", class(self$data$pu)[1], " (",
       self$getPlanningUnitsAmount(), " units)",
       "\n  monitoring costs:     min: ", unit_cs[1], ", max: ", unit_cs[2],
@@ -155,7 +155,7 @@ ConservationProblem <- pproto(
     self$print()
   },
   repr = function(self) {
-    "ConservationProblem object"
+    "Data object"
   },
   getData = function(self, x) {
     assertthat::assert_that(assertthat::is.string(x))

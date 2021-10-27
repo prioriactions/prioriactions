@@ -134,12 +134,20 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
           if(sum_alpha != 0.0){
             sol_action_id = number_of_units + actions_extended(pu_id, threat_id) - 1;
 
-            // x_ik
-            benefit_maximum_nothing[s] = benefit_maximum_nothing[s] + ((response_coef_constant * alpha)/sum_alpha)*feature_intensity;
+            //// x_ik
+            //benefit_maximum_nothing[s] = benefit_maximum_nothing[s] + ((response_coef_constant * alpha)/sum_alpha)*feature_intensity;
+            //benefit_maximum_recovery[s] = benefit_maximum_recovery[s] + ((response_coef_variable * alpha)/sum_alpha)*feature_intensity;
+
+            //if(large_solution != 1){
+            //  benefit_solution_nothing[s] = benefit_solution_nothing[s] + solution[pu_id]*(((response_coef_constant * alpha)/sum_alpha)*feature_intensity);
+            //  benefit_solution_recovery[s] = benefit_solution_recovery[s] + solution[sol_action_id]*(((response_coef_variable * alpha)/sum_alpha)*feature_intensity);
+            //}
+
+            //benefit_maximum_recovery[s] = benefit_maximum_recovery[s] + ((response_coef_constant * alpha)/sum_alpha)*feature_intensity + ((response_coef_variable * alpha)/sum_alpha)*feature_intensity;
             benefit_maximum_recovery[s] = benefit_maximum_recovery[s] + ((response_coef_variable * alpha)/sum_alpha)*feature_intensity;
 
             if(large_solution != 1){
-              benefit_solution_nothing[s] = benefit_solution_nothing[s] + solution[pu_id]*(((response_coef_constant * alpha)/sum_alpha)*feature_intensity);
+              //benefit_solution_recovery[s] = benefit_solution_recovery[s] + solution[sol_action_id]*(((response_coef_variable * alpha)/sum_alpha)*feature_intensity) + solution[pu_id]*(((response_coef_constant * alpha)/sum_alpha)*feature_intensity);
               benefit_solution_recovery[s] = benefit_solution_recovery[s] + solution[sol_action_id]*(((response_coef_variable * alpha)/sum_alpha)*feature_intensity);
             }
           }

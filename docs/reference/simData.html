@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract connectivity penalty values — getConnectivityPenalty • prioriactions</title>
+<title>Simulated multi-action planning data — simData • prioriactions</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,27 @@
 
 
 
-<meta property="og:title" content="Extract connectivity penalty values — getConnectivityPenalty" />
-<meta property="og:description" content="Provides the connectivity penalty value for all actions and planning units in a solution." />
+<meta property="og:title" content="Simulated multi-action planning data — simData" />
+<meta property="og:description" content="Simulated data for making prioritizations.
+
+
+sim_pu_dataPlanning units are represented as tabular data.
+
+sim_features_dataFeatures are represented as tabular data.
+
+sim_dist_features_dataThe simulated distribution of four features.
+
+sim_threats_dataThreats are represented as tabular data.
+
+sim_dist_threats_dataThe simulated threats of two threats.
+
+sim_sensitivity_dataSensitivity of features to threats as tabular data.
+
+sim_boundary_dataBoundary data between one hundred planning units.
+
+
+
+" />
 <meta property="og:image" content="https://prioriactions.github.io/prioriactions/logo.png" />
 
 
@@ -166,105 +185,98 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract connectivity penalty values</h1>
-    <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/getConnectivityPenalty.R'><code>R/getConnectivityPenalty.R</code></a></small>
-    <div class="hidden name"><code>getConnectivityPenalty.Rd</code></div>
+    <h1>Simulated multi-action planning data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/prioriactions/prioriactions/blob/master/R/simData.R'><code>R/simData.R</code></a></small>
+    <div class="hidden name"><code>simData.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Provides the connectivity penalty value for all actions and planning units in a solution.</p>
+    <p>Simulated data for making prioritizations.</p>
+<dl>
+
+<dt><code>sim_pu_data</code></dt><dd><p>Planning units are represented as tabular data.</p></dd>
+
+<dt><code>sim_features_data</code></dt><dd><p>Features are represented as tabular data.</p></dd>
+
+<dt><code>sim_dist_features_data</code></dt><dd><p>The simulated distribution of four features.</p></dd>
+
+<dt><code>sim_threats_data</code></dt><dd><p>Threats are represented as tabular data.</p></dd>
+
+<dt><code>sim_dist_threats_data</code></dt><dd><p>The simulated threats of two threats.</p></dd>
+
+<dt><code>sim_sensitivity_data</code></dt><dd><p>Sensitivity of features to threats as tabular data.</p></dd>
+
+<dt><code>sim_boundary_data</code></dt><dd><p>Boundary data between one hundred planning units.</p></dd>
+
+
+</dl>
+
     </div>
 
-    <pre class="usage"><span class='fu'>getConnectivityPenalty</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_pu_data</span><span class='op'>)</span>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p><a href='solution-class.html'>solution</a> or <a href='portfolio-class.html'>portfolio</a> object.</p></td>
-    </tr>
-    </table>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_features_data</span><span class='op'>)</span>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_dist_features_data</span><span class='op'>)</span>
 
-    <p><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_threats_data</span><span class='op'>)</span>
 
-    <p>The connectivity penalty among is calculated as the sum of all
-connectivity penalties by each action and planning unit in the solution. This can be expressed
-mathematically for a set of planning units
-\(I\) indexed by \(i\) and \(j\), and
-a set of threats \(K\) indexed by \(k\) as:</p>
-<p>$$
-\sum_{k \in K}\sum_{i \in I_k}\sum_{j \in I_k} x_{ik} (1 - x_{jk})cv_{ij}
-$$</p>
-<p>Where, \(x_{ik}\) is the decisions variable that specify
-whether an action has been selected to abate threat \(k\) in planning unit
-\(i\) (1) or not (0), \(cv_{ij}\) is the connectivity penalty that applies
-when a solution contains planning unit \(i\) but not \(j\) o viceversa.</p>
-<p>Note that there is an action per threat, so it is assumed that the index of
-the threat coincides with the index of the action used to abate it.</p>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_dist_threats_data</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_sensitivity_data</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_boundary_data</span><span class='op'>)</span></pre>
+
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    
+<dl>
+
+<dt>sim_pu_data</dt><dd><p><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>
+object.</p></dd>
+
+<dt>sim_features_data</dt><dd><p><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>
+object.</p></dd>
+
+<dt>sim_dist_features_data</dt><dd><p><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>
+object.</p></dd>
+
+<dt>sim_threats_data</dt><dd><p><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>
+object.</p></dd>
+
+<dt>sim_dist_threats_data</dt><dd><p><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>
+object.</p></dd>
+
+<dt>sim_sensitivity_data</dt><dd><p><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>
+object.</p></dd>
+
+<dt>sim_boundary_data</dt><dd><p><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>
+object.</p></dd>
+
+</dl>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'># set seed for reproducibility</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>14</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>## Load data</span></span>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='co'># load data</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>sim_pu_data</span>, <span class='va'>sim_features_data</span>, <span class='va'>sim_dist_features_data</span>,</span>
 <span class='r-in'><span class='va'>sim_threats_data</span>, <span class='va'>sim_dist_threats_data</span>, <span class='va'>sim_sensitivity_data</span>,</span>
 <span class='r-in'><span class='va'>sim_boundary_data</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Create data instance</span></span>
-<span class='r-in'><span class='va'>problem_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='inputData.html'>inputData</a></span><span class='op'>(</span></span>
-<span class='r-in'>  pu <span class='op'>=</span> <span class='va'>sim_pu_data</span>, features <span class='op'>=</span> <span class='va'>sim_features_data</span>, dist_features <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>,</span>
-<span class='r-in'>  threats <span class='op'>=</span> <span class='va'>sim_threats_data</span>, dist_threats <span class='op'>=</span> <span class='va'>sim_dist_threats_data</span>,</span>
-<span class='r-in'>  sensitivity <span class='op'>=</span> <span class='va'>sim_sensitivity_data</span>, boundary <span class='op'>=</span> <span class='va'>sim_boundary_data</span></span>
-<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># plot examples</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/raster'>raster</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>r</span> <span class='op'>&lt;-</span> <span class='fu'>raster</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/raster/man/raster.html'>raster</a></span><span class='op'>(</span>ncol<span class='op'>=</span><span class='fl'>10</span>, nrow<span class='op'>=</span><span class='fl'>10</span>, xmn<span class='op'>=</span><span class='fl'>0</span>, xmx<span class='op'>=</span><span class='fl'>10</span>, ymn<span class='op'>=</span><span class='fl'>0</span>, ymx<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Create optimization model</span></span>
-<span class='r-in'><span class='va'>problem_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='problem.html'>problem</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>problem_data</span>, blm <span class='op'>=</span> <span class='fl'>0.03</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
+<span class='r-in'><span class='co'># plot cost of pu's</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/getValues.html'>values</a></span><span class='op'>(</span><span class='va'>r</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>sim_pu_data</span><span class='op'>$</span><span class='va'>monitoring_cost</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>r</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Solve the optimization model</span></span>
-<span class='r-in'><span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='solve.html'>solve</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='va'>problem_model</span>, time_limit <span class='op'>=</span> <span class='fl'>2</span>, output_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 30160 rows, 10472 columns and 70437 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0xde6e27dc</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 10120 integer (10120 binary)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [3e-02, 3e+01]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [1e+00, 2e+01]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve removed 366 rows and 357 columns</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.20s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 29794 rows, 10115 columns, 69709 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 0 continuous, 10115 integer (10110 binary)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 717.5310881</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 427.0047919</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Root relaxation: time limit, 6840 iterations, 1.70 seconds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0          -    0       427.00479 -1556.0617   464%     -    2s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 0 nodes (6840 simplex iterations) in 2.00 seconds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 2: 427.005 717.531 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Time limit reached</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 4.270047918813e+02, best bound -1.556061666364e+03, gap 464.4132%</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># get connectivity penalty values</span></span>
-<span class='r-in'><span class='fu'>getConnectivityPenalty</span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   solution_name    units threat_1 threat_2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1           sol 8833.493  912.709 4116.451</span>
-<span class='r-in'></span>
+<span class='r-in'><span class='co'># plot feature distribution of feature 1</span></span>
+<span class='r-in'><span class='va'>features</span> <span class='op'>&lt;-</span> <span class='fu'>tidyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>sim_dist_features_data</span>, key <span class='op'>=</span> <span class='va'>feature</span>, value <span class='op'>=</span> <span class='va'>amount</span>, fill <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/getValues.html'>values</a></span><span class='op'>(</span><span class='va'>r</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>features</span><span class='op'>$</span><span class='st'>'1'</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/raster/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>r</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

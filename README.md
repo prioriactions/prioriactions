@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Multi-action conservation planning <img src="man/figures/logo.png" align="right" width=15% />
+# Multi-Action Conservation Planning <img src="man/figures/logo.png" align="right" width=15% />
 
 <!-- badges: start -->
 

@@ -48,10 +48,5 @@ bool rcpp_constraint_activation(SEXP x,
     op->_sense.push_back("<=");
   }
 
-
-
-
-
-
   return true;
 }

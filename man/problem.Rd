@@ -14,7 +14,7 @@ problem(
 )
 }
 \arguments{
-\item{x}{\linkS4class{conservationProblem} object. Data used in a problem of
+\item{x}{\linkS4class{data} object. Data used in a problem of
 prioritization of multiple conservation actions. This object must be created using the
 \code{\link[=problem]{problem()}} function.}
 

@@ -19,9 +19,9 @@ NULL
 NULL
 
 #' @rdname print
-#' @method print ConservationProblem
+#' @method print Data
 #' @export
-print.ConservationProblem <- function(x, ...) x$print()
+print.Data <- function(x, ...) x$print()
 
 #' @rdname print
 #' @method print OptimizationProblem

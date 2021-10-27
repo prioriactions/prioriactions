@@ -8,7 +8,7 @@ NULL
 #'   planning problem, following the mathematical formulations used in
 #'   Salgado-Rojas *et al.* (2020).
 #'
-#' @param x [conservationProblem-class] object. Data used in a problem of
+#' @param x [data-class] object. Data used in a problem of
 #'   prioritization of multiple conservation actions. This object must be created using the
 #'   [problem()] function.
 #'
@@ -137,7 +137,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
 
   # assert that arguments are valid
   assertthat::assert_that(
-    inherits(x, "ConservationProblem"),
+    inherits(x, "Data"),
     assertthat::is.scalar(blm),
     is.finite(blm),
     assertthat::is.scalar(curve),
@@ -232,14 +232,12 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
   if (!curve %in% c(1, 2, 3)) {
     stop("invalid curve type")
   }
-
+  else if(curve == 1){
+    segments = 1
+  }
   if(curve != 1 && any(dist_threats$amount < 1)){
     curve = 1
     warning("Curve set to 1 because there are non-binary values in threat amount for a recovery target",call.=FALSE, immediate. = TRUE)
-  }
-
-  if(curve == 1){
-    segments = 1
   }
 
   ## segments
@@ -258,7 +256,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
 
   if(model_type == "minimizeCosts"){
     rcpp_objective_min_set(op, pu, features, dist_features, threats, dist_threats, boundary, blm, curve)
-    rcpp_constraint_target(op, pu, features, dist_features, dist_threats, curve)
+    rcpp_constraint_target(op, pu, features, dist_features, dist_threats, threats, sensitivity, curve)
   }
   else if(model_type == "maximizeBenefits"){
     rcpp_objective_max_coverage(op, pu, features, dist_features, threats, dist_threats, boundary, blm, curve)

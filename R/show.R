@@ -22,9 +22,9 @@ NULL
 NULL
 
 #' @rdname show
-#' @method show ConservationProblem
+#' @method show Data
 #' @export
-show.ConservationProblem <- function(x, ...) x$show()
+show.Data <- function(x, ...) x$show()
 
 #' @rdname show
 #' @method show OptimizationProblem

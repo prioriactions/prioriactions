@@ -20,11 +20,11 @@
 presolve <- function(x, ...) UseMethod("presolve", x)
 
 #' @rdname presolve
-#' @method presolve ConservationProblem
+#' @method presolve Data
 #' @noRd
-presolve.ConservationProblem <- function(x, ...) {
+presolve.Data<- function(x, ...) {
 
-  assertthat::assert_that(inherits(x, "ConservationProblem"))
+  assertthat::assert_that(inherits(x, "Data"))
 
   params = list(...)
 

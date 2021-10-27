@@ -126,7 +126,8 @@
 
 
 
-<p>The Mitchell River is a river located in Far North Queensland, Australia. The river rises on the Atherton Tableland about 50 kilometres (31 mi) northwest of Cairns, and flows about 750 kilometres (470 mi) northwest across Cape York Peninsula from Mareeba to the Gulf of Carpentaria. we will use this case study to present some functionalities of the <code>prioriactions</code> package.</p>
+<p>In this vignette, the <code>prioriactions</code> package is introduced in a real context, demonstrating part of its capabilities in order to familiarize the reader with it. The vignette is divided into <strong>three</strong> parts: the first shows a <strong>base case</strong>; which consists of prioritizing management actions while minimizing costs and, in turn, achieves certain recovery targets; the second part incorporates other <strong>curves</strong> in the calculation of benefits, while the third adds <strong>spatial requirements</strong> using the <em>blm</em> and <em>blm_actions</em> parameters.</p>
+<p>The Mitchell River is a river located in Northern Queensland, Australia. The headwaters of the Mitchell River are in the Atherton Tableland about 50 kilometres (31 mi) northwest of Cairns, and flows about 750 kilometres (470 mi) northwest across Cape York Peninsula from Mareeba to the Gulf of Carpentaria. We will use this case study to present some functionalities of the <code>prioriactions</code> package.</p>
 <p>We started loading libraries:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages</span>
@@ -137,10 +138,10 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/reshape">reshape2</a></span><span class="op">)</span> <span class="co">#To use the melt function</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/edzer/sp/">sp</a></span><span class="op">)</span> <span class="co">#To use the spplot function</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/">viridis</a></span><span class="op">)</span> <span class="co">#To use viridis pallete</span></code></pre></div>
-<div id="preparing-data-inputs" class="section level1">
-<h1 class="hasAnchor">
-<a href="#preparing-data-inputs" class="anchor"></a>Preparing data inputs</h1>
-<p>We divided the whole catchment (71,630 km2 into 2316 sites (i.e., sub-catchments), each one included the portion of river length between two consecutive river connections. We considered four major threats to freshwater fish species in the catchment: water buffalo (Bubalis bubalis), cane toad (Bufo marinus), river flow alteration (caused by impoundments, channels for water extractions and levee banks) and grazing land use. Also, we used the modelled spatial distribution of 45 fish species in the Mitchell river catchment as our conservation features. All input files will be loaded directly from the <code>prioriactions</code> package as follows:</p>
+<div id="preparing-and-analyzing-input-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#preparing-and-analyzing-input-data" class="anchor"></a>1) Preparing and analyzing input data</h2>
+<p>We divided the whole catchment (71,630 <span class="math inline">\(km^2\)</span>) into 2316 sites (i.e., sub-catchments), each one included the portion of river length between two consecutive river connections and the surrounding land draining into this river stretch. We sourced the distribution of 45 fish species in the Mitchell river catchment as our conservation features <span class="citation">[@cattarino2015]</span>. Also, we considered four major threats to freshwater fish species in the catchment: water buffalo (Bubalis bubalis), cane toad (Bufo marinus), river flow alteration (caused by infrastructure for water extractions and levee banks) and grazing land use . All input files will be loaded directly into the <code>prioriactions</code> package as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/mitchell_vignette_data/"</span>,
                     package <span class="op">=</span> <span class="st">"prioriactions"</span><span class="op">)</span>
@@ -166,7 +167,7 @@
 <span class="va">sensitivity_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,
                                              <span class="st">"/sensibility_mitchell.csv"</span><span class="op">)</span>,
                                       data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p>We load the shapefile of the case study also included as part of the package installation:</p>
+<p>We load the shapefile of the case study, which is also included as part of the package installation:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># read shapefile</span>
 <span class="va">shp_mitchell</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/shapefile.html">shapefile</a></span><span class="op">(</span><span class="st">"data/Fish_Mitchell.shp"</span><span class="op">)</span>
@@ -176,8 +177,8 @@
            names.attr <span class="op">=</span> <span class="st">"Area"</span>,
            main <span class="op">=</span> <span class="st">"Planning unit areas"</span>,
            col.regions <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html">viridis</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="figures/MR3-1.png" title="plot of chunk MR3" alt="plot of chunk MR3" style="display: block; margin: auto;"></p>
-<p>Now, we can plot different distributions of features or threats on the shapefile loaded. To do it, we can assign the values from tabular input to some shapefile field:</p>
+<p><img src="figures/MR3-1.png"></p>
+<p>After loading the instance’s data, we can plot different distributions of features or threats on the shapefile loaded. To do it, we can assign the values from tabular input to any of the fields in the shapefile containing the distribution of native species and threats:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load amount of dist_features data</span>
 <span class="va">dist_features</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html">dcast</a></span><span class="op">(</span><span class="va">dist_features_data</span>,
@@ -197,8 +198,8 @@
                 breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
                    lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
-<p><img src="figures/MR4-1.png" title="plot of chunk MR4" alt="plot of chunk MR4" style="display: block; margin: auto;"></p>
-<p>In the same way, we can observe the distributions of some threats:</p>
+<p><img src="figures/MR4-1.png"></p>
+<p>Likewise, we can plot the distributions of any threats by applying the following instructions:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load amount of dist_threats data</span>
 <span class="va">dist_threats</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html">dcast</a></span><span class="op">(</span><span class="va">dist_threats_data</span>,
@@ -218,17 +219,20 @@
                 breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
                    lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
-<p><img src="figures/MR5-1.png" title="plot of chunk MR5" alt="plot of chunk MR5" style="display: block; margin: auto;"></p>
+<p><img src="figures/MR5-1.png"></p>
+<p>To solve all the models, the solver will be configured with a stop criterion of 5% of <em>gap</em> (<code>gap_limit = 0.05</code>), which means that the solver will end its execution when it finds a solution whose <em>gap</em> is at least 5%, indicating 0% that this solution is optimal. Similarly, there are other stopping criteria such as the time (<code>time_limit</code>), all available in the <code><a href="../reference/solve.html">solve()</a></code> reference. There is also the option of not using any stopping criteria that will make the solver run until it finds an optimal solution; however, this could take a long time period.</p>
+<p>In Section 2, we present the results obtained when solving the base model for the case study. Likewise, in Section 3 we report the results obtained when incorporating the different curves in the benefit calculation. And finally, in Section 4 we present the results obtained when incorporating the connectivity requirements to the model.</p>
+</div>
 <div id="base-model" class="section level2">
 <h2 class="hasAnchor">
-<a href="#base-model" class="anchor"></a>Base model</h2>
-<p>First, our base model considers the prioritization of conservation actions using previously loaded data. Note that for both features and threats we have presence/absence values (binary values). Some of the characteristics of the base model are the following:</p>
+<a href="#base-model" class="anchor"></a>2) Base model</h2>
+<p>First, our base model considers the prioritization of management actions to abate a particular threat using previously loaded data. Note that for both features and threats we have presence/absence values (binary values). Some of the characteristics of the base model are the following:</p>
 <ol style="list-style-type: decimal">
-<li>We use <code>minimiCosts</code> type of model to minimize costs by reaching 15% of the maximum recovery benefit per feature as target.</li>
-<li>The model does not consider spatial requirements to the actions (<em>blm</em> and <em>blm_actions</em> parameters equal to 0).</li>
-<li>There is no attempt to optimize that planning actions occur within the same planning units (i.e., the <em>curve</em> parameter is equal to 1).</li>
+<li>We use <code>minimiCosts</code> type of model to minimize costs for reaching 15% of the maximum recovery benefit per feature as target.</li>
+<li>The model does not consider spatial requirements (<em>blm</em> and <em>blm_actions</em> parameters are equal to 0).</li>
+<li>There is no need of solving all threats impacting a particular species in a given planning unit to achieve secure the persistence of the species in that planning unit (i.e., the <em>curve</em> parameter is equal to 1).</li>
 </ol>
-<p>To proceed we follow the <strong>three-step scheme</strong> described in the <code>prioriactions</code> package: 1) data validation, 2) model creation and 3) solve the model.</p>
+<p>To proceed we follow the <strong>three-step scheme</strong> described in the <code>prioriactions</code> package: 1) data validation, 2) model creation and 3) model optimization.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># step 1: data validation</span>
 <span class="va">input_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">pu_data</span>,
@@ -239,30 +243,36 @@
               sensitivity <span class="op">=</span> <span class="va">sensitivity_data</span>,
               bound <span class="op">=</span> <span class="va">bound_data</span><span class="op">)</span>
 
-<span class="va">input_data</span>
-<span class="co">#&gt; Conservation Problem</span>
-<span class="co">#&gt;   planning units: data.frame (2316 units)</span>
-<span class="co">#&gt;   monitoring costs:     min: 1, max: 1</span>
-<span class="co">#&gt;   features:       scl_ja, nem_er, thr_sc, ... (45 features)</span>
-<span class="co">#&gt;   threats:        threat1, threat2, threat3, threat4 (4 threats)</span>
-<span class="co">#&gt;   action costs:   min: 1, max: 1</span></code></pre></div>
-<p>Now, we can check if the <strong>recovery targets</strong> included by the imported data correspond to the 15% that we want to evaluate. For this we use the <code><a href="../reference/getPotentialBenefit.html">getPotentialBenefit()</a></code> function.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># view the original targets </span>
-<span class="va">input_targets</span> <span class="op">&lt;-</span> <span class="va">features_data</span><span class="op">$</span><span class="va">target_recovery</span>
-
-<span class="va">maximum_benefits</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">input_data</span><span class="op">)</span><span class="op">$</span><span class="va">maximum.recovery.benefit</span>
-
-<span class="va">input_targets</span><span class="op">*</span><span class="fl">100</span><span class="op">/</span><span class="va">maximum_benefits</span>
-<span class="co">#&gt;  [1]  14.450867   9.505703  24.038462  15.313936  42.016807  36.231884   7.215007  16.077170</span>
-<span class="co">#&gt;  [9]  10.449321  11.520737  20.746888  20.000000  35.460993  14.326648   6.038647 100.000000</span>
-<span class="co">#&gt; [17] 100.000000   4.502476 100.000000  13.755158 100.000000  49.261084   6.385696  33.333333</span>
-<span class="co">#&gt; [25]  17.152659   4.965243  32.786885   4.972650 100.000000   4.732608   5.361930   6.207325</span>
-<span class="co">#&gt; [33]   7.385524 100.000000   8.058018 100.000000  12.210012 100.000000  23.584906   4.928536</span>
-<span class="co">#&gt; [41]   5.313496 100.000000  24.509804  40.816327 100.000000</span></code></pre></div>
-<p>Note that currently, the recovery target values are not located at 15%. Where values ranging from 4.5% to 100% are distinguished. To change them, we use the <code><a href="../reference/getPotentialBenefit.html">getPotentialBenefit()</a></code> function and assign it to the corresponding column of the feature data input and create the object <code>ConservationProblem-class</code> again.</p>
+<span class="va">input_data</span></code></pre></div>
+<pre><code>## Data
+##   planning units: data.frame (2316 units)
+##   monitoring costs:     min: 1, max: 1
+##   features:       scl_ja, nem_er, thr_sc, ... (45 features)
+##   threats:        threat1, threat2, threat3, threat4 (4 threats)
+##   action costs:   min: 1, max: 1</code></pre>
+<p>Now, in order to set the <strong>recovery targets</strong> at 20%, we must know what is the maximum recovery benefit possible through the <code><a href="../reference/getPotentialBenefit.html">getPotentialBenefit()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">features_data</span><span class="op">$</span><span class="va">recovery_target</span> <span class="op">&lt;-</span> <span class="va">maximum_benefits</span> <span class="op">*</span> <span class="fl">0.15</span>
+<code class="sourceCode R"><span class="co"># view the maximum benefit to achieve</span>
+<span class="va">maximum_benefits</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">input_data</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">maximum_benefits</span><span class="op">)</span></code></pre></div>
+<pre><code>##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit
+## 1       1  692             692                            0                      692
+## 2       2 1052            1052                            0                     1052
+## 3       3  416             416                            0                      416
+## 4       4  653             653                            0                      653
+## 5       5  238             238                            0                      238
+## 6       6  276             276                            0                      276
+##   maximum.benefit
+## 1             692
+## 2            1052
+## 3             416
+## 4             653
+## 5             238
+## 6             276</code></pre>
+<p>We assign the new target (20% of maximum) to the corresponding column of the feature data input and create the object <code>Data-class</code> again.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">features_data</span><span class="op">$</span><span class="va">target_recovery</span> <span class="op">&lt;-</span> <span class="va">maximum_benefits</span><span class="op">$</span><span class="va">maximum.recovery.benefit</span> <span class="op">*</span> <span class="fl">0.2</span>
 
 <span class="co"># step 1: validate modified data</span>
 <span class="va">input_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">pu_data</span>,
@@ -273,99 +283,121 @@
                         sensitivity <span class="op">=</span> <span class="va">sensitivity_data</span>,
                         bound <span class="op">=</span> <span class="va">bound_data</span><span class="op">)</span>
 
-<span class="va">input_data</span>
-<span class="co">#&gt; Conservation Problem</span>
-<span class="co">#&gt;   planning units: data.frame (2316 units)</span>
-<span class="co">#&gt;   monitoring costs:     min: 1, max: 1</span>
-<span class="co">#&gt;   features:       scl_ja, nem_er, thr_sc, ... (45 features)</span>
-<span class="co">#&gt;   threats:        threat1, threat2, threat3, threat4 (4 threats)</span>
-<span class="co">#&gt;   action costs:   min: 1, max: 1</span></code></pre></div>
-<p>With the input data validated, we proceed to create the mathematical model using the <code><a href="../reference/problem.html">problem()</a></code> function with <code>curve = 1</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<span class="va">input_data</span></code></pre></div>
+<pre><code>## Data
+##   planning units: data.frame (2316 units)
+##   monitoring costs:     min: 1, max: 1
+##   features:       scl_ja, nem_er, thr_sc, ... (45 features)
+##   threats:        threat1, threat2, threat3, threat4 (4 threats)
+##   action costs:   min: 1, max: 1</code></pre>
+<p>Once the input data is validated, we proceed to create the mathematical model using the <code><a href="../reference/problem.html">problem()</a></code> function with <code>curve = 1</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># step 2:</span>
 <span class="va">model.base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">input_data</span>,
                       model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
-                      blm <span class="op">=</span> <span class="fl">0</span>,
-                      curve <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; Warning: The blm argument was set to 0, so the boundary data has no effect</span>
-<span class="co">#&gt; Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
-
-<span class="va">model.base</span>
-<span class="co">#&gt; Optimization Problem</span>
-<span class="co">#&gt;   model sense: minimization</span>
-<span class="co">#&gt;   dimensions:  72336, 78145, 3211.456 kB (nrow, ncol, size)</span>
-<span class="co">#&gt;   variables:   78145</span></code></pre></div>
-<p>Note that the dimensions of the model are 72336 mathematical constraints and 78145 variables. To see more details of the model we can use the <code><a href="../reference/getModelInfo.html">getModelInfo()</a></code> function:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getModelInfo.html">getModelInfo</a></span><span class="op">(</span><span class="va">model.base</span><span class="op">)</span>
-<span class="co">#&gt;    model_sense n_constraints n_variables        size</span>
-<span class="co">#&gt; 1 minimization         72336       78145 3211.456 kB</span></code></pre></div>
-<p>To solve this model, the solver was configured to stop when a <em>gap</em> of at least 5% is achieved (0% meaning that at least one of the optimal solutions has been found).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+                      blm <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect
+## for these cases</code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model.base</span></code></pre></div>
+<pre><code>## Optimization Problem
+##   model sense: minimization
+##   dimensions:  37371, 43180, 1813.016 kB (nrow, ncol, size)
+##   variables:   43180</code></pre>
+<p>Note that the dimension of the model are 37371 mathematical constraints and 43180 variables. By using the <code><a href="../reference/getModelInfo.html">getModelInfo()</a></code> function, we can display additional information of the model:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/getModelInfo.html">getModelInfo</a></span><span class="op">(</span><span class="va">model.base</span><span class="op">)</span></code></pre></div>
+<pre><code>##    model_sense n_constraints n_variables        size
+## 1 minimization         37371       43180 1813.016 kB</code></pre>
+<p>To solve the corresponding model, the solver is set considering a 5% optimality <em>gap</em> as stopping criterion (note that a 0% <em>gap</em> means that the problem is solved to optimality) and using <em>gurobi</em> solver. In turn, the <code>verbose = TRUE</code> is used to display the execution of the solver and the <code>output_file = FALSE</code> to avoid generating output files with the results.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># step 3:</span>
 <span class="va">solution.base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.base</span>,
                        gap_limit <span class="op">=</span> <span class="fl">0.05</span>,
                        verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                       output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">#&gt; Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">#&gt; Optimize a model with 72336 rows, 78145 columns and 206496 nonzeros</span>
-<span class="co">#&gt; Model fingerprint: 0x4a06d72c</span>
-<span class="co">#&gt; Variable types: 69930 continuous, 8215 integer (8215 binary)</span>
-<span class="co">#&gt; Coefficient statistics:</span>
-<span class="co">#&gt;   Matrix range     [3e-01, 4e+00]</span>
-<span class="co">#&gt;   Objective range  [1e+00, 1e+00]</span>
-<span class="co">#&gt;   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">#&gt;   RHS range        [5e+00, 1e+02]</span>
-<span class="co">#&gt; Presolve removed 69104 rows and 70343 columns</span>
-<span class="co">#&gt; Presolve time: 0.13s</span>
-<span class="co">#&gt; Presolved: 3232 rows, 7802 columns, 26106 nonzeros</span>
-<span class="co">#&gt; Variable types: 0 continuous, 7802 integer (6206 binary)</span>
-<span class="co">#&gt; Found heuristic solution: objective 1326.0000000</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Root relaxation: objective 1.011208e+03, 1850 iterations, 0.03 seconds</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">#&gt;  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      0     0 1011.20833    0  112 1326.00000 1011.20833  23.7%     -    0s</span>
-<span class="co">#&gt; H    0     0                    1063.0000000 1011.20833  4.87%     -    0s</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Explored 1 nodes (2165 simplex iterations) in 0.25 seconds</span>
-<span class="co">#&gt; Thread count was 2 (of 4 available processors)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Solution count 2: 1063 1326 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Optimal solution found (tolerance 5.00e-02)</span>
-<span class="co">#&gt; Best objective 1.063000000000e+03, best bound 1.012000000000e+03, gap 4.7977%</span></code></pre></div>
-<p>We have achieved a gap of 4.79% and a objective value of 1063. This and other relevant information can be obtained from the <code><a href="../reference/getPerformance.html">getPerformance()</a></code> function:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getPerformance.html">getPerformance</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span>
-<span class="co">#&gt;   solution_name objective_value   gap solving_time</span>
-<span class="co">#&gt; 1           sol            1063 4.798         0.25</span>
-<span class="co">#&gt;                                                status</span>
-<span class="co">#&gt; 1 Optimal solution (according to gap tolerance: 0.05)</span></code></pre></div>
-<p>Since our objective function does not contain connectivity (because both <code>blm</code> and <code>blm_actions</code> were set to zero) the objective value corresponds to the sum of all the costs incurred. To check this statement we use the <code><a href="../reference/getCost.html">getCost()</a></code> function:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span>
-<span class="co">#&gt;   solution_name monitoring threat_1 threat_2 threat_3 threat_4</span>
-<span class="co">#&gt; 1           sol        382       19      198       85      379</span></code></pre></div>
-<p>It is distinguished that the actions with the highest total cost correspond to those that go against the threat 4, and then those corresponding to monitoring.</p>
-<p>We use the <code><a href="../reference/getActions.html">getActions()</a></code> function to know the distribution of conservation actions. Note that due we use a <strong>recovery target</strong> planning propose, the planning units only be selected to perform some actions on it (therefore without values in the conservation and connectivity columns).</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+                       output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
+## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
+## Optimize a model with 37371 rows, 43180 columns and 136566 nonzeros
+## Model fingerprint: 0x239c093c
+## Variable types: 34965 continuous, 8215 integer (8215 binary)
+## Coefficient statistics:
+##   Matrix range     [3e-01, 4e+00]
+##   Objective range  [1e+00, 1e+00]
+##   Bounds range     [1e+00, 1e+00]
+##   RHS range        [1e+00, 4e+02]
+## Found heuristic solution: objective 7947.0000000
+## Found heuristic solution: objective 6638.0000000
+## Presolve removed 35017 rows and 35259 columns
+## Presolve time: 0.26s
+## Presolved: 2354 rows, 7921 columns, 66284 nonzeros
+## Variable types: 0 continuous, 7921 integer (7904 binary)
+##
+## Root relaxation: objective 1.145583e+03, 4158 iterations, 0.09 seconds
+##
+##     Nodes    |    Current Node    |     Objective Bounds      |     Work
+##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+##
+##      0     0 1145.58333    0  547 6638.00000 1145.58333  82.7%     -    0s
+## H    0     0                    1396.0000000 1145.58333  17.9%     -    0s
+## H    0     0                    1393.0000000 1145.58333  17.8%     -    0s
+##      0     0 1173.77778    0  712 1393.00000 1173.77778  15.7%     -    0s
+## H    0     0                    1369.0000000 1173.77778  14.3%     -    0s
+##      0     0 1175.01235    0  696 1369.00000 1175.01235  14.2%     -    1s
+##      0     0 1175.12963    0  691 1369.00000 1175.12963  14.2%     -    1s
+##      0     0 1222.36111    0  479 1369.00000 1222.36111  10.7%     -    1s
+## H    0     0                    1333.0000000 1222.36111  8.30%     -    1s
+##      0     0 1225.44444    0  469 1333.00000 1225.44444  8.07%     -    1s
+##      0     0 1225.44444    0  472 1333.00000 1225.44444  8.07%     -    1s
+##      0     0 1241.19444    0  305 1333.00000 1241.19444  6.89%     -    1s
+##      0     0 1242.75000    0  292 1333.00000 1242.75000  6.77%     -    1s
+##      0     0 1242.75000    0  291 1333.00000 1242.75000  6.77%     -    1s
+##      0     0 1271.33333    0   68 1333.00000 1271.33333  4.63%     -    1s
+##
+## Cutting planes:
+##   Gomory: 1
+##   Cover: 1214
+##   Clique: 11
+##   MIR: 482
+##   StrongCG: 1
+##   RLT: 2
+##
+## Explored 1 nodes (14581 simplex iterations) in 1.58 seconds
+## Thread count was 2 (of 4 available processors)
+##
+## Solution count 6: 1333 1369 1393 ... 7947
+##
+## Optimal solution found (tolerance 5.00e-02)
+## Best objective 1.333000000000e+03, best bound 1.272000000000e+03, gap 4.5761%</code></pre>
+<p>We have achieved a <em>gap</em> of 4.57% and a objective value of 1333 in a a time of 2.88 seconds. This and other relevant information can be obtained from the <code><a href="../reference/getPerformance.html">getPerformance()</a></code> function:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/getPerformance.html">getPerformance</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span></code></pre></div>
+<pre><code>##   solution_name objective_value   gap solving_time
+## 1           sol            1333 4.576        1.577
+##                                                status
+## 1 Optimal solution (according to gap tolerance: 0.05)</code></pre>
+<p>Since our objective function does not contain the connectivity component (because both <code>blm</code> and <code>blm_actions</code> were set to zero), the objective value corresponds to the sum of all actions and monitoring costs. We can check these using the <code><a href="../reference/getCost.html">getCost()</a></code> function:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span> </code></pre></div>
+<pre><code>##   solution_name monitoring threat_1 threat_2 threat_3 threat_4
+## 1           sol        486        0      395        0      452</code></pre>
+<p>This shows that the actions with the highest total cost correspond to those that go against the threat 4, and then those corresponding to monitoring.</p>
+<p>We use the <code><a href="../reference/getActions.html">getActions()</a></code> function to get the distribution of conservation actions. Note that because we only set recovery targets we use a <strong>recovery target</strong> planning propose, there are only planning units selected for prescribing management actions against threats, while there are no planning units selected for conservation. There are no planning units selected for connectivity as both <em>blm</em> and <em>blm_actions</em> were set to zero.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get actions distribution</span>
 <span class="va">solution_actions.base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">solution_actions.base</span><span class="op">)</span>
-<span class="co">#&gt;   solution_name pu 1 2 3 4 conservation connectivity</span>
-<span class="co">#&gt; 1           sol  1 0 0 0 0            0            0</span>
-<span class="co">#&gt; 2           sol  2 0 1 1 1            0            0</span>
-<span class="co">#&gt; 3           sol  3 0 0 0 0            0            0</span>
-<span class="co">#&gt; 4           sol  4 0 0 0 0            0            0</span>
-<span class="co">#&gt; 5           sol  5 0 0 0 1            0            0</span>
-<span class="co">#&gt; 6           sol  6 0 1 0 1            0            0</span></code></pre></div>
-<p>In the same way that we use to plot the distributions of species and threats, we can obtain how the selected actions are spatially distributed:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">solution_actions.base</span><span class="op">)</span></code></pre></div>
+<pre><code>##   solution_name pu 1 2 3 4 conservation connectivity
+## 1           sol  1 0 0 0 0            0            0
+## 2           sol  2 0 0 0 0            0            0
+## 3           sol  3 0 1 0 1            0            0
+## 4           sol  4 0 0 0 0            0            0
+## 5           sol  5 0 0 0 0            0            0
+## 6           sol  6 0 1 0 1            0            0</code></pre>
+<p>In the same way that we plot the distributions of species and threats, we can also explore the spatial distribution of management actions included in the optimal solution:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># assign solution to shapefile field to plot it</span>
 <span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_1.base</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`1`</span>
 <span class="va">shp_mitchell</span><span class="op">$</span><span class="va">action_2.base</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`2`</span>
@@ -409,9 +441,9 @@
                    <span class="va">plot_action2.base</span>,
                    <span class="va">plot_action3.base</span>,
                    <span class="va">plot_action4.base</span><span class="op">)</span></code></pre></div>
-<p><img src="figures/MR15-1.png" title="plot of chunk MR15" alt="plot of chunk MR15" style="display: block; margin: auto;"></p>
-<p>Or the distribution of the sum of the actions (higher density of actions):</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<p><img src="figures/MR15-1.png"></p>
+<p>Also, we can show the distribution of the sum of the actions (higher density of actions):</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">shp_mitchell</span><span class="op">$</span><span class="va">sum_actions.base</span> <span class="op">&lt;-</span> <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`1`</span> <span class="op">+</span>
                                  <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`2`</span> <span class="op">+</span>
                                  <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`3`</span> <span class="op">+</span>
@@ -433,181 +465,123 @@
                                lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
 <span class="va">plot.base</span></code></pre></div>
-<p><img src="figures/MR16-1.png" title="plot of chunk MR16" alt="plot of chunk MR16" style="display: block; margin: auto;"></p>
-<p>The results of this base model will be compared with the subsequent models generated.</p>
+<p><img src="figures/MR16-1.png"></p>
+<p>We will use the results from this base model for comparisons with the following planning exercises.</p>
 </div>
 <div id="model-with-different-curve-param" class="section level2">
 <h2 class="hasAnchor">
-<a href="#model-with-different-curve-param" class="anchor"></a>Model with different <em>curve</em> param</h2>
-<p>This model differs from the previous one in that it tries to group conservation actions within the selected sites as part of the management plan (through a non-linear relationship in the calculation of benefits). The latter is done by adding a value other than 1 to the <em>curve</em> parameter. Where: (1) indicates that there is a linear relationship between the quotient between the actions carried out with respect to the possible actions to be carried out with respect to the benefit obtained by a characteristic. (2) indicates a quadratic relationship between these values, and (3) a cubic relationship. In simple terms, the non-linear relationship further penalizes not performing all conservation actions at a site for a particular feature.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<a href="#model-with-different-curve-param" class="anchor"></a>3) Model with different <em>curve</em> param</h2>
+<p>This model differs from the previous one in that it tries to group conservation actions within the selected sites as part of the management plan (through a non-linear relationship in the calculation of benefits). This would be desirable when all or most of threats impacting a given species needed to be abated to ensure it long-term persistence (e.g., a species is highly sensitive to all the threats in a planning unit). The latter is done by adding a value other than 1 to the <em>curve</em> parameter. Where: (1) indicates that there is a linear relationship between the ratio between the actions carried out with respect to the possible actions to be carried out with respect to the benefit obtained by a characteristic so all actions are considered equally important, not being the species specially sensitive to any of them. (2) indicates a quadratic relationship between these values, and (3) a cubic relationship. The number of <em>segments</em> refers to the number of smaller portions in which the curve is divided to linealize it. Larger values of segments result in more complex models.</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model.curve</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">input_data</span>,
                                       model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
                                       blm <span class="op">=</span> <span class="fl">0</span>,
-                                      curve <span class="op">=</span> <span class="fl">2</span>,
-                                      segments <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-<span class="co">#&gt; Warning: The blm argument was set to 0, so the boundary data has no effect</span>
-<span class="co">#&gt; Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
-
-<span class="va">model.curve</span>
-<span class="co">#&gt; Optimization Problem</span>
-<span class="co">#&gt;   model sense: minimization</span>
-<span class="co">#&gt;   dimensions:  72336, 113110, 3351.32 kB (nrow, ncol, size)</span>
-<span class="co">#&gt;   variables:   113110</span></code></pre></div>
-<p>Note that the new model increased its dimensions compared to the previous one (from 43180 to 113110 variables), and therefore, increasing its resolution complexity. In this way, we obtain a value of the objective function of 1091 (greater than the previous one) but with a quality of 2.08%.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+                                      curve <span class="op">=</span> <span class="fl">3</span>,
+                                      segments <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect
+## for these cases</code></pre>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model.curve</span></code></pre></div>
+<pre><code>## Optimization Problem
+##   model sense: minimization
+##   dimensions:  37371, 78145, 1952.872 kB (nrow, ncol, size)
+##   variables:   78145</code></pre>
+<p>Note that the new model associates a larger instance (from 43180 to 78145 variables) when compared to the previously presented model. As a consequence, the resulting problem is computationally more difficult. The solution of the resulting model has a objective function value equal to 1336 (greater than the previous one), although the corresponding optimality gap is 4.79% (similar than the one attained for the simple model). The complete output of the solver is shown below:</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">solution.curve</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.curve</span>,
                                        gap_limit <span class="op">=</span> <span class="fl">0.05</span>,
                                        verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                                       output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">#&gt; Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">#&gt; Optimize a model with 72336 rows, 113110 columns and 206496 nonzeros</span>
-<span class="co">#&gt; Model fingerprint: 0x3fe8b489</span>
-<span class="co">#&gt; Model has 34965 general constraints</span>
-<span class="co">#&gt; Variable types: 104895 continuous, 8215 integer (8215 binary)</span>
-<span class="co">#&gt; Coefficient statistics:</span>
-<span class="co">#&gt;   Matrix range     [3e-01, 4e+00]</span>
-<span class="co">#&gt;   Objective range  [1e+00, 1e+00]</span>
-<span class="co">#&gt;   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">#&gt;   RHS range        [5e+00, 1e+02]</span>
-<span class="co">#&gt; Presolve added 18157 rows and 112524 columns</span>
-<span class="co">#&gt; Presolve time: 1.49s</span>
-<span class="co">#&gt; Presolved: 90493 rows, 225634 columns, 551102 nonzeros</span>
-<span class="co">#&gt; Presolved model has 32482 SOS constraint(s)</span>
-<span class="co">#&gt; Variable types: 215756 continuous, 9878 integer (7284 binary)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Deterministic concurrent LP optimizer: primal and dual simplex</span>
-<span class="co">#&gt; Showing first log only...</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Concurrent spin time: 0.00s</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Solved with dual simplex</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Root relaxation: objective 1.011208e+03, 14623 iterations, 1.71 seconds</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">#&gt;  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      0     0 1029.98539    0 3163          - 1029.98539      -     -   10s</span>
-<span class="co">#&gt;      0     0 1054.13282    0 2278          - 1054.13282      -     -   20s</span>
-<span class="co">#&gt;      0     0 1054.83410    0 2166          - 1054.83410      -     -   22s</span>
-<span class="co">#&gt;      0     0 1054.83410    0 2173          - 1054.83410      -     -   22s</span>
-<span class="co">#&gt;      0     0 1060.76275    0 1660          - 1060.76275      -     -   23s</span>
-<span class="co">#&gt;      0     0 1064.19067    0 1501          - 1064.19067      -     -   26s</span>
-<span class="co">#&gt;      0     0 1066.68005    0 1450          - 1066.68005      -     -   27s</span>
-<span class="co">#&gt;      0     0 1066.69546    0 1416          - 1066.69546      -     -   28s</span>
-<span class="co">#&gt;      0     0 1066.69546    0 1416          - 1066.69546      -     -   28s</span>
-<span class="co">#&gt;      0     0 1066.94164    0 1524          - 1066.94164      -     -   29s</span>
-<span class="co">#&gt;      0     0 1067.24590    0 1581          - 1067.24590      -     -   30s</span>
-<span class="co">#&gt;      0     0 1067.62284    0 1562          - 1067.62284      -     -   30s</span>
-<span class="co">#&gt;      0     0 1067.62284    0 1537          - 1067.62284      -     -   30s</span>
-<span class="co">#&gt;      0     0 1067.62284    0 1495          - 1067.62284      -     -   31s</span>
-<span class="co">#&gt;      0     0 1067.62284    0 1491          - 1067.62284      -     -   31s</span>
-<span class="co">#&gt;      0     0 1067.62284    0 1488          - 1067.62284      -     -   32s</span>
-<span class="co">#&gt;      0     0 1067.62284    0 1485          - 1067.62284      -     -   33s</span>
-<span class="co">#&gt;      0     0 1067.62284    0 1486          - 1067.62284      -     -   33s</span>
-<span class="co">#&gt;      0     0 1067.62284    0 1482          - 1067.62284      -     -   34s</span>
-<span class="co">#&gt;      0     0 1067.62284    0 1482          - 1067.62284      -     -   35s</span>
-<span class="co">#&gt;    105     4 1067.63725    1 1478          - 1067.63725      -   2.5   53s</span>
-<span class="co">#&gt;    131    30 1068.08310    8 1520          - 1067.66484      -   3.7   55s</span>
-<span class="co">#&gt;    252   155 1068.08822   39 1517          - 1067.66484      -   4.5   60s</span>
-<span class="co">#&gt;    380   299 1069.30042   72 1537          - 1067.66484      -   7.0   65s</span>
-<span class="co">#&gt;    541   453 1068.56044    5 1515          - 1067.66484      -   8.3   70s</span>
-<span class="co">#&gt;    694   602 1068.62367   44 1543          - 1067.66484      -   8.8   75s</span>
-<span class="co">#&gt;    866   766 1070.12622   88 1572          - 1067.66484      -   9.0   80s</span>
-<span class="co">#&gt;    902   768 1070.96674   99  173          - 1067.66484      -   8.9   89s</span>
-<span class="co">#&gt;    903   769 1069.44172   84   84          - 1067.66484      -   8.9   93s</span>
-<span class="co">#&gt;    908   772 1070.04556   90   37          - 1067.66484      -   8.9   95s</span>
-<span class="co">#&gt;    915   777 1068.58562   35   44          - 1067.66484      -   8.8  100s</span>
-<span class="co">#&gt;    921   781 1073.04975  206   36          - 1067.66484      -   8.8  105s</span>
-<span class="co">#&gt;    927   785 1069.30042   72   37          - 1067.66484      -   8.7  117s</span>
-<span class="co">#&gt;    929   786 1069.45850   85   37          - 1067.67285      -   8.7  126s</span>
-<span class="co">#&gt;    930   790 1067.86170   11  672          - 1067.67285      -  27.1  142s</span>
-<span class="co">#&gt;    932   791 1068.22203   12  686          - 1067.86170      -  27.1  146s</span>
-<span class="co">#&gt;    934   793 1068.32481   12  670          - 1068.22203      -  27.2  150s</span>
-<span class="co">#&gt;    938   795 1068.58236   13  685          - 1068.32481      -  27.2  156s</span>
-<span class="co">#&gt;    943   798 1069.04547   14  640          - 1068.32481      -  27.1  160s</span>
-<span class="co">#&gt;    958   808 1069.63437   17  656          - 1068.32481      -  26.9  165s</span>
-<span class="co">#&gt;    974   823 1070.70675   21  697          - 1068.32481      -  26.7  170s</span>
-<span class="co">#&gt;   1013   845 1072.44668   32  680          - 1068.32481      -  26.1  175s</span>
-<span class="co">#&gt;   1044   871 1072.61001   40  668          - 1068.32481      -  26.1  181s</span>
-<span class="co">#&gt;   1103   918 1073.98961   53  670          - 1068.32481      -  25.4  185s</span>
-<span class="co">#&gt;   1146   943 1073.33086   64  621          - 1068.32481      -  25.0  190s</span>
-<span class="co">#&gt;   1190   968 1073.41199   75  582          - 1068.32481      -  24.3  196s</span>
-<span class="co">#&gt;   1227   996 1073.20989   82  570          - 1068.32481      -  23.8  201s</span>
-<span class="co">#&gt;   1272  1038 1073.42175   95  483          - 1068.32481      -  23.1  206s</span>
-<span class="co">#&gt;   1326  1070 1073.42469  114  408          - 1068.32481      -  22.4  211s</span>
-<span class="co">#&gt;   1385  1109 1073.42467  132  375          - 1068.32481      -  21.7  215s</span>
-<span class="co">#&gt;   1439  1155 1073.44932  151  375          - 1068.32481      -  21.1  221s</span>
-<span class="co">#&gt;   1498  1184 1073.44932  171  412          - 1068.32481      -  20.5  227s</span>
-<span class="co">#&gt;   1521  1195 1073.58333  178  411          - 1068.32481      -  20.5  231s</span>
-<span class="co">#&gt;   1558  1230 1073.58333  189  412          - 1068.32481      -  20.6  236s</span>
-<span class="co">#&gt;   1618  1276 1074.29723  198  407          - 1068.32481      -  20.7  243s</span>
-<span class="co">#&gt;   1653  1287 1074.29723  203  374          - 1068.32481      -  20.9  247s</span>
-<span class="co">#&gt;   1676  1307 1074.13805  209  339          - 1068.32481      -  20.9  251s</span>
-<span class="co">#&gt;   1704  1320 1074.13805  215  349          - 1068.32481      -  21.0  256s</span>
-<span class="co">#&gt;   1726  1343 1074.13805  222  351          - 1068.32481      -  20.9  260s</span>
-<span class="co">#&gt;   1783  1361 1074.29333  242  444          - 1068.32481      -  20.8  270s</span>
-<span class="co">#&gt;   1809  1370 infeasible  251               - 1068.32481      -  20.6  275s</span>
-<span class="co">#&gt;   1835  1392 1073.79772  260  417          - 1068.32481      -  20.6  280s</span>
-<span class="co">#&gt;   1868  1427 1074.10959  272  337          - 1068.32481      -  20.6  285s</span>
-<span class="co">#&gt;   1914  1440 1074.39361  290  342          - 1068.32481      -  20.4  291s</span>
-<span class="co">#&gt;   1944  1478 1074.55577  297  327          - 1068.32481      -  20.5  297s</span>
-<span class="co">#&gt;   1994  1509 1074.32358  308  352          - 1068.32481      -  20.4  303s</span>
-<span class="co">#&gt;   2042  1574 1074.41756  318  326          - 1068.32481      -  20.0  309s</span>
-<span class="co">#&gt;   2125  1650 1074.89811  334  333          - 1068.32481      -  19.5  314s</span>
-<span class="co">#&gt;   2230  1656 1076.07333  354  394          - 1068.32481      -  19.6  321s</span>
-<span class="co">#&gt;   2272  1693 1076.07333  368  397          - 1068.32481      -  20.1  329s</span>
-<span class="co">#&gt;   2341  1745 1074.61333  383  398          - 1068.32481      -  20.3  335s</span>
-<span class="co">#&gt;   2432  1761 1076.07333  406  398          - 1068.32481      -  20.4  344s</span>
-<span class="co">#&gt;   2503  1816 1076.07333  419  399          - 1068.32481      -  20.3  351s</span>
-<span class="co">#&gt;   2590  1892 1075.90000  455  382          - 1068.32481      -  20.3  357s</span>
-<span class="co">#&gt;   2703  1947 1075.94162  486  411          - 1068.32481      -  19.9  365s</span>
-<span class="co">#&gt;   2796  2006 1075.90286  517  356          - 1068.32481      -  19.9  372s</span>
-<span class="co">#&gt;   2888  2043 1075.90286  556  360          - 1068.32481      -  20.4  379s</span>
-<span class="co">#&gt;   2957  2062 1075.96288  585  389          - 1068.32481      -  20.7  388s</span>
-<span class="co">#&gt;   3008  2112 1075.96288  597  388          - 1068.32481      -  20.9  396s</span>
-<span class="co">#&gt;   3077  2172 1075.98829  612  390          - 1068.32481      -  21.4  406s</span>
-<span class="co">#&gt;   3160  2226 1075.98829  637  388          - 1068.32481      -  21.4  416s</span>
-<span class="co">#&gt;   3241  2279 1075.98829  659  393          - 1068.32481      -  21.4  426s</span>
-<span class="co">#&gt;   3321  2343 1075.98829  679  393          - 1068.32481      -  21.5  437s</span>
-<span class="co">#&gt;   3409  2421 1075.97500  703  339          - 1068.32481      -  21.8  448s</span>
-<span class="co">#&gt;   3535  2515 1078.17994  743  384          - 1068.32481      -  22.1  460s</span>
-<span class="co">#&gt;   3653  2618 1078.17994  781  374          - 1068.32481      -  22.1  472s</span>
-<span class="co">#&gt;   3756  2736 1078.19994  807  387          - 1068.32481      -  22.0  483s</span>
-<span class="co">#&gt;   3874  2872 1079.44824  831  381          - 1068.32481      -  22.0  495s</span>
-<span class="co">#&gt;   4020  2938 1079.44824  857  379          - 1068.32481      -  21.7  506s</span>
-<span class="co">#&gt;   4188  3024 1079.44824  886  378          - 1068.32481      -  21.1  518s</span>
-<span class="co">#&gt;   4378  3099 1079.67346  926  374          - 1068.32481      -  20.5  529s</span>
-<span class="co">#&gt;   4554  3160 1079.67346  959  376          - 1068.32481      -  19.9  541s</span>
-<span class="co">#&gt;   4721  3246 1078.28278  988  365          - 1068.32481      -  19.4  553s</span>
-<span class="co">#&gt;   4897  3302 1078.28278 1021  373          - 1068.32481      -  18.9  567s</span>
-<span class="co">#&gt; H 4924  3302                    1091.0000000 1068.32481  2.08%  18.9  567s</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Cutting planes:</span>
-<span class="co">#&gt;   Gomory: 184</span>
-<span class="co">#&gt;   Cover: 161</span>
-<span class="co">#&gt;   Implied bound: 4873</span>
-<span class="co">#&gt;   Clique: 3</span>
-<span class="co">#&gt;   MIR: 559</span>
-<span class="co">#&gt;   StrongCG: 1</span>
-<span class="co">#&gt;   Flow cover: 715</span>
-<span class="co">#&gt;   Network: 2</span>
-<span class="co">#&gt;   RLT: 3</span>
-<span class="co">#&gt;   Relax-and-lift: 1175</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Explored 4953 nodes (129406 simplex iterations) in 567.64 seconds</span>
-<span class="co">#&gt; Thread count was 2 (of 4 available processors)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Solution count 1: 1091 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Optimal solution found (tolerance 5.00e-02)</span>
-<span class="co">#&gt; Warning: max constraint violation (9.9020e-03) exceeds tolerance</span>
-<span class="co">#&gt; Warning: max general constraint violation (9.9020e-03) exceeds tolerance</span>
-<span class="co">#&gt;          (model may be infeasible or unbounded - try turning presolve off)</span>
-<span class="co">#&gt; Best objective 1.091000000000e+03, best bound 1.069000000000e+03, gap 2.0165%</span></code></pre></div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+                                       output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
+## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
+## Optimize a model with 37371 rows, 78145 columns and 136566 nonzeros
+## Model fingerprint: 0x86a286dc
+## Model has 34965 general constraints
+## Variable types: 69930 continuous, 8215 integer (8215 binary)
+## Coefficient statistics:
+##   Matrix range     [3e-01, 4e+00]
+##   Objective range  [1e+00, 1e+00]
+##   Bounds range     [1e+00, 1e+00]
+##   RHS range        [1e+00, 4e+02]
+## Found heuristic solution: objective 8215.0000000
+## Presolve added 69869 rows and 174524 columns
+## Presolve time: 0.74s
+## Presolved: 107240 rows, 252669 columns, 695592 nonzeros
+## Presolved model has 34965 SOS constraint(s)
+## Found heuristic solution: objective 7947.0000000
+## Variable types: 244742 continuous, 7927 integer (7911 binary)
+##
+## Deterministic concurrent LP optimizer: primal and dual simplex
+## Showing first log only...
+##
+##
+## Root simplex log...
+##
+## Iteration    Objective       Primal Inf.    Dual Inf.      Time
+##    47951    2.8079534e+03   0.000000e+00   5.127077e+04      5s
+##    76722    2.2613066e+03   0.000000e+00   2.778781e+04     10s
+##    94262    2.0197112e+03   0.000000e+00   1.986480e+04     15s
+##   111687    1.8277940e+03   0.000000e+00   2.978724e+04     20s
+## Concurrent spin time: 0.00s
+##
+## Solved with dual simplex
+##
+## Root relaxation: objective 1.144050e+03, 58678 iterations, 21.40 seconds
+## Total elapsed time = 28.89s
+##
+##     Nodes    |    Current Node    |     Objective Bounds      |     Work
+##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+##
+##      0     0 1144.05000    0 6110 7947.00000 1144.05000  85.6%     -   29s
+## H    0     0                    7922.0000000 1144.05000  85.6%     -   31s
+##      0     0 1151.40000    0 9090 7922.00000 1151.40000  85.5%     -   37s
+##      0     0 1162.99046    0 11199 7922.00000 1162.99046  85.3%     -   46s
+##      0     0 1187.26667    0 5725 7922.00000 1187.26667  85.0%     -   50s
+##      0     0 1200.28889    0 4811 7922.00000 1200.28889  84.8%     -   52s
+##      0     0 1200.28889    0 4767 7922.00000 1200.28889  84.8%     -   53s
+##      0     0 1204.10556    0 4864 7922.00000 1204.10556  84.8%     -   58s
+## H    0     0                    7885.0000000 1204.10556  84.7%     -   59s
+##      0     0 1235.41111    0 4896 7885.00000 1235.41111  84.3%     -   64s
+##      0     0 1243.35000    0 3256 7885.00000 1243.35000  84.2%     -   67s
+##      0     0 1247.60000    0 3571 7885.00000 1247.60000  84.2%     -   71s
+##      0     0 1247.60000    0 3264 7885.00000 1247.60000  84.2%     -   73s
+##      0     0 1269.26667    0 3790 7885.00000 1269.26667  83.9%     -   78s
+## H    0     0                    1509.0000000 1269.26667  15.9%     -   86s
+##      0     0 1269.26667    0 2879 1509.00000 1269.26667  15.9%     -   89s
+##      0     0 1269.26667    0 2417 1509.00000 1269.26667  15.9%     -   94s
+## H    0     0                    1507.0000000 1269.26667  15.8%     -   95s
+##      0     0 1270.16667    0 2237 1507.00000 1270.16667  15.7%     -   98s
+##      0     0 1270.16667    0 1727 1507.00000 1270.16667  15.7%     -  100s
+##      0     0 1272.00000    0 1589 1507.00000 1272.00000  15.6%     -  111s
+## H    0     0                    1362.0000000 1272.00000  6.61%     -  119s
+##      0     0 1272.00000    0 2203 1362.00000 1272.00000  6.61%     -  122s
+##      0     0 1272.00000    0 2809 1362.00000 1272.00000  6.61%     -  126s
+##      0     0 1272.00000    0 1748 1362.00000 1272.00000  6.61%     -  133s
+## H    0     0                    1336.0000000 1272.00000  4.79%     -  148s
+##
+## Cutting planes:
+##   Cover: 1359
+##   Implied bound: 27429
+##   Clique: 130
+##   MIR: 559
+##   Flow cover: 3155
+##   Network: 1
+##   RLT: 1
+##   Relax-and-lift: 13289
+##
+## Explored 1 nodes (188544 simplex iterations) in 148.03 seconds
+## Thread count was 2 (of 4 available processors)
+##
+## Solution count 8: 1336 1362 1507 ... 8215
+##
+## Optimal solution found (tolerance 5.00e-02)
+## Warning: max constraint violation (1.4602e-02) exceeds tolerance
+## Warning: max general constraint violation (1.4602e-02) exceeds tolerance
+##          (model may be infeasible or unbounded - try turning presolve off)
+## Best objective 1.336000000000e+03, best bound 1.272000000000e+03, gap 4.7904%</code></pre>
+<p>Note that the last solution was reached in 177326 seconds. This specifically demonstrates how complexity increases when using the different parameters of curves.</p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get action distribution</span>
 <span class="va">solution_actions.curve</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">solution.curve</span><span class="op">)</span>
 
@@ -639,14 +613,15 @@
 
 <span class="co"># comparative with base model solution</span>
 <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.curve</span><span class="op">)</span></code></pre></div>
-<p><img src="figures/MR19-1.png" title="plot of chunk MR19" alt="plot of chunk MR19" style="display: block; margin: auto;"></p>
-<p>Thus, we can notice that there are a greater number of sites with a higher density of actions with respect to the previous model (for example, a greater number of units painted green).</p>
+<p><img src="figures/MR19-1.png"></p>
+<p>Here, we display representations of the solution obtained for both, the base and curve models. As can be seen from these maps there are a greater number of sites with a larger concentration of management actions compared to the previous model (for example, a greater number of units in green).</p>
 </div>
 <div id="model-with-connectivity-requirements" class="section level2">
 <h2 class="hasAnchor">
-<a href="#model-with-connectivity-requirements" class="anchor"></a>Model with connectivity requirements</h2>
-<p>To add connectivity requirements to the model, there are two key parameters: <code>blm</code> which works in the same way as the parameter of the same name in <em>marxan</em>, which tries to minimize the connectivity penalty between the selected planning units (i.e. regardless if conservation actions are carried out within them). Next we will see what happens when this parameter is relevant in the creation of the model.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<a href="#model-with-connectivity-requirements" class="anchor"></a>4) Model with connectivity requirements</h2>
+<p>To add connectivity requirements to the model, there are two key parameters: <strong>blm</strong> (equivalent to the parameter <em>blm</em> used in <em>marxan</em>), which tries to minimize the connectivity penalty between the selected planning units (i.e. regardless if conservation actions are carried out within them).</p>
+<p>In the following we explore how solutions change when adding connectivity requirements.</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">input_data.conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">pu_data</span>,
                              features <span class="op">=</span> <span class="va">features_data</span>,
                              dist_features <span class="op">=</span> <span class="va">dist_features_data</span>,
@@ -656,62 +631,144 @@
 
 <span class="va">model.conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">input_data.conn</span>,
                       model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
-                      blm <span class="op">=</span> <span class="fl">2</span>,
-                      curve <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
-
-<span class="va">solution.conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.conn</span>,
+                      blm <span class="op">=</span> <span class="fl">5</span>,
+                      curve <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect
+## for these cases</code></pre>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">solution.conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.conn</span>,
                        gap_limit <span class="op">=</span> <span class="fl">0.05</span>,
                        verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                       output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">#&gt; Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">#&gt; Optimize a model with 113532 rows, 91877 columns and 302620 nonzeros</span>
-<span class="co">#&gt; Model fingerprint: 0x4afc3cd0</span>
-<span class="co">#&gt; Variable types: 69930 continuous, 21947 integer (21947 binary)</span>
-<span class="co">#&gt; Coefficient statistics:</span>
-<span class="co">#&gt;   Matrix range     [3e-01, 4e+00]</span>
-<span class="co">#&gt;   Objective range  [1e+00, 2e+01]</span>
-<span class="co">#&gt;   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">#&gt;   RHS range        [1e+00, 1e+02]</span>
-<span class="co">#&gt; Presolve removed 75989 rows and 72537 columns</span>
-<span class="co">#&gt; Presolve time: 0.32s</span>
-<span class="co">#&gt; Presolved: 37543 rows, 19340 columns, 106155 nonzeros</span>
-<span class="co">#&gt; Variable types: 0 continuous, 19340 integer (17746 binary)</span>
-<span class="co">#&gt; Found heuristic solution: objective 3452.0316640</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Deterministic concurrent LP optimizer: primal and dual simplex</span>
-<span class="co">#&gt; Showing first log only...</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Concurrent spin time: 0.03s</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Solved with dual simplex</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Root relaxation: objective 1.924895e+03, 6965 iterations, 1.10 seconds</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">#&gt;  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      0     0 1924.89477    0 1904 3452.03166 1924.89477  44.2%     -    1s</span>
-<span class="co">#&gt; H    0     0                    2096.1844829 1924.89477  8.17%     -    1s</span>
-<span class="co">#&gt; H    0     0                    2007.5789747 1924.89477  4.12%     -    1s</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Explored 1 nodes (7516 simplex iterations) in 1.90 seconds</span>
-<span class="co">#&gt; Thread count was 2 (of 4 available processors)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Solution count 3: 2007.58 2096.18 3452.03 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Optimal solution found (tolerance 5.00e-02)</span>
-<span class="co">#&gt; Best objective 2.007578974650e+03, best bound 1.924894773332e+03, gap 4.1186%</span></code></pre></div>
-<p>In the same way as what occurs in the previous model, it is naturally inferred that the spatial requirement implies higher costs in the management plan, as well as a model with greater computational complexity to resolve. To obtain the costs of both plans we use the <code><a href="../reference/getCost.html">getCost()</a></code> function:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span>
-<span class="co">#&gt;   solution_name monitoring threat_1 threat_2 threat_3 threat_4</span>
-<span class="co">#&gt; 1           sol        382       19      198       85      379</span>
-<span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">solution.conn</span><span class="op">)</span>
-<span class="co">#&gt;   solution_name monitoring threat_1 threat_2 threat_3 threat_4</span>
-<span class="co">#&gt; 1           sol        736       19      213      115      386</span></code></pre></div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+                       output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
+## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
+## Optimize a model with 78567 rows, 56912 columns and 232690 nonzeros
+## Model fingerprint: 0xffda5e93
+## Variable types: 34965 continuous, 21947 integer (21947 binary)
+## Coefficient statistics:
+##   Matrix range     [3e-01, 4e+00]
+##   Objective range  [1e+00, 6e+01]
+##   Bounds range     [1e+00, 1e+00]
+##   RHS range        [1e+00, 4e+02]
+## Found heuristic solution: objective 7947.0000000
+## Presolve removed 35010 rows and 35250 columns
+## Presolve time: 0.40s
+## Presolved: 43557 rows, 21662 columns, 162430 nonzeros
+## Variable types: 0 continuous, 21662 integer (21646 binary)
+##
+## Deterministic concurrent LP optimizer: primal and dual simplex
+## Showing first log only...
+##
+##
+## Root simplex log...
+##
+## Iteration    Objective       Primal Inf.    Dual Inf.      Time
+##    38001    1.5954434e+03   0.000000e+00   1.368886e+05      5s
+## Concurrent spin time: 0.00s
+##
+## Solved with dual simplex
+##
+## Root relaxation: objective 1.246661e+03, 20278 iterations, 8.63 seconds
+##
+##     Nodes    |    Current Node    |     Objective Bounds      |     Work
+##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+##
+##      0     0 1246.66068    0 14895 7947.00000 1246.66068  84.3%     -   10s
+## H    0     0                    3797.8868056 1246.66068  67.2%     -   11s
+## H    0     0                    3599.0013999 1246.66068  65.4%     -   11s
+##      0     0 1313.60737    0 16219 3599.00140 1313.60737  63.5%     -   22s
+##      0     0 1439.11297    0 10245 3599.00140 1439.11297  60.0%     -   32s
+## H    0     0                    3549.4676884 1439.11297  59.5%     -   32s
+##      0     0 1445.29790    0 10632 3549.46769 1445.29790  59.3%     -   36s
+##      0     0 1449.06889    0 10618 3549.46769 1449.06889  59.2%     -   36s
+##      0     0 1450.67325    0 10261 3549.46769 1450.67325  59.1%     -   37s
+##      0     0 1452.45332    0 10270 3549.46769 1452.45332  59.1%     -   42s
+## H    0     0                    3494.0894064 1452.45332  58.4%     -   42s
+##      0     0 1453.88883    0 10281 3494.08941 1453.88883  58.4%     -   43s
+##      0     0 1453.88976    0 10281 3494.08941 1453.88976  58.4%     -   43s
+##      0     0 1454.60786    0 10282 3494.08941 1454.60786  58.4%     -   50s
+##      0     0 1457.08247    0 10627 3494.08941 1457.08247  58.3%     -   53s
+## H    0     0                    3376.1774129 1457.08247  56.8%     -   53s
+##      0     0 1457.27671    0 10792 3376.17741 1457.27671  56.8%     -   54s
+##      0     0 1457.97173    0 10790 3376.17741 1457.97173  56.8%     -   55s
+## H    0     0                    3299.8701987 1457.97173  55.8%     -   55s
+##      0     0 1458.11380    0 10441 3299.87020 1458.11380  55.8%     -   55s
+##      0     0 1458.69741    0 10443 3299.87020 1458.69741  55.8%     -   56s
+## H    0     0                    3190.3671965 1458.69741  54.3%     -   56s
+##      0     0 1458.85224    0 10446 3190.36720 1458.85224  54.3%     -   57s
+##      0     0 1458.99700    0 10442 3190.36720 1458.99700  54.3%     -   58s
+## H    0     0                    3147.0292730 1458.99700  53.6%     -   58s
+##      0     0 1458.99700    0 10442 3147.02927 1458.99700  53.6%     -   58s
+## H    0     0                    3135.2557703 1458.99700  53.5%     -   58s
+##      0     0 1459.79141    0 10436 3135.25577 1459.79141  53.4%     -   60s
+## H    0     0                    3112.4111998 1459.79141  53.1%     -   60s
+##      0     0 1460.05177    0 10436 3112.41120 1460.05177  53.1%     -   61s
+## H    0     0                    3059.4015507 1460.05177  52.3%     -   61s
+##      0     0 1460.19035    0 10439 3059.40155 1460.19035  52.3%     -   62s
+## H    0     0                    3011.9389070 1460.19035  51.5%     -   62s
+##      0     0 1460.22580    0 10439 3011.93891 1460.22580  51.5%     -   62s
+## H    0     0                    3010.9389070 1460.22580  51.5%     -   62s
+##      0     0 1460.31278    0 10438 3010.93891 1460.31278  51.5%     -   63s
+## H    0     0                    2968.2497660 1460.31278  50.8%     -   63s
+##      0     0 1460.31278    0 10438 2968.24977 1460.31278  50.8%     -   69s
+## H    0     0                    2639.0209093 1460.36455  44.7%     -   78s
+## H    0     0                    2624.9498415 1460.36455  44.4%     -   78s
+## H    0     2                    2567.2914098 1460.36455  43.1%     -   79s
+##      0     2 1460.36455    0 10436 2567.29141 1460.36455  43.1%     -   79s
+##      1     4 1471.32603    1 10480 2567.29141 1460.36455  43.1%  4022   85s
+##      5     8 1513.52277    3 7511 2567.29141 1471.37286  42.7%  4323   92s
+##      9    12 1514.14072    4 6767 2567.29141 1471.37286  42.7%  3490   97s
+##     13    16 1524.15241    6 5605 2567.29141 1471.37286  42.7%  3056  101s
+##     17    20 1538.15890    8 5224 2567.29141 1471.37286  42.7%  3738  108s
+##     19    23 1545.54083    9 5243 2567.29141 1471.37286  42.7%  4089  114s
+##     22    26 1540.88141    9 3612 2567.29141 1471.37286  42.7%  3645  115s
+## H   26    30                    2553.0245541 1471.37286  42.4%  3335  118s
+## H   29    34                    1784.0830763 1471.37286  17.5%  3279  119s
+##     33    37 1563.51929   13 2579 1784.08308 1471.37286  17.5%  3097  121s
+##     41    49 1568.02871   16 2399 1784.08308 1471.37286  17.5%  2845  125s
+## H   55    60                    1759.5897233 1471.37286  16.4%  2448  130s
+## H   59    64                    1607.1596096 1471.37286  8.45%  2436  132s
+##     75    75 1588.25497   29 2797 1607.15961 1471.37286  8.45%  2026  137s
+## H   84    85                    1606.1596114 1471.37286  8.39%  1891  140s
+##     99    97 1600.05188   40  883 1606.15961 1471.37286  8.39%  1724  146s
+##    122   105     cutoff   53      1606.15961 1476.92318  8.05%  1485  153s
+##    131   107 1499.06803    4 10461 1606.15961 1476.99594  8.04%  1451  156s
+##    137   106 1517.27386    5 9203 1606.15961 1476.99594  8.04%  1480  164s
+##    142   109 1518.63154    5 8684 1606.15961 1476.99594  8.04%  1553  169s
+##    145   114 1524.62712    6 8485 1606.15961 1476.99594  8.04%  1544  172s
+##    150   113 1531.94377    8 5562 1606.15961 1476.99594  8.04%  1531  175s
+##    158   122 1556.75906   11 3489 1606.15961 1476.99594  8.04%  1552  182s
+## H  159   121                    1581.5415382 1476.99594  6.61%  1542  182s
+##    164   116 1558.98078   13 3059 1581.54154 1476.99594  6.61%  1510  187s
+##    184   112 1567.27849   23 1665 1581.54154 1476.99594  6.61%  1388  191s
+##    193   120 1569.84041   26 1988 1581.54154 1476.99594  6.61%  1360  196s
+##    232   144 1577.33040   43    5 1581.54154 1476.99594  6.61%  1206  204s
+##    264   151 1577.45516   51  261 1581.54154 1504.05691  4.90%  1093  211s
+##
+## Cutting planes:
+##   Gomory: 2
+##   MIR: 2
+##   Zero half: 8
+##   Mod-K: 1
+##   RLT: 95
+##
+## Explored 283 nodes (376102 simplex iterations) in 211.61 seconds
+## Thread count was 2 (of 4 available processors)
+##
+## Solution count 10: 1581.54 1606.16 1607.16 ... 2968.25
+##
+## Optimal solution found (tolerance 5.00e-02)
+## Best objective 1.581541538165e+03, best bound 1.504073465734e+03, gap 4.8983%</code></pre>
+<p>In the same way as what occurs in the previous model, the addition of spatial requirements leads to higher costs requirement implies higher costs in the management plan, as well as a model with greater computational complexity. To obtain the costs of both solutions (base and with connectivity requirements) we use the <code><a href="../reference/getCost.html">getCost()</a></code> function:</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span></code></pre></div>
+<pre><code>##   solution_name monitoring threat_1 threat_2 threat_3 threat_4
+## 1           sol        486        0      395        0      452</code></pre>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">solution.conn</span><span class="op">)</span></code></pre></div>
+<pre><code>##   solution_name monitoring threat_1 threat_2 threat_3 threat_4
+## 1           sol        490        4      400       46      460</code></pre>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get action distribution</span>
 <span class="va">solution_actions.conn</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">solution.conn</span><span class="op">)</span>
 
@@ -742,78 +799,203 @@
 
 <span class="co"># comparative with base model solution</span>
 <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.conn</span><span class="op">)</span></code></pre></div>
-<p><img src="figures/MR22-1.png" title="plot of chunk MR22" alt="plot of chunk MR22" style="display: block; margin: auto;"></p>
-<p>As seen, minimizing the connectivity penalty produced a more closely related conservation plan compared to the base model.</p>
-<p>Another parameter to take into account is the <code>blm_actions</code> that adds the minimization of connectivity penalty between the same conservation actions, this means that it tries to spatially bring the management actions closer together and therefore, independently achieve a management plan as well related.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<p><img src="figures/MR22-1.png"></p>
+<p>As can be seen from the displayed maps, including the connectivity penalty in the objective function allows to find a more compact solution when compared to the one obtained by the base model.</p>
+<p>Besides optimizing the spatial connectivity of the selected units, our package also allows to optimize the spatial connectivity among the units where a given action is applied. This penalty is encoded by factor <code>blm_actions</code>, and it aims at ensuring spatial coherence among units where the same action is applied. This spatial clumping of actions might beneficial in economic terms (because of the economy of scales) or even ecological terms (higher effectiveness of management plans, by creating larger areas threat-free and reducing the probability of reappearance of the threat).</p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">threats_data</span><span class="op">$</span><span class="va">blm_actions</span> <span class="op">&lt;-</span> <span class="fl">10</span>
 
 <span class="va">input_data.conn_actions</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">pu_data</span>,
-                                    features <span class="op">=</span> <span class="va">features_data</span>,                                                         dist_features <span class="op">=</span> <span class="va">dist_features_data</span>,
+                                    features <span class="op">=</span> <span class="va">features_data</span>,
+                                    dist_features <span class="op">=</span> <span class="va">dist_features_data</span>,
                                     threats <span class="op">=</span> <span class="va">threats_data</span>,
-                                    dist_threats <span class="op">=</span> <span class="va">dist_threats_data</span>,                                                 sensitivity <span class="op">=</span> <span class="va">sensitivity_data</span>,
+                                    dist_threats <span class="op">=</span> <span class="va">dist_threats_data</span>,
+                                    sensitivity <span class="op">=</span> <span class="va">sensitivity_data</span>,
                                     bound <span class="op">=</span> <span class="va">bound_data</span><span class="op">)</span>
 
 <span class="va">model.conn_actions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">input_data.conn_actions</span>,
                               model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
                               blm <span class="op">=</span> <span class="fl">0</span>,
-                              curve <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; Warning: The blm argument was set to 0, so the boundary data has no effect</span>
-
-<span class="va">solution.conn_actions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.conn_actions</span>,
+                              curve <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">solution.conn_actions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.conn_actions</span>,
                                gap_limit <span class="op">=</span> <span class="fl">0.05</span>,
                                verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                               output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">#&gt; Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">#&gt; Optimize a model with 176202 rows, 112767 columns and 448850 nonzeros</span>
-<span class="co">#&gt; Model fingerprint: 0x8aadcb97</span>
-<span class="co">#&gt; Variable types: 69930 continuous, 42837 integer (42837 binary)</span>
-<span class="co">#&gt; Coefficient statistics:</span>
-<span class="co">#&gt;   Matrix range     [3e-01, 4e+00]</span>
-<span class="co">#&gt;   Objective range  [1e+00, 1e+02]</span>
-<span class="co">#&gt;   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">#&gt;   RHS range        [1e+00, 1e+02]</span>
-<span class="co">#&gt; Presolve removed 80478 rows and 73141 columns</span>
-<span class="co">#&gt; Presolve time: 0.84s</span>
-<span class="co">#&gt; Presolved: 95724 rows, 39626 columns, 243423 nonzeros</span>
-<span class="co">#&gt; Variable types: 0 continuous, 39626 integer (38365 binary)</span>
-<span class="co">#&gt; Found heuristic solution: objective 24438.640413</span>
-<span class="co">#&gt; Found heuristic solution: objective 22034.075105</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Deterministic concurrent LP optimizer: primal and dual simplex</span>
-<span class="co">#&gt; Showing first log only...</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Concurrent spin time: 0.02s</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Solved with dual simplex</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Root relaxation: objective 5.151177e+03, 5441 iterations, 1.01 seconds</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">#&gt;  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      0     0 5151.17692    0 2305 22034.0751 5151.17692  76.6%     -    3s</span>
-<span class="co">#&gt; H    0     0                    5614.4337262 5151.17692  8.25%     -    3s</span>
-<span class="co">#&gt; H    0     0                    5612.4337262 5151.17692  8.22%     -    3s</span>
-<span class="co">#&gt;      0     0 5408.46572    0 3991 5612.43373 5408.46572  3.63%     -    5s</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Cutting planes:</span>
-<span class="co">#&gt;   Gomory: 22</span>
-<span class="co">#&gt;   Cover: 422</span>
-<span class="co">#&gt;   Clique: 5253</span>
-<span class="co">#&gt;   MIR: 21</span>
-<span class="co">#&gt;   Flow cover: 69</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Explored 1 nodes (7211 simplex iterations) in 5.38 seconds</span>
-<span class="co">#&gt; Thread count was 2 (of 4 available processors)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Solution count 4: 5612.43 5614.43 22034.1 24438.6 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Optimal solution found (tolerance 5.00e-02)</span>
-<span class="co">#&gt; Best objective 5.612433726186e+03, best bound 5.408465724615e+03, gap 3.6342%</span></code></pre></div>
-<p>The effect of incorporating this parameter (<code>blm_actions</code>) can be seen better in the action distributions:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+                               output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
+## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
+## Optimize a model with 141237 rows, 77802 columns and 378920 nonzeros
+## Model fingerprint: 0xd454adb3
+## Variable types: 34965 continuous, 42837 integer (42837 binary)
+## Coefficient statistics:
+##   Matrix range     [3e-01, 4e+00]
+##   Objective range  [1e+00, 1e+02]
+##   Bounds range     [1e+00, 1e+00]
+##   RHS range        [1e+00, 4e+02]
+## Found heuristic solution: objective 8210.0000000
+## Presolve removed 35014 rows and 34975 columns
+## Presolve time: 0.99s
+## Presolved: 106223 rows, 42827 columns, 308960 nonzeros
+## Variable types: 0 continuous, 42827 integer (42826 binary)
+##
+## Deterministic concurrent LP optimizer: primal and dual simplex
+## Showing first log only...
+##
+## Warning: Markowitz tolerance tightened to 0.5
+##
+## Root simplex log...
+##
+## Iteration    Objective       Primal Inf.    Dual Inf.      Time
+##    52270    1.9225777e+04   0.000000e+00   3.440532e+06      5s
+##    59512    1.6519896e+04   0.000000e+00   1.785789e+06     10s
+##    63133    1.1619524e+04   0.000000e+00   8.802070e+05     15s
+##    66755    1.0536259e+04   0.000000e+00   9.604617e+05     20s
+## Concurrent spin time: 0.00s
+##
+## Solved with dual simplex
+##
+## Root relaxation: objective 1.387138e+03, 13931 iterations, 19.55 seconds
+##
+##     Nodes    |    Current Node    |     Objective Bounds      |     Work
+##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+##
+##      0     0 1387.13755    0 15106 8210.00000 1387.13755  83.1%     -   25s
+## H    0     0                    3031.0564886 1387.13755  54.2%     -   25s
+## H    0     0                    2816.9312916 1387.13755  50.8%     -   25s
+##      0     0 1497.65792    0 25226 2816.93129 1497.65792  46.8%     -   48s
+##      0     0 1602.85777    0 22616 2816.93129 1602.85777  43.1%     -   71s
+##      0     0 1629.63025    0 23347 2816.93129 1629.63025  42.1%     -   87s
+##      0     0 1629.65511    0 23347 2816.93129 1629.65511  42.1%     -   87s
+##      0     0 1629.65511    0 23348 2816.93129 1629.65511  42.1%     -  115s
+## H    0     0                    2812.9312916 1629.65511  42.1%     -  116s
+##      0     0 1642.04461    0 22540 2812.93129 1642.04461  41.6%     -  120s
+##      0     0 1643.41100    0 23350 2812.93129 1643.41100  41.6%     -  121s
+##      0     0 1664.73305    0 20463 2812.93129 1664.73305  40.8%     -  127s
+##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  129s
+##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  131s
+##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  133s
+##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  135s
+##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  137s
+##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  139s
+##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  151s
+## H    0     0                    2177.1674380 1666.74413  23.4%     -  168s
+##      0     2 1666.74413    0 20477 2177.16744 1666.74413  23.4%     -  169s
+##      1     4 1677.20933    1 20529 2177.16744 1666.78357  23.4%   970  171s
+##      3     6 1715.80015    2 20386 2177.16744 1677.26855  23.0%  1401  177s
+##      5     8 1692.30120    2 13548 2177.16744 1692.30120  22.3%  1323  180s
+##      9    12 1747.09682    3 12798 2177.16744 1715.81396  21.2%  1196  186s
+##     13    16 1786.45986    4 7293 2177.16744 1715.81396  21.2%  1207  190s
+##     20    23 1811.80707    6 7172 2177.16744 1715.81396  21.2%  1069  195s
+##     24    28 1813.41350    7 6562 2177.16744 1715.81396  21.2%  1031  201s
+## H   28    30                    2144.8698729 1715.81396  20.0%  1017  203s
+##     29    32 1844.19278    9 15092 2144.86987 1715.81396  20.0%  1036  205s
+##     33    39 1869.20017   10 5511 2144.86987 1715.81396  20.0%  1078  212s
+##     38    42 1882.03419   12 4806 2144.86987 1715.81396  20.0%   998  215s
+##     48    54 1961.87481   18 6819 2144.86987 1715.81396  20.0%   941  221s
+##     59    68 1962.87801   21 2990 2144.86987 1715.81396  20.0%   858  225s
+##     77    88 2026.97982   28 3064 2144.86987 1715.81396  20.0%   765  231s
+## H   85    88                    2123.0253024 1715.81396  19.2%   751  231s
+##    102   120 2045.10700   33 1459 2123.02530 1715.81396  19.2%   689  236s
+##    143   158 2114.27959   45   34 2123.02530 1715.85415  19.2%   548  240s
+## H  157   134                    2055.2481549 1715.85415  16.5%   507  240s
+## H  161   133                    2054.2481549 1715.85415  16.5%   496  240s
+##    174   126 1763.84787    5 23149 2054.24815 1715.85415  16.5%   493  249s
+##    183   128 1793.82105    5 18453 2054.24815 1715.85415  16.5%   491  255s
+## H  186   131                    2054.2481543 1715.85415  16.5%   498  258s
+##    188   133 1825.27341    7 18598 2054.24815 1715.85415  16.5%   508  262s
+## H  190   115                    2017.4035844 1715.85415  14.9%   508  266s
+## H  192   115                    1959.1674380 1715.85415  12.4%   515  266s
+##    193   115 1842.71694    9 20716 1959.16744 1715.85415  12.4%   521  272s
+##    197   114 1883.94565   11 15998 1959.16744 1715.85415  12.4%   539  276s
+##    200   115 1939.13564   11 17422 1959.16744 1715.85415  12.4%   550  280s
+##    206   122 1945.88160   13 16671 1959.16744 1715.85415  12.4%   562  287s
+##    213   121 1917.37765   14 14656 1959.16744 1715.85415  12.4%   554  291s
+##    222   114     cutoff   16      1959.16744 1715.85415  12.4%   550  295s
+## H  223   114                    1955.9409407 1715.85415  12.3%   547  295s
+##    233   105     cutoff   17      1955.94094 1724.85822  11.8%   533  300s
+## H  243   109                    1949.1674380 1724.92903  11.5%   534  308s
+##    246   112 1868.93078    6 22661 1949.16744 1724.92903  11.5%   541  313s
+##    249   114 1884.83170    5 18969 1949.16744 1724.92903  11.5%   553  319s
+##    252   117 1900.49322    6 18635 1949.16744 1724.92903  11.5%   561  325s
+##    259   118 1914.89153    8 22634 1949.16744 1724.92903  11.5%   577  334s
+##    263   111 1898.09039    6 20003 1949.16744 1724.92903  11.5%   579  339s
+##    268   108 1943.53429    7 20194 1949.16744 1724.92903  11.5%   584  347s
+##    277   111 1929.69723    9 22862 1949.16744 1724.92903  11.5%   583  353s
+##    280   111 1940.24060   11 22407 1949.16744 1724.92903  11.5%   589  361s
+##    285   108     cutoff   12      1949.16744 1741.15185  10.7%   591  367s
+##    294   110 1826.56011    5 21816 1949.16744 1741.15185  10.7%   590  374s
+## H  300   110                    1945.1674376 1741.15185  10.5%   591  384s
+##    302   112 1872.99058    8 18649 1945.16744 1741.15185  10.5%   601  389s
+##    306   112 1889.03239    9 19440 1945.16744 1741.15185  10.5%   603  398s
+##    314   115 1939.83438   11 18082 1945.16744 1741.15185  10.5%   606  404s
+##    323   113     cutoff   13      1945.16744 1741.15185  10.5%   604  410s
+##    331   117 1935.59544   12 19507 1945.16744 1743.03376  10.4%   607  417s
+##    341   121 1784.85223    5 18617 1945.16744 1743.05780  10.4%   604  424s
+##    345   128 1836.93850    8 16389 1945.16744 1743.05780  10.4%   610  431s
+##    360   136 1864.25001   14 7399 1945.16744 1743.05780  10.4%   600  438s
+##    368   149 1920.22974   15 7534 1945.16744 1743.05780  10.4%   606  445s
+##    383   157 1935.22843   23 6582 1945.16744 1763.00108  9.37%   604  454s
+##    406   157 1852.33279    5 19416 1945.16744 1763.00108  9.37%   591  463s
+##    416   160 1922.86893    6 19312 1945.16744 1763.00108  9.37%   592  472s
+##    421   162     cutoff    7      1945.16744 1763.00108  9.37%   601  482s
+##    431   160     cutoff    9      1945.16744 1763.85967  9.32%   603  493s
+##    443   163 1914.42587    9 9140 1945.16744 1768.77241  9.07%   610  505s
+##    446   162     cutoff   10      1945.16744 1770.67518  8.97%   613  515s
+##    457   166 1864.25991    8 20823 1945.16744 1770.67518  8.97%   618  527s
+##    461   164 1942.59323   10 20296 1945.16744 1774.94004  8.75%   626  536s
+##    472   166 1852.30378    6 18555 1945.16744 1774.94004  8.75%   625  550s
+##    478   170 1901.74434    9 15520 1945.16744 1774.94004  8.75%   627  563s
+##    490   175     cutoff   12      1945.16744 1780.29766  8.48%   631  575s
+##    497   177 1920.27406    9 18567 1945.16744 1780.35009  8.47%   642  585s
+##    509   178 1839.58297    6 15508 1945.16744 1780.35009  8.47%   644  601s
+##    516   185 1875.55225    7 15233 1945.16744 1784.90821  8.24%   645  612s
+##    533   187 1930.90652    9 5337 1945.16744 1788.79085  8.04%   647  625s
+##    545   193 1903.92740    8 16680 1945.16744 1788.79085  8.04%   652  637s
+##    557   193     cutoff   12      1945.16744 1788.80556  8.04%   657  651s
+##    573   200 1876.46659   11 17075 1945.16744 1791.13291  7.92%   656  666s
+##    594   211 1942.95107   17 17280 1945.16744 1793.84312  7.78%   656  679s
+##    619   212     cutoff   17      1945.16744 1798.40789  7.54%   654  694s
+##    634   215 1880.24461    9 18641 1945.16744 1798.64436  7.53%   656  711s
+##    651   212     cutoff   16      1945.16744 1801.77547  7.37%   658  732s
+##    662   220 1909.68166    9 18149 1945.16744 1801.88623  7.37%   662  750s
+##    680   233 1890.10827    7 20375 1945.16744 1804.56904  7.23%   665  782s
+##    699   232 1942.54021   12 16964 1945.16744 1807.71994  7.07%   664  800s
+##    728   233 1876.73404   10 16350 1945.16744 1808.07912  7.05%   660  822s
+##    747   239 1916.43056   15 17426 1945.16744 1808.12299  7.05%   666  845s
+##    775   244 1866.99168   12 18569 1945.16744 1808.84351  7.01%   663  872s
+##    790   247 1925.34426   14 15697 1945.16744 1808.84351  7.01%   668  896s
+##    811   260     cutoff   18      1945.16744 1813.50521  6.77%   668  922s
+##    856   267 1897.79220   14 18801 1945.16744 1824.32669  6.21%   659  947s
+##    881   266     cutoff   11      1945.16744 1826.73804  6.09%   664  971s
+##    906   266     cutoff    7      1945.16744 1829.33518  5.95%   666 1002s
+##    924   281 1887.41956    8 17329 1945.16744 1829.69590  5.94%   668 1029s
+##    967   282     cutoff   19      1945.16744 1830.53262  5.89%   662 1057s
+##   1004   278     cutoff   11      1945.16744 1830.73142  5.88%   661 1089s
+##   1041   310 1886.09266   11 18232 1945.16744 1831.37509  5.85%   658 1120s
+##   1113   312 1928.56251    8 8942 1945.16744 1834.56315  5.69%   644 1151s
+##   1159   316 1933.90976   10 19564 1945.16744 1835.49229  5.64%   645 1181s
+##   1205   319 1938.03490   14 6590 1945.16744 1837.07078  5.56%   644 1213s
+##   1243   318 1904.55762    9 17091 1945.16744 1840.11614  5.40%   647 1245s
+##   1294   321 1933.38382   11 15022 1945.16744 1841.33957  5.34%   646 1286s
+##   1339   358     cutoff   13      1945.16744 1844.14876  5.19%   647 1323s
+##   1434   377 1944.16091   26 7767 1945.16744 1847.15788  5.04%   631 1360s
+## H 1497   372                    1945.1674308 1847.36192  5.03%   630 1407s
+##
+## Cutting planes:
+##   Zero half: 2
+##   RLT: 57
+##   BQP: 3
+##
+## Explored 1545 nodes (1017105 simplex iterations) in 1407.99 seconds
+## Thread count was 2 (of 4 available processors)
+##
+## Solution count 10: 1945.17 1945.17 1949.17 ... 2123.03
+##
+## Optimal solution found (tolerance 5.00e-02)
+## Best objective 1.945167430827e+03, best bound 1.850721597979e+03, gap 4.8554%</code></pre>
+<p>The impact of including this penalty (<code>blm_actions</code>) is shown below where we summarize the distribution of the different actions:</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get action distribution</span>
 <span class="va">solution_actions.conn_actions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">solution.conn_actions</span><span class="op">)</span>
 
@@ -856,14 +1038,38 @@
                    <span class="va">plot_action2.conn_actions</span>,
                    <span class="va">plot_action3.conn_actions</span>,
                    <span class="va">plot_action4.conn_actions</span><span class="op">)</span></code></pre></div>
-<p><img src="figures/MR24-1.png" title="plot of chunk MR24" alt="plot of chunk MR24" style="display: block; margin: auto;"></p>
+<p><img src="figures/MR24-1.png"></p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># get action distribution</span>
+<span class="va">shp_mitchell</span><span class="op">$</span><span class="va">sum_actions.conn_actions</span> <span class="op">&lt;-</span> <span class="va">solution_actions.conn_actions</span><span class="op">$</span><span class="va">`1`</span> <span class="op">+</span>
+                                              <span class="va">solution_actions.conn_actions</span><span class="op">$</span><span class="va">`2`</span> <span class="op">+</span>
+                                              <span class="va">solution_actions.conn_actions</span><span class="op">$</span><span class="va">`3`</span> <span class="op">+</span>
+                                              <span class="va">solution_actions.conn_actions</span><span class="op">$</span><span class="va">`4`</span> <span class="op">+</span>
+                                    <span class="va">solution_actions.conn_actions</span><span class="op">$</span><span class="va">connectivity</span><span class="op">*</span><span class="fl">5</span>
+
+<span class="co"># plot sum of actions with tmap library</span>
+<span class="va">plot.conn_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">shp_mitchell</span><span class="op">)</span> <span class="op">+</span>
+             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.conn_actions"</span>,
+                           palette<span class="op">=</span><span class="st">"viridis"</span>,
+                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>,
+                                      <span class="st">"one action"</span>,
+                                      <span class="st">"two actions"</span>,
+                                      <span class="st">"three actions"</span>,
+                                      <span class="st">"four actions"</span>,
+                                      <span class="st">"connectivity"</span><span class="op">)</span>,
+                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="co"># comparative with base model solution</span>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.conn_actions</span><span class="op">)</span></code></pre></div>
+<p><img src="figures/MR25-1.png"></p>
+<p>As we can see in this case, the inclusion of connectivity requirements between actions and, therefore, the attempt to minimize the connectivity penalty between them, produced a very different solution than the previous one. Actions are selected along the river network but concentrating to a greater extent on the source and mouth of the river. In addition, it is observed that there is no planning unit painted yellow (connectivity), this is due to the fact that all the selected units have at least one management action in it, the opposite of the previous case. Note that the <em>blm</em> and <em>blm_actions</em> values used have been set in an exaggerated way to more clearly verify the behavior of the models.</p>
 </div>
 <div id="conclusions" class="section level2">
 <h2 class="hasAnchor">
-<a href="#conclusions" class="anchor"></a>Conclusions</h2>
-<p>The previously resolved models show part of the characteristics of the <code>prioriactions</code> package. In this vignette, we specifically explore how we can obtain 15% representativeness of the species by modifying different input parameters. For the base case, we have assumed no spatial requirement for the solutions; this implies a less complex model than the later ones. The next measure incorporated a cubic relationship into the benefit calculation (parameter <code>curve = 3</code>)(see more about the benefit calculate in the <a href="https://prioriactions.github.io/prioriactions/articles/sensitivities.html">sensitivities</a> vignette), which was reduced to solutions with higher and more expensive actions densities. While the last two models assumed spatial requirements in the solutions (through the <code>blm</code> and <code>blm_actions</code> parameters), which again increase costs compared to the base case.</p>
+<a href="#conclusions" class="anchor"></a>5) Conclusions</h2>
+<p>The previously resolved models show some of the capabilities of the <code>prioriactions</code> package. In this vignette, we specifically explore how we can obtain 20% representativeness of the species by modifying different input parameters. For the base case, we have assumed no spatial requirement for the solutions; this implies a less complex model than the later ones. The next measure incorporated a cubic relationship into the benefit calculation (parameter <code>curve = 3</code>)(see more about the benefit calculate in the <a href="https://prioriactions.github.io/prioriactions/articles/sensitivities.html">sensitivities</a> vignette), which was reduced to solutions with higher and more expensive actions densities. While the last two models assumed connectivity requirements in the solutions (through the <code>blm</code> and <code>blm_actions</code> parameters), which again increase costs compared to the base case.</p>
 <p>Note that the stopping criterion of all the models was by obtaining a minimum gap (<code>gap_limit</code> parameter). However, the solutions obtained gaps with important differences, and some, far from 0% (optimal solution), which implies that the comparison between different solutions should be done carefully and not generalize. To obtain lower gaps, it is suggested to use a longer resolution time.</p>
-</div>
 </div>
   </div>
 

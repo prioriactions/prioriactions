@@ -41,8 +41,8 @@ rcpp_constraint_lock <- function(x, pu_data, dist_threats_data) {
     .Call(`_prioriactions_rcpp_constraint_lock`, x, pu_data, dist_threats_data)
 }
 
-rcpp_constraint_target <- function(x, pu_data, features_data, dist_features_data, dist_threats_data, curve) {
-    .Call(`_prioriactions_rcpp_constraint_target`, x, pu_data, features_data, dist_features_data, dist_threats_data, curve)
+rcpp_constraint_target <- function(x, pu_data, features_data, dist_features_data, dist_threats_data, threats_data, sensitivity_data, curve) {
+    .Call(`_prioriactions_rcpp_constraint_target`, x, pu_data, features_data, dist_features_data, dist_threats_data, threats_data, sensitivity_data, curve)
 }
 
 rcpp_objective_max_coverage <- function(x, pu_data, features_data, dist_features_data, threats_data, dist_threats_data, boundary_data, blm, curve) {
@@ -71,5 +71,9 @@ rcpp_stats_costs_actions <- function(pu_data, threats_data, dist_threats_data, s
 
 rcpp_stats_costs_units <- function(pu_data, solution) {
     .Call(`_prioriactions_rcpp_stats_costs_units`, pu_data, solution)
+}
+
+rcpp_stats_recovery <- function(solution, pu_data, features_data, dist_features_data, dist_threats_data, threats_data, sensitivity_data) {
+    .Call(`_prioriactions_rcpp_stats_recovery`, solution, pu_data, features_data, dist_features_data, dist_threats_data, threats_data, sensitivity_data)
 }
 

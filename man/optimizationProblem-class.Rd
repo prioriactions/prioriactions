@@ -15,7 +15,7 @@ using \code{problem()} function.
 of the mathematical model.}
 
 \item{$ConservationClass}{object of class
-\code{\link[=conservationProblem-class]{conservationProblem-class()}} that contains the data input.}
+\code{\link[=data-class]{data-class()}} that contains the data input.}
 }
 }
 

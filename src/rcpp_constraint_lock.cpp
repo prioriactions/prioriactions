@@ -38,7 +38,7 @@ bool rcpp_constraint_lock(SEXP x,
 
   //variables
   NumericVector status_actions = dist_threats_data["status"];
-  int number_of_actions = pu_data.nrows();
+  int number_of_actions = dist_threats_data.nrows();
   row_constraint = op->_rhs.size();
 
   for(int a = 0; a < number_of_actions; a++){

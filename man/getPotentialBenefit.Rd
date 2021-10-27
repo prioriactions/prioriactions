@@ -7,7 +7,7 @@
 getPotentialBenefit(x)
 }
 \arguments{
-\item{x}{\code{ConservationProblem-class} object.}
+\item{x}{\code{data-class} object.}
 }
 \value{
 \link{data.frame}.

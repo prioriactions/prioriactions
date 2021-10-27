@@ -2,13 +2,13 @@
 % Please edit documentation in R/print.R
 \name{print}
 \alias{print}
-\alias{print.ConservationProblem}
+\alias{print.Data}
 \alias{print.OptimizationProblem}
 \alias{print.Solution}
 \alias{print.Portfolio}
 \title{Print}
 \usage{
-\method{print}{ConservationProblem}(x, ...)
+\method{print}{Data}(x, ...)
 
 \method{print}{OptimizationProblem}(x, ...)
 

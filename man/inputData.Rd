@@ -140,7 +140,8 @@ threats reach the maximum intensity value in the study area.}
 features when a threat reaches its maximum intensity value. Default is 0.}
 \item{\code{d}}{\code{numeric} (\strong{optional}) maximum probability of persistence of a
 features in absence of a given threat. Default is 1.}
-}}
+}
+Note that optional parameters \emph{a}, \emph{b}, \emph{c} and \emph{d} can be provided independently.}
 
 \item{boundary}{(\strong{optional}) Object of class \code{\link[=data.frame]{data.frame()}} that specifies
 the spatial relationship between pair of planning units. Each row corresponds
@@ -154,10 +155,10 @@ when only one of the planning units is present in the solution.}
 }}
 }
 \value{
-An object of class \linkS4class{conservationProblem}.
+An object of class \linkS4class{data}.
 }
 \description{
-Create the \linkS4class{conservationProblem} object with information about the multi-action
+Create the \linkS4class{data} object with information about the multi-action
 conservation planning problem. This function is used to specify all the data
 that defines the spatial prioritization problem (planning units data, feature
 data, threats data, and their spatial distributions.)

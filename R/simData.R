@@ -23,8 +23,6 @@ NULL
 #'
 #' }
 #'
-#' @docType data
-#'
 #' @aliases sim_pu_data sim_features_data sim_dist_features_data sim_threats_data
 #' sim_dist_threats_data sim_sensitivity_data sim_boundary_data
 #'
@@ -89,5 +87,5 @@ NULL
 #' values(r) <- features$'1'
 #' plot(r)
 #' }
-#' @name sim_data
+#' @name simData
 NULL

@@ -4,7 +4,7 @@ NULL
 #' @title Creates the multi-action planning problem
 #'
 #' @description
-#' Create the [conservationProblem-class] object with information about the multi-action
+#' Create the [data-class] object with information about the multi-action
 #' conservation planning problem. This function is used to specify all the data
 #' that defines the spatial prioritization problem (planning units data, feature
 #' data, threats data, and their spatial distributions.)
@@ -130,6 +130,7 @@ NULL
 #'    \item{`d`}{`numeric` (**optional**) maximum probability of persistence of a
 #'    features in absence of a given threat. Default is 1.}
 #'    }
+#'  Note that optional parameters *a*, *b*, *c* and *d* can be provided independently.
 #'
 #' @param boundary (**optional**) Object of class [data.frame()] that specifies
 #' the spatial relationship between pair of planning units. Each row corresponds
@@ -146,7 +147,7 @@ NULL
 #'
 #' @name inputData
 #'
-#' @return An object of class [conservationProblem-class].
+#' @return An object of class [data-class].
 #'
 #' @seealso For more information on the correct format for *Marxan* input data, see the
 #' [official *Marxan* website](https://marxansolutions.org) and Ball *et al.* (2009).
@@ -368,47 +369,51 @@ methods::setMethod(
 
     if ("a" %in% names(sensitivity)) {
       assertthat::assert_that(
-        is.numeric(sensitivity$a),
-        assertthat::noNA(sensitivity$a)
+        !is.character(sensitivity$a)
       )
+      sensitivity$a[is.na(sensitivity$a)] = 0
     } else {
       sensitivity$a <- 0
     }
     if ("b" %in% names(sensitivity)) {
       assertthat::assert_that(
-        is.numeric(sensitivity$b),
-        assertthat::noNA(sensitivity$b)
+        !is.character(sensitivity$b)
       )
     } else {
-      max_intensities <- dist_threats %>% dplyr::group_by(.data$threat) %>% dplyr::summarise(value = max(.data$amount))
+      sensitivity$b <- NA
+    }
 
-      sensitivity$b <- 1
-      for(i in seq_len(nrow(max_intensities))){
-        if(any(sensitivity$threat == max_intensities$threat[i][[1]])){
-          sensitivity[sensitivity$threat == max_intensities$threat[i][[1]], ]$b <- max_intensities$value[i][[1]]
-        }
+    vector_max_intensities <- c()
+
+    max_intensities <- dist_threats %>% dplyr::group_by(.data$threat) %>% dplyr::summarise(value = max(.data$amount))
+
+    for(i in seq_len(nrow(max_intensities))){
+      if(any(sensitivity$threat == max_intensities$threat[i][[1]])){
+        vector_max_intensities[sensitivity$threat == max_intensities$threat[i][[1]]] <- max_intensities$value[i][[1]]
       }
     }
+    sensitivity$b[is.na(sensitivity$b)] <- vector_max_intensities[is.na(sensitivity$b)]
+
+
     if ("c" %in% names(sensitivity)) {
       assertthat::assert_that(
-        is.numeric(sensitivity$c),
-        assertthat::noNA(sensitivity$c),
-        all(sensitivity$c < 1.0)
+        !is.character(sensitivity$c)
       )
+      sensitivity$c[is.na(sensitivity$c)] = 0
     } else {
       sensitivity$c <- 0
     }
     if ("d" %in% names(sensitivity)) {
       assertthat::assert_that(
-        is.numeric(sensitivity$d),
-        assertthat::noNA(sensitivity$d)
+        !is.character(sensitivity$d)
       )
+      sensitivity$d[is.na(sensitivity$d)] = 1
     } else {
       sensitivity$d <- 1
     }
 
     if(isFALSE(all(sensitivity$b > sensitivity$a))){
-      stop("Every value of a must be less than every value of b", call. = FALSE, immediate. = TRUE)
+      stop("Every value of a parameter must be less than every value of b parameter", call. = FALSE, immediate. = TRUE)
     }
 
     if(isFALSE(all(sensitivity$d > sensitivity$c))){
@@ -523,9 +528,9 @@ methods::setMethod(
     sensitivity$internal_threat <- internal_threat
 
 
-    ## Create ConservationProblem object
+    ## Create Data object
 
-    pproto(NULL, ConservationProblem,
+    pproto(NULL, Data,
            data = list(
              pu = pu, features = features, dist_features = dist_features, dist_threats = dist_threats, threats = threats,
              sensitivity = sensitivity, boundary = boundary

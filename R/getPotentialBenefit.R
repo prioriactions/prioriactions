@@ -3,7 +3,7 @@
 #' @description Provides the maximum values of benefits to achieve
 #' for each feature given a set of data inputs.
 #'
-#' @param x `ConservationProblem-class` object.
+#' @param x `data-class` object.
 #'
 #' @details For a given feature \eqn{s}, let \eqn{I_s} be the set of planning units associated with \eqn{s},
 #' let \eqn{r_{is}} is the amount of feature \eqn{s} in planning unit \eqn{i}, let \eqn{K_{s}} be the
@@ -60,7 +60,7 @@ NULL
 #' @export
 getPotentialBenefit <- function(x) {
   # assert argument is valid
-  assertthat::assert_that(inherits(x, "ConservationProblem"))
+  assertthat::assert_that(inherits(x, "Data"))
 
   benefits <- rcpp_stats_benefit(x$data$pu,
                                  x$data$features,

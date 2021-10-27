@@ -1,7 +1,7 @@
 ---
 title: "Planning objectives"
 output:
-  rmarkdown::html_document
+  html_document
 fontsize: 11pt
 bibliography: references.bib
 vignette: >
@@ -12,29 +12,35 @@ vignette: >
 
 
 
-The `prioriactions` package allows you to work with two planning objectives: **recovery** and **conservation**. In order to understand the difference between each of them, the following diagram is presented:
+The `prioriactions` package allows to address to planning goals: **recovery** and **conservation**. In order to understand the difference between each of them, let us consider the following figures:
 
 ![](figures/PR1.png){width=60%}
 
-Here, as it can be distinguished, for a conservation feature there are **two** planning units in which it coincides with its threats (therefore, it is assumed that it is in danger) and in **four** other units where there is no occurrence between this feature and its threats. In order to obtain some kind of benefit from the first two, it is necessary to carry out **recovery** actions, while in the case of the other four, **conservation** actions. The incorporation of sites only for their conservation could **greatly influence** the result of planning, which is why we emphasize their importance.
+According to the figure, for a conservation feature there are **two** planning units where it co-occurs with the threat it is sensitive to (and where, therefore, it can be impacted by the threat) and in **four** other units where the feature does not co-occur with the threat. Therefore, **recovery targets** could be achieved by prescribing management actions against the threat present in the two planning units where the feature co-occurs with that threat, while **conservation targets** could be achieved by selecting for conservation any of the planning units where the species does not co-occur with the threat. As we will show in this document, selecting planning units only for conservation purposes plays a crucial role in the conservation plan.
 
-From the point of the objective of the mathematical model, in the case of wanting to `minimize costs`, the `prioriactions` package incorporates it in one of its data inputs (features data) two columns to indicate separately the target to be reached by feature at the **recovery** and **conservation** level. It is being only the **recovery** a mandatory field. The latter due the objective of `prioriactions` package (as its name implies) is the prioritization of conservation actions and not the conservation planning focused on ecological reserves; for this, there is already software such as [prioritizr](https://prioritizr.net/index.html) or [marxan](https://marxansolutions.org/). While if we want to `maximize benefits`, it is assumed that benefits will come only from **recovery**.
+If we aim at minimizing the conservation costs (`minimize costs`), the `prioriactions` package allows to explicitly impose a target for both, the **recovery** and the **conservation** levels that we aim at achieving. Please note that, by the default, only the **recovery targets** is requested, given the main focus of `prioriactions` is on the prioritization of management actions against threats, while conservation targets are optional. There are other software, like [marxan](https://marxansolutions.org/), and packages, like [prioritizr](https://prioritizr.net/index.html), that already solve conservation only problems.
+On the contrary, if we aim at maximizing the benefits (`maximize benefits`), we assume that the benefits are obtained only from **recovery** actions.
 
-## Model only with recovery targets
+The remainder of this document is organized as follows. In Section 1 we present the results obtained when only imposing **recovery targets**. In Section 2 we present the results obtained when imposing **recovery targets** and **conservation targets**. In Section 3 we present the results obtained when considering **recovery targets** along with a connectivity optimization. Finally, in Section 4 we present the results obtained when considering **recovery targets** and **conservation targets** along with a connectivity optimization.
 
-To see how planning decisions change whether or not to include conservation, we use the example used in the `Get started` vignette:
+## 1) Model I: Only recovery targets
+
+In order to analyze how planning decision behave when no **conservation target** is considered, we present some results using the example available in the [Get started](https://prioriactions.github.io/prioriactions/articles/prioriactions.html)  vignette.
 
 
 ```r
 # load package
 library(prioriactions)
 
+data(sim_boundary_data, sim_dist_features_data, sim_dist_threats_data,
+     sim_features_data, sim_pu_data, sim_sensitivity_data, sim_threats_data)
+
 #create raster
 library(raster) 
 r <- raster(ncol=10, nrow=10, xmn=0, xmx=10, ymn=0, ymx=10)
 values(r) <- 0
 
-# create conservation problem using data from prioriactions
+# create data class using input data from prioriactions
 b <- inputData(pu = sim_pu_data, 
                features = sim_features_data, 
                dist_features = sim_dist_features_data, 
@@ -46,7 +52,7 @@ b <- inputData(pu = sim_pu_data,
 # print problem
 print(b)
 ```
-As we already know, it is essential to use the `getPotentialBenefit()` function to know what is the maximum benefit that we can achieve for both types of planning objectives:
+As explained the package description, we can use the `getPotentialBenefit()` function to know what is the maximum benefit that can be achieved for both types of planning objectives:
 
 
 ```r
@@ -61,7 +67,8 @@ getPotentialBenefit(b)
 ## 3       3   66              56                           10                       56              66
 ## 4       4   33              33                            0                       33              33
 ```
-Here, we observe that features 2 and 3 have 2 and 10 units respectively where they are not threatened, so they would obtain **conservation** benefits just by selecting those sites for monitoring. Now, we modify the `recovery_targets` to 10 in order to make the comparison easier and solve the model.
+
+As we can observe, features 2 and 3 are present in 2 and 10 units, respectively, where no threat is present. Therefore, if select these units just for monitoring, they could contribute to achieving the **conservation** target. In order to to show the impact of including recovery requirements, we now present the results obtained when setting the value of `target_recovery` to 10. After setting these values, we solve the corresponding model. These steps are shown below.
 
 
 ```r
@@ -98,39 +105,48 @@ d.base <- solve(c.base, solver = "gurobi", verbose = TRUE, output_file = FALSE)
 ```
 ## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 460 rows, 572 columns and 1137 nonzeros
-## Model fingerprint: 0xcafb96c4
-## Variable types: 352 continuous, 220 integer (220 binary)
+## Optimize a model with 284 rows, 396 columns and 785 nonzeros
+## Model fingerprint: 0xe4778898
+## Variable types: 176 continuous, 220 integer (220 binary)
 ## Coefficient statistics:
 ##   Matrix range     [5e-01, 2e+00]
-##   Objective range  [1e-01, 1e+01]
+##   Objective range  [1e+00, 1e+01]
 ##   Bounds range     [1e+00, 1e+00]
 ##   RHS range        [1e+01, 1e+01]
-## Found heuristic solution: objective 118.5000000
-## Presolve removed 438 rows and 495 columns
+## Found heuristic solution: objective 964.0000000
+## Found heuristic solution: objective 371.0000000
+## Presolve removed 250 rows and 277 columns
 ## Presolve time: 0.00s
-## Presolved: 22 rows, 77 columns, 169 nonzeros
-## Found heuristic solution: objective 88.3000000
-## Variable types: 0 continuous, 77 integer (63 binary)
+## Presolved: 34 rows, 119 columns, 237 nonzeros
+## Variable types: 0 continuous, 119 integer (101 binary)
 ## 
-## Root relaxation: objective 6.370000e+01, 12 iterations, 0.00 seconds
+## Root relaxation: objective 1.310000e+02, 30 iterations, 0.00 seconds
 ## 
 ##     Nodes    |    Current Node    |     Objective Bounds      |     Work
 ##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ## 
-##      0     0   63.70000    0    4   88.30000   63.70000  27.9%     -    0s
-## H    0     0                      63.9000000   63.70000  0.31%     -    0s
-##      0     0   63.70000    0    4   63.90000   63.70000  0.31%     -    0s
+##      0     0  131.00000    0    6  371.00000  131.00000  64.7%     -    0s
+## H    0     0                     143.0000000  131.00000  8.39%     -    0s
+## H    0     0                     142.0000000  131.00000  7.75%     -    0s
+##      0     0  134.00000    0    4  142.00000  134.00000  5.63%     -    0s
+## H    0     0                     138.0000000  134.00000  2.90%     -    0s
+## H    0     0                     134.0000000  134.00000  0.00%     -    0s
+##      0     0  134.00000    0    4  134.00000  134.00000  0.00%     -    0s
 ## 
-## Explored 1 nodes (12 simplex iterations) in 0.00 seconds
+## Cutting planes:
+##   Gomory: 1
+##   Cover: 5
+## 
+## Explored 1 nodes (39 simplex iterations) in 0.00 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
-## Solution count 3: 63.9 88.3 118.5 
+## Solution count 6: 134 138 142 ... 964
 ## 
 ## Optimal solution found (tolerance 0.00e+00)
-## Best objective 6.390000000000e+01, best bound 6.390000000000e+01, gap 0.0000%
+## Best objective 1.340000000000e+02, best bound 1.340000000000e+02, gap 0.0000%
 ```
-We look at the distribution of the actions using the `getActions()` function:
+
+Once the corresponding optimization problem is solved, we can retrieve the spatial distribution of the recovery actions using the `getActions()` function. The results obtained for our test instance are shown below:
 
 
 ```r
@@ -148,9 +164,9 @@ plot(group_rasters)
 
 ![](figures/O5-1.png)
 
-## Model with conservation targets
+## 2) Model II: Recovery and conservation targets
 
-Now we execute another model including **conservation targets**, whose values are the maximum possible according to what is observed with the `getPotentialBenefit()` function:
+In this section, we present the results obtained when only considering **conservation targets**. Note that the value of these targets are bounded by the maximum possible benefits that can be obtained according to the structure of the planning area. The corresponding value of this maximum possible benefits can be retrieved using the `getPotentialBenefit()` function. As we have already seen in the previous section, these values correspond to 0, 2, 10 and 0 respectively.Once the **conservation targets** values are defined, the corresponding optimization model is solved. These steps are shown below.
 
 
 ```r
@@ -188,39 +204,48 @@ d.cons <- solve(c.cons, solver = "gurobi", verbose = TRUE, output_file = FALSE)
 ```
 ## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 460 rows, 572 columns and 1137 nonzeros
-## Model fingerprint: 0xd0b23e20
-## Variable types: 352 continuous, 220 integer (220 binary)
+## Optimize a model with 284 rows, 396 columns and 785 nonzeros
+## Model fingerprint: 0xf6bb92ed
+## Variable types: 176 continuous, 220 integer (220 binary)
 ## Coefficient statistics:
 ##   Matrix range     [5e-01, 2e+00]
-##   Objective range  [1e-01, 1e+01]
+##   Objective range  [1e+00, 1e+01]
 ##   Bounds range     [1e+00, 1e+00]
 ##   RHS range        [2e+00, 1e+01]
-## Found heuristic solution: objective 131.6000000
-## Presolve removed 438 rows and 495 columns
+## Found heuristic solution: objective 964.0000000
+## Found heuristic solution: objective 381.0000000
+## Presolve removed 250 rows and 277 columns
 ## Presolve time: 0.00s
-## Presolved: 22 rows, 77 columns, 169 nonzeros
-## Found heuristic solution: objective 87.1000000
-## Variable types: 0 continuous, 77 integer (63 binary)
+## Presolved: 34 rows, 119 columns, 237 nonzeros
+## Variable types: 0 continuous, 119 integer (101 binary)
 ## 
-## Root relaxation: objective 6.470000e+01, 12 iterations, 0.00 seconds
+## Root relaxation: objective 1.540000e+02, 30 iterations, 0.00 seconds
 ## 
 ##     Nodes    |    Current Node    |     Objective Bounds      |     Work
 ##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ## 
-##      0     0   64.70000    0    4   87.10000   64.70000  25.7%     -    0s
-## H    0     0                      64.9000000   64.70000  0.31%     -    0s
-##      0     0   64.70000    0    4   64.90000   64.70000  0.31%     -    0s
+##      0     0  154.00000    0    6  381.00000  154.00000  59.6%     -    0s
+## H    0     0                     166.0000000  154.00000  7.23%     -    0s
+## H    0     0                     165.0000000  154.00000  6.67%     -    0s
+##      0     0  157.00000    0    4  165.00000  157.00000  4.85%     -    0s
+## H    0     0                     161.0000000  157.00000  2.48%     -    0s
+## H    0     0                     157.0000000  157.00000  0.00%     -    0s
+##      0     0  157.00000    0    4  157.00000  157.00000  0.00%     -    0s
 ## 
-## Explored 1 nodes (12 simplex iterations) in 0.00 seconds
+## Cutting planes:
+##   Gomory: 1
+##   Cover: 5
+## 
+## Explored 1 nodes (39 simplex iterations) in 0.00 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
-## Solution count 3: 64.9 87.1 131.6 
+## Solution count 6: 157 161 165 ... 964
 ## 
 ## Optimal solution found (tolerance 0.00e+00)
-## Best objective 6.490000000000e+01, best bound 6.490000000000e+01, gap 0.0000%
+## Best objective 1.570000000000e+02, best bound 1.570000000000e+02, gap 0.0000%
 ```
-There is a difference in the objective value (costs) of 23 (157 - 134), which means the additional cost of including the units for their conservation within the planning (monitoring cost).
+
+As can be seen from the log, the objective function value of the attained solution is 157. This value is 23 units larger than the value obtained for the same instance but without imposing conservation targets (the values was 134).  This difference is explained by the fact that we now impose the implementation of monitoring actions.
 
 
 ```r
@@ -238,12 +263,12 @@ plot(group_rasters)
 ```
 
 ![](figures/O7-1.png)
-Note that the units selected for the conservation of species are mostly separated from the units selected to carry out conservation actions, indeed, none of them coincide. If we compare both plans, we see that the conservation actions are the same for both cases.
 
+We can observe that, in this case, the units selected for **conservation** do not overlap with those selected for applying action 1 and action 2. When comparing this solution with the one shown in the model I, we observe that in both cases the spatial distribution of the **recovery** actions is the same.
 
-## Model only with recovery targets and connectivity request
+## 3) Model III: Only recovery targets and connectivity
 
-It might be is interesting to know how these solutions change when more connectivity is required. For this we will use the same inputs as above, but we will set the connectivity penalty factor (*blm*) to 100. The latter is part of the `problem()` function. Next we will modify this parameter in the model that uses only **recovery targets**.
+To demonstrate the influence of including connectivity constrains we will use the same inputs as above, but we will set the connectivity penalty factor (*blm*) to 100 in the `problem()` function. Next we will modify this parameter in the model that uses only **recovery targets**.
 
 
 ```r
@@ -265,34 +290,34 @@ d.base_conn <- solve(c.base_conn, solver = "gurobi", verbose = TRUE, output_file
 ```
 ## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 30160 rows, 10472 columns and 70437 nonzeros
-## Model fingerprint: 0x70a545ee
-## Variable types: 352 continuous, 10120 integer (10120 binary)
+## Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros
+## Model fingerprint: 0x09191a59
+## Variable types: 176 continuous, 10120 integer (10120 binary)
 ## Coefficient statistics:
 ##   Matrix range     [5e-01, 2e+00]
 ##   Objective range  [1e+00, 7e+04]
 ##   Bounds range     [1e+00, 1e+00]
 ##   RHS range        [1e+00, 1e+01]
-## Presolve removed 366 rows and 357 columns
-## Presolve time: 0.16s
+## Found heuristic solution: objective 964.0000000
+## Presolve removed 190 rows and 181 columns
+## Presolve time: 0.15s
 ## Presolved: 29794 rows, 10115 columns, 69709 nonzeros
 ## Variable types: 0 continuous, 10115 integer (10110 binary)
-## Found heuristic solution: objective 535211.62707
 ## 
-## Root relaxation: objective 7.200000e+01, 180 iterations, 0.04 seconds
+## Root relaxation: objective 2.573214e+02, 238 iterations, 0.08 seconds
 ## 
 ##     Nodes    |    Current Node    |     Objective Bounds      |     Work
 ##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ## 
-## *    0     0               0      72.0000000   72.00000  0.00%     -    0s
+## *    0     0               0     547.0000000  547.00000  0.00%     -    0s
 ## 
-## Explored 0 nodes (180 simplex iterations) in 0.29 seconds
+## Explored 0 nodes (284 simplex iterations) in 0.35 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
-## Solution count 2: 72 535212 
+## Solution count 2: 547 964 
 ## 
 ## Optimal solution found (tolerance 0.00e+00)
-## Best objective 7.199999996966e+01, best bound 7.199999996966e+01, gap 0.0000%
+## Best objective 5.469999999700e+02, best bound 5.469999999700e+02, gap 0.0000%
 ```
 
 
@@ -310,11 +335,12 @@ plot(group_rasters)
 ```
 
 ![](figures/O9-1.png)
-We can clearly notice that the selected actions are a degree more connected with respect to the solutions shown for the previous models.
 
-## Model with conservation targets and connectivity request
+We can notice that the selected actions are more connected compared to the solutions shown for the previous models.
 
-Same as above, we set the *blm* parameter to 100, but now using **conservation targerts**.
+## 4) Model IV: Recovery and conservation targets and connectivity
+
+Same as above, we set the *blm* parameter to 100, but now using **conservation targets**.
 
 
 ```r
@@ -336,35 +362,34 @@ d.cons_conn <- solve(c.cons_conn, solver = "gurobi", verbose = TRUE, output_file
 ```
 ## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 30160 rows, 10472 columns and 70437 nonzeros
-## Model fingerprint: 0x81fd47b2
-## Variable types: 352 continuous, 10120 integer (10120 binary)
+## Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros
+## Model fingerprint: 0x7df3efb0
+## Variable types: 176 continuous, 10120 integer (10120 binary)
 ## Coefficient statistics:
 ##   Matrix range     [5e-01, 2e+00]
 ##   Objective range  [1e+00, 7e+04]
 ##   Bounds range     [1e+00, 1e+00]
 ##   RHS range        [1e+00, 1e+01]
-## Presolve removed 6036 rows and 2257 columns
-## Presolve time: 0.20s
+## Found heuristic solution: objective 964.0000000
+## Presolve removed 5860 rows and 2081 columns
+## Presolve time: 0.19s
 ## Presolved: 24124 rows, 8215 columns, 56479 nonzeros
 ## Variable types: 0 continuous, 8215 integer (8210 binary)
-## Found heuristic solution: objective 109.0000000
 ## 
-## Root relaxation: objective 7.200000e+01, 13 iterations, 0.01 seconds
+## Root relaxation: objective 5.470000e+02, 9 iterations, 0.01 seconds
 ## 
 ##     Nodes    |    Current Node    |     Objective Bounds      |     Work
 ##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ## 
-## *    0     0               0      72.0000000   72.00000  0.00%     -    0s
+## *    0     0               0     547.0000000  547.00000  0.00%     -    0s
 ## 
-## Explored 0 nodes (13 simplex iterations) in 0.28 seconds
+## Explored 0 nodes (9 simplex iterations) in 0.22 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
-## Solution count 2: 72 109 
-## No other solutions better than 72
+## Solution count 2: 547 964 
 ## 
 ## Optimal solution found (tolerance 0.00e+00)
-## Best objective 7.199999996969e+01, best bound 7.199999996969e+01, gap 0.0000%
+## Best objective 5.469999999700e+02, best bound 5.469999999700e+02, gap 0.0000%
 ```
 
 
@@ -383,5 +408,6 @@ plot(group_rasters)
 ```
 
 ![](figures/O11-1.png)
-Note that in the last two models (those that incorporate connectivity requirements) the solutions differ. Because in both we have used the same parameters, it is inferred that the sites selected for the conservation of species affect in a certain way the selection of conservation actions, which is why it is very important to know what the planning objective is because these may interfere in some way with the end result.
+
+Note that in the last two models (those that incorporate connectivity requirements) the solutions differ. Because in both we have used the same parameters, it is inferred that the sites selected for the conservation of species affect in a certain way the selection of units for **recovery targets**, which is why it is very important to carefully think about the planning objectives, as they might lead to different solutions.
 

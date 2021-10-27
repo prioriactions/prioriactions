@@ -64,8 +64,7 @@ VignetteBuilder: knitr
 Collate: 
     'RcppExports.R'
     'internal.R'
-    'conservationProblem-class.R'
-    'data.R'
+    'data-class.R'
     'writeOutputs.R'
     'optimizationProblem-class.R'
     'presolve.R'
@@ -85,6 +84,7 @@ Collate:
     'print.R'
     'problem.R'
     'show.R'
+    'simData.R'
     'solution-class.R'
     'solve.R'
     'utils-pipe.R'

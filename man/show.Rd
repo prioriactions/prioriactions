@@ -6,13 +6,13 @@
 \alias{ConservationProblem-method}
 \alias{OptimizationProblem-method}
 \alias{Solution-method}
-\alias{show.ConservationProblem}
+\alias{show.Data}
 \alias{show.OptimizationProblem}
 \alias{show.Solution}
 \alias{show.Portfolio}
 \title{Show}
 \usage{
-\method{show}{ConservationProblem}(x, ...)
+\method{show}{Data}(x, ...)
 
 \method{show}{OptimizationProblem}(x, ...)
 

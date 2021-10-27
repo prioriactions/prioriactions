@@ -23,9 +23,10 @@ extern SEXP _prioriactions_rcpp_stats_connectivity_units(SEXP, SEXP, SEXP, SEXP,
 extern SEXP _prioriactions_rcpp_stats_connectivity_actions(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _prioriactions_rcpp_stats_costs_units(SEXP, SEXP);
 extern SEXP _prioriactions_rcpp_stats_costs_actions(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _prioriactions_rcpp_constraint_target(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _prioriactions_rcpp_constraint_target(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _prioriactions_rcpp_constraint_budget(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _prioriactions_rcpp_stats_benefit(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _prioriactions_rcpp_stats_recovery(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
   {"_prioriactions_rcpp_new_optimization_problem", (DL_FUNC) &_prioriactions_rcpp_new_optimization_problem, 3},
@@ -43,9 +44,10 @@ static const R_CallMethodDef CallEntries[] = {
   {"_prioriactions_rcpp_stats_connectivity_actions", (DL_FUNC) &_prioriactions_rcpp_stats_connectivity_actions, 5},
   {"_prioriactions_rcpp_stats_costs_units", (DL_FUNC) &_prioriactions_rcpp_stats_costs_units, 2},
   {"_prioriactions_rcpp_stats_costs_actions", (DL_FUNC) &_prioriactions_rcpp_stats_costs_actions, 4},
-  {"_prioriactions_rcpp_constraint_target", (DL_FUNC) &_prioriactions_rcpp_constraint_target, 6},
+  {"_prioriactions_rcpp_constraint_target", (DL_FUNC) &_prioriactions_rcpp_constraint_target, 8},
   {"_prioriactions_rcpp_constraint_budget", (DL_FUNC) &_prioriactions_rcpp_constraint_budget, 4},
   {"_prioriactions_rcpp_stats_benefit", (DL_FUNC) &_prioriactions_rcpp_stats_benefit, 7},
+  {"_prioriactions_rcpp_stats_recovery", (DL_FUNC) &_prioriactions_rcpp_stats_recovery, 7},
   {NULL, NULL, 0}
 };
 

@@ -15,7 +15,7 @@ NULL
 #'   of the mathematical model.}
 #'
 #'   \item{$ConservationClass}{object of class
-#'   [conservationProblem-class()] that contains the data input.}
+#'   [data-class()] that contains the data input.}
 #'   }
 #'
 #' @section Methods: \describe{

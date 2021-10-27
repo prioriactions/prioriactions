@@ -36,11 +36,12 @@ bool rcpp_constraint_benefit(SEXP x,
   int threat_id;
   int row_constraint = op->_rhs.size();
   int col_constraint = number_of_units + number_of_actions;
-  int col_constraint_conservation = number_of_units + number_of_actions + number_of_dist_features;
   int col_action = 0;
+  //int iter = 0;
 
   double response_coef_variable;
   double response_coef_constant;
+  //double coef_constant;
   double alpha;
   double sum_alpha;
   double param_a;
@@ -55,18 +56,12 @@ bool rcpp_constraint_benefit(SEXP x,
       pu_id = it_species.row();
       sum_alpha = 0.0;
       alpha = 0.0;
+      //iter = 0;
 
       // b_is
       op->_id_variables.push_back(col_constraint);
       op->_A_i.push_back(row_constraint);
       op->_A_j.push_back(col_constraint);
-      op->_A_x.push_back(1);
-      op->_rhs.push_back(0);
-      op->_sense.push_back("==");
-
-      // z_is
-      op->_A_i.push_back(row_constraint + 1);
-      op->_A_j.push_back(col_constraint_conservation);
       op->_A_x.push_back(1);
       op->_rhs.push_back(0);
       op->_sense.push_back("<=");
@@ -80,7 +75,6 @@ bool rcpp_constraint_benefit(SEXP x,
           threat_intensity = dist_threats_extended(pu_id, threat_id);
 
           //calculate alpha value
-          threat_intensity = dist_threats_extended(pu_id, threat_id);
           param_a = sensitivity_a_extended(s, threat_id);
           param_b = sensitivity_b_extended(s, threat_id);
           param_c = sensitivity_c_extended(s, threat_id);
@@ -105,6 +99,7 @@ bool rcpp_constraint_benefit(SEXP x,
         }
       }
 
+      //coef_constant = 0;
       for (auto it_threats = dist_threats_extended.begin_row(pu_id);
            it_threats != dist_threats_extended.end_row(pu_id); ++it_threats) {
         threat_id = it_threats.col();
@@ -139,6 +134,25 @@ bool rcpp_constraint_benefit(SEXP x,
           }
 
           if(sum_alpha != 0.0){
+            //if(iter == 0){
+            //  // b_is_second
+            //  op->_A_i.push_back(row_constraint + 1);
+            //  op->_A_j.push_back(col_constraint);
+            //  op->_A_x.push_back(1);
+            //  op->_rhs.push_back(1);
+            //  op->_sense.push_back("<=");
+
+            //  // w_i_second
+            //  op->_A_i.push_back(row_constraint + 1);
+            //  op->_A_j.push_back(pu_id);
+            //  op->_A_x.push_back(1);
+
+            //  iter++;
+            //}
+
+            // w_i
+            //coef_constant = coef_constant + (response_coef_constant * alpha)/sum_alpha;
+
             // x_ik
             col_action = number_of_units + actions_extended(pu_id, threat_id) - 1;
 
@@ -146,23 +160,34 @@ bool rcpp_constraint_benefit(SEXP x,
             op->_A_j.push_back(col_action);
             op->_A_x.push_back(-1*(response_coef_variable * alpha)/sum_alpha);
 
-            // w_i
-            op->_A_i.push_back(row_constraint + 1);
-            op->_A_j.push_back(pu_id);
-            op->_A_x.push_back(-1*(response_coef_constant * alpha)/sum_alpha);
+            ////x_ik_second
+            //op->_A_i.push_back(row_constraint + 1);
+            //op->_A_j.push_back(col_action);
+            //op->_A_x.push_back(-1);
           }
         }
       }
 
       if(sum_alpha == 0.0){
         //z variables
-        op->_A_i.push_back(row_constraint + 1);
+        op->_A_i.push_back(row_constraint);
         op->_A_j.push_back(pu_id);
         op->_A_x.push_back(-1);
+
       }
-      row_constraint = row_constraint + 2;
+      else{
+        //row_constraint++;
+
+        // w_i
+        //op->_A_i.push_back(row_constraint);
+        //op->_A_j.push_back(pu_id);
+        //op->_A_x.push_back(-1*coef_constant);
+
+        //row_constraint = row_constraint + 2;
+      }
+
+      row_constraint++;
       col_constraint++;
-      col_constraint_conservation++;
     }
   }
   return true;
