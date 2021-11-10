@@ -24,19 +24,13 @@ Depends:
 Imports: 
     assertthat (>= 0.2.0),
     Matrix,
-    data.table,
     proto,
     magrittr,
-    methods,
-    purrr,
     Rsymphony,
-    readr,
     tidyr,
     dplyr,
     Rcpp,
-    tibble,
-    rlang,
-    slam (>= 0.1-48)
+    rlang
 Suggests: 
     knitr,
     gurobi (>= 9.0),
@@ -47,7 +41,13 @@ Suggests:
     tmap,
     sp,
     viridis,
-    markdown
+    markdown,
+    data.table,
+    purrr,
+    readr,
+    slam,
+    tibble,
+    methods
 LinkingTo: 
   Rcpp, 
   RcppArmadillo, 
