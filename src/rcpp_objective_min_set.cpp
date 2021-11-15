@@ -142,6 +142,7 @@ bool rcpp_objective_min_set(SEXP x,
 
   double connectivityCoeff;
   int row_constraint = op->_rhs.size();
+  int number_y_variables = 0;
   col_constraint = op->_obj.size();
 
   if(boundary_size != 0  && blm != 0){
@@ -149,6 +150,7 @@ bool rcpp_objective_min_set(SEXP x,
 
     for(arma::sp_mat::const_iterator it = z.begin(); it != z.end(); ++it) {
       if(it.row() != it.col()){
+        number_y_variables++;
         connectivityCoeff = -1*(*it);
 
         // objective vector
@@ -206,6 +208,7 @@ bool rcpp_objective_min_set(SEXP x,
       }
     }
   }
+  op->_boundary_size = number_y_variables;
 
   //------------------------------------------------------------------------------------------
   //--------------------- (coefficients associated with p[i1,i2,k] variables) ------------------

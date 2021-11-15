@@ -74,7 +74,7 @@ getPerformance <- function(x) {
                         gap = ifelse(is.numeric(x$data$gap),
                                      base::round(x$data$gap * 100, 3),
                                      x$data$gap),
-                        solving_time = round(x$data$runtime, 3),
+                        solving_time = base::round(x$data$runtime, 3),
                         status = getStatus(x))
     }
   }

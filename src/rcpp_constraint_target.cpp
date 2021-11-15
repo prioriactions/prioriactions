@@ -68,15 +68,14 @@ bool rcpp_constraint_target(SEXP x,
       if(count_threats == 0){
         // conservation
         op->_A_i.push_back(row_constraint);
-        op->_A_j.push_back(col_constraint);
-        op->_A_x.push_back(feature_intensity);
       }
       else{
         //recovery
         op->_A_i.push_back(row_constraint + 1);
-        op->_A_j.push_back(col_constraint);
-        op->_A_x.push_back(feature_intensity);
       }
+      op->_A_j.push_back(col_constraint);
+      op->_A_x.push_back(feature_intensity);
+
       col_constraint++;
     }
     op->_rhs.push_back(targets_conservation[s]);

@@ -8,29 +8,36 @@ test_that("new data-class", {
 test_that("get methods", {
   # simulate data
   status_pu <- sample(0:3, 10, replace = TRUE)
-  status_action <- sample(0:3, 10, replace = TRUE)
+  weight <- ifelse(status_pu == 3, 0, 1)
+  status_action <- sample(0:3, 10, replace = TRUE)*weight
   bound <- expand.grid(seq_len(10), seq_len(10))
   colnames(bound) <- c("id1", "id2")
 
-  pu_sim <- data.frame(id = seq_len(10),
-                       monitoring_cost = c(0.1, runif(9)),
-                       status = ifelse(status_pu == 1, 0 , status_pu))
-  features_sim <- data.frame(id = seq_len(2),
-                             target_recovery = runif(2),
-                             name = letters[seq_len(2)])
-  dist_features_sim <- data.frame(pu = rep(seq_len(10), 2),
-                                  feature = c(rep(1, 10), rep(2, 10)),
-                                  amount = runif(20))
-  threats_sim <- data.frame(id = seq_len(1),
-                            blm_actions = runif(1),
-                            name = letters[seq_len(1)])
-  dist_threats_sim <- data.frame(pu = seq_len(10),
-                                 threat = rep(1, 10),
-                                 amount = rep(1, 10),
-                                 action_cost = runif(10),
-                                 status = ifelse(status_action == 1, 0 , status_action))
-  boundary_sim <- data.frame(bound,
-                             boundary = runif(nrow(bound)))
+  pu_sim <- data.frame(
+    id = seq_len(10),
+    monitoring_cost = c(0.1, runif(9)),
+    status = ifelse(status_pu == 1, 0 , status_pu))
+  features_sim <- data.frame(
+    id = seq_len(2),
+    target_recovery = runif(2),
+    name = letters[seq_len(2)])
+  dist_features_sim <- data.frame(
+    pu = rep(seq_len(10), 2),
+    feature = c(rep(1, 10), rep(2, 10)),
+    amount = runif(20))
+  threats_sim <- data.frame(
+    id = seq_len(1),
+    blm_actions = runif(1),
+    name = letters[seq_len(1)])
+  dist_threats_sim <- data.frame(
+    pu = seq_len(10),
+    threat = rep(1, 10),
+    amount = rep(1, 10),
+    action_cost = runif(10),
+    status = ifelse(status_action == 1, 0 , status_action))
+  boundary_sim <- data.frame(
+    bound,
+    boundary = runif(nrow(bound)))
 
   l <- list(
     pu = pu_sim,

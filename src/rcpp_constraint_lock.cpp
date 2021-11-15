@@ -30,7 +30,7 @@ bool rcpp_constraint_lock(SEXP x,
       }
 
       op->_sense.push_back("==");
-      row_constraint = row_constraint + 1;
+      row_constraint++;
     }
   }
 
@@ -44,7 +44,7 @@ bool rcpp_constraint_lock(SEXP x,
   for(int a = 0; a < number_of_actions; a++){
     if(status_actions[a] != 0){
       op->_A_i.push_back(row_constraint);
-      op->_A_j.push_back(a);
+      op->_A_j.push_back(number_of_units + a);
       op->_A_x.push_back(1);
 
       if(status_actions[a] == 2){
@@ -55,7 +55,7 @@ bool rcpp_constraint_lock(SEXP x,
       }
 
       op->_sense.push_back("==");
-      row_constraint = row_constraint + 1;
+      row_constraint++;
     }
   }
   return true;

@@ -152,45 +152,13 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
     stop("invalid name model")
   }
 
-  #Verifying structure of models -------------------------------------
-  if(model_type == "minimizeCosts"){
-
-    ## Targets_recovery
-    features <- x$getData("features")
-    assertthat::assert_that(
-      assertthat::has_name(features, "target_recovery"),
-      is.numeric(features$target_recovery),
-      assertthat::noNA(features$target_recovery)
-    )
-
-    if(assertthat::has_name(features, "target_conservation")){
-      assertthat::assert_that(
-        is.numeric(features$target_conservation),
-        assertthat::noNA(features$target_conservation)
-      )
-    }
-    else{
-      x$data$features$target_conservation <- 0
-    }
-
-    ## Presolve
-    presolve(x, model_type = model_type)
-
-    features <- x$getData("features")
-    features <- features[, c("internal_id", "target_recovery", "target_conservation")]
-  }
-  else if(model_type == "maximizeBenefits"){
-    ## Presolve
-    budget <- presolve(x, model_type = model_type, budget = budget)
-
-    features <- x$getData("features")
-    features <- features[, "internal_id"]
-  }
-  #-------------------------------------------------------------------
+  # Rounding numeric parameters
+  budget <- base::round(budget, 3)
+  blm <- base::round(blm, 3)
 
   ## Getting data
   pu <- x$getData("pu")
-
+  features <- x$getData("features")
   dist_features <- x$getData("dist_features")
   threats <- x$getData("threats")
   dist_threats <- x$getData("dist_threats")
@@ -198,7 +166,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
   boundary <- x$getData("boundary")
 
   pu <- pu[, c("internal_id", "monitoring_cost", "status")]
-
+  features <- features[, c("internal_id", "target_recovery", "target_conservation")]
   dist_features <- dist_features[, c("internal_pu", "internal_feature", "amount")]
   threats <- threats[, c("internal_id", "blm_actions")]
   dist_threats <- dist_threats[, c("internal_pu", "internal_threat", "amount", "action_cost", "status")]
@@ -245,9 +213,16 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
     stop("invalid number of segments for linearization")
   }
 
+  # Presolve---------------------------------------------------------
+  if(model_type == "minimizeCosts"){
+    features <- presolve(x, model_type = model_type, features = features)
+  }
+  else if(model_type == "maximizeBenefits"){
+    budget <- presolve(x, model_type = model_type, budget = budget)
+  }
+  #-------------------------------------------------------------------
 
-  #Creating mathematical model--------------------------------------------------
-
+  #Creating mathematical model----------------------------------------
   op <- rcpp_new_optimization_problem()
 
   rcpp_constraint_benefit(op, pu, features, dist_features, threats, dist_threats, sensitivity)
@@ -262,7 +237,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
     rcpp_objective_max_coverage(op, pu, features, dist_features, threats, dist_threats, boundary, blm, curve)
     rcpp_constraint_budget(op, pu, dist_threats, budget)
   }
-  #Getting model from cpp-------------------------------------------------------
+  #Getting model from cpp----------------------------------------------
 
   model <- rcpp_optimization_problem_as_list(op)
   args <- list(blm = blm, curve = curve,
@@ -271,7 +246,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
 
   model$A <- Matrix::sparseMatrix(i = model$A_i + 1, j = model$A_j + 1, x = model$A_x)
 
-  #create list of curve items---------------------------------------------------
+  #create list of curve items------------------------------------------
   if(curve != 1){
     genconpow <- list()
 
@@ -282,7 +257,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
     genconpow <- NULL
   }
 
-  # create Optimization Problem object-------------------------------------------
+  # create Optimization Problem object----------------------------------
 
   pproto(NULL, OptimizationProblem,
          data = list(
@@ -290,6 +265,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
            A = model$A, bounds = model$bounds,
            modelsense = model$modelsense,
            genconpow = genconpow,
+           boundary_size = model$boundary_size,
            args = args
          ),
          ConservationClass = x

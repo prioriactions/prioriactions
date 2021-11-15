@@ -16,11 +16,16 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
   int number_of_units = pu_data.nrows();
   int number_of_features = features_data.nrows();
   int large_solution = solution.size();
+  NumericVector status_units = pu_data["status"];
 
   arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data,
                                                                     number_of_units,
                                                                     number_of_threats,
                                                                     dist_threats_data["amount"]);
+  arma::sp_mat dist_threats_extended_status = create_dist_threats_extended(dist_threats_data,
+                                                                    number_of_units,
+                                                                    number_of_threats,
+                                                                    dist_threats_data["status"]);
   arma::sp_mat dist_features_extended = create_dist_features_extended(dist_features_data, number_of_units, number_of_features);
   arma::sp_mat sensitivity_extended = create_sensitivity_extended(sensitivity_data, number_of_features, number_of_threats);
   arma::sp_mat sensitivity_a_extended = create_sensitivity_param_extended(sensitivity_data, number_of_features, number_of_threats, "a");
@@ -32,6 +37,7 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
   int pu_id;
   int threat_id;
   int sol_action_id;
+  int action_status;
 
   double response_coef_variable;
   double response_coef_constant;
@@ -56,110 +62,102 @@ DataFrame rcpp_stats_benefit(DataFrame pu_data,
          it_species != dist_features_extended.end_col(s); ++it_species) {
       pu_id = it_species.row();
       feature_intensity = dist_features_extended(pu_id, s);
-      specie_distribution[s] = specie_distribution[s] + feature_intensity;
+      specie_distribution[s]++;
 
       sum_alpha = 0.0;
       alpha = 0.0;
 
-      for (auto it_threats = dist_threats_extended.begin_row(pu_id);
-           it_threats != dist_threats_extended.end_row(pu_id); ++it_threats) {
-        threat_id = it_threats.col();
+      if(status_units[pu_id] != 3){
 
-        if(sensitivity_extended(s, threat_id) == 1){
-          threat_intensity = dist_threats_extended(pu_id, threat_id);
+        for (auto it_threats = dist_threats_extended.begin_row(pu_id);
+             it_threats != dist_threats_extended.end_row(pu_id); ++it_threats) {
+          threat_id = it_threats.col();
 
-          if(sum_alpha == 0){
-            specie_distribution_threatened[s] = specie_distribution_threatened[s] + feature_intensity;
-          }
+          if(sensitivity_extended(s, threat_id) == 1){
+            threat_intensity = dist_threats_extended(pu_id, threat_id);
 
-          //calculate alpha value
-          threat_intensity = dist_threats_extended(pu_id, threat_id);
-          param_a = sensitivity_a_extended(s, threat_id);
-          param_b = sensitivity_b_extended(s, threat_id);
-          param_c = sensitivity_c_extended(s, threat_id);
-          param_d = sensitivity_d_extended(s, threat_id);
+            if(sum_alpha == 0){
+              specie_distribution_threatened[s]++;
+            }
 
-          if(threat_intensity <= param_a){
-            // intensity below or equal to a
-            response_coef_constant = param_d;
-            alpha = 1 - response_coef_constant;
+            //calculate alpha value
+            threat_intensity = dist_threats_extended(pu_id, threat_id);
+            param_a = sensitivity_a_extended(s, threat_id);
+            param_b = sensitivity_b_extended(s, threat_id);
+            param_c = sensitivity_c_extended(s, threat_id);
+            param_d = sensitivity_d_extended(s, threat_id);
+
+            if(threat_intensity <= param_a){
+              // intensity below or equal to a
+              response_coef_constant = param_d;
+              alpha = 1 - response_coef_constant;
+            }
+            else if(threat_intensity >= param_b){
+              // intensity above or equal to b
+              response_coef_constant = param_c;
+              alpha = 1 - response_coef_constant;
+            }
+            else{
+              // intensity between a and b
+              response_coef_constant = (double) (param_c*(threat_intensity - param_a) - param_d*(threat_intensity - param_b))/(param_b - param_a);
+              alpha = 1 - response_coef_constant;
+            }
+            sum_alpha = sum_alpha + alpha;
           }
-          else if(threat_intensity >= param_b){
-            // intensity above or equal to b
-            response_coef_constant = param_c;
-            alpha = 1 - response_coef_constant;
-          }
-          else{
-            // intensity between a and b
-            response_coef_constant = (double) (param_c*(threat_intensity - param_a) - param_d*(threat_intensity - param_b))/(param_b - param_a);
-            alpha = 1 - response_coef_constant;
-          }
-          sum_alpha = sum_alpha + alpha;
         }
-      }
 
-      for (auto it_threats = dist_threats_extended.begin_row(pu_id);
-           it_threats != dist_threats_extended.end_row(pu_id); ++it_threats) {
-        threat_id = it_threats.col();
+        for (auto it_threats = dist_threats_extended.begin_row(pu_id);
+             it_threats != dist_threats_extended.end_row(pu_id); ++it_threats) {
+          threat_id = it_threats.col();
 
-        if(sensitivity_extended(s, threat_id) == 1){
-          threat_intensity = dist_threats_extended(pu_id, threat_id);
-
-          //calculate alpha value
-          threat_intensity = dist_threats_extended(pu_id, threat_id);
-          param_a = sensitivity_a_extended(s, threat_id);
-          param_b = sensitivity_b_extended(s, threat_id);
-          param_c = sensitivity_c_extended(s, threat_id);
-          param_d = sensitivity_d_extended(s, threat_id);
-
-          if(threat_intensity <= param_a){
-            // intensity below or equal to a
-            response_coef_variable = 0.0;
-            response_coef_constant = param_d;
-            alpha = 1 - response_coef_constant;
-          }
-          else if(threat_intensity >= param_b){
-            // intensity above or equal to b
-            response_coef_variable = param_d - param_c;
-            response_coef_constant = param_c;
-            alpha = 1 - response_coef_constant;
-          }
-          else{
-            // intensity between a and b
-            response_coef_variable = (double) ((param_a - threat_intensity)*(param_c - param_d))/(param_b - param_a);
-            response_coef_constant = (double) (param_c*(threat_intensity - param_a) - param_d*(threat_intensity - param_b))/(param_b - param_a);
-            alpha = 1 - response_coef_constant;
-          }
-
-          if(sum_alpha != 0.0){
+          if(sensitivity_extended(s, threat_id) == 1){
+            threat_intensity = dist_threats_extended(pu_id, threat_id);
+            action_status = dist_threats_extended_status(pu_id, threat_id);
             sol_action_id = number_of_units + actions_extended(pu_id, threat_id) - 1;
 
-            //// x_ik
-            //benefit_maximum_nothing[s] = benefit_maximum_nothing[s] + ((response_coef_constant * alpha)/sum_alpha)*feature_intensity;
-            //benefit_maximum_recovery[s] = benefit_maximum_recovery[s] + ((response_coef_variable * alpha)/sum_alpha)*feature_intensity;
+            if(sum_alpha != 0.0 && action_status != 3){
 
-            //if(large_solution != 1){
-            //  benefit_solution_nothing[s] = benefit_solution_nothing[s] + solution[pu_id]*(((response_coef_constant * alpha)/sum_alpha)*feature_intensity);
-            //  benefit_solution_recovery[s] = benefit_solution_recovery[s] + solution[sol_action_id]*(((response_coef_variable * alpha)/sum_alpha)*feature_intensity);
-            //}
+              //calculate alpha value
+              param_a = sensitivity_a_extended(s, threat_id);
+              param_b = sensitivity_b_extended(s, threat_id);
+              param_c = sensitivity_c_extended(s, threat_id);
+              param_d = sensitivity_d_extended(s, threat_id);
 
-            //benefit_maximum_recovery[s] = benefit_maximum_recovery[s] + ((response_coef_constant * alpha)/sum_alpha)*feature_intensity + ((response_coef_variable * alpha)/sum_alpha)*feature_intensity;
-            benefit_maximum_recovery[s] = benefit_maximum_recovery[s] + ((response_coef_variable * alpha)/sum_alpha)*feature_intensity;
+              if(threat_intensity <= param_a){
+                // intensity below or equal to a
+                response_coef_variable = 0.0;
+                response_coef_constant = param_d;
+                alpha = 1 - response_coef_constant;
+              }
+              else if(threat_intensity >= param_b){
+                // intensity above or equal to b
+                response_coef_variable = param_d - param_c;
+                response_coef_constant = param_c;
+                alpha = 1 - response_coef_constant;
+              }
+              else{
+                // intensity between a and b
+                response_coef_variable = (double) ((param_a - threat_intensity)*(param_c - param_d))/(param_b - param_a);
+                response_coef_constant = (double) (param_c*(threat_intensity - param_a) - param_d*(threat_intensity - param_b))/(param_b - param_a);
+                alpha = 1 - response_coef_constant;
+              }
 
-            if(large_solution != 1){
-              //benefit_solution_recovery[s] = benefit_solution_recovery[s] + solution[sol_action_id]*(((response_coef_variable * alpha)/sum_alpha)*feature_intensity) + solution[pu_id]*(((response_coef_constant * alpha)/sum_alpha)*feature_intensity);
-              benefit_solution_recovery[s] = benefit_solution_recovery[s] + solution[sol_action_id]*(((response_coef_variable * alpha)/sum_alpha)*feature_intensity);
+              benefit_maximum_recovery[s] = benefit_maximum_recovery[s] + ((response_coef_variable * alpha)/sum_alpha)*feature_intensity;
+
+              if(large_solution != 1){
+                benefit_solution_recovery[s] = benefit_solution_recovery[s] + solution[sol_action_id]*(((response_coef_variable * alpha)/sum_alpha)*feature_intensity);
+              }
             }
           }
         }
-      }
 
-      if(sum_alpha == 0.0){
-        //z variables
-        benefit_maximum_nothing[s] = benefit_maximum_nothing[s] + 1;
+        if(sum_alpha == 0.0){
+          //z variables
+          benefit_maximum_nothing[s] = benefit_maximum_nothing[s] + 1;
 
-        if(large_solution != 1){
-          benefit_solution_nothing[s] = benefit_solution_nothing[s] + solution[pu_id];
+          if(large_solution != 1){
+            benefit_solution_nothing[s] = benefit_solution_nothing[s] + solution[pu_id];
+          }
         }
       }
     }

@@ -79,7 +79,7 @@ evalBlm <- function(values = c(), ...) {
 
   for(blm in values){
 
-    name_iter <- paste0("Blm", blm)
+    name_iter <- paste0("Blm", base::round(blm, 3))
     params_iter <- params
     params_iter$blm <- blm
 
@@ -90,8 +90,18 @@ evalBlm <- function(values = c(), ...) {
     )
 
     #Creating mathematical model--------------------------------------------------
-    optimization_model <- do.call(problem, args = append(x = conservation_model,
-                                                            params_iter[names(params_iter) %in% params_model]))
+    if(it == 1){
+      optimization_model <- do.call(problem, args = append(x = conservation_model,
+                                                           params_iter[names(params_iter) %in% params_model]))
+    }
+    else if(values[it - 1] == 0){
+      optimization_model <- do.call(problem, args = append(x = conservation_model,
+                                                           params_iter[names(params_iter) %in% params_model]))
+    }
+    else{
+      optimization_model$data$args$blm <- blm
+      optimization_model <- problem_modifier(optimization_model, blm = blm)
+    }
 
     #changing name of output file
     if(any(names(params) %in% "name_output_file")){

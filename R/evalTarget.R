@@ -85,16 +85,14 @@ evalTarget <- function(values = c(), ...) {
   it = 1
   name_iter = ""
   conservation_model <- do.call(inputData, args = params[names(params) %in% params_data])
-  maximum_target_recovery <- getPotentialBenefit(conservation_model)$maximum.recovery.benefit
-  maximum_target_conservation <- getPotentialBenefit(conservation_model)$maximum.conservation.benefit
+  potential_benefit <- getPotentialBenefit(conservation_model)
+  maximum_target_recovery <- potential_benefit$maximum.recovery.benefit
+  maximum_target_conservation <- potential_benefit$maximum.conservation.benefit
 
   for(i in values){
 
-    name_iter <- paste0("Prop", i)
+    name_iter <- paste0("Prop", base::round(i, 3))
     params_iter <- c(params, model_type = "minimizeCosts")
-
-    conservation_model$data$features$target_recovery <- maximum_target_recovery * i
-    conservation_model$data$features$target_conservation <- maximum_target_conservation * i
 
     message(paste0(
       "*********************************",
@@ -104,16 +102,15 @@ evalTarget <- function(values = c(), ...) {
 
     #Creating mathematical model--------------------------------------------------
     if(it == 1){
+      conservation_model$data$features$target_recovery <- maximum_target_recovery * i
+      conservation_model$data$features$target_conservation <- maximum_target_conservation * i
+
       optimization_model <- do.call(problem, args = append(x = conservation_model,
                                                               params_iter[names(params_iter) %in% params_model]))
     }
     else{
-      rhs_size <- length(optimization_model$data$rhs)
-      features_size <- conservation_model$getFeatureAmount()
-
-      optimization_model$data$rhs[(rhs_size - 2*features_size + 1):(rhs_size - features_size)] <- conservation_model$data$features$target_conservation
-      optimization_model$data$rhs[(rhs_size - features_size + 1):rhs_size] <- conservation_model$data$features$target_recovery
-
+      # problem modifier
+      optimization_model <- problem_modifier(optimization_model, prop_target = i)
     }
 
     #changing name of output file

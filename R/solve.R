@@ -122,186 +122,191 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
                   solution_limit = FALSE, cores = 2, verbose = TRUE,
                   name_output_file = "output", output_file = TRUE) {
 
-    # assert that arguments are valid
-    assertthat::assert_that(
-      inherits(a, "OptimizationProblem"),
-      isTRUE(all(is.finite(gap_limit))),
-      assertthat::is.scalar(gap_limit),
-      isTRUE(gap_limit >= 0), isTRUE(all(is.finite(time_limit))),
-      assertthat::is.count(time_limit),
-      assertthat::is.flag(solution_limit),
-      isTRUE(all(is.finite(cores))),
-      assertthat::is.count(cores),
-      isTRUE(cores <= parallel::detectCores(TRUE)),
-      assertthat::is.flag(verbose),
-      assertthat::is.flag(output_file),
-      assertthat::is.string(name_output_file)
+  # assert that arguments are valid
+  assertthat::assert_that(
+    inherits(a, "OptimizationProblem"),
+    isTRUE(all(is.finite(gap_limit))),
+    assertthat::is.scalar(gap_limit),
+    isTRUE(gap_limit >= 0), isTRUE(all(is.finite(time_limit))),
+    assertthat::is.count(time_limit),
+    assertthat::is.flag(solution_limit),
+    isTRUE(all(is.finite(cores))),
+    assertthat::is.count(cores),
+    isTRUE(cores <= parallel::detectCores(TRUE)),
+    assertthat::is.flag(verbose),
+    assertthat::is.flag(output_file),
+    assertthat::is.string(name_output_file)
+  )
+
+  # Rounding numeric parameters
+  gap_limit <- base::round(gap_limit, 3)
+  time_limit <- base::round(time_limit, 3)
+
+
+  if (requireNamespace("gurobi", quietly = TRUE)) {
+    solver_default <- "gurobi"
+  } else if (requireNamespace("Rsymphony", quietly = TRUE)) {
+    solver_default <- "symphony"
+    #} else if (requireNamespace("Rglpk", quietly = TRUE)) {
+    #  solver_default <- "glpk"
+  } else {
+    stop("No optimization problem solvers found on system")
+  }
+
+  if (solver == "") {
+    solver <- solver_default
+  }
+  else {
+    if (!solver %in% c("gurobi", "symphony")) {
+      stop("Solver not available")
+    }
+    else if (identical(solver, "gurobi") && !requireNamespace("gurobi", quietly = TRUE)) {
+      stop("Gurobi solver not found")
+    }
+    else if (identical(solver, "symphony") && !requireNamespace("Rsymphony", quietly = TRUE)) {
+      stop("SYMPHONY solver not found")
+    }
+  }
+
+  #arguments
+  args <- list(gap = gap_limit, timelimit = time_limit, cores = cores, verbose = verbose,
+               solver = solver, solution_limit = solution_limit, name_output_file = name_output_file,
+               output_file = output_file)
+
+  ## Solving
+  model <- a$getDataList()
+  ## Gurobi solver
+  if (solver == "gurobi") {
+    ## Gurobi model
+    model$sense <- replace(model$sense, model$sense == "==", "=")
+    model$lb <- a$getData("bounds")$lower$val
+    model$ub <- a$getData("bounds")$upper$val
+
+    ## Gurobi parameters
+    params <- list()
+    params$Threads <- cores
+    params$LogToConsole <- as.integer(verbose)
+    # Stop condition: Relative MIP optimality gap
+    params$MIPGap <- gap_limit
+    # Stop condition: Time limit
+    params$TimeLimit <- time_limit
+
+    #log gurobi
+    if(isTRUE(output_file)){
+      params$LogFile <- paste0(name_output_file,"_log.txt")
+    }
+
+    # Stop condition: MIP feasible solution limit
+    if (!isTRUE(solution_limit)) {
+      params$SolutionLimit <- NULL
+    } else {
+      params$SolutionLimit <- 1
+    }
+
+    if(model$args$curve != 1){
+      params$FuncPieces <- 1
+      params$FuncPieceLength <- round(1/model$args$segments, digits = 1)
+    }
+
+    solution <- gurobi::gurobi(model, params)
+
+    solution$status_code <- dplyr::case_when(
+      solution$status == "OPTIMAL" ~ 0L,
+      (solution$status == "INF_OR_UNBD" || solution$status == "INFEASIBLE" || solution$status == "UNBOUNDED") ~ 1L,
+      (solution$status == "TIME_LIMIT" && !is.null(solution$objval)) ~ 2L,
+      (solution$status == "TIME_LIMIT" && is.null(solution$objval)) ~ 3L,
+      (solution$status == "SOLUTION_LIMIT") ~ 4L,
+      TRUE ~ 999L
     )
 
-    if (requireNamespace("gurobi", quietly = TRUE)) {
-      solver_default <- "gurobi"
-    } else if (requireNamespace("Rsymphony", quietly = TRUE)) {
-      solver_default <- "symphony"
-      #} else if (requireNamespace("Rglpk", quietly = TRUE)) {
-      #  solver_default <- "glpk"
-    } else {
-      stop("No optimization problem solvers found on system")
-    }
-
-    if (solver == "") {
-      solver <- solver_default
-    }
-    else {
-      if (!solver %in% c("gurobi", "symphony")) {
-        stop("Solver not available")
-      }
-      else if (identical(solver, "gurobi") && !requireNamespace("gurobi", quietly = TRUE)) {
-        stop("Gurobi solver not found")
-      }
-      else if (identical(solver, "symphony") && !requireNamespace("Rsymphony", quietly = TRUE)) {
-        stop("SYMPHONY solver not found")
-      }
-    }
-
-    #arguments
-    args <- list(gap = gap_limit, timelimit = time_limit, cores = cores, verbose = verbose,
-                      solver = solver, solution_limit = solution_limit, name_output_file = name_output_file,
-                      output_file = output_file)
-
-    ## Solving
-    model <- a$getDataList()
-    ## Gurobi solver
-    if (solver == "gurobi") {
-      ## Gurobi model
-      model$sense <- replace(model$sense, model$sense == "==", "=")
-      model$lb <- a$getData("bounds")$lower$val
-      model$ub <- a$getData("bounds")$upper$val
-
-      ## Gurobi parameters
-      params <- list()
-      params$Threads <- cores
-      params$LogToConsole <- as.integer(verbose)
-      # Stop condition: Relative MIP optimality gap
-      params$MIPGap <- gap_limit
-      # Stop condition: Time limit
-      params$TimeLimit <- time_limit
-
-      #log gurobi
-      if(isTRUE(output_file)){
-        params$LogFile <- paste0(name_output_file,"_log.txt")
-      }
-
-      # Stop condition: MIP feasible solution limit
-      if (!isTRUE(solution_limit)) {
-        params$SolutionLimit <- NULL
-      } else {
-        params$SolutionLimit <- 1
-      }
-
-      if(model$args$curve != 1){
-        params$FuncPieces <- 1
-        params$FuncPieceLength <- round(1/model$args$segments, digits = 1)
-      }
-
-      solution <- gurobi::gurobi(model, params)
-
-      solution$status_code <- dplyr::case_when(
-        solution$status == "OPTIMAL" ~ 0L,
-        (solution$status == "INF_OR_UNBD" || solution$status == "INFEASIBLE" || solution$status == "UNBOUNDED") ~ 1L,
-        (solution$status == "TIME_LIMIT" && !is.null(solution$objval)) ~ 2L,
-        (solution$status == "TIME_LIMIT" && is.null(solution$objval)) ~ 3L,
-        (solution$status == "SOLUTION_LIMIT") ~ 4L,
-        TRUE ~ 999L
-      )
-
-      s <- pproto(NULL, Solution,
-                  data = list(
-                    objval = solution$objval, sol = solution$x, gap = solution$mipgap,
-                    status = solution$status_code, runtime = solution$runtime, args = args
-                  ),
-                  OptimizationClass = a
-      )
-    }
-    ## SYMPHONY solver
-    else {
-      ## SYMPHONY solver
-      model$mat <- model$A
-      model$dir <- model$sense
-      model$max <- ifelse(model$modelsense == "min", FALSE, TRUE)
-      model$types <- model$vtype
-
-      ## SYMPHONY parameters
-      verbose_mod <- as.integer(verbose) - 2
-
-      #export log
-      if(isTRUE(output_file)){
-        warning("It is not possible to export information about the log using symphony solver",call.=FALSE, immediate. = TRUE)
-      }
-
-      runtime_symphony <- system.time(
-        solution <- Rsymphony::Rsymphony_solve_LP(model$obj, model$mat, model$dir, model$rhs, model$bounds, model$types,
-                                                  model$max, gap_limit = gap_limit, time_limit = time_limit,
-                                                  verbosity = verbose_mod, first_feasible = solution_limit
-        )
-      )[[1]]
-
-      ## Optimization status codes from SYMPHONY solver
-      ## "TM_OPTIMAL_SOLUTION_FOUND"  = 0L
-      ## "TM_TARGET_GAP_ACHIEVED"     = 231L
-      ## "TM_NO_SOLUTION"             = 226L
-      ## "TM_UNBOUNDED"               = 237L
-      ## "TM_TIME_LIMIT_EXCEEDED"     = 228L
-      ## "TM_FEASIBLE_SOLUTION_FOUND" = 235L
-      ## "TM_FOUND_FIRST_FEASIBLE"    = 232L
-
-      solution$status_code <- dplyr::case_when(
-        (solution$status == 0L || solution$status == 231L) ~ 0L,
-        (solution$status == 226L || solution$status == 237L) ~ 1L,
-        (solution$status == 235L || solution$status == 228L) ~ 2L,
-        (solution$status == 232L) ~ 4L,
-        TRUE ~ 999L
-      )
-
-      #Gap_limit
-      if(isTRUE(solution$status == 0L)){
-        solution$gap <- gap_limit
-      }
-      else{
-        solution$gap <- "No reported"
-      }
-
-      s <- pproto(NULL, Solution,
-                  data = list(objval = solution$objval, sol = solution$solution, gap = solution$gap, status = solution$status_code,
-                              runtime = runtime_symphony, args = args),
-                  OptimizationClass = a)
-
-    } ## END IF (SYMPHONY Solver)
-
-    #exporting solution data
-    number_of_pu <- a$ConservationClass$getPlanningUnitsAmount()
-    number_of_actions <- a$ConservationClass$getActionsAmount()
-    benefits <- a$ConservationClass$getData("dist_features")
-    number_of_dist_features <- nrow(benefits)
-
-    s$data$sol_monitoring <- base::round(s$data$sol[1:number_of_pu])
-    s$data$sol_actions <- base::round(s$data$sol[(number_of_pu + 1):(number_of_pu + number_of_actions)])
-    #s$data$sol_recovery <- s$data$sol[(number_of_pu + number_of_actions + 1):(number_of_pu + number_of_actions + number_of_dist_features)]
-    list_recovery <- rcpp_stats_recovery(s$data$sol,
-                                         a$ConservationClass$getData("pu"),
-                                         a$ConservationClass$getData("features"),
-                                         a$ConservationClass$getData("dist_features"),
-                                         a$ConservationClass$getData("dist_threats"),
-                                         a$ConservationClass$getData("threats"),
-                                         a$ConservationClass$getData("sensitivity"))
-    s$data$sol_recovery <- list_recovery$recovery
-    s$data$sol_conservation <- list_recovery$conservation
-    #s$data$sol_conservation <- s$data$sol[(number_of_pu + number_of_actions + number_of_dist_features + 1):(number_of_pu + number_of_actions + 2*number_of_dist_features)]
-
-    # Creating txt output
-    if(isTRUE(output_file)){
-      writeOutputs(s, name = name_output_file)
-    }
-
-    s
+    s <- pproto(NULL, Solution,
+                data = list(
+                  objval = solution$objval, sol = solution$x, gap = solution$mipgap,
+                  status = solution$status_code, runtime = solution$runtime, args = args
+                ),
+                OptimizationClass = a
+    )
   }
+  ## SYMPHONY solver
+  else {
+    ## SYMPHONY solver
+    model$mat <- model$A
+    model$dir <- model$sense
+    model$max <- ifelse(model$modelsense == "min", FALSE, TRUE)
+    model$types <- model$vtype
+
+    ## SYMPHONY parameters
+    verbose_mod <- as.integer(verbose) - 2
+
+    #export log
+    if(isTRUE(output_file)){
+      warning("It is not possible to export information about the log using symphony solver",call.=FALSE, immediate. = TRUE)
+    }
+
+    runtime_symphony <- system.time(
+      solution <- Rsymphony::Rsymphony_solve_LP(model$obj, model$mat, model$dir, model$rhs, model$bounds, model$types,
+                                                model$max, gap_limit = gap_limit, time_limit = time_limit,
+                                                verbosity = verbose_mod, first_feasible = solution_limit
+      )
+    )[[1]]
+
+    ## Optimization status codes from SYMPHONY solver
+    ## "TM_OPTIMAL_SOLUTION_FOUND"  = 0L
+    ## "TM_TARGET_GAP_ACHIEVED"     = 231L
+    ## "TM_NO_SOLUTION"             = 226L
+    ## "TM_UNBOUNDED"               = 237L
+    ## "TM_TIME_LIMIT_EXCEEDED"     = 228L
+    ## "TM_FEASIBLE_SOLUTION_FOUND" = 235L
+    ## "TM_FOUND_FIRST_FEASIBLE"    = 232L
+
+    solution$status_code <- dplyr::case_when(
+      (solution$status == 0L || solution$status == 231L) ~ 0L,
+      (solution$status == 226L || solution$status == 237L) ~ 1L,
+      (solution$status == 235L || solution$status == 228L) ~ 2L,
+      (solution$status == 232L) ~ 4L,
+      TRUE ~ 999L
+    )
+
+    #Gap_limit
+    if(isTRUE(solution$status == 0L)){
+      solution$gap <- gap_limit
+    }
+    else{
+      solution$gap <- "No reported"
+    }
+
+    s <- pproto(NULL, Solution,
+                data = list(objval = solution$objval, sol = solution$solution, gap = solution$gap, status = solution$status_code,
+                            runtime = runtime_symphony, args = args),
+                OptimizationClass = a)
+
+  } ## END IF (SYMPHONY Solver)
+
+  #exporting solution data
+  number_of_pu <- a$ConservationClass$getPlanningUnitsAmount()
+  number_of_actions <- a$ConservationClass$getActionsAmount()
+  benefits <- a$ConservationClass$getData("dist_features")
+  number_of_dist_features <- nrow(benefits)
+
+  s$data$sol_monitoring <- base::round(s$data$sol[1:number_of_pu])
+  s$data$sol_actions <- base::round(s$data$sol[(number_of_pu + 1):(number_of_pu + number_of_actions)])
+  #s$data$sol_recovery <- s$data$sol[(number_of_pu + number_of_actions + 1):(number_of_pu + number_of_actions + number_of_dist_features)]
+  list_recovery <- rcpp_stats_recovery(s$data$sol,
+                                       a$ConservationClass$getData("pu"),
+                                       a$ConservationClass$getData("features"),
+                                       a$ConservationClass$getData("dist_features"),
+                                       a$ConservationClass$getData("dist_threats"),
+                                       a$ConservationClass$getData("threats"),
+                                       a$ConservationClass$getData("sensitivity"))
+  s$data$sol_recovery <- list_recovery$recovery
+  s$data$sol_conservation <- list_recovery$conservation
+  #s$data$sol_conservation <- s$data$sol[(number_of_pu + number_of_actions + number_of_dist_features + 1):(number_of_pu + number_of_actions + 2*number_of_dist_features)]
+
+  # Creating txt output
+  if(isTRUE(output_file)){
+    writeOutputs(s, name = name_output_file)
+  }
+
+  s
+}
 

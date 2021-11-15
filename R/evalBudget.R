@@ -1,4 +1,4 @@
-#' @include presolve.R internal.R optimizationProblem-class.R writeOutputs.R
+#' @include presolve.R internal.R optimizationProblem-class.R writeOutputs.R problem_modifier.R
 #' @import Matrix Rcpp
 NULL
 
@@ -81,7 +81,7 @@ evalBudget <- function(values = c(), ...) {
 
   for(budget in values){
 
-    name_iter <- paste0("Budget", budget)
+    name_iter <- paste0("Budget", base::round(budget, 3))
     params_iter <- c(params, model_type = "maximizeBenefits")
     params_iter$budget <- budget
 
@@ -97,10 +97,10 @@ evalBudget <- function(values = c(), ...) {
                                                            params_iter[names(params_iter) %in% params_model]))
     }
     else{
-      rhs_size <- length(optimization_model$data$rhs)
-      optimization_model$data$rhs[rhs_size] <- budget
+      # problem modifier
+      optimization_model$data$args$budget <- budget
+      optimization_model <- problem_modifier(optimization_model, budget = budget)
     }
-
 
     #changing name of output file
     if(any(names(params) %in% "name_output_file")){

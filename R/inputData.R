@@ -268,6 +268,24 @@ methods::setMethod(
       features$name <- paste0("feature.", seq_len(nrow(features)))
     }
 
+    ## Targets_recovery
+    assertthat::assert_that(
+      assertthat::has_name(features, "target_recovery"),
+      is.numeric(features$target_recovery),
+      assertthat::noNA(features$target_recovery)
+    )
+
+    if(assertthat::has_name(features, "target_conservation")){
+      assertthat::assert_that(
+        is.numeric(features$target_conservation),
+        assertthat::noNA(features$target_conservation)
+      )
+    }
+    else{
+      features$target_conservation <- 0
+    }
+
+
     ## dist_features
     assertthat::assert_that(
       inherits(dist_features, "data.frame"),
@@ -342,6 +360,24 @@ methods::setMethod(
         assertthat::noNA(dist_threats$status),
         all(dist_threats$status %in% c(0, 2, 3))
       )
+
+      status_lock_out <- pu$status == 3
+
+      for(row in seq_along(sim_pu_data$id)){
+        if(isTRUE(status_lock_out[row])){
+
+          status_locked_out <- dist_threats[dist_threats$pu == pu$id[row], ]$status
+          status_incorrect <- any(status_locked_out == 2)
+
+          if(isTRUE(status_incorrect)){
+            warning(paste0("The pu ", sim_pu_data$id[row], " was set as locked out so it is not possible to set actions on it (lock in). Therefore, all actions in that unit will be set as locked out"), call. = FALSE, immediate. = TRUE)
+          }
+
+          if(length(status_locked_out) != 0){
+            dist_threats[dist_threats$pu == pu$id[row], ]$status <- 3
+          }
+        }
+      }
     } else {
       pu$status <- 0
     }
@@ -487,8 +523,22 @@ methods::setMethod(
       dist_threats <- dist_threats[!dist_threats$threat %in% dif_threats_dangerous, ]
     }
 
-    ## Creating internal id's
+    ## Rounding numeric fields of input data
+    pu$monitoring_cost <- base::round(pu$monitoring_cost, 3)
+    features$target_recovery <- base::round(features$target_recovery, 3)
+    features$target_conservation <- base::round(features$target_conservation, 3)
+    dist_features$amount <- base::round(dist_features$amount, 3)
+    threats$blm_actions <- base::round(threats$blm_actions, 3)
+    dist_threats$amount <- base::round(dist_threats$amount, 3)
+    dist_threats$action_cost <- base::round(dist_threats$action_cost, 3)
+    sensitivity$a <- base::round(sensitivity$a, 3)
+    sensitivity$b <- base::round(sensitivity$b, 3)
+    sensitivity$c <- base::round(sensitivity$c, 3)
+    sensitivity$d <- base::round(sensitivity$d, 3)
+    boundary$boundary <- base::round(boundary$boundary, 3)
 
+
+    ## Creating internal id's
     # pu
     pu$internal_id <- seq_len(nrow(pu))
 

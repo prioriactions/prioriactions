@@ -43,6 +43,7 @@ public:
   std::vector<std::string> _name;
   std::vector<double> _id_pow_variables;
   std::vector<double> _id_variables;
+  int _boundary_size;
 
   // methods
   inline const std::size_t nrow() const {

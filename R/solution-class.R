@@ -71,10 +71,12 @@ Solution <- pproto(
     message(
       "Solution overview",
       "\n  name: ", self$name,
-      "\n  objective value: ", self$data$objval,
-      "\n  gap:  ", self$data$gap,
+      "\n  objective value: ", base::round(self$data$objval, 3),
+      "\n  gap:  ", ifelse(is.numeric(self$data$gap),
+                           paste0(base::round(self$data$gap * 100, 3), "%"),
+                           self$data$gap),
       "\n  status:  ",  getStatus(self),
-      "\n  runtime: ", paste0(self$data$runtime, " sec")
+      "\n  runtime: ", paste0(base::round(self$data$runtime, 3), " sec")
     )
   },
   show = function(self) {
