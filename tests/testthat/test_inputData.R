@@ -1,51 +1,71 @@
-test_that("new data-class", {
-  # create data
-  data(sim_pu_data, sim_features_data, sim_dist_features_data,
-       sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
-       sim_boundary_data)
-
-  d <- inputData(pu = sim_pu_data,
-                 features = sim_features_data,
-                 dist_features = sim_dist_features_data,
-                 threats = sim_threats_data,
-                 dist_threats = sim_dist_threats_data,
-                 boundary = sim_boundary_data)
-
-  x <- pproto(NULL, Data, data = list(pu = sim_pu_data,
-                                      features = sim_features_data,
-                                      dist_features = sim_dist_features_data,
-                                      threats = sim_threats_data,
-                                      dist_threats = sim_dist_threats_data,
-                                      boundary = sim_boundary_data))
-  # tests
-  expect_equal(d, x)
-})
-
 test_that("get methods", {
 
-  # create data
-  data(sim_pu_data, sim_features_data, sim_dist_features_data,
-       sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
-       sim_boundary_data)
+  # simulate data
+  status_pu <- sample(0:3, 10, replace = TRUE)
+  weight <- ifelse(status_pu == 3, 0, 1)
+  status_action <- sample(0:3, 10, replace = TRUE)*weight
+  bound <- expand.grid(seq_len(10), seq_len(10))
+  colnames(bound) <- c("id1", "id2")
 
+  pu_sim <- data.frame(
+    id = seq_len(10),
+    monitoring_cost = c(0.1, runif(9)),
+    status = ifelse(status_pu == 1, 0 , status_pu))
+  features_sim <- data.frame(
+    id = seq_len(2),
+    target_recovery = runif(2),
+    name = letters[seq_len(2)])
+  dist_features_sim <- data.frame(
+    pu = rep(seq_len(10), 2),
+    feature = c(rep(1, 10), rep(2, 10)),
+    amount = runif(20))
+  threats_sim <- data.frame(
+    id = seq_len(1),
+    blm_actions = runif(1),
+    name = letters[seq_len(1)])
+  dist_threats_sim <- data.frame(
+    pu = seq_len(10),
+    threat = rep(1, 10),
+    amount = rep(1, 10),
+    action_cost = runif(10),
+    status = ifelse(status_action == 1, 0 , status_action))
+  boundary_sim <- data.frame(
+    bound,
+    boundary = runif(nrow(bound)))
+
+  d <- suppressWarnings(inputData(pu = pu_sim,
+                                  features = features_sim,
+                                  dist_features = dist_features_sim,
+                                  threats = threats_sim,
+                                  dist_threats = dist_threats_sim,
+                                  boundary = boundary_sim))
 
   # tests
-  expect_equal(x$getData("pu"), pu_sim)
-  expect_equal(x$getData("features"), features_sim)
-  expect_equal(x$getData("dist_features"), dist_features_sim)
-  expect_equal(x$getData("threats"), threats_sim)
-  expect_equal(x$getData("dist_threats"), dist_threats_sim)
-  expect_equal(x$getData("boundary"), boundary_sim)
-  expect_equal(x$getActionsAmount(), nrow(dist_threats_sim))
-  expect_equal(x$getFeatureAmount(), nrow(features_sim))
-  expect_equal(x$getFeatureNames(), features_sim$name)
-  expect_equal(x$getMonitoringCosts(), pu_sim$monitoring_cost)
-  expect_equal(x$getPlanningUnitsAmount(), nrow(pu_sim))
-  expect_equal(x$getActionCosts(), dist_threats_sim$action_cost)
-  expect_equal(x$getThreatNames(), threats_sim$name)
-  expect_equal(x$getThreatsAmount(), nrow(threats_sim))
-
-  # verify that object can be printed
-  suppressMessages(print(x))
-  suppressMessages(x)
+  #pu
+  expect_equal(d$data$pu$monitoring_cost, base::round(pu_sim$monitoring_cost, 3))
+  expect_equal(d$data$pu$internal_id, seq_len(nrow(pu_sim)))
+  #features
+  expect_equal(d$data$features$target_recovery, base::round(features_sim$target_recovery, 3))
+  expect_true(all(d$data$features$target_conservation == 0))
+  expect_equal(d$data$features$internal_id, seq_len(nrow(features_sim)))
+  expect_equal(d$data$features$name, letters[1:nrow(features_sim)])
+  #dist_features
+  expect_equal(d$data$dist_features$amount, base::round(dist_features_sim$amount, 3))
+  expect_true(all(d$data$dist_features$pu %in% pu_sim$id))
+  expect_true(all(d$data$dist_features$feature %in% features_sim$id))
+  #threats
+  expect_equal(d$data$threats$blm_actions, base::round(threats_sim$blm_actions, 3))
+  expect_equal(d$data$threats$internal_id, seq_len(nrow(threats_sim)))
+  expect_equal(d$data$threats$name, letters[1:nrow(threats_sim)])
+  #dist_threats
+  expect_equal(d$data$dist_threats$action_cost, base::round(dist_threats_sim$action_cost, 3))
+  expect_true(all(d$data$dist_threats$pu %in% pu_sim$id))
+  expect_true(all(d$data$dist_threats$threat %in% threats_sim$id))
+  #sensitivity
+  expect_true(all(d$data$sensitivity$a == 0))
+  expect_true(all(d$data$sensitivity$b == 1))
+  expect_true(all(d$data$sensitivity$c == 0))
+  expect_true(all(d$data$sensitivity$d == 1))
+  expect_true(all(d$data$sensitivity$internal_feature %in% features_sim$id))
+  expect_true(all(d$data$sensitivity$internal_threat %in% threats_sim$id))
 })

@@ -258,7 +258,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
   }
 
   # create Optimization Problem object----------------------------------
-
+  # x$data$features <- features
   pproto(NULL, OptimizationProblem,
          data = list(
            obj = model$obj, rhs = model$rhs, sense = model$sense, vtype = model$vtype,
