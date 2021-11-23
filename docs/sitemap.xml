@@ -4,7 +4,7 @@
     <loc>https://prioriactions.github.io/prioriactions//index.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/conservationProblem-class.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//reference/data-class.html</loc>
   </url>
   <url>
     <loc>https://prioriactions.github.io/prioriactions//reference/evalBlm.html</loc>
@@ -17,9 +17,6 @@
   </url>
   <url>
     <loc>https://prioriactions.github.io/prioriactions//reference/getActions.html</loc>
-  </url>
-  <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getConnectivity.html</loc>
   </url>
   <url>
     <loc>https://prioriactions.github.io/prioriactions//reference/getConnectivityPenalty.html</loc>
@@ -64,7 +61,7 @@
     <loc>https://prioriactions.github.io/prioriactions//reference/show.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/sim_data.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions//reference/simData.html</loc>
   </url>
   <url>
     <loc>https://prioriactions.github.io/prioriactions//reference/solution-class.html</loc>

@@ -96,7 +96,7 @@ presolve.Data <- function(x, ...) {
 
       warning(paste0("The budget will be set as the sum of the minimum costs to achieve the required actions: ", sum(costs_actions) + sum(costs_units)), call.=FALSE, immediate. = TRUE)
 
-      return(sum(costs_actions) + sum(costs_units) + 10**(-4))
+      return(costs_actions + costs_units + 10**(-4))
     }
     else{
       return(params$budget)

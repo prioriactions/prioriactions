@@ -28,6 +28,7 @@ test_that("data.frame inputs", {
 })
 
 test_that("verify gurobi and rphymphony", {
+  skip_on_ci()
   # create data
   data(sim_pu_data, sim_features_data, sim_dist_features_data,
        sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,

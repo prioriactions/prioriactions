@@ -9,29 +9,29 @@ test_that("get methods", {
 
   pu_sim <- data.frame(
     id = seq_len(10),
-    monitoring_cost = c(0.1, runif(9)),
+    monitoring_cost = c(0.1, sample(1:10, 9, replace = TRUE)),
     status = ifelse(status_pu == 1, 0 , status_pu))
   features_sim <- data.frame(
     id = seq_len(2),
-    target_recovery = runif(2),
+    target_recovery = sample(1:10, 2, replace = TRUE),
     name = letters[seq_len(2)])
   dist_features_sim <- data.frame(
     pu = rep(seq_len(10), 2),
     feature = c(rep(1, 10), rep(2, 10)),
-    amount = runif(20))
+    amount = sample(1:3, 20, replace = TRUE))
   threats_sim <- data.frame(
     id = seq_len(1),
-    blm_actions = runif(1),
+    blm_actions = sample(1:10, 1, replace = TRUE),
     name = letters[seq_len(1)])
   dist_threats_sim <- data.frame(
     pu = seq_len(10),
     threat = rep(1, 10),
     amount = rep(1, 10),
-    action_cost = runif(10),
+    action_cost = sample(1:10,10, replace = TRUE),
     status = ifelse(status_action == 1, 0 , status_action))
   boundary_sim <- data.frame(
     bound,
-    boundary = runif(nrow(bound)))
+    boundary = sample(1:10,nrow(bound), replace = TRUE))
 
   d <- suppressWarnings(inputData(pu = pu_sim,
                                   features = features_sim,

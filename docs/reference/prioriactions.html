@@ -98,7 +98,7 @@ and solve() functions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -219,16 +219,17 @@ and <code><a href='solve.html'>solve()</a></code> functions.</p>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 460 rows, 572 columns and 1137 nonzeros</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0x994b3e28</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 352 continuous, 220 integer (220 binary)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Optimize a model with 284 rows, 396 columns and 785 nonzeros</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model fingerprint: 0xc6718513</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 176 continuous, 220 integer (220 binary)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficient statistics:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Objective range  [1e+00, 1e+01]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   RHS range        [8e+00, 2e+01]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 277.0000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve removed 426 rows and 453 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 964.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Found heuristic solution: objective 396.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve removed 250 rows and 277 columns</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Presolve time: 0.00s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Presolved: 34 rows, 119 columns, 237 nonzeros</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Variable types: 0 continuous, 119 integer (101 binary)</span>
@@ -238,7 +239,7 @@ and <code><a href='solve.html'>solve()</a></code> functions.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  144.50000    0    2  277.00000  144.50000  47.8%     -    0s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      0     0  144.50000    0    2  396.00000  144.50000  63.5%     -    0s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> H    0     0                     149.0000000  144.50000  3.02%     -    0s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> *    0     0               0     146.0000000  146.00000  0.00%     -    0s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
@@ -248,7 +249,7 @@ and <code><a href='solve.html'>solve()</a></code> functions.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Explored 1 nodes (26 simplex iterations) in 0.00 seconds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Thread count was 2 (of 4 available processors)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 3: 146 149 277 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Solution count 4: 146 149 396 964 </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Best objective 1.460000000000e+02, best bound 1.460000000000e+02, gap 0.0000%</span>
@@ -257,9 +258,9 @@ and <code><a href='solve.html'>solve()</a></code> functions.</p>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Solution overview</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   name: sol</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   objective value: 146</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   gap:  0</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   gap:  0%</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span>   status:  Optimal solution (according to gap tolerance: 0)</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 0.00397300720214844 sec</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   runtime: 0.003 sec</span>
 <span class='r-in'></span>
 </pre>
   </div>

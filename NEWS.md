@@ -1,3 +1,7 @@
+# prioriactions 0.3.1
+
+- Release candidate for CRAN.
+
 # prioriactions 0.3.0
 
 - Update all functions documentation.

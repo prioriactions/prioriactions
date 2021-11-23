@@ -7,7 +7,7 @@ test_that("evaluate function whith porftolio object and type = total", {
        sim_boundary_data)
 
   # eval different blm values
-  blm_values = runif(2)
+  blm_values = sample(1:10, 2, replace = TRUE)/10
 
   port <- suppressWarnings(evalBlm(pu = sim_pu_data,
                                    features = sim_features_data,
@@ -16,8 +16,7 @@ test_that("evaluate function whith porftolio object and type = total", {
                                    dist_threats = sim_dist_threats_data,
                                    boundary = sim_boundary_data,
                                    values = blm_values,
-                                   output_file = FALSE,
-                                   time_limit = 5))
+                                   output_file = FALSE))
 
   f <- getSolutionBenefit(port, type = "total")
 
@@ -40,7 +39,7 @@ test_that("evaluate function whith portfolio object and type = local", {
        sim_boundary_data)
 
   # eval different blm values
-  blm_values = runif(2)
+  blm_values = sample(1:10, 2, replace = TRUE)/10
 
   port <- suppressWarnings(evalBlm(pu = sim_pu_data,
                                    features = sim_features_data,
@@ -49,8 +48,7 @@ test_that("evaluate function whith portfolio object and type = local", {
                                    dist_threats = sim_dist_threats_data,
                                    boundary = sim_boundary_data,
                                    values = blm_values,
-                                   output_file = FALSE,
-                                   time_limit = 5))
+                                   output_file = FALSE))
 
   f <- getSolutionBenefit(port, type = "local")
 
@@ -77,8 +75,7 @@ test_that("evaluate function whith solution object and type = total", {
                                       threats = sim_threats_data,
                                       dist_threats = sim_dist_threats_data,
                                       boundary = sim_boundary_data,
-                                      output_file = FALSE,
-                                      time_limit = 5))
+                                      output_file = FALSE))
 
   f <- getSolutionBenefit(s, type = "total")
 
@@ -102,8 +99,7 @@ test_that("evaluate function whith solution object and type = local", {
                                       threats = sim_threats_data,
                                       dist_threats = sim_dist_threats_data,
                                       boundary = sim_boundary_data,
-                                      output_file = FALSE,
-                                      time_limit = 5))
+                                      output_file = FALSE))
 
   f <- getSolutionBenefit(s, type = "local")
 

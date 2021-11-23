@@ -363,14 +363,14 @@ methods::setMethod(
 
       status_lock_out <- pu$status == 3
 
-      for(row in seq_along(sim_pu_data$id)){
+      for(row in seq_along(pu$id)){
         if(isTRUE(status_lock_out[row])){
 
           status_locked_out <- dist_threats[dist_threats$pu == pu$id[row], ]$status
           status_incorrect <- any(status_locked_out == 2)
 
           if(isTRUE(status_incorrect)){
-            warning(paste0("The pu ", sim_pu_data$id[row], " was set as locked out so it is not possible to set actions on it (lock in). Therefore, all actions in that unit will be set as locked out"), call. = FALSE, immediate. = TRUE)
+            warning(paste0("The pu ", pu$id[row], " was set as locked out so it is not possible to set actions on it (lock in). Therefore, all actions in that unit will be set as locked out"), call. = FALSE, immediate. = TRUE)
           }
 
           if(length(status_locked_out) != 0){
