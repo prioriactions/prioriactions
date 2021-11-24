@@ -139,6 +139,5 @@ model_max <- problem(x = problem_data, model_type = "maximizeBenefits", budget =
 \seealso{
 For more information regarding the arguments
 \code{curve} and \code{segments}, see the supplementary material
-of Salgado-Rojas \emph{et al.} (2020), which can
-be found online at \doi{https://doi.org/10.1016/j.ecolmodel.2019.108901}.
+of Salgado-Rojas \emph{et al.} (2020)..
 }

@@ -73,7 +73,7 @@ test_that("testing maximize Benefits", {
   dist_threats_sim <- data.frame(
     pu = seq_len(10),
     threat = rep(1, 10),
-    amount = c(0, rep(1, 9)),
+    amount = c(rep(1, 10)),
     action_cost = sample(1:10,10, replace = TRUE),
     status = ifelse(status_action == 1, 0 , status_action))
   boundary_sim <- data.frame(
@@ -91,9 +91,9 @@ test_that("testing maximize Benefits", {
   p <- suppressWarnings(problem(d, budget = 0.1, model_type = "maximizeBenefits"))
 
   # tests
-  actions_locked_in <- (dist_threats_sim$status == 2)
-  locked_in_actions_cost <- sum(base::round(dist_threats_sim$action_cost, 3) * (actions_locked_in))
-  pu_locked_in <- (pu_sim$status == 2) | actions_locked_in
-  locked_in_unit_cost <- sum(base::round(pu_sim$monitoring_cost, 3) * (pu_locked_in))
+  actions_locked_in <- which(d$data$dist_threats$status == 2)
+  locked_in_actions_cost <- sum(base::round(d$data$dist_threats$action_cost, 3)[actions_locked_in])
+  pu_locked_in <- unique(c(which(d$data$pu$status == 2), actions_locked_in))
+  locked_in_unit_cost <- sum(base::round(d$data$pu$monitoring_cost, 3)[pu_locked_in])
   expect_true(locked_in_unit_cost + locked_in_actions_cost <= p$data$args$budget)
 })

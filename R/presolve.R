@@ -90,11 +90,11 @@ presolve.Data <- function(x, ...) {
     costs_units <- rcpp_stats_costs_units(pu, pu$solution)
     costs_actions <- rcpp_stats_costs_actions(pu, threats, dist_threats, dist_threats$solution)
 
-    if(params$budget < sum(costs_actions) + sum(costs_units)){
+    if(params$budget < costs_actions + costs_units){
       warning("Infeasible model. There is not enough budget to achieve the actions required (lock-in)",
               call.=FALSE, immediate. = TRUE)
 
-      warning(paste0("The budget will be set as the sum of the minimum costs to achieve the required actions: ", sum(costs_actions) + sum(costs_units)), call.=FALSE, immediate. = TRUE)
+      warning(paste0("The budget will be set as the sum of the minimum costs to achieve the required actions: ", costs_actions + costs_units), call.=FALSE, immediate. = TRUE)
 
       return(costs_actions + costs_units + 10**(-4))
     }

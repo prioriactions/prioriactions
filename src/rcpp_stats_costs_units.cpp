@@ -13,10 +13,11 @@ double rcpp_stats_costs_units(DataFrame pu_data,
   //variables
   int number_of_units = pu_data.nrows();
   NumericVector unit_costs = pu_data["monitoring_cost"];
-  NumericVector costs_units_solution(number_of_units);
+  double costs_units_solution;
 
   for(int i = 0; i < number_of_units; i++){
-    costs_units_solution[i] = costs_units_solution[i] + unit_costs[i]*solution[i];
+    costs_units_solution = costs_units_solution + unit_costs[i]*solution[i];
   }
-  return sum(costs_units_solution);
+
+  return costs_units_solution;
 }

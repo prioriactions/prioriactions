@@ -75,6 +75,7 @@ test_that("evaluate function whith solution object and type = total", {
                                       threats = sim_threats_data,
                                       dist_threats = sim_dist_threats_data,
                                       boundary = sim_boundary_data,
+                                      sensitivity = sim_sensitivity_data,
                                       output_file = FALSE))
 
   f <- getSolutionBenefit(s, type = "total")
@@ -99,6 +100,7 @@ test_that("evaluate function whith solution object and type = local", {
                                       threats = sim_threats_data,
                                       dist_threats = sim_dist_threats_data,
                                       boundary = sim_boundary_data,
+                                      sensitivity = sim_sensitivity_data,
                                       output_file = FALSE))
 
   f <- getSolutionBenefit(s, type = "local")

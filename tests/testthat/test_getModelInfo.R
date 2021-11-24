@@ -54,6 +54,7 @@ test_that("evaluate function whith solution object", {
                                       threats = sim_threats_data,
                                       dist_threats = sim_dist_threats_data,
                                       boundary = sim_boundary_data,
+                                      sensitivity = sim_sensitivity_data,
                                       output_file = FALSE))
 
   f <- getModelInfo(s)
@@ -80,6 +81,7 @@ test_that("evaluate function whith OptimizationProblem object", {
                                   dist_features = sim_dist_features_data,
                                   threats = sim_threats_data,
                                   dist_threats = sim_dist_threats_data,
+                                  sensitivity = sim_sensitivity_data,
                                   boundary = sim_boundary_data))
   p <- suppressWarnings(problem(d))
   f <- getModelInfo(p)

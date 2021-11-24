@@ -79,6 +79,7 @@ test_that("evaluate function whith solution object and format = wide", {
                                       threats = sim_threats_data,
                                       dist_threats = sim_dist_threats_data,
                                       boundary = sim_boundary_data,
+                                      sensitivity = sim_sensitivity_data,
                                       output_file = FALSE))
 
   f <- getActions(s, format = "wide")
@@ -108,6 +109,7 @@ test_that("evaluate function whith solution object and format = large", {
                                       threats = sim_threats_data,
                                       dist_threats = sim_dist_threats_data,
                                       boundary = sim_boundary_data,
+                                      sensitivity = sim_sensitivity_data,
                                       output_file = FALSE))
 
   f <- getActions(s, format = "large")
