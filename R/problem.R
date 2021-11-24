@@ -104,8 +104,7 @@ NULL
 #'
 #' @seealso For more information regarding the arguments
 #'  `curve` and `segments`, see the supplementary material
-#'  of Salgado-Rojas *et al.* (2020), which can
-#'  be found online at \doi{https://doi.org/10.1016/j.ecolmodel.2019.108901}.
+#'  of Salgado-Rojas *et al.* (2020)..
 #'
 #' @examples
 #' ## This example uses input files included into package.
@@ -166,7 +165,6 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
   boundary <- x$getData("boundary")
 
   pu <- pu[, c("internal_id", "monitoring_cost", "status")]
-  features <- features[, c("internal_id", "target_recovery", "target_conservation")]
   dist_features <- dist_features[, c("internal_pu", "internal_feature", "amount")]
   threats <- threats[, c("internal_id", "blm_actions")]
   dist_threats <- dist_threats[, c("internal_pu", "internal_threat", "amount", "action_cost", "status")]
@@ -216,6 +214,8 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
   # Presolve---------------------------------------------------------
   if(model_type == "minimizeCosts"){
     features <- presolve(x, model_type = model_type, features = features)
+    x$data$features$target_recovery <- features$target_recovery
+    x$data$features$target_conservation <- features$target_conservation
   }
   else if(model_type == "maximizeBenefits"){
     budget <- presolve(x, model_type = model_type, budget = budget)
@@ -258,7 +258,6 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
   }
 
   # create Optimization Problem object----------------------------------
-  # x$data$features <- features
   pproto(NULL, OptimizationProblem,
          data = list(
            obj = model$obj, rhs = model$rhs, sense = model$sense, vtype = model$vtype,

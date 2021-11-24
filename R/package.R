@@ -57,7 +57,9 @@ prioriactions <- function(...) {
   }
 
   #Creating and solving mathematical model--------------------------------------------------
+
   conservation_model <- do.call(inputData, args = params[names(params) %in% params_data])
+  #conservation_model <- inputData(params[names(params) %in% params_model])
 
   optimization_model <- do.call(problem, args = append(x = conservation_model,
                                                           params[names(params) %in% params_model]))

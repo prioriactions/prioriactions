@@ -93,7 +93,7 @@ test_that("testing maximize Benefits", {
   # tests
   actions_locked_in <- (dist_threats_sim$status == 2)
   locked_in_actions_cost <- sum(base::round(dist_threats_sim$action_cost, 3) * (actions_locked_in))
-  pu_locked_in <- (pu_sim$status == 2) + actions_locked_in
+  pu_locked_in <- (pu_sim$status == 2) | actions_locked_in
   locked_in_unit_cost <- sum(base::round(pu_sim$monitoring_cost, 3) * (pu_locked_in))
   expect_true(locked_in_unit_cost + locked_in_actions_cost <= p$data$args$budget)
 })
