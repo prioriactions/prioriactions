@@ -48,14 +48,15 @@ test_that("evaluate function whith solution object", {
        sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
        sim_boundary_data)
 
-  s <- suppressWarnings(prioriactions(pu = sim_pu_data,
-                                      features = sim_features_data,
-                                      dist_features = sim_dist_features_data,
-                                      threats = sim_threats_data,
-                                      dist_threats = sim_dist_threats_data,
-                                      boundary = sim_boundary_data,
-                                      sensitivity = sim_sensitivity_data,
-                                      output_file = FALSE))
+  d <- suppressWarnings(inputData(pu = sim_pu_data,
+                                  features = sim_features_data,
+                                  dist_features = sim_dist_features_data,
+                                  threats = sim_threats_data,
+                                  dist_threats = sim_dist_threats_data,
+                                  boundary = sim_boundary_data,
+                                  sensitivity = sim_sensitivity_data))
+  p <- suppressWarnings(problem(d))
+  s <- solve(p, output_file = FALSE)
 
   f <- getModelInfo(s)
 

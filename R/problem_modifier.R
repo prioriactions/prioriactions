@@ -40,18 +40,24 @@ problem_modifier.OptimizationProblem <- function(x, budget = NULL, blm = NULL, p
 
   # verifying arguments
   if(is.null(blm)){
-    blm <- x$data$args$blm
+    internal_blm <- x$data$args$blm
+  }
+  else{
+    internal_blm <- blm
   }
   if(is.null(budget)){
-    budget <- x$data$args$budget
+    internal_budget <- x$data$args$budget
+  }
+  else{
+    internal_budget <- budget
   }
 
   ##blm
-  if (abs(blm) <= 1e-10 && !is.null(boundary)) {
+  if (abs(internal_blm) <= 1e-10 && !is.null(boundary)) {
     warning("The blm argument was set to 0, so the boundary data has no effect",call.=FALSE, immediate. = TRUE)
   }
 
-  if (abs(blm) > 1e-50 && is.null(boundary)) {
+  if (abs(internal_blm) > 1e-50 && is.null(boundary)) {
     warning("No boundary data supplied so the blm argument has no effect",call.=FALSE, immediate. = TRUE)
   }
 
@@ -88,14 +94,14 @@ problem_modifier.OptimizationProblem <- function(x, budget = NULL, blm = NULL, p
     features <- presolve(x$ConservationClass, model_type = model_type, features = features)
   }
   else if(model_type == "maximizeBenefits"){
-    budget <- presolve(x$ConservationClass, model_type = model_type, budget = budget)
+    internal_budget <- presolve(x$ConservationClass, model_type = model_type, budget = internal_budget)
   }
 
   #-------------------------------------------------------------------
 
-  if(budget != x$data$args$budget){
+  if(!is.null(budget)){
     rhs_size <- length(x$data$rhs)
-    x$data$rhs[rhs_size] <- budget
+    x$data$rhs[rhs_size] <- internal_budget
   }
 
   if(!is.null(prop_target)){
@@ -110,7 +116,7 @@ problem_modifier.OptimizationProblem <- function(x, budget = NULL, blm = NULL, p
     x$data$rhs[(rhs_size - 2*features_size + 1):rhs_size] <- as.numeric(rbind(new_conservation_target, new_recovery_target))
   }
 
-  if(blm != x$data$args$blm){
+  if(!is.null(blm)){
     blm_last <- x$data$args$blm
     monitoring_costs <- x$ConservationClass$data$pu$monitoring_cost
     pu_size <- x$ConservationClass$getPlanningUnitsAmount()
@@ -126,12 +132,12 @@ problem_modifier.OptimizationProblem <- function(x, budget = NULL, blm = NULL, p
     }
 
     if(model_type == "minimizeCosts"){
-      x$data$obj[1:pu_size] <- ((x$data$obj[1:pu_size] - monitoring_costs)/blm_last)*blm
+      x$data$obj[1:pu_size] <- ((x$data$obj[1:pu_size] - monitoring_costs)/blm_last)*internal_blm
     }
     else if(model_type == "maximizeBenefits"){
-      x$data$obj[1:pu_size] <- ((x$data$obj[1:pu_size])/blm_last)*blm
+      x$data$obj[1:pu_size] <- ((x$data$obj[1:pu_size])/blm_last)*internal_blm
     }
-    x$data$obj[(var_conn_start + 1):(var_conn_start + boundary_size)] <- ((x$data$obj[(var_conn_start + 1):(var_conn_start + boundary_size)])/blm_last)*blm
+    x$data$obj[(var_conn_start + 1):(var_conn_start + boundary_size)] <- ((x$data$obj[(var_conn_start + 1):(var_conn_start + boundary_size)])/blm_last)*internal_blm
   }
   return(x)
 }

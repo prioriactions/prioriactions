@@ -241,7 +241,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_stats_costs_actions
-double rcpp_stats_costs_actions(DataFrame pu_data, DataFrame threats_data, DataFrame dist_threats_data, std::vector<double> solution);
+NumericVector rcpp_stats_costs_actions(DataFrame pu_data, DataFrame threats_data, DataFrame dist_threats_data, std::vector<double> solution);
 RcppExport SEXP _prioriactions_rcpp_stats_costs_actions(SEXP pu_dataSEXP, SEXP threats_dataSEXP, SEXP dist_threats_dataSEXP, SEXP solutionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

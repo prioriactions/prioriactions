@@ -90,11 +90,11 @@ evalBlm <- function(values = c(), ...) {
     )
 
     #Creating mathematical model--------------------------------------------------
-    if(it == 1){
+    if(it == 1 || blm == 0){
       optimization_model <- do.call(problem, args = append(x = conservation_model,
                                                            params_iter[names(params_iter) %in% params_model]))
     }
-    else if(values[it - 1] == 0){
+    else if(values[it - 1] == 0 && blm != 0){
       optimization_model <- do.call(problem, args = append(x = conservation_model,
                                                            params_iter[names(params_iter) %in% params_model]))
     }

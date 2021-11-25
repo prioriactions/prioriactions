@@ -84,9 +84,9 @@ test_that("evaluate solutions values", {
   dist_threats_sim <- data.frame(
     pu = seq_len(10),
     threat = rep(1, 10),
-    amount = rep(1, 10),
+    amount = 1,
     action_cost = c(1.5, 2.5, 2.5, 1.5, 2.5, 2.5, 1.5, 2.5, 1.5, 2.5),
-    status = c(0, 0, 3, 0, 0, 3, 3, 2, 2, 2))
+    status = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
   boundary_sim <- data.frame(
     bound,
     boundary = 0.5)
@@ -105,8 +105,8 @@ test_that("evaluate solutions values", {
   s1 <- port$data[[1]]$data
   s2 <- port$data[[2]]$data
 
-  expect_equal(s1$sol[1:20], c(0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1))
-  expect_equal(s2$sol[1:20], c(0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1))
+  expect_equal(s1$sol[1:20], c(0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+  expect_equal(s2$sol[1:20], c(1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1))
   expect_gte(s2$objval, s1$objval)
   expect_match(w, "There is not enough budget to achieve the actions required", all = FALSE)
 })

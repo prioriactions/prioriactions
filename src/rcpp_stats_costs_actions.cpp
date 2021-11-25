@@ -3,7 +3,7 @@
 #include "OptimizationProblem.h"
 
 // [[Rcpp::export]]
-double rcpp_stats_costs_actions(DataFrame pu_data,
+NumericVector rcpp_stats_costs_actions(DataFrame pu_data,
                                        DataFrame threats_data,
                                        DataFrame dist_threats_data,
                                        std::vector<double> solution){
@@ -24,5 +24,19 @@ double rcpp_stats_costs_actions(DataFrame pu_data,
   }
 
   // Getting sum of actions
-  return sum(costs_action_solution);
+  NumericVector costs_by_actions(number_of_threats);
+  arma::sp_mat dist_threats_extended_connectivity = create_dist_threats_extended(dist_threats_data,
+                                                                                 number_of_units,
+                                                                                 number_of_threats,
+                                                                                 costs_action_solution);
+
+  for(int t = 0; t < number_of_threats; t++){
+    for (auto it = dist_threats_extended_connectivity.begin_col(t);
+         it != dist_threats_extended_connectivity.end_col(t); ++it) {
+
+      costs_by_actions[t] = costs_by_actions[t] + (*it);
+    }
+  }
+
+  return costs_by_actions;
 }

@@ -50,12 +50,13 @@ Suggests:
     methods
 LinkingTo: 
   Rcpp, 
-  RcppArmadillo, 
+  RcppArmadillo (>= 0.10.1.0.0), 
   BH
 Encoding: UTF-8
 LazyData: true
 SystemRequirements: C++11
 License: GPL (>= 2)
+Language: en-US
 RoxygenNote: 7.1.2
 URL: https://prioriactions.github.io/prioriactions/, 
   https://github.com/prioriactions/prioriactions
