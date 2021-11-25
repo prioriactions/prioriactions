@@ -16,6 +16,7 @@ NULL
 #' @return An object of class [solution-class].
 #'
 #' @examples
+#' \dontrun{
 #' ## This example uses input files included into package.
 #'
 #' ## set seed for reproducibility
@@ -38,7 +39,7 @@ NULL
 #'                 output_file = FALSE)
 #'
 #' print(s)
-#'
+#' }
 #' @rdname prioriactions
 #' @export
 prioriactions <- function(...) {

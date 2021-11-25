@@ -18,6 +18,7 @@ instead of following the sequence of the \code{inputData()}, \code{problem()}
 and \code{solve()} functions.
 }
 \examples{
+\dontrun{
 ## This example uses input files included into package.
 
 ## set seed for reproducibility
@@ -40,5 +41,5 @@ s <- prioriactions(pu = sim_pu_data, features = sim_features_data,
                 output_file = FALSE)
 
 print(s)
-
+}
 }

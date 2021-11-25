@@ -11,6 +11,8 @@ test_that("data.frame inputs", {
        sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
        sim_boundary_data)
 
+  sim_features_data$target_recovery <- c(40, 20, 50, 30)
+
   x <- suppressWarnings(inputData(pu = sim_pu_data,
                                   features = sim_features_data,
                                   dist_features = sim_dist_features_data,
@@ -30,10 +32,13 @@ test_that("data.frame inputs", {
 
 test_that("verify gurobi and rphymphony", {
   skip_on_ci()
+  skip_on_cran()
   # create data
   data(sim_pu_data, sim_features_data, sim_dist_features_data,
        sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
        sim_boundary_data)
+
+  sim_features_data$target_recovery <- c(40, 20, 50, 30)
 
   x <- suppressWarnings(inputData(pu = sim_pu_data,
                                   features = sim_features_data,

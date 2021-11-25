@@ -90,6 +90,14 @@ test_that("evaluate solutions values", {
   boundary_sim <- data.frame(
     bound,
     boundary = 0.5)
+  sensitivity_sim <- data.frame(
+    feature = c(1, 2),
+    threat = 1,
+    a = 0,
+    b = 1,
+    c = 0,
+    d = 1
+  )
 
   # eval different blm values
   w <- capture_warnings(port <- evalBudget(pu = pu_sim,
@@ -97,17 +105,16 @@ test_that("evaluate solutions values", {
                                            dist_features = dist_features_sim,
                                            threats = threats_sim,
                                            dist_threats = dist_threats_sim,
+                                           sensitivity = sensitivity_sim,
                                            boundary = boundary_sim,
-                                           values = c(0, 100),
+                                           values = c(50, 100),
                                            output_file = FALSE))
-
   # tests
   s1 <- port$data[[1]]$data
   s2 <- port$data[[2]]$data
 
-  expect_equal(s1$sol[1:20], c(0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+  expect_equal(s1$sol[1:20], c(1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1))
   expect_equal(s2$sol[1:20], c(1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1))
-  expect_gte(s2$objval, s1$objval)
-  expect_match(w, "There is not enough budget to achieve the actions required", all = FALSE)
+  expect_lte(s2$objval, s1$objval)
 })
 

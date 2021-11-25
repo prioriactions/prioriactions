@@ -6,6 +6,8 @@ test_that("evaluate function whith porftolio object", {
        sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
        sim_boundary_data)
 
+  sim_features_data$target_recovery <- c(40, 20, 50, 30)
+
   # eval different blm values
   blm_values = sample(1:10, 2, replace = TRUE)/10
 
@@ -47,6 +49,8 @@ test_that("evaluate function whith solution object", {
   data(sim_pu_data, sim_features_data, sim_dist_features_data,
        sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
        sim_boundary_data)
+
+  sim_features_data$target_recovery <- c(40, 20, 50, 30)
 
   d <- suppressWarnings(inputData(pu = sim_pu_data,
                                   features = sim_features_data,

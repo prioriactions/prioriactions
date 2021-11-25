@@ -56,7 +56,7 @@ presolve.Data <- function(x, ...) {
                      paste(a$feature[diff_features], collapse = " "), ". \n For more information on the maximum benefits use the getPotentialBenefit() function."),
               call.=FALSE, immediate. = TRUE)
 
-      params$features$target_recovery[diff_features] <- a$maximum.recovery.benefit[diff_features] - 10**(-4)
+      params$features$target_recovery[diff_features] <- a$maximum.recovery.benefit[diff_features] - 10**(-1)
       warning("The targets of recovery for these features will be set to the maximum recovery benefit values", call.=FALSE, immediate. = TRUE)
     }
 
@@ -67,7 +67,7 @@ presolve.Data <- function(x, ...) {
                      paste(a$feature[diff_features], collapse = " "), ". \n For more information on the maximum benefits use the getPotentialBenefit() function."),
               call.=FALSE, immediate. = TRUE)
 
-      params$features$target_conservation[diff_features] <- a$maximum.conservation.benefit[diff_features] - 10**(-4)
+      params$features$target_conservation[diff_features] <- a$maximum.conservation.benefit[diff_features] - 10**(-1)
       warning("The targets of conservation for these features will be set to the maximum recovery benefit values", call.=FALSE, immediate. = TRUE)
     }
 
@@ -96,7 +96,7 @@ presolve.Data <- function(x, ...) {
 
       warning(paste0("The budget will be set as the sum of the minimum costs to achieve the required actions: ", sum(costs_actions) + costs_units), call.=FALSE, immediate. = TRUE)
 
-      return(sum(costs_actions) + costs_units + 10**(-4))
+      return(sum(costs_actions) + costs_units + 10**(-1))
     }
     else{
       return(params$budget)

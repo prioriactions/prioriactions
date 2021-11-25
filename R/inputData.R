@@ -30,8 +30,7 @@ NULL
 #' take into account benefits when taking action against threats and there is no benefit
 #' when selecting planning units where the features are not threatened;
 #' or include the benefits of the features sites where they are not threatened
-#' (through the **conservation target**). The above is exemplified in the following diagram:
-#' \figure{../inputdata1.png}{options: width=80\%}
+#' (through the **conservation target**).
 #'
 #' Note that by default only information on recovery targets is necessary,
 #' while conservation targets equal to zero are assumed. The maximum values of
@@ -105,10 +104,7 @@ NULL
 #' persistence of the features to threats. For the first case, it is only necessary
 #' to indicate the ids of the threats and the respective features sensitive to them.
 #' In the second case, the response can be parameterized through four values: *a*, *b*, *c*
-#' and *d*, given by the following:
-#' \figure{../inputdata2.png}{options: width=70\%}
-#'
-#' See
+#' and *d*. See
 #' [sensitivities](https://prioriactions.github.io/prioriactions/articles/sensitivities.html)
 #' vignette for more information on continuous sensitivities. Then, the sensitivity input must contain the following columns:
 #'    \describe{
