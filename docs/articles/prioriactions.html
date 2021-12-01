@@ -180,7 +180,7 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">sim_pu_data</span><span class="op">)</span>
 
 <span class="co"># print first six rows of data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">sim_pu_data</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sim_pu_data</span><span class="op">)</span></code></pre></div>
 <pre><code>##   id monitoring_cost status
 ## 1  1               2      0
 ## 2  2               2      0
@@ -343,11 +343,16 @@
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get benefit information</span>
 <span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></code></pre></div>
-<pre><code>##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit
-## 1       1   47              47                            0                       47              47
-## 2       2   30              28                            2                       28              30
-## 3       3   66              56                           10                       56              66
-## 4       4   33              33                            0                       33              33</code></pre>
+<pre><code>##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit
+## 1       1   47              47                            0                       47
+## 2       2   30              28                            2                       28
+## 3       3   66              56                           10                       56
+## 4       4   33              33                            0                       33
+##   maximum.benefit
+## 1              47
+## 2              30
+## 3              66
+## 4              33</code></pre>
 <p>Note that the total distribution of the features (<em>dist</em>) and the threatened distribution (<em>dist_threatened</em>) is reported. Also, we report the amount of each features where they co-occur with threats they are sensitive to (<em>maximum.recovery.benefit</em>) and where they do not co-occur with any threats they are sensitive to (<em>maximum.conservation.benefit</em>). The inclusion of these last units in the solutions will depend on the <strong>target_conservation</strong> field in the input <em>feature data</em>.</p>
 </div>
 <div id="step-2-create-the-mathematical-model" class="section level3">
@@ -358,7 +363,8 @@
 <code class="sourceCode R"><span class="co"># create optimization problem</span>
 <span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b</span>, model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+## cases</code></pre>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># print problem</span>
 <span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">c</span><span class="op">)</span></code></pre></div>
@@ -389,7 +395,7 @@
 ## Found heuristic solution: objective 964.0000000
 ## Found heuristic solution: objective 396.0000000
 ## Presolve removed 250 rows and 277 columns
-## Presolve time: 0.01s
+## Presolve time: 0.00s
 ## Presolved: 34 rows, 119 columns, 237 nonzeros
 ## Variable types: 0 continuous, 119 integer (101 binary)
 ##
@@ -405,7 +411,7 @@
 ## Cutting planes:
 ##   Cover: 2
 ##
-## Explored 1 nodes (26 simplex iterations) in 0.04 seconds
+## Explored 1 nodes (26 simplex iterations) in 0.00 seconds
 ## Thread count was 2 (of 4 available processors)
 ##
 ## Solution count 4: 146 149 396 964
@@ -427,7 +433,8 @@
                     verbose <span class="op">=</span> <span class="cn">TRUE</span>,
                     output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+## cases</code></pre>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros
@@ -561,7 +568,7 @@
 <span class="co"># print the connectivity penalty data</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></code></pre></div>
 <pre><code>##   solution_name    units threat_1 threat_2
-## 1           sol 9042.132  917.551 4095.117</code></pre>
+## 1           sol 9042.102  917.544   4095.1</code></pre>
 </div>
 <div id="getperformance" class="section level3">
 <h3 class="hasAnchor">
@@ -574,8 +581,10 @@
 
 <span class="co"># print the performance data</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">perf</span><span class="op">)</span></code></pre></div>
-<pre><code>##   solution_name objective_value gap solving_time                                           status
-## 1           sol             146   0        0.042 Optimal solution (according to gap tolerance: 0)</code></pre>
+<pre><code>##   solution_name objective_value gap solving_time
+## 1           sol             146   0        0.004
+##                                             status
+## 1 Optimal solution (according to gap tolerance: 0)</code></pre>
 <p>More details of these functions in the <a href="https://prioriactions.github.io/prioriactions/reference/index.html">references</a> section.</p>
 </div>
 </div>
@@ -593,13 +602,13 @@
                    sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>,
                    boundary <span class="op">=</span> <span class="va">sim_boundary_data</span>,
                    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span>,
-                   output_file <span class="op">=</span> <span class="cn">FALSE</span>,
-                   time_limit <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
+                   output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <pre><code>## *********************************
 ##  Iteration 1 of 3: Prop0.2
 ## *********************************</code></pre>
 <pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+## cases</code></pre>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros
@@ -636,7 +645,7 @@
 ##   Cover: 8
 ##   MIR: 1
 ##
-## Explored 1 nodes (42 simplex iterations) in 0.01 seconds
+## Explored 1 nodes (42 simplex iterations) in 0.00 seconds
 ## Thread count was 2 (of 4 available processors)
 ##
 ## Solution count 8: 120 125 127 ... 964
@@ -646,35 +655,113 @@
 <pre><code>## *********************************
 ##  Iteration 2 of 3: Prop0.3
 ## *********************************</code></pre>
+<pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect
+
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+## cases</code></pre>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros
-## Model fingerprint: 0xe19df473
+## Model fingerprint: 0xd3db0e90
 ## Variable types: 176 continuous, 220 integer (220 binary)
 ## Coefficient statistics:
 ##   Matrix range     [5e-01, 2e+00]
 ##   Objective range  [1e+00, 1e+01]
 ##   Bounds range     [1e+00, 1e+00]
 ##   RHS range        [6e-01, 2e+01]
-## Presolve removed 11 rows and 0 columns
+## Found heuristic solution: objective 964.0000000
+## Found heuristic solution: objective 445.0000000
+## Presolve removed 250 rows and 277 columns
 ## Presolve time: 0.00s
+## Presolved: 34 rows, 119 columns, 237 nonzeros
+## Found heuristic solution: objective 241.0000000
+## Variable types: 0 continuous, 119 integer (101 binary)
 ##
-## Explored 0 nodes (0 simplex iterations) in 0.00 seconds
-## Thread count was 1 (of 4 available processors)
+## Root relaxation: objective 1.865000e+02, 34 iterations, 0.00 seconds
 ##
-## Solution count 0
+##     Nodes    |    Current Node    |     Objective Bounds      |     Work
+##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ##
-## Model is infeasible
-## Best objective -, best bound -, gap -</code></pre>
-<pre><code>## Error in base::round(s$data$sol[1:number_of_pu]): non-numeric argument to mathematical function</code></pre>
+##      0     0  186.50000    0    8  241.00000  186.50000  22.6%     -    0s
+## H    0     0                     205.0000000  186.50000  9.02%     -    0s
+##      0     0  193.00000    0    2  205.00000  193.00000  5.85%     -    0s
+## H    0     0                     197.0000000  193.00000  2.03%     -    0s
+##      0     0  195.50000    0    3  197.00000  195.50000  0.76%     -    0s
+## *    0     0               0     196.0000000  196.00000  0.00%     -    0s
+##
+## Cutting planes:
+##   Gomory: 2
+##   Cover: 7
+##   MIR: 1
+##   Relax-and-lift: 1
+##
+## Explored 1 nodes (52 simplex iterations) in 0.01 seconds
+## Thread count was 2 (of 4 available processors)
+##
+## Solution count 6: 196 197 205 ... 964
+##
+## Optimal solution found (tolerance 0.00e+00)
+## Best objective 1.960000000000e+02, best bound 1.960000000000e+02, gap 0.0000%</code></pre>
+<pre><code>## *********************************
+##  Iteration 3 of 3: Prop0.4
+## *********************************</code></pre>
+<pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect
+
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+## cases</code></pre>
+<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
+## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
+## Optimize a model with 284 rows, 396 columns and 785 nonzeros
+## Model fingerprint: 0xa62c2e48
+## Variable types: 176 continuous, 220 integer (220 binary)
+## Coefficient statistics:
+##   Matrix range     [5e-01, 2e+00]
+##   Objective range  [1e+00, 1e+01]
+##   Bounds range     [1e+00, 1e+00]
+##   RHS range        [8e-01, 2e+01]
+## Found heuristic solution: objective 964.0000000
+## Found heuristic solution: objective 564.0000000
+## Presolve removed 250 rows and 277 columns
+## Presolve time: 0.00s
+## Presolved: 34 rows, 119 columns, 237 nonzeros
+## Found heuristic solution: objective 317.0000000
+## Variable types: 0 continuous, 119 integer (101 binary)
+##
+## Root relaxation: objective 2.670000e+02, 43 iterations, 0.00 seconds
+##
+##     Nodes    |    Current Node    |     Objective Bounds      |     Work
+##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+##
+##      0     0  267.00000    0   10  317.00000  267.00000  15.8%     -    0s
+## H    0     0                     290.0000000  267.00000  7.93%     -    0s
+## H    0     0                     284.0000000  267.00000  5.99%     -    0s
+##      0     0  276.50000    0    6  284.00000  276.50000  2.64%     -    0s
+## H    0     0                     279.0000000  276.50000  0.90%     -    0s
+##      0     0  276.50000    0    3  279.00000  276.50000  0.90%     -    0s
+## H    0     0                     278.0000000  276.50000  0.54%     -    0s
+##      0     0     cutoff    0       278.00000  278.00000  0.00%     -    0s
+##
+## Explored 1 nodes (68 simplex iterations) in 0.01 seconds
+## Thread count was 2 (of 4 available processors)
+##
+## Solution count 7: 278 279 284 ... 964
+##
+## Optimal solution found (tolerance 0.00e+00)
+## Best objective 2.780000000000e+02, best bound 2.780000000000e+02, gap 0.0000%</code></pre>
 <p>Like the <code><a href="../reference/prioriactions.html">prioriactions()</a></code> function, all <em>eval</em> functions inherit the parameters of the <code><a href="../reference/inputData.html">inputData()</a></code>, <code><a href="../reference/problem.html">problem()</a></code>, and <code><a href="../reference/solve.html">solve()</a></code> functions.</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get cost of solutions inside portfolio</span>
 <span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">port</span><span class="op">)</span></code></pre></div>
-<pre><code>## Error in inherits(x, c("Solution", "Portfolio")): object 'port' not found</code></pre>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<pre><code>##   solution_name monitoring threat_1 threat_2
+## 1       Prop0.2         63       10       47
+## 2       Prop0.3         98       26       72
+## 3       Prop0.4        141       48       89</code></pre>
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/getConnectivityPenalty.html">getConnectivityPenalty</a></span><span class="op">(</span><span class="va">port</span><span class="op">)</span></code></pre></div>
-<pre><code>## Error in inherits(x, c("Solution", "Portfolio")): object 'port' not found</code></pre>
+<pre><code>##   solution_name     units threat_1 threat_2
+## 1       Prop0.2  8123.805   904.68 3229.636
+## 2       Prop0.3 11334.252 1760.095 4431.999
+## 3       Prop0.4 12726.708 2336.171 4739.123</code></pre>
 <p>Note that increasing the target per feature naturally increases the number of actions to be taken to achieve it and therefore the associated cost. This, in turn, increases the connectivity values between conservation actions.</p>
 </div>
 <div id="references" class="section level2 unnumbered">

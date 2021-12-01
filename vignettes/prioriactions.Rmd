@@ -382,11 +382,16 @@ getPotentialBenefit(b)
 ```
 
 ```
-##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit
-## 1       1   47              47                            0                       47              47
-## 2       2   30              28                            2                       28              30
-## 3       3   66              56                           10                       56              66
-## 4       4   33              33                            0                       33              33
+##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit
+## 1       1   47              47                            0                       47
+## 2       2   30              28                            2                       28
+## 3       3   66              56                           10                       56
+## 4       4   33              33                            0                       33
+##   maximum.benefit
+## 1              47
+## 2              30
+## 3              66
+## 4              33
 ```
 
 Note that the total distribution of the features (*dist*) and the
@@ -414,7 +419,8 @@ c <- problem(b, model_type = "minimizeCosts")
 ```
 
 ```
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+## cases
 ```
 
 ```r
@@ -466,7 +472,7 @@ d <- solve(c, solver = "gurobi", verbose = TRUE, output_file = FALSE)
 ## Found heuristic solution: objective 964.0000000
 ## Found heuristic solution: objective 396.0000000
 ## Presolve removed 250 rows and 277 columns
-## Presolve time: 0.01s
+## Presolve time: 0.00s
 ## Presolved: 34 rows, 119 columns, 237 nonzeros
 ## Variable types: 0 continuous, 119 integer (101 binary)
 ## 
@@ -482,7 +488,7 @@ d <- solve(c, solver = "gurobi", verbose = TRUE, output_file = FALSE)
 ## Cutting planes:
 ##   Cover: 2
 ## 
-## Explored 1 nodes (26 simplex iterations) in 0.04 seconds
+## Explored 1 nodes (26 simplex iterations) in 0.00 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
 ## Solution count 4: 146 149 396 964 
@@ -524,7 +530,8 @@ d2 <- prioriactions(pu = sim_pu_data, features = sim_features_data,
 ```
 
 ```
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+## cases
 ```
 
 ```
@@ -685,7 +692,7 @@ head(conn)
 
 ```
 ##   solution_name    units threat_1 threat_2
-## 1           sol 9042.132  917.551 4095.117
+## 1           sol 9042.102  917.544   4095.1
 ```
 
 ### `getPerformance()`
@@ -702,8 +709,10 @@ head(perf)
 ```
 
 ```
-##   solution_name objective_value gap solving_time                                           status
-## 1           sol             146   0        0.042 Optimal solution (according to gap tolerance: 0)
+##   solution_name objective_value gap solving_time
+## 1           sol             146   0        0.004
+##                                             status
+## 1 Optimal solution (according to gap tolerance: 0)
 ```
 
 More details of these functions in the
@@ -737,8 +746,7 @@ port <- evalTarget(pu = sim_pu_data, features = sim_features_data,
                    sensitivity = sim_sensitivity_data,
                    boundary = sim_boundary_data,
                    values = c(0.2, 0.3, 0.4), 
-                   output_file = FALSE, 
-                   time_limit = 10)
+                   output_file = FALSE)
 ```
 
 ```
@@ -752,7 +760,8 @@ port <- evalTarget(pu = sim_pu_data, features = sim_features_data,
 ```
 
 ```
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+## cases
 ```
 
 ```
@@ -792,7 +801,7 @@ port <- evalTarget(pu = sim_pu_data, features = sim_features_data,
 ##   Cover: 8
 ##   MIR: 1
 ## 
-## Explored 1 nodes (42 simplex iterations) in 0.01 seconds
+## Explored 1 nodes (42 simplex iterations) in 0.00 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
 ## Solution count 8: 120 125 127 ... 964
@@ -808,30 +817,111 @@ port <- evalTarget(pu = sim_pu_data, features = sim_features_data,
 ```
 
 ```
+## Warning: The blm argument was set to 0, so the boundary data has no effect
+
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+## cases
+```
+
+```
 ## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros
-## Model fingerprint: 0xe19df473
+## Model fingerprint: 0xd3db0e90
 ## Variable types: 176 continuous, 220 integer (220 binary)
 ## Coefficient statistics:
 ##   Matrix range     [5e-01, 2e+00]
 ##   Objective range  [1e+00, 1e+01]
 ##   Bounds range     [1e+00, 1e+00]
 ##   RHS range        [6e-01, 2e+01]
-## Presolve removed 11 rows and 0 columns
+## Found heuristic solution: objective 964.0000000
+## Found heuristic solution: objective 445.0000000
+## Presolve removed 250 rows and 277 columns
 ## Presolve time: 0.00s
+## Presolved: 34 rows, 119 columns, 237 nonzeros
+## Found heuristic solution: objective 241.0000000
+## Variable types: 0 continuous, 119 integer (101 binary)
 ## 
-## Explored 0 nodes (0 simplex iterations) in 0.00 seconds
-## Thread count was 1 (of 4 available processors)
+## Root relaxation: objective 1.865000e+02, 34 iterations, 0.00 seconds
 ## 
-## Solution count 0
+##     Nodes    |    Current Node    |     Objective Bounds      |     Work
+##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ## 
-## Model is infeasible
-## Best objective -, best bound -, gap -
+##      0     0  186.50000    0    8  241.00000  186.50000  22.6%     -    0s
+## H    0     0                     205.0000000  186.50000  9.02%     -    0s
+##      0     0  193.00000    0    2  205.00000  193.00000  5.85%     -    0s
+## H    0     0                     197.0000000  193.00000  2.03%     -    0s
+##      0     0  195.50000    0    3  197.00000  195.50000  0.76%     -    0s
+## *    0     0               0     196.0000000  196.00000  0.00%     -    0s
+## 
+## Cutting planes:
+##   Gomory: 2
+##   Cover: 7
+##   MIR: 1
+##   Relax-and-lift: 1
+## 
+## Explored 1 nodes (52 simplex iterations) in 0.01 seconds
+## Thread count was 2 (of 4 available processors)
+## 
+## Solution count 6: 196 197 205 ... 964
+## 
+## Optimal solution found (tolerance 0.00e+00)
+## Best objective 1.960000000000e+02, best bound 1.960000000000e+02, gap 0.0000%
 ```
 
 ```
-## Error in base::round(s$data$sol[1:number_of_pu]): non-numeric argument to mathematical function
+## *********************************
+##  Iteration 3 of 3: Prop0.4
+## *********************************
+```
+
+```
+## Warning: The blm argument was set to 0, so the boundary data has no effect
+
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
+## cases
+```
+
+```
+## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
+## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
+## Optimize a model with 284 rows, 396 columns and 785 nonzeros
+## Model fingerprint: 0xa62c2e48
+## Variable types: 176 continuous, 220 integer (220 binary)
+## Coefficient statistics:
+##   Matrix range     [5e-01, 2e+00]
+##   Objective range  [1e+00, 1e+01]
+##   Bounds range     [1e+00, 1e+00]
+##   RHS range        [8e-01, 2e+01]
+## Found heuristic solution: objective 964.0000000
+## Found heuristic solution: objective 564.0000000
+## Presolve removed 250 rows and 277 columns
+## Presolve time: 0.00s
+## Presolved: 34 rows, 119 columns, 237 nonzeros
+## Found heuristic solution: objective 317.0000000
+## Variable types: 0 continuous, 119 integer (101 binary)
+## 
+## Root relaxation: objective 2.670000e+02, 43 iterations, 0.00 seconds
+## 
+##     Nodes    |    Current Node    |     Objective Bounds      |     Work
+##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+## 
+##      0     0  267.00000    0   10  317.00000  267.00000  15.8%     -    0s
+## H    0     0                     290.0000000  267.00000  7.93%     -    0s
+## H    0     0                     284.0000000  267.00000  5.99%     -    0s
+##      0     0  276.50000    0    6  284.00000  276.50000  2.64%     -    0s
+## H    0     0                     279.0000000  276.50000  0.90%     -    0s
+##      0     0  276.50000    0    3  279.00000  276.50000  0.90%     -    0s
+## H    0     0                     278.0000000  276.50000  0.54%     -    0s
+##      0     0     cutoff    0       278.00000  278.00000  0.00%     -    0s
+## 
+## Explored 1 nodes (68 simplex iterations) in 0.01 seconds
+## Thread count was 2 (of 4 available processors)
+## 
+## Solution count 7: 278 279 284 ... 964
+## 
+## Optimal solution found (tolerance 0.00e+00)
+## Best objective 2.780000000000e+02, best bound 2.780000000000e+02, gap 0.0000%
 ```
 
 Like the `prioriactions()` function, all *eval* functions inherit the
@@ -844,7 +934,10 @@ getCost(port)
 ```
 
 ```
-## Error in inherits(x, c("Solution", "Portfolio")): object 'port' not found
+##   solution_name monitoring threat_1 threat_2
+## 1       Prop0.2         63       10       47
+## 2       Prop0.3         98       26       72
+## 3       Prop0.4        141       48       89
 ```
 
 ```r
@@ -852,7 +945,10 @@ getConnectivityPenalty(port)
 ```
 
 ```
-## Error in inherits(x, c("Solution", "Portfolio")): object 'port' not found
+##   solution_name     units threat_1 threat_2
+## 1       Prop0.2  8123.805   904.68 3229.636
+## 2       Prop0.3 11334.252 1760.095 4431.999
+## 3       Prop0.4 12726.708 2336.171 4739.123
 ```
 
 Note that increasing the target per feature naturally increases the number of actions to be taken to achieve it and therefore the associated cost. This, in turn, increases the connectivity values between conservation actions.
