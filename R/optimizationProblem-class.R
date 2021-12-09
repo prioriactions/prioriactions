@@ -37,7 +37,7 @@ NULL
 #'   Call print method.}
 #'
 #'   }
-#'
+#' @return No return value.
 #' @examples
 #' # set seed for reproducibility
 #' set.seed(14)

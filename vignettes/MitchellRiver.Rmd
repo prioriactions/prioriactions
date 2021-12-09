@@ -61,47 +61,44 @@ sensitivity_data <- data.table::fread(file = paste0(path,
                                       data.table = FALSE)
 ```
 
-We load the shapefile of the case study, which is also included as part of the package installation:
+We load the shapefile of the case study also included as part of the package installation:
 
 
 ```r
 # read shapefile
-shp_mitchell = raster::shapefile("data/Fish_Mitchell.shp")
+mit_pu = raster::shapefile("data/Mitchell.shp")
 
-sp::spplot(shp_mitchell, 
-           zcol = "Shape_Area", 
-           names.attr = "Area",
-           main = "Planning unit areas", 
-           col.regions = viridis::viridis(20))
+# plot sapefile
+plot(mit_pu)
 ```
 
 ![](figures/MR3-1.png)
 
-After loading the instance's data, we can plot different distributions of features or threats on the shapefile loaded. To do it, we can assign the values from tabular input to any of the fields in the shapefile containing the distribution of native species and threats:
+After loading the instance’s data, we can plot different distributions of features or threats on the shapefile loaded. To do it, we can assign the values from tabular input to any of the fields in the shapefile containing the distribution of native species and threats:
 
 
 ```r
 # load amount of dist_features data
-dist_features <- reshape2::dcast(dist_features_data, 
+dist_features <- reshape2::dcast(dist_features_data,
                                  pu~feature,
-                                 value.var = "amount", 
+                                 value.var = "amount",
                                  fill = 0)
 
 # assign the distribution of first feature to feature_distribution field 
 # in the shapefile
-shp_mitchell$feature_distribution <- dist_features[, 2]
+mit_pu$feature_distribution <- dist_features[, 2]
 
 # plot distribution with tmap library
-tmap::tm_shape(shp_mitchell) +
-  tmap::tm_fill("feature_distribution", 
-                pal = c("white", "seagreen"), 
-                labels = c("0", "1"), 
+tmap::tm_shape(mit_pu) +
+  tmap::tm_fill("feature_distribution",
+                pal = c("white", "seagreen"),
+                labels = c("0", "1"),
                 breaks = c(0,1,2)) +
-  tmap::tm_borders(col="black", 
+  tmap::tm_borders(col="black",
                    lwd = 0.5)
 ```
 
-![](figures/MR4-1.png)
+![](figures/MR4-1.jpg)
 
 Likewise, we can plot the distributions of any threats by applying the following instructions:
 
@@ -115,10 +112,10 @@ dist_threats <- reshape2::dcast(dist_threats_data,
 
 # assign the distribution of third threat to feature_distribution field 
 # in the shapefile
-shp_mitchell$threat_distribution <- dist_threats[, 4]
+mit_pu$threat_distribution <- dist_threats[, 4]
 
 # plot distribution with tmap library
-tmap::tm_shape(shp_mitchell) +
+tmap::tm_shape(mit_pu) +
   tmap::tm_fill("threat_distribution", 
                 pal = c("white", "red4"), 
                 labels = c("0", "1"), 
@@ -127,7 +124,7 @@ tmap::tm_shape(shp_mitchell) +
                    lwd = 0.5)
 ```
 
-![](figures/MR5-1.png)
+![](figures/MR5-1.jpg)
 
 To solve all the models, the solver will be configured with a stop criterion of 5% of *gap* (`gap_limit = 0.05`), which means that the solver will end its execution when it finds a solution whose *gap* is at least 5%, indicating 0% that this solution is optimal. Similarly, there are other stopping criteria such as the time (`time_limit`), all available in the `solve()` reference. There is also the option of not using any stopping criteria that will make the solver run until it finds an optimal solution; however, this could take a long time period.
 
@@ -176,20 +173,13 @@ head(maximum_benefits)
 ```
 
 ```
-##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit
-## 1       1  692             692                            0                      692
-## 2       2 1052            1052                            0                     1052
-## 3       3  416             416                            0                      416
-## 4       4  653             653                            0                      653
-## 5       5  238             238                            0                      238
-## 6       6  276             276                            0                      276
-##   maximum.benefit
-## 1             692
-## 2            1052
-## 3             416
-## 4             653
-## 5             238
-## 6             276
+##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit
+## 1       1  692             692                            0                      692             692
+## 2       2 1052            1052                            0                     1052            1052
+## 3       3  416             416                            0                      416             416
+## 4       4  653             653                            0                      653             653
+## 5       5  238             238                            0                      238             238
+## 6       6  276             276                            0                      276             276
 ```
 
 We assign the new target (20% of maximum) to the corresponding column of the feature data input and create the object `Data-class` again.
@@ -233,8 +223,7 @@ model.base <- problem(input_data,
 ```
 
 ```
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect
-## for these cases
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases
 ```
 
 ```r
@@ -268,14 +257,15 @@ To solve the corresponding model, the solver is set considering a 5% optimality 
 solution.base <- solve(model.base, 
                        gap_limit = 0.05, 
                        verbose = TRUE, 
-                       output_file = FALSE)
+                       output_file = FALSE,
+                       cores = 2)
 ```
 
 ```
 ## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 37371 rows, 43180 columns and 136566 nonzeros
-## Model fingerprint: 0x239c093c
+## Model fingerprint: 0xc61c114a
 ## Variable types: 34965 continuous, 8215 integer (8215 binary)
 ## Coefficient statistics:
 ##   Matrix range     [3e-01, 4e+00]
@@ -285,7 +275,7 @@ solution.base <- solve(model.base,
 ## Found heuristic solution: objective 7947.0000000
 ## Found heuristic solution: objective 6638.0000000
 ## Presolve removed 35017 rows and 35259 columns
-## Presolve time: 0.26s
+## Presolve time: 0.25s
 ## Presolved: 2354 rows, 7921 columns, 66284 nonzeros
 ## Variable types: 0 continuous, 7921 integer (7904 binary)
 ## 
@@ -335,10 +325,8 @@ getPerformance(solution.base)
 ```
 
 ```
-##   solution_name objective_value   gap solving_time
-## 1           sol            1333 4.576        1.577
-##                                                status
-## 1 Optimal solution (according to gap tolerance: 0.05)
+##   solution_name objective_value   gap solving_time                                              status
+## 1           sol            1333 4.576         1.58 Optimal solution (according to gap tolerance: 0.05)
 ```
 
 Since our objective function does not contain the connectivity component  (because both `blm` and `blm_actions` were set to zero), the objective value corresponds to the sum of all actions and monitoring costs. We can check these using the `getCost()` function:
@@ -379,13 +367,13 @@ In the same way that we plot the distributions of species and threats, we can al
 
 ```r
 # assign solution to shapefile field to plot it
-shp_mitchell$action_1.base <-  solution_actions.base$`1`
-shp_mitchell$action_2.base <-  solution_actions.base$`2`
-shp_mitchell$action_3.base <-  solution_actions.base$`3`
-shp_mitchell$action_4.base <-  solution_actions.base$`4`
+mit_pu$action_1.base <-  solution_actions.base$`1`
+mit_pu$action_2.base <-  solution_actions.base$`2`
+mit_pu$action_3.base <-  solution_actions.base$`3`
+mit_pu$action_4.base <-  solution_actions.base$`4`
 
 # actions plots
-plot_action1.base <- tmap::tm_shape(shp_mitchell) + 
+plot_action1.base <- tmap::tm_shape(mit_pu) + 
                      tmap::tm_fill("action_1.base", 
                                    pal = c("white", "dodgerblue4"), 
                                    labels = c("0", "1"), 
@@ -393,7 +381,7 @@ plot_action1.base <- tmap::tm_shape(shp_mitchell) +
                      tmap::tm_borders(col="black", 
                                       lwd = 0.5)
 
-plot_action2.base <- tmap::tm_shape(shp_mitchell) + 
+plot_action2.base <- tmap::tm_shape(mit_pu) + 
                      tmap::tm_fill("action_2.base", 
                                    pal = c("white", "dodgerblue4"), 
                                    labels = c("0", "1"), 
@@ -401,7 +389,7 @@ plot_action2.base <- tmap::tm_shape(shp_mitchell) +
                      tmap::tm_borders(col="black", 
                                       lwd = 0.5)
 
-plot_action3.base <- tmap::tm_shape(shp_mitchell) + 
+plot_action3.base <- tmap::tm_shape(mit_pu) + 
                      tmap::tm_fill("action_3.base", 
                                    pal = c("white", "dodgerblue4"), 
                                    labels = c("0", "1"), 
@@ -409,7 +397,7 @@ plot_action3.base <- tmap::tm_shape(shp_mitchell) +
                      tmap::tm_borders(col="black", 
                                       lwd = 0.5)
 
-plot_action4.base <- tmap::tm_shape(shp_mitchell) + 
+plot_action4.base <- tmap::tm_shape(mit_pu) + 
                      tmap::tm_fill("action_4.base", 
                                    pal = c("white", "dodgerblue4"), 
                                    labels = c("0", "1"), 
@@ -423,20 +411,20 @@ tmap::tmap_arrange(plot_action1.base,
                    plot_action4.base)
 ```
 
-![](figures/MR15-1.png)
+![](figures/MR15-1.jpg)
 
 Also, we can show the distribution of the sum of the actions (higher density of actions):
   
 
 ```r
-shp_mitchell$sum_actions.base <- solution_actions.base$`1` + 
+mit_pu$sum_actions.base <- solution_actions.base$`1` + 
                                  solution_actions.base$`2` + 
                                  solution_actions.base$`3` + 
                                  solution_actions.base$`4` +
                                  solution_actions.base$connectivity*5
 
 # plot sum of actions with tmap library
-plot.base <- tmap::tm_shape(shp_mitchell) + 
+plot.base <- tmap::tm_shape(mit_pu) + 
              tmap::tm_fill("sum_actions.base", 
                            palette="viridis", 
                            labels = c("do nothing", 
@@ -452,7 +440,7 @@ plot.base <- tmap::tm_shape(shp_mitchell) +
 plot.base
 ```
 
-![](figures/MR16-1.png)
+![](figures/MR16-1.jpg)
 
 We will use the results from this base model for comparisons with the following planning exercises.
 
@@ -474,8 +462,7 @@ model.curve <- prioriactions::problem(input_data,
 ```
 
 ```
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect
-## for these cases
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases
 ```
 
 ```r
@@ -495,14 +482,15 @@ Note that the new model associates a larger instance (from 43180 to 78145 variab
 solution.curve <- prioriactions::solve(model.curve, 
                                        gap_limit = 0.05, 
                                        verbose = TRUE, 
-                                       output_file = FALSE)
+                                       output_file = FALSE,
+                                       cores = 2)
 ```
 
 ```
 ## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 37371 rows, 78145 columns and 136566 nonzeros
-## Model fingerprint: 0x86a286dc
+## Model fingerprint: 0x727af3a5
 ## Model has 34965 general constraints
 ## Variable types: 69930 continuous, 8215 integer (8215 binary)
 ## Coefficient statistics:
@@ -512,7 +500,7 @@ solution.curve <- prioriactions::solve(model.curve,
 ##   RHS range        [1e+00, 4e+02]
 ## Found heuristic solution: objective 8215.0000000
 ## Presolve added 69869 rows and 174524 columns
-## Presolve time: 0.74s
+## Presolve time: 0.78s
 ## Presolved: 107240 rows, 252669 columns, 695592 nonzeros
 ## Presolved model has 34965 SOS constraint(s)
 ## Found heuristic solution: objective 7947.0000000
@@ -525,67 +513,79 @@ solution.curve <- prioriactions::solve(model.curve,
 ## Root simplex log...
 ## 
 ## Iteration    Objective       Primal Inf.    Dual Inf.      Time
-##    47951    2.8079534e+03   0.000000e+00   5.127077e+04      5s
-##    76722    2.2613066e+03   0.000000e+00   2.778781e+04     10s
-##    94262    2.0197112e+03   0.000000e+00   1.986480e+04     15s
-##   111687    1.8277940e+03   0.000000e+00   2.978724e+04     20s
-## Concurrent spin time: 0.00s
+##    52139    2.7269611e+03   0.000000e+00   1.876868e+04      5s
+##    77100    2.2476995e+03   0.000000e+00   1.868763e+04     10s
+##    93792    2.0070600e+03   0.000000e+00   1.542965e+04     15s
+## Concurrent spin time: 0.01s
 ## 
 ## Solved with dual simplex
 ## 
-## Root relaxation: objective 1.144050e+03, 58678 iterations, 21.40 seconds
-## Total elapsed time = 28.89s
+## Root relaxation: objective 1.144050e+03, 54270 iterations, 14.95 seconds
+## Total elapsed time = 21.11s
 ## 
 ##     Nodes    |    Current Node    |     Objective Bounds      |     Work
 ##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ## 
-##      0     0 1144.05000    0 6110 7947.00000 1144.05000  85.6%     -   29s
-## H    0     0                    7922.0000000 1144.05000  85.6%     -   31s
-##      0     0 1151.40000    0 9090 7922.00000 1151.40000  85.5%     -   37s
-##      0     0 1162.99046    0 11199 7922.00000 1162.99046  85.3%     -   46s
-##      0     0 1187.26667    0 5725 7922.00000 1187.26667  85.0%     -   50s
-##      0     0 1200.28889    0 4811 7922.00000 1200.28889  84.8%     -   52s
-##      0     0 1200.28889    0 4767 7922.00000 1200.28889  84.8%     -   53s
-##      0     0 1204.10556    0 4864 7922.00000 1204.10556  84.8%     -   58s
-## H    0     0                    7885.0000000 1204.10556  84.7%     -   59s
-##      0     0 1235.41111    0 4896 7885.00000 1235.41111  84.3%     -   64s
-##      0     0 1243.35000    0 3256 7885.00000 1243.35000  84.2%     -   67s
-##      0     0 1247.60000    0 3571 7885.00000 1247.60000  84.2%     -   71s
-##      0     0 1247.60000    0 3264 7885.00000 1247.60000  84.2%     -   73s
-##      0     0 1269.26667    0 3790 7885.00000 1269.26667  83.9%     -   78s
-## H    0     0                    1509.0000000 1269.26667  15.9%     -   86s
-##      0     0 1269.26667    0 2879 1509.00000 1269.26667  15.9%     -   89s
-##      0     0 1269.26667    0 2417 1509.00000 1269.26667  15.9%     -   94s
-## H    0     0                    1507.0000000 1269.26667  15.8%     -   95s
-##      0     0 1270.16667    0 2237 1507.00000 1270.16667  15.7%     -   98s
-##      0     0 1270.16667    0 1727 1507.00000 1270.16667  15.7%     -  100s
-##      0     0 1272.00000    0 1589 1507.00000 1272.00000  15.6%     -  111s
-## H    0     0                    1362.0000000 1272.00000  6.61%     -  119s
-##      0     0 1272.00000    0 2203 1362.00000 1272.00000  6.61%     -  122s
-##      0     0 1272.00000    0 2809 1362.00000 1272.00000  6.61%     -  126s
-##      0     0 1272.00000    0 1748 1362.00000 1272.00000  6.61%     -  133s
-## H    0     0                    1336.0000000 1272.00000  4.79%     -  148s
+##      0     0 1144.05000    0 6203 7947.00000 1144.05000  85.6%     -   22s
+## H    0     0                    7924.0000000 1144.05000  85.6%     -   23s
+##      0     0 1148.84167    0 8970 7924.00000 1148.84167  85.5%     -   28s
+## H    0     0                    2094.0000000 1148.84167  45.1%     -   32s
+##      0     0 1162.52272    0 11530 2094.00000 1162.52272  44.5%     -   37s
+##      0     0 1187.87778    0 6309 2094.00000 1187.87778  43.3%     -   43s
+##      0     0 1201.60000    0 5121 2094.00000 1201.60000  42.6%     -   46s
+##      0     0 1201.60000    0 5072 2094.00000 1201.60000  42.6%     -   46s
+##      0     0 1205.21667    0 5214 2094.00000 1205.21667  42.4%     -   51s
+##      0     0 1221.05556    0 5864 2094.00000 1221.05556  41.7%     -   54s
+##      0     0 1245.76667    0 3135 2094.00000 1245.76667  40.5%     -   59s
+##      0     0 1247.26667    0 2809 2094.00000 1247.26667  40.4%     -   61s
+##      0     0 1247.26667    0 3125 2094.00000 1247.26667  40.4%     -   63s
+##      0     0 1269.26667    0 3240 2094.00000 1269.26667  39.4%     -   69s
+## H    0     0                    1472.0000000 1269.26667  13.8%     -   79s
+##      0     0 1269.26667    0 2501 1472.00000 1269.26667  13.8%     -   81s
+##      0     0 1269.92292    0 2699 1472.00000 1269.92292  13.7%     -   86s
+##      0     0 1270.83333    0 1876 1472.00000 1270.83333  13.7%     -   88s
+##      0     0 1270.83333    0 1741 1472.00000 1270.83333  13.7%     -   88s
+##      0     0 1272.00000    0 2068 1472.00000 1272.00000  13.6%     -   92s
+## H    0     0                    1371.0000000 1272.00000  7.22%     -  103s
+##      0     0 1272.00000    0 1726 1371.00000 1272.00000  7.22%     -  105s
+##      0     0 1272.00000    0 2194 1371.00000 1272.00000  7.22%     -  109s
+##      0     0 1272.00000    0 1548 1371.00000 1272.00000  7.22%     -  123s
+## H    0     0                    1353.0000000 1272.00000  5.99%     -  141s
+## H    0     0                    1348.0000000 1272.00000  5.64%     -  151s
+##      0     2 1272.00000    0 1537 1348.00000 1272.00000  5.64%     -  154s
+##      1     4 1272.00000    1 1672 1348.00000 1272.00000  5.64%  4286  156s
+##      5     8 1272.00000    2 1772 1348.00000 1272.00000  5.64%  2175  163s
+##      7    10 1272.00000    3 1883 1348.00000 1272.00000  5.64%  2229  165s
+##     17    26 1272.00000    5 1793 1348.00000 1272.00000  5.64%  1052  171s
+##     25    42 1272.00000    9 1689 1348.00000 1272.00000  5.64%   769  183s
+## H   27    42                    1344.0000000 1272.00000  5.36%   725  183s
+##     41    86 1272.00000   16 1691 1344.00000 1272.00000  5.36%   494  207s
+## H   62    86                    1341.0000000 1272.00000  5.15%   371  207s
+## H   84    86                    1340.0000000 1272.00000  5.07%   298  207s
+##     85   178 1272.00000   34 1689 1340.00000 1272.00000  5.07%   295  233s
+## H  108   178                    1339.0000000 1272.00000  5.00%   245  233s
+## H  111   178                    1338.0000000 1272.00000  4.93%   239  233s
 ## 
 ## Cutting planes:
-##   Cover: 1359
-##   Implied bound: 27429
-##   Clique: 130
-##   MIR: 559
-##   Flow cover: 3155
-##   Network: 1
-##   RLT: 1
-##   Relax-and-lift: 13289
+##   Cover: 1439
+##   Implied bound: 29488
+##   Clique: 144
+##   MIR: 426
+##   Flow cover: 3219
+##   Network: 4
+##   RLT: 2
+##   Relax-and-lift: 12413
 ## 
-## Explored 1 nodes (188544 simplex iterations) in 148.03 seconds
+## Explored 177 nodes (219985 simplex iterations) in 233.32 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
-## Solution count 8: 1336 1362 1507 ... 8215
+## Solution count 10: 1338 1339 1340 ... 2094
 ## 
 ## Optimal solution found (tolerance 5.00e-02)
-## Warning: max constraint violation (1.4602e-02) exceeds tolerance
-## Warning: max general constraint violation (1.4602e-02) exceeds tolerance
+## Warning: max constraint violation (1.3502e-02) exceeds tolerance
+## Warning: max general constraint violation (1.3502e-02) exceeds tolerance
 ##          (model may be infeasible or unbounded - try turning presolve off)
-## Best objective 1.336000000000e+03, best bound 1.272000000000e+03, gap 4.7904%
+## Best objective 1.338000000000e+03, best bound 1.272000000000e+03, gap 4.9327%
 ```
 
 Note that the last solution was reached in 177326 seconds. This specifically demonstrates how complexity increases when using the different parameters of curves.
@@ -596,19 +596,19 @@ Note that the last solution was reached in 177326 seconds. This specifically dem
 solution_actions.curve <- prioriactions::getActions(solution.curve)
 
 # assign solution to shapefile field to plot it
-shp_mitchell$action_1.curve <- solution_actions.curve$`1`
-shp_mitchell$action_2.curve <- solution_actions.curve$`2`
-shp_mitchell$action_3.curve <- solution_actions.curve$`3`
-shp_mitchell$action_4.curve <- solution_actions.curve$`4`
+mit_pu$action_1.curve <- solution_actions.curve$`1`
+mit_pu$action_2.curve <- solution_actions.curve$`2`
+mit_pu$action_3.curve <- solution_actions.curve$`3`
+mit_pu$action_4.curve <- solution_actions.curve$`4`
 
-shp_mitchell$sum_actions.curve <- solution_actions.curve$`1` + 
+mit_pu$sum_actions.curve <- solution_actions.curve$`1` + 
                                   solution_actions.curve$`2` + 
                                   solution_actions.curve$`3` + 
                                   solution_actions.curve$`4` +
                                   solution_actions.curve$connectivity*5
 
 # plot sum of actions with tmap library
-plot.curve <- tmap::tm_shape(shp_mitchell) + 
+plot.curve <- tmap::tm_shape(mit_pu) + 
               tmap::tm_fill("sum_actions.curve", 
                             palette="viridis", 
                             labels = c("do nothing", 
@@ -625,7 +625,7 @@ plot.curve <- tmap::tm_shape(shp_mitchell) +
 tmap::tmap_arrange(plot.base, plot.curve)
 ```
 
-![](figures/MR19-1.png)
+![](figures/MR19-1.jpg)
 
 Here, we display representations of the solution obtained for both, the base and curve models. As can be seen from these maps there are a greater number of sites with a larger concentration of management actions compared to the previous model (for example, a greater number of units in green).
 
@@ -651,22 +651,22 @@ model.conn <- problem(input_data.conn,
 ```
 
 ```
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect
-## for these cases
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases
 ```
 
 ```r
 solution.conn <- solve(model.conn, 
                        gap_limit = 0.05, 
                        verbose = TRUE, 
-                       output_file = FALSE)
+                       output_file = FALSE,
+                       cores = 2)
 ```
 
 ```
 ## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 78567 rows, 56912 columns and 232690 nonzeros
-## Model fingerprint: 0xffda5e93
+## Model fingerprint: 0x5fa5d86a
 ## Variable types: 34965 continuous, 21947 integer (21947 binary)
 ## Coefficient statistics:
 ##   Matrix range     [3e-01, 4e+00]
@@ -675,7 +675,7 @@ solution.conn <- solve(model.conn,
 ##   RHS range        [1e+00, 4e+02]
 ## Found heuristic solution: objective 7947.0000000
 ## Presolve removed 35010 rows and 35250 columns
-## Presolve time: 0.40s
+## Presolve time: 0.44s
 ## Presolved: 43557 rows, 21662 columns, 162430 nonzeros
 ## Variable types: 0 continuous, 21662 integer (21646 binary)
 ## 
@@ -686,102 +686,100 @@ solution.conn <- solve(model.conn,
 ## Root simplex log...
 ## 
 ## Iteration    Objective       Primal Inf.    Dual Inf.      Time
-##    38001    1.5954434e+03   0.000000e+00   1.368886e+05      5s
+##    34261    1.6462609e+03   0.000000e+00   1.224723e+04      5s
 ## Concurrent spin time: 0.00s
 ## 
 ## Solved with dual simplex
 ## 
-## Root relaxation: objective 1.246661e+03, 20278 iterations, 8.63 seconds
+## Root relaxation: objective 1.246656e+03, 17330 iterations, 8.14 seconds
 ## 
 ##     Nodes    |    Current Node    |     Objective Bounds      |     Work
 ##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ## 
-##      0     0 1246.66068    0 14895 7947.00000 1246.66068  84.3%     -   10s
-## H    0     0                    3797.8868056 1246.66068  67.2%     -   11s
-## H    0     0                    3599.0013999 1246.66068  65.4%     -   11s
-##      0     0 1313.60737    0 16219 3599.00140 1313.60737  63.5%     -   22s
-##      0     0 1439.11297    0 10245 3599.00140 1439.11297  60.0%     -   32s
-## H    0     0                    3549.4676884 1439.11297  59.5%     -   32s
-##      0     0 1445.29790    0 10632 3549.46769 1445.29790  59.3%     -   36s
-##      0     0 1449.06889    0 10618 3549.46769 1449.06889  59.2%     -   36s
-##      0     0 1450.67325    0 10261 3549.46769 1450.67325  59.1%     -   37s
-##      0     0 1452.45332    0 10270 3549.46769 1452.45332  59.1%     -   42s
-## H    0     0                    3494.0894064 1452.45332  58.4%     -   42s
-##      0     0 1453.88883    0 10281 3494.08941 1453.88883  58.4%     -   43s
-##      0     0 1453.88976    0 10281 3494.08941 1453.88976  58.4%     -   43s
-##      0     0 1454.60786    0 10282 3494.08941 1454.60786  58.4%     -   50s
-##      0     0 1457.08247    0 10627 3494.08941 1457.08247  58.3%     -   53s
-## H    0     0                    3376.1774129 1457.08247  56.8%     -   53s
-##      0     0 1457.27671    0 10792 3376.17741 1457.27671  56.8%     -   54s
-##      0     0 1457.97173    0 10790 3376.17741 1457.97173  56.8%     -   55s
-## H    0     0                    3299.8701987 1457.97173  55.8%     -   55s
-##      0     0 1458.11380    0 10441 3299.87020 1458.11380  55.8%     -   55s
-##      0     0 1458.69741    0 10443 3299.87020 1458.69741  55.8%     -   56s
-## H    0     0                    3190.3671965 1458.69741  54.3%     -   56s
-##      0     0 1458.85224    0 10446 3190.36720 1458.85224  54.3%     -   57s
-##      0     0 1458.99700    0 10442 3190.36720 1458.99700  54.3%     -   58s
-## H    0     0                    3147.0292730 1458.99700  53.6%     -   58s
-##      0     0 1458.99700    0 10442 3147.02927 1458.99700  53.6%     -   58s
-## H    0     0                    3135.2557703 1458.99700  53.5%     -   58s
-##      0     0 1459.79141    0 10436 3135.25577 1459.79141  53.4%     -   60s
-## H    0     0                    3112.4111998 1459.79141  53.1%     -   60s
-##      0     0 1460.05177    0 10436 3112.41120 1460.05177  53.1%     -   61s
-## H    0     0                    3059.4015507 1460.05177  52.3%     -   61s
-##      0     0 1460.19035    0 10439 3059.40155 1460.19035  52.3%     -   62s
-## H    0     0                    3011.9389070 1460.19035  51.5%     -   62s
-##      0     0 1460.22580    0 10439 3011.93891 1460.22580  51.5%     -   62s
-## H    0     0                    3010.9389070 1460.22580  51.5%     -   62s
-##      0     0 1460.31278    0 10438 3010.93891 1460.31278  51.5%     -   63s
-## H    0     0                    2968.2497660 1460.31278  50.8%     -   63s
-##      0     0 1460.31278    0 10438 2968.24977 1460.31278  50.8%     -   69s
-## H    0     0                    2639.0209093 1460.36455  44.7%     -   78s
-## H    0     0                    2624.9498415 1460.36455  44.4%     -   78s
-## H    0     2                    2567.2914098 1460.36455  43.1%     -   79s
-##      0     2 1460.36455    0 10436 2567.29141 1460.36455  43.1%     -   79s
-##      1     4 1471.32603    1 10480 2567.29141 1460.36455  43.1%  4022   85s
-##      5     8 1513.52277    3 7511 2567.29141 1471.37286  42.7%  4323   92s
-##      9    12 1514.14072    4 6767 2567.29141 1471.37286  42.7%  3490   97s
-##     13    16 1524.15241    6 5605 2567.29141 1471.37286  42.7%  3056  101s
-##     17    20 1538.15890    8 5224 2567.29141 1471.37286  42.7%  3738  108s
-##     19    23 1545.54083    9 5243 2567.29141 1471.37286  42.7%  4089  114s
-##     22    26 1540.88141    9 3612 2567.29141 1471.37286  42.7%  3645  115s
-## H   26    30                    2553.0245541 1471.37286  42.4%  3335  118s
-## H   29    34                    1784.0830763 1471.37286  17.5%  3279  119s
-##     33    37 1563.51929   13 2579 1784.08308 1471.37286  17.5%  3097  121s
-##     41    49 1568.02871   16 2399 1784.08308 1471.37286  17.5%  2845  125s
-## H   55    60                    1759.5897233 1471.37286  16.4%  2448  130s
-## H   59    64                    1607.1596096 1471.37286  8.45%  2436  132s
-##     75    75 1588.25497   29 2797 1607.15961 1471.37286  8.45%  2026  137s
-## H   84    85                    1606.1596114 1471.37286  8.39%  1891  140s
-##     99    97 1600.05188   40  883 1606.15961 1471.37286  8.39%  1724  146s
-##    122   105     cutoff   53      1606.15961 1476.92318  8.05%  1485  153s
-##    131   107 1499.06803    4 10461 1606.15961 1476.99594  8.04%  1451  156s
-##    137   106 1517.27386    5 9203 1606.15961 1476.99594  8.04%  1480  164s
-##    142   109 1518.63154    5 8684 1606.15961 1476.99594  8.04%  1553  169s
-##    145   114 1524.62712    6 8485 1606.15961 1476.99594  8.04%  1544  172s
-##    150   113 1531.94377    8 5562 1606.15961 1476.99594  8.04%  1531  175s
-##    158   122 1556.75906   11 3489 1606.15961 1476.99594  8.04%  1552  182s
-## H  159   121                    1581.5415382 1476.99594  6.61%  1542  182s
-##    164   116 1558.98078   13 3059 1581.54154 1476.99594  6.61%  1510  187s
-##    184   112 1567.27849   23 1665 1581.54154 1476.99594  6.61%  1388  191s
-##    193   120 1569.84041   26 1988 1581.54154 1476.99594  6.61%  1360  196s
-##    232   144 1577.33040   43    5 1581.54154 1476.99594  6.61%  1206  204s
-##    264   151 1577.45516   51  261 1581.54154 1504.05691  4.90%  1093  211s
+##      0     0 1246.65555    0 14894 7947.00000 1246.65555  84.3%     -   10s
+## H    0     0                    3698.1750000 1246.65555  66.3%     -   10s
+## H    0     0                    3596.0050000 1246.65555  65.3%     -   10s
+##      0     0 1309.93713    0 16243 3596.00500 1309.93713  63.6%     -   24s
+##      0     0 1439.10567    0 10246 3596.00500 1439.10567  60.0%     -   33s
+## H    0     0                    3516.8050000 1439.10567  59.1%     -   33s
+##      0     0 1445.28767    0 10627 3516.80500 1445.28767  58.9%     -   37s
+##      0     0 1448.58070    0 10616 3516.80500 1448.58070  58.8%     -   37s
+##      0     0 1451.95708    0 10273 3516.80500 1451.95708  58.7%     -   38s
+##      0     0 1453.67899    0 10278 3516.80500 1453.67899  58.7%     -   41s
+## H    0     0                    3395.0450000 1453.67899  57.2%     -   41s
+##      0     0 1455.14266    0 10282 3395.04500 1455.14266  57.1%     -   41s
+##      0     0 1455.14286    0 10280 3395.04500 1455.14286  57.1%     -   41s
+##      0     0 1456.20718    0 10336 3395.04500 1456.20718  57.1%     -   45s
+##      0     0 1459.99389    0 10267 3395.04500 1459.99389  57.0%     -   48s
+## H    0     0                    3309.2750000 1459.99389  55.9%     -   49s
+##      0     0 1459.99389    0 10268 3309.27500 1459.99389  55.9%     -   49s
+##      0     0 1461.98299    0 10272 3309.27500 1461.98299  55.8%     -   49s
+##      0     0 1462.38513    0 10269 3309.27500 1462.38513  55.8%     -   50s
+## H    0     0                    3228.9150000 1462.38513  54.7%     -   50s
+##      0     0 1462.54676    0 10270 3228.91500 1462.54676  54.7%     -   51s
+##      0     0 1463.90458    0 10278 3228.91500 1463.90458  54.7%     -   52s
+## H    0     0                    3202.0750000 1463.90458  54.3%     -   52s
+##      0     0 1463.90499    0 10278 3202.07500 1463.90499  54.3%     -   52s
+##      0     0 1463.95170    0 10271 3202.07500 1463.95170  54.3%     -   53s
+## H    0     0                    3159.7400000 1463.95170  53.7%     -   53s
+##      0     0 1463.95444    0 10269 3159.74000 1463.95444  53.7%     -   53s
+##      0     0 1463.95444    0 10259 3159.74000 1463.95444  53.7%     -   59s
+## H    0     0                    2681.2700000 1463.98668  45.4%     -   63s
+## H    0     0                    2669.5000000 1463.98668  45.2%     -   64s
+## H    0     2                    2663.2400000 1463.98668  45.0%     -   64s
+##      0     2 1463.98668    0 10258 2663.24000 1463.98668  45.0%     -   64s
+##      1     4 1479.00207    1 10266 2663.24000 1463.98668  45.0%  2422   67s
+##      3     6 1485.05504    2 10506 2663.24000 1470.82439  44.8%  2547   72s
+##      5     8 1497.89727    2 11879 2663.24000 1470.89149  44.8%  3705   78s
+##      7    10 1489.66829    3 9823 2663.24000 1477.28291  44.5%  3020   80s
+##     11    14 1500.40849    4 9901 2663.24000 1489.69722  44.1%  2744   86s
+##     13    16 1525.41094    4 9311 2663.24000 1492.54486  44.0%  3116   92s
+##     17    21 1538.21142    5 9950 2663.24000 1495.32210  43.9%  3237   96s
+##     24    27 1532.40163    7 8478 2663.24000 1495.32210  43.9%  2899  102s
+## H   26    32                    2641.8200000 1495.32210  43.4%  2778  105s
+## H   29    32                    1620.4800000 1495.32210  7.72%  2617  105s
+##     33    40 1545.13627    9 9169 1620.48000 1495.32210  7.72%  2574  110s
+##     43    50 1554.53682   13 7430 1620.48000 1495.32210  7.72%  2249  117s
+##     55    61 1609.51801   19 5050 1620.48000 1495.32210  7.72%  2170  122s
+## H   56    61                    1615.4100000 1495.32210  7.43%  2132  122s
+## H   57    61                    1604.9900000 1495.32210  6.83%  2126  122s
+##     66    73 1579.91224   21 6348 1604.99000 1495.32210  6.83%  1957  126s
+##     82    82 1590.35993   26 5939 1604.99000 1495.32210  6.83%  1742  131s
+## H   88    91                    1602.9900000 1495.32210  6.72%  1761  133s
+##     97    96     cutoff   28      1602.99000 1495.36416  6.71%  1609  136s
+##    114    99 1531.50176    4 5624 1602.99000 1495.36416  6.71%  1583  141s
+##    122   110 1535.54610    6 5703 1602.99000 1495.36416  6.71%  1589  150s
+##    153   136 1543.17555    9 3290 1602.99000 1495.36416  6.71%  1468  157s
+## H  171   112                    1589.1600000 1495.36416  5.90%  1338  160s
+##    184   116 1548.70522   12 2616 1589.16000 1495.36416  5.90%  1291  166s
+##    198   116 1572.42119   17 2476 1589.16000 1495.36416  5.90%  1361  175s
+## H  199   116                    1588.1600000 1495.36416  5.84%  1354  175s
+##    210   124 1579.00047   23 2452 1588.16000 1498.01688  5.68%  1418  184s
+##    226   127 1518.05974    4 6270 1588.16000 1498.01688  5.68%  1426  189s
+##    241   136 1526.96262    6 5569 1588.16000 1498.01688  5.68%  1400  194s
+##    250   141 1542.67287    8 3703 1588.16000 1498.01688  5.68%  1436  198s
+##    255   147 1555.54545   10 3384 1588.16000 1498.01688  5.68%  1469  205s
+##    261   157 1563.94638   13 2923 1588.16000 1498.01688  5.68%  1491  210s
+##    273   169 1582.15750   19  569 1588.16000 1498.01688  5.68%  1487  215s
+## H  285   161                    1583.4950000 1498.01688  5.40%  1429  215s
+##    298   150     cutoff   32      1583.49500 1504.40589  4.99%  1404  243s
+## H  306   140                    1582.4950000 1504.42814  4.93%  1392  243s
 ## 
 ## Cutting planes:
 ##   Gomory: 2
-##   MIR: 2
-##   Zero half: 8
+##   Cover: 1
+##   MIR: 1
+##   Zero half: 10
 ##   Mod-K: 1
-##   RLT: 95
+##   RLT: 92
 ## 
-## Explored 283 nodes (376102 simplex iterations) in 211.61 seconds
+## Explored 307 nodes (487058 simplex iterations) in 243.79 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
-## Solution count 10: 1581.54 1606.16 1607.16 ... 2968.25
+## Solution count 10: 1582.5 1583.5 1588.16 ... 2663.24
 ## 
 ## Optimal solution found (tolerance 5.00e-02)
-## Best objective 1.581541538165e+03, best bound 1.504073465734e+03, gap 4.8983%
+## Best objective 1.582495000000e+03, best bound 1.504430000000e+03, gap 4.9330%
 ```
 
 In the same way as what occurs in the previous model, the addition of spatial requirements leads to higher costs requirement implies higher costs in the management plan, as well as a model with greater computational complexity. To obtain the costs of both solutions (base and with connectivity requirements) we use the `getCost()` function:
@@ -802,7 +800,7 @@ getCost(solution.conn)
 
 ```
 ##   solution_name monitoring threat_1 threat_2 threat_3 threat_4
-## 1           sol        490        4      400       46      460
+## 1           sol        512        4      383       24      478
 ```
 
 
@@ -811,19 +809,19 @@ getCost(solution.conn)
 solution_actions.conn<- getActions(solution.conn)
 
 # assign solution to shapefile field to plot it
-shp_mitchell$action_1.conn <- solution_actions.conn$`1`
-shp_mitchell$action_2.conn <- solution_actions.conn$`2`
-shp_mitchell$action_3.conn <- solution_actions.conn$`3`
-shp_mitchell$action_4.conn <- solution_actions.conn$`4`
+mit_pu$action_1.conn <- solution_actions.conn$`1`
+mit_pu$action_2.conn <- solution_actions.conn$`2`
+mit_pu$action_3.conn <- solution_actions.conn$`3`
+mit_pu$action_4.conn <- solution_actions.conn$`4`
 
-shp_mitchell$sum_actions.conn <- solution_actions.conn$`1` + 
+mit_pu$sum_actions.conn <- solution_actions.conn$`1` + 
                                  solution_actions.conn$`2` + 
                                  solution_actions.conn$`3` + 
                                  solution_actions.conn$`4` +
                                  solution_actions.conn$connectivity*5
 
 # plot sum of actions with tmap library
-plot.conn <- tmap::tm_shape(shp_mitchell) + 
+plot.conn <- tmap::tm_shape(mit_pu) + 
              tmap::tm_fill("sum_actions.conn", 
                            palette="viridis", 
                            labels = c("do nothing", 
@@ -839,7 +837,7 @@ plot.conn <- tmap::tm_shape(shp_mitchell) +
 tmap::tmap_arrange(plot.base, plot.conn)
 ```
 
-![](figures/MR22-1.png)
+![](figures/MR22-1.jpg)
 
 As can be seen from the displayed maps, including the connectivity penalty in the objective function allows to find a more compact solution when compared to the one obtained by the base model.
 
@@ -872,14 +870,15 @@ model.conn_actions <- problem(input_data.conn_actions,
 solution.conn_actions <- solve(model.conn_actions, 
                                gap_limit = 0.05, 
                                verbose = TRUE, 
-                               output_file = FALSE)
+                               output_file = FALSE,
+                               cores = 2)
 ```
 
 ```
 ## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 141237 rows, 77802 columns and 378920 nonzeros
-## Model fingerprint: 0xd454adb3
+## Model fingerprint: 0x885bc8c7
 ## Variable types: 34965 continuous, 42837 integer (42837 binary)
 ## Coefficient statistics:
 ##   Matrix range     [3e-01, 4e+00]
@@ -888,7 +887,7 @@ solution.conn_actions <- solve(model.conn_actions,
 ##   RHS range        [1e+00, 4e+02]
 ## Found heuristic solution: objective 8210.0000000
 ## Presolve removed 35014 rows and 34975 columns
-## Presolve time: 0.99s
+## Presolve time: 0.96s
 ## Presolved: 106223 rows, 42827 columns, 308960 nonzeros
 ## Variable types: 0 continuous, 42827 integer (42826 binary)
 ## 
@@ -900,153 +899,152 @@ solution.conn_actions <- solve(model.conn_actions,
 ## Root simplex log...
 ## 
 ## Iteration    Objective       Primal Inf.    Dual Inf.      Time
-##    52270    1.9225777e+04   0.000000e+00   3.440532e+06      5s
-##    59512    1.6519896e+04   0.000000e+00   1.785789e+06     10s
-##    63133    1.1619524e+04   0.000000e+00   8.802070e+05     15s
-##    66755    1.0536259e+04   0.000000e+00   9.604617e+05     20s
+##    54062    1.6758547e+04   0.000000e+00   3.523879e+05      5s
+##    59110    1.4264445e+04   0.000000e+00   2.019730e+06     10s
+##    64902    1.1453028e+04   0.000000e+00   7.894121e+05     15s
 ## Concurrent spin time: 0.00s
 ## 
 ## Solved with dual simplex
 ## 
-## Root relaxation: objective 1.387138e+03, 13931 iterations, 19.55 seconds
+## Root relaxation: objective 1.387112e+03, 12682 iterations, 16.66 seconds
 ## 
 ##     Nodes    |    Current Node    |     Objective Bounds      |     Work
 ##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ## 
-##      0     0 1387.13755    0 15106 8210.00000 1387.13755  83.1%     -   25s
-## H    0     0                    3031.0564886 1387.13755  54.2%     -   25s
-## H    0     0                    2816.9312916 1387.13755  50.8%     -   25s
-##      0     0 1497.65792    0 25226 2816.93129 1497.65792  46.8%     -   48s
-##      0     0 1602.85777    0 22616 2816.93129 1602.85777  43.1%     -   71s
-##      0     0 1629.63025    0 23347 2816.93129 1629.63025  42.1%     -   87s
-##      0     0 1629.65511    0 23347 2816.93129 1629.65511  42.1%     -   87s
-##      0     0 1629.65511    0 23348 2816.93129 1629.65511  42.1%     -  115s
-## H    0     0                    2812.9312916 1629.65511  42.1%     -  116s
-##      0     0 1642.04461    0 22540 2812.93129 1642.04461  41.6%     -  120s
-##      0     0 1643.41100    0 23350 2812.93129 1643.41100  41.6%     -  121s
-##      0     0 1664.73305    0 20463 2812.93129 1664.73305  40.8%     -  127s
-##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  129s
-##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  131s
-##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  133s
-##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  135s
-##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  137s
-##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  139s
-##      0     0 1666.72743    0 20477 2812.93129 1666.72743  40.7%     -  151s
-## H    0     0                    2177.1674380 1666.74413  23.4%     -  168s
-##      0     2 1666.74413    0 20477 2177.16744 1666.74413  23.4%     -  169s
-##      1     4 1677.20933    1 20529 2177.16744 1666.78357  23.4%   970  171s
-##      3     6 1715.80015    2 20386 2177.16744 1677.26855  23.0%  1401  177s
-##      5     8 1692.30120    2 13548 2177.16744 1692.30120  22.3%  1323  180s
-##      9    12 1747.09682    3 12798 2177.16744 1715.81396  21.2%  1196  186s
-##     13    16 1786.45986    4 7293 2177.16744 1715.81396  21.2%  1207  190s
-##     20    23 1811.80707    6 7172 2177.16744 1715.81396  21.2%  1069  195s
-##     24    28 1813.41350    7 6562 2177.16744 1715.81396  21.2%  1031  201s
-## H   28    30                    2144.8698729 1715.81396  20.0%  1017  203s
-##     29    32 1844.19278    9 15092 2144.86987 1715.81396  20.0%  1036  205s
-##     33    39 1869.20017   10 5511 2144.86987 1715.81396  20.0%  1078  212s
-##     38    42 1882.03419   12 4806 2144.86987 1715.81396  20.0%   998  215s
-##     48    54 1961.87481   18 6819 2144.86987 1715.81396  20.0%   941  221s
-##     59    68 1962.87801   21 2990 2144.86987 1715.81396  20.0%   858  225s
-##     77    88 2026.97982   28 3064 2144.86987 1715.81396  20.0%   765  231s
-## H   85    88                    2123.0253024 1715.81396  19.2%   751  231s
-##    102   120 2045.10700   33 1459 2123.02530 1715.81396  19.2%   689  236s
-##    143   158 2114.27959   45   34 2123.02530 1715.85415  19.2%   548  240s
-## H  157   134                    2055.2481549 1715.85415  16.5%   507  240s
-## H  161   133                    2054.2481549 1715.85415  16.5%   496  240s
-##    174   126 1763.84787    5 23149 2054.24815 1715.85415  16.5%   493  249s
-##    183   128 1793.82105    5 18453 2054.24815 1715.85415  16.5%   491  255s
-## H  186   131                    2054.2481543 1715.85415  16.5%   498  258s
-##    188   133 1825.27341    7 18598 2054.24815 1715.85415  16.5%   508  262s
-## H  190   115                    2017.4035844 1715.85415  14.9%   508  266s
-## H  192   115                    1959.1674380 1715.85415  12.4%   515  266s
-##    193   115 1842.71694    9 20716 1959.16744 1715.85415  12.4%   521  272s
-##    197   114 1883.94565   11 15998 1959.16744 1715.85415  12.4%   539  276s
-##    200   115 1939.13564   11 17422 1959.16744 1715.85415  12.4%   550  280s
-##    206   122 1945.88160   13 16671 1959.16744 1715.85415  12.4%   562  287s
-##    213   121 1917.37765   14 14656 1959.16744 1715.85415  12.4%   554  291s
-##    222   114     cutoff   16      1959.16744 1715.85415  12.4%   550  295s
-## H  223   114                    1955.9409407 1715.85415  12.3%   547  295s
-##    233   105     cutoff   17      1955.94094 1724.85822  11.8%   533  300s
-## H  243   109                    1949.1674380 1724.92903  11.5%   534  308s
-##    246   112 1868.93078    6 22661 1949.16744 1724.92903  11.5%   541  313s
-##    249   114 1884.83170    5 18969 1949.16744 1724.92903  11.5%   553  319s
-##    252   117 1900.49322    6 18635 1949.16744 1724.92903  11.5%   561  325s
-##    259   118 1914.89153    8 22634 1949.16744 1724.92903  11.5%   577  334s
-##    263   111 1898.09039    6 20003 1949.16744 1724.92903  11.5%   579  339s
-##    268   108 1943.53429    7 20194 1949.16744 1724.92903  11.5%   584  347s
-##    277   111 1929.69723    9 22862 1949.16744 1724.92903  11.5%   583  353s
-##    280   111 1940.24060   11 22407 1949.16744 1724.92903  11.5%   589  361s
-##    285   108     cutoff   12      1949.16744 1741.15185  10.7%   591  367s
-##    294   110 1826.56011    5 21816 1949.16744 1741.15185  10.7%   590  374s
-## H  300   110                    1945.1674376 1741.15185  10.5%   591  384s
-##    302   112 1872.99058    8 18649 1945.16744 1741.15185  10.5%   601  389s
-##    306   112 1889.03239    9 19440 1945.16744 1741.15185  10.5%   603  398s
-##    314   115 1939.83438   11 18082 1945.16744 1741.15185  10.5%   606  404s
-##    323   113     cutoff   13      1945.16744 1741.15185  10.5%   604  410s
-##    331   117 1935.59544   12 19507 1945.16744 1743.03376  10.4%   607  417s
-##    341   121 1784.85223    5 18617 1945.16744 1743.05780  10.4%   604  424s
-##    345   128 1836.93850    8 16389 1945.16744 1743.05780  10.4%   610  431s
-##    360   136 1864.25001   14 7399 1945.16744 1743.05780  10.4%   600  438s
-##    368   149 1920.22974   15 7534 1945.16744 1743.05780  10.4%   606  445s
-##    383   157 1935.22843   23 6582 1945.16744 1763.00108  9.37%   604  454s
-##    406   157 1852.33279    5 19416 1945.16744 1763.00108  9.37%   591  463s
-##    416   160 1922.86893    6 19312 1945.16744 1763.00108  9.37%   592  472s
-##    421   162     cutoff    7      1945.16744 1763.00108  9.37%   601  482s
-##    431   160     cutoff    9      1945.16744 1763.85967  9.32%   603  493s
-##    443   163 1914.42587    9 9140 1945.16744 1768.77241  9.07%   610  505s
-##    446   162     cutoff   10      1945.16744 1770.67518  8.97%   613  515s
-##    457   166 1864.25991    8 20823 1945.16744 1770.67518  8.97%   618  527s
-##    461   164 1942.59323   10 20296 1945.16744 1774.94004  8.75%   626  536s
-##    472   166 1852.30378    6 18555 1945.16744 1774.94004  8.75%   625  550s
-##    478   170 1901.74434    9 15520 1945.16744 1774.94004  8.75%   627  563s
-##    490   175     cutoff   12      1945.16744 1780.29766  8.48%   631  575s
-##    497   177 1920.27406    9 18567 1945.16744 1780.35009  8.47%   642  585s
-##    509   178 1839.58297    6 15508 1945.16744 1780.35009  8.47%   644  601s
-##    516   185 1875.55225    7 15233 1945.16744 1784.90821  8.24%   645  612s
-##    533   187 1930.90652    9 5337 1945.16744 1788.79085  8.04%   647  625s
-##    545   193 1903.92740    8 16680 1945.16744 1788.79085  8.04%   652  637s
-##    557   193     cutoff   12      1945.16744 1788.80556  8.04%   657  651s
-##    573   200 1876.46659   11 17075 1945.16744 1791.13291  7.92%   656  666s
-##    594   211 1942.95107   17 17280 1945.16744 1793.84312  7.78%   656  679s
-##    619   212     cutoff   17      1945.16744 1798.40789  7.54%   654  694s
-##    634   215 1880.24461    9 18641 1945.16744 1798.64436  7.53%   656  711s
-##    651   212     cutoff   16      1945.16744 1801.77547  7.37%   658  732s
-##    662   220 1909.68166    9 18149 1945.16744 1801.88623  7.37%   662  750s
-##    680   233 1890.10827    7 20375 1945.16744 1804.56904  7.23%   665  782s
-##    699   232 1942.54021   12 16964 1945.16744 1807.71994  7.07%   664  800s
-##    728   233 1876.73404   10 16350 1945.16744 1808.07912  7.05%   660  822s
-##    747   239 1916.43056   15 17426 1945.16744 1808.12299  7.05%   666  845s
-##    775   244 1866.99168   12 18569 1945.16744 1808.84351  7.01%   663  872s
-##    790   247 1925.34426   14 15697 1945.16744 1808.84351  7.01%   668  896s
-##    811   260     cutoff   18      1945.16744 1813.50521  6.77%   668  922s
-##    856   267 1897.79220   14 18801 1945.16744 1824.32669  6.21%   659  947s
-##    881   266     cutoff   11      1945.16744 1826.73804  6.09%   664  971s
-##    906   266     cutoff    7      1945.16744 1829.33518  5.95%   666 1002s
-##    924   281 1887.41956    8 17329 1945.16744 1829.69590  5.94%   668 1029s
-##    967   282     cutoff   19      1945.16744 1830.53262  5.89%   662 1057s
-##   1004   278     cutoff   11      1945.16744 1830.73142  5.88%   661 1089s
-##   1041   310 1886.09266   11 18232 1945.16744 1831.37509  5.85%   658 1120s
-##   1113   312 1928.56251    8 8942 1945.16744 1834.56315  5.69%   644 1151s
-##   1159   316 1933.90976   10 19564 1945.16744 1835.49229  5.64%   645 1181s
-##   1205   319 1938.03490   14 6590 1945.16744 1837.07078  5.56%   644 1213s
-##   1243   318 1904.55762    9 17091 1945.16744 1840.11614  5.40%   647 1245s
-##   1294   321 1933.38382   11 15022 1945.16744 1841.33957  5.34%   646 1286s
-##   1339   358     cutoff   13      1945.16744 1844.14876  5.19%   647 1323s
-##   1434   377 1944.16091   26 7767 1945.16744 1847.15788  5.04%   631 1360s
-## H 1497   372                    1945.1674308 1847.36192  5.03%   630 1407s
+##      0     0 1387.11192    0 15106 8210.00000 1387.11192  83.1%     -   22s
+## H    0     0                    2930.1300000 1387.11192  52.7%     -   22s
+## H    0     0                    2816.8600000 1387.11192  50.8%     -   22s
+##      0     0 1497.64057    0 25226 2816.86000 1497.64057  46.8%     -   57s
+##      0     0 1602.83358    0 22616 2816.86000 1602.83358  43.1%     -   87s
+##      0     0 1629.59690    0 23347 2816.86000 1629.59690  42.1%     -  104s
+##      0     0 1629.62176    0 23347 2816.86000 1629.62176  42.1%     -  105s
+##      0     0 1629.62176    0 23349 2816.86000 1629.62176  42.1%     -  139s
+##      0     0 1642.01139    0 22540 2816.86000 1642.01139  41.7%     -  144s
+##      0     0 1643.38223    0 23350 2816.86000 1643.38223  41.7%     -  144s
+##      0     0 1664.68953    0 20463 2816.86000 1664.68953  40.9%     -  150s
+##      0     0 1666.68340    0 20477 2816.86000 1666.68340  40.8%     -  153s
+## H    0     0                    2556.0800000 1666.68340  34.8%     -  153s
+##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  154s
+##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  157s
+##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  159s
+##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  161s
+##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  163s
+##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  175s
+## H    0     0                    2361.1600000 1666.68340  29.4%     -  181s
+## H    0     0                    2097.7200000 1666.72070  20.5%     -  195s
+##      0     2 1666.72070    0 20477 2097.72000 1666.72070  20.5%     -  196s
+##      3     6 1715.75083    2 20386 2097.72000 1677.19380  20.0%  1240  203s
+##      5     8 1692.26282    2 13548 2097.72000 1692.26282  19.3%  1175  206s
+##      9    12 1782.34551    4 7349 2097.72000 1692.27111  19.3%  1083  211s
+##     13    16 1792.86198    5 15495 2097.72000 1692.27111  19.3%  1055  215s
+##     17    21 1811.72923    6 7176 2097.72000 1692.27111  19.3%   977  221s
+##     25    30 1849.43709   10 5992 2097.72000 1692.27111  19.3%   854  227s
+##     29    33 1924.53917   12 4683 2097.72000 1692.27111  19.3%   844  231s
+##     34    39 1926.12316   13 2864 2097.72000 1692.27111  19.3%   818  235s
+##     48    54 1969.45762   19 2604 2097.72000 1692.27111  19.3%   716  243s
+##     53    56 1997.25743   22 1961 2097.72000 1692.27111  19.3%   732  245s
+##     69    84 2028.65056   28 1020 2097.72000 1692.27111  19.3%   691  250s
+## H   86    98                    2054.2200000 1692.27111  17.6%   596  251s
+##    112    94 1722.88360    4 18041 2054.22000 1715.78538  16.5%   502  257s
+##    114    96 1731.39051    5 19458 2054.22000 1715.78538  16.5%   510  262s
+##    116    98 1760.04039    6 18070 2054.22000 1715.78538  16.5%   533  266s
+## H  120   102                    2053.2200000 1715.78538  16.4%   542  271s
+##    124   106 1854.93650    8 16198 2053.22000 1715.78538  16.4%   559  277s
+##    128   112 1893.15612    9 7120 2053.22000 1715.78538  16.4%   573  283s
+##    132   115 1904.84053   10 6441 2053.22000 1715.78538  16.4%   590  286s
+##    135   116 1942.18466   11 13828 2053.22000 1715.78538  16.4%   599  290s
+##    143   120 1976.64116   13 5546 2053.22000 1715.78538  16.4%   605  298s
+##    147   123 2008.69048   15 5092 2053.22000 1715.78538  16.4%   616  301s
+##    162   127 2040.30944   21 8430 2053.22000 1715.78538  16.4%   591  308s
+##    170   125     cutoff   24      2053.22000 1722.89852  16.1%   583  313s
+##    179   128 1848.87803    4 16419 2053.22000 1722.89852  16.1%   579  316s
+##    182   132 1903.19904    5 16409 2053.22000 1722.89852  16.1%   585  320s
+##    186   137 1930.89000    6 12783 2053.22000 1722.89852  16.1%   590  326s
+##    191   144 2016.77456    8 14455 2053.22000 1722.89852  16.1%   599  332s
+##    198   142     cutoff   10      2053.22000 1722.89852  16.1%   596  336s
+##    208   142     cutoff   11      2053.22000 1722.89852  16.1%   589  342s
+## H  210   108                    1955.8600000 1722.89852  11.9%   584  342s
+##    212   107     cutoff    9      1955.86000 1722.89852  11.9%   589  346s
+##    217   109     cutoff    7      1955.86000 1722.89852  11.9%   591  351s
+##    221   108     cutoff    8      1955.86000 1741.07771  11.0%   595  355s
+##    226   111 1869.85317    7 5571 1955.86000 1741.07771  11.0%   599  360s
+##    233   112 1915.79755   10 6748 1955.86000 1741.07771  11.0%   598  365s
+##    242   108     cutoff   15      1955.86000 1741.09877  11.0%   597  370s
+##    246   109 1798.56988    4 23201 1955.86000 1741.09877  11.0%   604  379s
+##    252   107 1836.72651    6 23535 1955.86000 1741.09877  11.0%   614  390s
+##    257   111 1840.77630    7 23289 1955.86000 1741.09877  11.0%   612  396s
+##    261   112 1886.17922    9 21572 1955.86000 1741.09877  11.0%   618  401s
+##    264   114 1917.28761   11 18382 1955.86000 1741.09877  11.0%   625  408s
+##    268   112 1950.88683   13 22722 1955.86000 1741.09877  11.0%   634  416s
+##    273   103     cutoff   14      1955.86000 1741.09877  11.0%   640  424s
+##    279   105     cutoff   13      1955.86000 1742.34798  10.9%   644  431s
+##    287   110 1798.64451    6 16895 1955.86000 1743.07059  10.9%   643  439s
+##    292   114 1849.97755    9 16451 1955.86000 1743.07059  10.9%   647  447s
+##    296   114 1905.28056   12 19863 1955.86000 1743.07059  10.9%   659  454s
+##    300   114 1951.49899   14 21190 1955.86000 1743.07059  10.9%   665  466s
+##    302   114     cutoff   15      1955.86000 1743.07059  10.9%   666  474s
+##    310   116     cutoff   14      1955.86000 1746.39579  10.7%   665  483s
+##    316   116 1924.19322    6 17963 1955.86000 1746.39579  10.7%   678  490s
+##    324   120 1955.63488    8 16868 1955.86000 1747.34019  10.7%   677  499s
+##    336   124 1827.53308    6 18787 1955.86000 1747.34019  10.7%   674  507s
+##    340   126 1874.75743    8 18972 1955.86000 1747.34019  10.7%   679  515s
+##    352   132 1911.71416   12 17434 1955.86000 1747.34019  10.7%   674  526s
+##    362   134     cutoff   14      1955.86000 1760.04355  10.0%   680  536s
+##    380   140 1861.38350    7 22553 1955.86000 1760.05177  10.0%   675  546s
+##    386   146 1926.94598   10 21717 1955.86000 1760.05177  10.0%   681  558s
+##    392   143     cutoff   13      1955.86000 1765.26924  9.74%   688  568s
+##    401   146 1824.79435    8 18323 1955.86000 1765.26924  9.74%   693  581s
+## H  406   143                    1945.0800000 1765.26924  9.24%   692  581s
+##    408   149 1890.66415   11 17915 1945.08000 1765.26924  9.24%   697  592s
+##    418   157     cutoff   14      1945.08000 1768.78005  9.06%   701  604s
+##    442   167 1876.71440    9 17448 1945.08000 1768.78005  9.06%   691  617s
+##    466   171 1941.47117   11 13810 1945.08000 1772.57410  8.87%   680  632s
+##    490   180 1867.06379    8 19807 1945.08000 1772.57410  8.87%   672  646s
+##    507   181 1934.92361   12 21389 1945.08000 1772.57410  8.87%   672  662s
+##    514   180     cutoff   12      1945.08000 1778.29638  8.57%   677  675s
+##    525   183 1932.15804    7 16272 1945.08000 1778.29638  8.57%   685  693s
+##    550   190 1924.29967    9 16817 1945.08000 1779.55964  8.51%   681  710s
+##    573   187 1931.03225    8 13196 1945.08000 1779.55964  8.51%   679  725s
+##    592   196     cutoff    7      1945.08000 1785.31926  8.21%   677  741s
+##    607   198     cutoff   13      1945.08000 1787.55603  8.10%   682  762s
+##    625   204 1895.91317   11 15343 1945.08000 1788.63906  8.04%   681  778s
+##    647   205     cutoff    8      1945.08000 1788.63906  8.04%   680  798s
+##    664   212 1929.65162   10 20394 1945.08000 1796.41834  7.64%   683  817s
+##    683   209 1931.90876   11 7852 1945.08000 1796.41834  7.64%   686  840s
+##    698   207 1935.81662   13 16737 1945.08000 1798.92171  7.51%   687  869s
+##    724   208 1927.13341   10 15588 1945.08000 1800.04610  7.46%   688  890s
+##    753   225 1869.45083   13 6983 1945.08000 1800.04610  7.46%   684  910s
+##    788   241 1943.88355   32 11904 1945.08000 1800.52986  7.43%   679  932s
+##    833   245 1934.28613   16 14407 1945.08000 1806.08808  7.15%   672  961s
+##    861   245 1940.71495   11 18743 1945.08000 1810.07917  6.94%   668  987s
+##    903   248 1919.31247    8 6785 1945.08000 1813.78912  6.75%   666 1014s
+##    934   255 1912.39802    9 9715 1945.08000 1816.14882  6.63%   671 1040s
+##    977   257     cutoff   14      1945.08000 1818.65888  6.50%   670 1106s
+##    983   255     cutoff   14      1945.08000 1819.30717  6.47%   670 1139s
+##   1009   259     cutoff   10      1945.08000 1823.30903  6.26%   675 1167s
+##   1055   269 1888.89817    9 17104 1945.08000 1825.01021  6.17%   670 1197s
+##   1137   278     cutoff   15      1945.08000 1825.11358  6.17%   653 1228s
+##   1198   291 1882.44430    7 14385 1945.08000 1828.59922  5.99%   648 1261s
+##   1235   296     cutoff   13      1945.08000 1829.84581  5.92%   649 1295s
+##   1308   305 1929.04687    9 15021 1945.08000 1832.07625  5.81%   645 1329s
+##   1363   305 1920.03769   12 4560 1945.08000 1835.44347  5.64%   644 1364s
+##   1411   306     cutoff   12      1945.08000 1837.33710  5.54%   646 1403s
+##   1443   322 1909.20286   15 6422 1945.08000 1837.46242  5.53%   650 1444s
+##   1534   320 1921.00778   12 14362 1945.08000 1841.27962  5.34%   639 1485s
+##   1592   321     cutoff   14      1945.08000 1845.32342  5.13%   641 1529s
 ## 
 ## Cutting planes:
-##   Zero half: 2
-##   RLT: 57
+##   Zero half: 3
+##   RLT: 54
 ##   BQP: 3
 ## 
-## Explored 1545 nodes (1017105 simplex iterations) in 1407.99 seconds
+## Explored 1677 nodes (1111591 simplex iterations) in 1529.26 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
-## Solution count 10: 1945.17 1945.17 1949.17 ... 2123.03
+## Solution count 10: 1945.08 1955.86 2053.22 ... 8210
 ## 
 ## Optimal solution found (tolerance 5.00e-02)
-## Best objective 1.945167430827e+03, best bound 1.850721597979e+03, gap 4.8554%
+## Best objective 1.945080000000e+03, best bound 1.849470000000e+03, gap 4.9155%
 ```
 The impact of including this penalty (`blm_actions`) is shown below where we summarize the distribution of the different actions:
 
@@ -1056,34 +1054,34 @@ The impact of including this penalty (`blm_actions`) is shown below where we sum
 solution_actions.conn_actions <- getActions(solution.conn_actions)
 
 # assign solution to shapefile field to plot it
-shp_mitchell$action_1.conn_actions <- solution_actions.conn_actions$`1`
-shp_mitchell$action_2.conn_actions <- solution_actions.conn_actions$`2`
-shp_mitchell$action_3.conn_actions <- solution_actions.conn_actions$`3`
-shp_mitchell$action_4.conn_actions <- solution_actions.conn_actions$`4`
+mit_pu$action_1.conn_actions <- solution_actions.conn_actions$`1`
+mit_pu$action_2.conn_actions <- solution_actions.conn_actions$`2`
+mit_pu$action_3.conn_actions <- solution_actions.conn_actions$`3`
+mit_pu$action_4.conn_actions <- solution_actions.conn_actions$`4`
 
 # actions plots
-plot_action1.conn_actions<- tmap::tm_shape(shp_mitchell) + 
+plot_action1.conn_actions<- tmap::tm_shape(mit_pu) + 
                             tmap::tm_fill("action_1.conn_actions", 
                                           pal = c("white", "dodgerblue4"), 
                                           labels = c("0", "1"), 
                                           breaks = c(0,1,2)) + 
                             tmap::tm_borders(col="black", lwd = 0.5)
 
-plot_action2.conn_actions <- tmap::tm_shape(shp_mitchell) + 
+plot_action2.conn_actions <- tmap::tm_shape(mit_pu) + 
                              tmap::tm_fill("action_2.conn_actions", 
                                            pal = c("white", "dodgerblue4"), 
                                            labels = c("0", "1"), 
                                            breaks = c(0,1,2)) + 
                              tmap::tm_borders(col="black", lwd = 0.5)
 
-plot_action3.conn_actions <- tmap::tm_shape(shp_mitchell) + 
+plot_action3.conn_actions <- tmap::tm_shape(mit_pu) + 
                              tmap::tm_fill("action_3.conn_actions", 
                                            pal = c("white", "dodgerblue4"), 
                                            labels = c("0", "1"), 
                                            breaks = c(0,1,2)) + 
                              tmap::tm_borders(col="black", lwd = 0.5)
 
-plot_action4.conn_actions <- tmap::tm_shape(shp_mitchell) + 
+plot_action4.conn_actions <- tmap::tm_shape(mit_pu) + 
                              tmap::tm_fill("action_4.conn_actions", 
                                            pal = c("white", "dodgerblue4"), 
                                            labels = c("0", "1"), 
@@ -1096,20 +1094,20 @@ tmap::tmap_arrange(plot_action1.conn_actions,
                    plot_action4.conn_actions)
 ```
 
-![](figures/MR24-1.png)
+![](figures/MR24-1.jpg)
 
 
 
 ```r
 # get action distribution
-shp_mitchell$sum_actions.conn_actions <- solution_actions.conn_actions$`1` +
+mit_pu$sum_actions.conn_actions <- solution_actions.conn_actions$`1` +
                                               solution_actions.conn_actions$`2` +
                                               solution_actions.conn_actions$`3` +
                                               solution_actions.conn_actions$`4` +
                                     solution_actions.conn_actions$connectivity*5
 
 # plot sum of actions with tmap library
-plot.conn_actions <- tmap::tm_shape(shp_mitchell) + 
+plot.conn_actions <- tmap::tm_shape(mit_pu) + 
              tmap::tm_fill("sum_actions.conn_actions", 
                            palette="viridis", 
                            labels = c("do nothing", 
@@ -1125,7 +1123,7 @@ plot.conn_actions <- tmap::tm_shape(shp_mitchell) +
 tmap::tmap_arrange(plot.base, plot.conn_actions)
 ```
 
-![](figures/MR25-1.png)
+![](figures/MR25-1.jpg)
 
 As we can see in this case, the inclusion of connectivity requirements between actions and, therefore, the attempt to minimize the connectivity penalty between them, produced a very different solution than the previous one. Actions are selected along the river network but concentrating to a greater extent on the source and mouth of the river. In addition, it is observed that there is no planning unit painted yellow (connectivity), this is due to the fact that all the selected units have at least one management action in it, the opposite of the previous case. Note that the *blm* and *blm_actions* values used have been set in an exaggerated way to more clearly verify the behavior of the models.
 

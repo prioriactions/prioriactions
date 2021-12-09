@@ -45,7 +45,7 @@ b_{s} = \sum_{i \in I_{s}}\frac{ \sum_{k \in K_i \cap K_s}{x_{ik}}}{|K_i \cap K_
 }
 }
 \examples{
-\dontrun{
+\donttest{
 # set seed for reproducibility
 set.seed(14)
 
@@ -68,7 +68,7 @@ getPotentialBenefit(problem_data)
 problem_model <- problem(x = problem_data)
 
 ## Solve the optimization model
-s <- solve(a = problem_model, time_limit = 2, output_file = FALSE)
+s <- solve(a = problem_model, time_limit = 2, output_file = FALSE, cores = 2)
 
 # get local benefits of solution
 local_benefit <- getSolutionBenefit(s, type = "local")

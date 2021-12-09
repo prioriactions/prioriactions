@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -180,7 +180,7 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">sim_pu_data</span><span class="op">)</span>
 
 <span class="co"># print first six rows of data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sim_pu_data</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">sim_pu_data</span><span class="op">)</span></code></pre></div>
 <pre><code>##   id monitoring_cost status
 ## 1  1               2      0
 ## 2  2               2      0
@@ -343,16 +343,11 @@
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get benefit information</span>
 <span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></code></pre></div>
-<pre><code>##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit
-## 1       1   47              47                            0                       47
-## 2       2   30              28                            2                       28
-## 3       3   66              56                           10                       56
-## 4       4   33              33                            0                       33
-##   maximum.benefit
-## 1              47
-## 2              30
-## 3              66
-## 4              33</code></pre>
+<pre><code>##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit
+## 1       1   47              47                            0                       47              47
+## 2       2   30              28                            2                       28              30
+## 3       3   66              56                           10                       56              66
+## 4       4   33              33                            0                       33              33</code></pre>
 <p>Note that the total distribution of the features (<em>dist</em>) and the threatened distribution (<em>dist_threatened</em>) is reported. Also, we report the amount of each features where they co-occur with threats they are sensitive to (<em>maximum.recovery.benefit</em>) and where they do not co-occur with any threats they are sensitive to (<em>maximum.conservation.benefit</em>). The inclusion of these last units in the solutions will depend on the <strong>target_conservation</strong> field in the input <em>feature data</em>.</p>
 </div>
 <div id="step-2-create-the-mathematical-model" class="section level3">
@@ -363,8 +358,7 @@
 <code class="sourceCode R"><span class="co"># create optimization problem</span>
 <span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b</span>, model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
-## cases</code></pre>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># print problem</span>
 <span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">c</span><span class="op">)</span></code></pre></div>
@@ -378,10 +372,10 @@
 <div id="step-3-solve-the-model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#step-3-solve-the-model" class="anchor"></a>Step 3: Solve the model</h3>
-<p>Finally, after creating the mathematical model, we can now solve it with the <code><a href="../reference/solve.html">solve()</a></code> function. To solve our model, we need an optimizer. Currently, <code>prioriactions</code> have available two: <em>gurobi</em> (it needs a license to work) and <em>rsymphony</em> (free to use). We highly recommend using gurobi (for more information on how to obtain an academic license <a href="https://prioritizr.net/articles/gurobi_installation.html">here</a>).</p>
+<p>Finally, after creating the mathematical model, we can now solve it with the <code><a href="../reference/solve.html">solve()</a></code> function. To solve our model, we need an optimizer. Currently, <code>prioriactions</code> have available two: <em>gurobi</em> (it needs a license to work) and <em>rsymphony</em> (free to use). We highly recommend using gurobi (for more information on how to obtain an academic license <a href="https://prioritizr.net/articles/gurobi_installation_guide.html">here</a>).</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># solve optimization problem</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros
@@ -431,10 +425,10 @@
                     model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
                     solver <span class="op">=</span> <span class="st">"gurobi"</span>,
                     verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                    output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+                    output_file <span class="op">=</span> <span class="cn">FALSE</span>,
+                    cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
-## cases</code></pre>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros
@@ -581,10 +575,8 @@
 
 <span class="co"># print the performance data</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">perf</span><span class="op">)</span></code></pre></div>
-<pre><code>##   solution_name objective_value gap solving_time
-## 1           sol             146   0        0.004
-##                                             status
-## 1 Optimal solution (according to gap tolerance: 0)</code></pre>
+<pre><code>##   solution_name objective_value gap solving_time                                           status
+## 1           sol             146   0        0.004 Optimal solution (according to gap tolerance: 0)</code></pre>
 <p>More details of these functions in the <a href="https://prioriactions.github.io/prioriactions/reference/index.html">references</a> section.</p>
 </div>
 </div>
@@ -607,8 +599,7 @@
 ##  Iteration 1 of 3: Prop0.2
 ## *********************************</code></pre>
 <pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
-## cases</code></pre>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros
@@ -657,8 +648,7 @@
 ## *********************************</code></pre>
 <pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect
 
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
-## cases</code></pre>
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros
@@ -695,7 +685,7 @@
 ##   MIR: 1
 ##   Relax-and-lift: 1
 ##
-## Explored 1 nodes (52 simplex iterations) in 0.01 seconds
+## Explored 1 nodes (52 simplex iterations) in 0.00 seconds
 ## Thread count was 2 (of 4 available processors)
 ##
 ## Solution count 6: 196 197 205 ... 964
@@ -707,8 +697,7 @@
 ## *********************************</code></pre>
 <pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect
 
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
-## cases</code></pre>
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros

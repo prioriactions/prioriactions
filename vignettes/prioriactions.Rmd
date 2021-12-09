@@ -382,16 +382,11 @@ getPotentialBenefit(b)
 ```
 
 ```
-##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit
-## 1       1   47              47                            0                       47
-## 2       2   30              28                            2                       28
-## 3       3   66              56                           10                       56
-## 4       4   33              33                            0                       33
-##   maximum.benefit
-## 1              47
-## 2              30
-## 3              66
-## 4              33
+##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit
+## 1       1   47              47                            0                       47              47
+## 2       2   30              28                            2                       28              30
+## 3       3   66              56                           10                       56              66
+## 4       4   33              33                            0                       33              33
 ```
 
 Note that the total distribution of the features (*dist*) and the
@@ -419,8 +414,7 @@ c <- problem(b, model_type = "minimizeCosts")
 ```
 
 ```
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
-## cases
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases
 ```
 
 ```r
@@ -450,12 +444,12 @@ Currently, `prioriactions` have available two: *gurobi* (it
 needs a license to work) and *rsymphony* (free to use). We highly
 recommend using gurobi (for more information on how to obtain an
 academic license
-[here](https://prioritizr.net/articles/gurobi_installation.html)).
+[here](https://prioritizr.net/articles/gurobi_installation_guide.html)).
 
 
 ```r
 # solve optimization problem
-d <- solve(c, solver = "gurobi", verbose = TRUE, output_file = FALSE)
+d <- solve(c, solver = "gurobi", verbose = TRUE, output_file = FALSE, cores = 2)
 ```
 
 ```
@@ -522,7 +516,8 @@ d2 <- prioriactions(pu = sim_pu_data, features = sim_features_data,
                     model_type = "minimizeCosts", 
                     solver = "gurobi", 
                     verbose = TRUE, 
-                    output_file = FALSE)
+                    output_file = FALSE,
+                    cores = 2)
 ```
 
 ```
@@ -530,8 +525,7 @@ d2 <- prioriactions(pu = sim_pu_data, features = sim_features_data,
 ```
 
 ```
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
-## cases
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases
 ```
 
 ```
@@ -709,10 +703,8 @@ head(perf)
 ```
 
 ```
-##   solution_name objective_value gap solving_time
-## 1           sol             146   0        0.004
-##                                             status
-## 1 Optimal solution (according to gap tolerance: 0)
+##   solution_name objective_value gap solving_time                                           status
+## 1           sol             146   0        0.004 Optimal solution (according to gap tolerance: 0)
 ```
 
 More details of these functions in the
@@ -760,8 +752,7 @@ port <- evalTarget(pu = sim_pu_data, features = sim_features_data,
 ```
 
 ```
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
-## cases
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases
 ```
 
 ```
@@ -819,8 +810,7 @@ port <- evalTarget(pu = sim_pu_data, features = sim_features_data,
 ```
 ## Warning: The blm argument was set to 0, so the boundary data has no effect
 
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
-## cases
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases
 ```
 
 ```
@@ -860,7 +850,7 @@ port <- evalTarget(pu = sim_pu_data, features = sim_features_data,
 ##   MIR: 1
 ##   Relax-and-lift: 1
 ## 
-## Explored 1 nodes (52 simplex iterations) in 0.01 seconds
+## Explored 1 nodes (52 simplex iterations) in 0.00 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
 ## Solution count 6: 196 197 205 ... 964
@@ -878,8 +868,7 @@ port <- evalTarget(pu = sim_pu_data, features = sim_features_data,
 ```
 ## Warning: The blm argument was set to 0, so the boundary data has no effect
 
-## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these
-## cases
+## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases
 ```
 
 ```

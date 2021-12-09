@@ -16,7 +16,7 @@ NULL
 #' @return An object of class [solution-class].
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' ## This example uses input files included into package.
 #'
 #' ## set seed for reproducibility
@@ -36,7 +36,8 @@ NULL
 #'                 boundary = sim_boundary_data,
 #'                 model_type = "minimizeCosts",
 #'                 time_limit = 50,
-#'                 output_file = FALSE)
+#'                 output_file = FALSE,
+#'                 cores = 2)
 #'
 #' print(s)
 #' }

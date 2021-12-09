@@ -41,7 +41,7 @@ Note that there is an action per threat, so it is assumed that the index of
 the threat coincides with the index of the action used to abate it.
 }
 \examples{
-\dontrun{
+\donttest{
 # set seed for reproducibility
 set.seed(14)
 
@@ -61,7 +61,7 @@ problem_data <- inputData(
 problem_model <- problem(x = problem_data)
 
 ## Solve the optimization model
-s <- solve(a = problem_model, time_limit = 2, output_file = FALSE)
+s <- solve(a = problem_model, time_limit = 2, output_file = FALSE, cores = 2)
 
 ## Get costs
 getCost(s)

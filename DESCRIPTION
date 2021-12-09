@@ -1,6 +1,6 @@
 Package: prioriactions
 Type: Package
-Version: 0.3.1
+Version: 0.3.2
 Title: Multi-Action Conservation Planning             
 Description: This uses a mixed integer mathematical programming (MIP)
         approach for building and solving multi-action planning problems, 
@@ -8,7 +8,14 @@ Description: This uses a mixed integer mathematical programming (MIP)
         abate threats, in an efficient way while accounting for spatial aspects. 
         Thus, optimizing the connectivity and conservation effectiveness of 
         the prioritized units and of the deployed actions. The package is capable of 
-        handling different commercial and non-commercial MIP solvers. 
+        handling different commercial (gurobi) and non-commercial (symphony) MIP solvers. 
+        Gurobi optimization solver can be installed using comprehensive instructions in 
+        the gurobi installation vignette of the prioritizr package (available in 
+        <https://prioritizr.net/articles/gurobi_installation_guide.html>). Methods used in the 
+        package refers to Salgado-Rojas et al. (2020) <doi:10.1016/j.ecolmodel.2019.108901>,
+        Beyer et al. (2016) <doi:10.1016/j.ecolmodel.2016.02.005>, Cattarino et al. (2015)
+        <doi:10.1371/journal.pone.0128027> and Watts et al. (2009) <doi:10.1016/j.envsoft.2009.06.005>. 
+        See the prioriactions website for more information, documentations and examples.
 Authors@R: c(person(c('Jose'), 'Salgado-Rojas',
              email='jose.salgado.rojas@hotmail.com', role = c('aut','cre')),
              person(c('Irlanda'), 'Ceballos-Fuentealba',
@@ -18,7 +25,7 @@ Authors@R: c(person(c('Jose'), 'Salgado-Rojas',
              person(c('Eduardo'), 'Alvarez-Miranda',
              email='eduardo.alvmir@gmail.com', role = c('aut')),
              person(c('Jordi'), 'Garcia-Gonzalo',
-             email='j.garcia@ctfc.es', role = c('aut')))        
+             email='j.garcia@ctfc.es', role = c('aut')))
 Depends:
   R (>= 3.5.0)
 Imports: 

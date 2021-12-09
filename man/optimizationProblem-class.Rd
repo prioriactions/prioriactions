@@ -4,6 +4,9 @@
 \alias{optimizationProblem-class}
 \alias{OptimizationProblem}
 \title{Optimization problem class}
+\value{
+No return value.
+}
 \description{
 This class encodes the corresponding optimization model. It is created
 using \code{problem()} function.

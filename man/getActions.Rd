@@ -33,7 +33,7 @@ or actions against a threat in said unit).
 }
 }
 \examples{
-\dontrun{
+\donttest{
 # set seed for reproducibility
 set.seed(14)
 
@@ -53,7 +53,7 @@ problem_data <- inputData(
 problem_model <- problem(x = problem_data)
 
 ## Solve the optimization model
-s <- solve(a = problem_model, time_limit = 2, output_file = FALSE)
+s <- solve(a = problem_model, time_limit = 2, output_file = FALSE, cores = 2)
 
 # get actions information in large format
 actions <- getActions(s, format = "large")

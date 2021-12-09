@@ -4,6 +4,9 @@
 \alias{portfolio-class}
 \alias{Portfolio}
 \title{Portfolio class}
+\value{
+No return value.
+}
 \description{
 This class encodes for the solutions obtained when solving
 multiple instances. This includes several methods
@@ -34,7 +37,7 @@ Call print method.}
 }
 
 \examples{
-\dontrun{
+\donttest{
 # set seed for reproducibility
 set.seed(14)
 
@@ -48,7 +51,7 @@ port <- evalBlm(pu = sim_pu_data, features = sim_features_data,
                 values = c(0.0, 0.01, 0.02, 0.03),
                 model_type = "minimizeCosts",
                 time_limit = 50,
-                output_file = FALSE)
+                output_file = FALSE, cores = 2)
 
 ## Use class methods
 port$getNames()

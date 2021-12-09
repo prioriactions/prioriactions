@@ -36,7 +36,7 @@ output is a portfolio object, which allows
 obtaining information about the group of solutions (including all \emph{get} functions).
 }
 \examples{
-\dontrun{
+\donttest{
 # set seed for reproducibility
 set.seed(14)
 
@@ -49,7 +49,8 @@ port <- evalBudget(pu = sim_pu_data, features = sim_features_data,
                 boundary = sim_boundary_data,
                 values = c(1, 10, 50, 100),
                 time_limit = 50,
-                output_file = FALSE)
+                output_file = FALSE,
+                cores = 2)
 
 getSolutionBenefit(port)
 }

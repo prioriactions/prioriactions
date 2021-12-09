@@ -25,7 +25,7 @@ The remainder of this document is organized as follows. In Section 1 we present 
 
 ## 1) Model I: Only recovery targets
 
-In order to analyze how planning decision behave when no **conservation target** is considered, we present some results using the example available in the [Get started](https://prioriactions.github.io/prioriactions/articles/prioriactions.html)  vignette.
+In order to analyze how planning decision behave when no **conservation target** is considered, we present some results using the example available in the [Get started](https://prioriactions.github.io/prioriactions/articles/prioriactions.html) vignette.
 
 
 ```r
@@ -99,7 +99,7 @@ c.base <- problem(b.base, model_type = "minimizeCosts")
 
 ```r
 # solve optimization problem
-d.base <- solve(c.base, solver = "gurobi", verbose = TRUE, output_file = FALSE)
+d.base <- solve(c.base, solver = "gurobi", verbose = TRUE, output_file = FALSE, cores = 2)
 ```
 
 ```
@@ -198,7 +198,7 @@ c.cons <- problem(b.cons, model_type = "minimizeCosts")
 
 ```r
 # solve optimization problem
-d.cons <- solve(c.cons, solver = "gurobi", verbose = TRUE, output_file = FALSE)
+d.cons <- solve(c.cons, solver = "gurobi", verbose = TRUE, output_file = FALSE, cores = 2)
 ```
 
 ```
@@ -236,7 +236,7 @@ d.cons <- solve(c.cons, solver = "gurobi", verbose = TRUE, output_file = FALSE)
 ##   Gomory: 1
 ##   Cover: 5
 ## 
-## Explored 1 nodes (39 simplex iterations) in 0.00 seconds
+## Explored 1 nodes (39 simplex iterations) in 0.01 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
 ## Solution count 6: 157 161 165 ... 964
@@ -284,14 +284,14 @@ c.base_conn <- problem(b.base,
 
 ```r
 # solve optimization problem
-d.base_conn <- solve(c.base_conn, solver = "gurobi", verbose = TRUE, output_file = FALSE)
+d.base_conn <- solve(c.base_conn, solver = "gurobi", verbose = TRUE, output_file = FALSE, cores = 2)
 ```
 
 ```
 ## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros
-## Model fingerprint: 0x09191a59
+## Model fingerprint: 0x0d6e31a0
 ## Variable types: 176 continuous, 10120 integer (10120 binary)
 ## Coefficient statistics:
 ##   Matrix range     [5e-01, 2e+00]
@@ -300,24 +300,24 @@ d.base_conn <- solve(c.base_conn, solver = "gurobi", verbose = TRUE, output_file
 ##   RHS range        [1e+00, 1e+01]
 ## Found heuristic solution: objective 964.0000000
 ## Presolve removed 190 rows and 181 columns
-## Presolve time: 0.15s
+## Presolve time: 0.22s
 ## Presolved: 29794 rows, 10115 columns, 69709 nonzeros
 ## Variable types: 0 continuous, 10115 integer (10110 binary)
 ## 
-## Root relaxation: objective 2.573214e+02, 238 iterations, 0.08 seconds
+## Root relaxation: objective 2.573214e+02, 253 iterations, 0.09 seconds
 ## 
 ##     Nodes    |    Current Node    |     Objective Bounds      |     Work
 ##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ## 
 ## *    0     0               0     547.0000000  547.00000  0.00%     -    0s
 ## 
-## Explored 0 nodes (284 simplex iterations) in 0.35 seconds
+## Explored 0 nodes (306 simplex iterations) in 0.43 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
 ## Solution count 2: 547 964 
 ## 
 ## Optimal solution found (tolerance 0.00e+00)
-## Best objective 5.469999999700e+02, best bound 5.469999999700e+02, gap 0.0000%
+## Best objective 5.470000000163e+02, best bound 5.469999999816e+02, gap 0.0000%
 ```
 
 
@@ -356,14 +356,14 @@ c.cons_conn <- problem(b.cons,
 
 ```r
 # solve optimization problem
-d.cons_conn <- solve(c.cons_conn, solver = "gurobi", verbose = TRUE, output_file = FALSE)
+d.cons_conn <- solve(c.cons_conn, solver = "gurobi", verbose = TRUE, output_file = FALSE, cores = 2)
 ```
 
 ```
 ## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros
-## Model fingerprint: 0x7df3efb0
+## Model fingerprint: 0x8ba6f640
 ## Variable types: 176 continuous, 10120 integer (10120 binary)
 ## Coefficient statistics:
 ##   Matrix range     [5e-01, 2e+00]
@@ -372,7 +372,7 @@ d.cons_conn <- solve(c.cons_conn, solver = "gurobi", verbose = TRUE, output_file
 ##   RHS range        [1e+00, 1e+01]
 ## Found heuristic solution: objective 964.0000000
 ## Presolve removed 5860 rows and 2081 columns
-## Presolve time: 0.19s
+## Presolve time: 0.21s
 ## Presolved: 24124 rows, 8215 columns, 56479 nonzeros
 ## Variable types: 0 continuous, 8215 integer (8210 binary)
 ## 
@@ -383,13 +383,13 @@ d.cons_conn <- solve(c.cons_conn, solver = "gurobi", verbose = TRUE, output_file
 ## 
 ## *    0     0               0     547.0000000  547.00000  0.00%     -    0s
 ## 
-## Explored 0 nodes (9 simplex iterations) in 0.22 seconds
+## Explored 0 nodes (9 simplex iterations) in 0.28 seconds
 ## Thread count was 2 (of 4 available processors)
 ## 
 ## Solution count 2: 547 964 
 ## 
 ## Optimal solution found (tolerance 0.00e+00)
-## Best objective 5.469999999700e+02, best bound 5.469999999700e+02, gap 0.0000%
+## Best objective 5.470000000163e+02, best bound 5.469999999524e+02, gap 0.0000%
 ```
 
 

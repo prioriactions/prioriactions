@@ -33,7 +33,7 @@ output is a portfolio object, which allows
 obtaining information about the group of solutions (including all \emph{get} functions).
 }
 \examples{
-\dontrun{
+\donttest{
 # set seed for reproducibility
 set.seed(14)
 
@@ -47,7 +47,8 @@ port <- evalBlm(pu = sim_pu_data, features = sim_features_data,
                 values = c(0.0, 0.01, 0.02, 0.03),
                 model_type = "minimizeCosts",
                 time_limit = 50,
-                output_file = FALSE)
+                output_file = FALSE,
+                cores = 2)
 
 getConnectivityPenalty(port)
 }

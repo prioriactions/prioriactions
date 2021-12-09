@@ -35,6 +35,7 @@ Note that there is an action per threat, so it is assumed that the index of
 the threat coincides with the index of the action used to abate it.
 }
 \examples{
+\donttest{
 # set seed for reproducibility
 set.seed(14)
 
@@ -54,9 +55,10 @@ problem_data <- inputData(
 problem_model <- problem(x = problem_data, blm = 0.03)
 
 ## Solve the optimization model
-s <- solve(a = problem_model, time_limit = 2, output_file = FALSE)
+s <- solve(a = problem_model, time_limit = 2, output_file = FALSE, cores = 2)
 
 # get connectivity penalty values
 getConnectivityPenalty(s)
+}
 
 }

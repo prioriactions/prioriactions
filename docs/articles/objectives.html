@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -188,7 +188,7 @@
 <pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># solve optimization problem</span>
-<span class="va">d.base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.base</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="va">d.base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.base</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros
@@ -269,7 +269,7 @@
 <pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># solve optimization problem</span>
-<span class="va">d.cons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.cons</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="va">d.cons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.cons</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros
@@ -304,7 +304,7 @@
 ##   Gomory: 1
 ##   Cover: 5
 ##
-## Explored 1 nodes (39 simplex iterations) in 0.00 seconds
+## Explored 1 nodes (39 simplex iterations) in 0.01 seconds
 ## Thread count was 2 (of 4 available processors)
 ##
 ## Solution count 6: 157 161 165 ... 964
@@ -339,11 +339,11 @@
 <pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># solve optimization problem</span>
-<span class="va">d.base_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.base_conn</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="va">d.base_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.base_conn</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros
-## Model fingerprint: 0x09191a59
+## Model fingerprint: 0x0d6e31a0
 ## Variable types: 176 continuous, 10120 integer (10120 binary)
 ## Coefficient statistics:
 ##   Matrix range     [5e-01, 2e+00]
@@ -352,24 +352,24 @@
 ##   RHS range        [1e+00, 1e+01]
 ## Found heuristic solution: objective 964.0000000
 ## Presolve removed 190 rows and 181 columns
-## Presolve time: 0.15s
+## Presolve time: 0.22s
 ## Presolved: 29794 rows, 10115 columns, 69709 nonzeros
 ## Variable types: 0 continuous, 10115 integer (10110 binary)
 ##
-## Root relaxation: objective 2.573214e+02, 238 iterations, 0.08 seconds
+## Root relaxation: objective 2.573214e+02, 253 iterations, 0.09 seconds
 ##
 ##     Nodes    |    Current Node    |     Objective Bounds      |     Work
 ##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ##
 ## *    0     0               0     547.0000000  547.00000  0.00%     -    0s
 ##
-## Explored 0 nodes (284 simplex iterations) in 0.35 seconds
+## Explored 0 nodes (306 simplex iterations) in 0.43 seconds
 ## Thread count was 2 (of 4 available processors)
 ##
 ## Solution count 2: 547 964
 ##
 ## Optimal solution found (tolerance 0.00e+00)
-## Best objective 5.469999999700e+02, best bound 5.469999999700e+02, gap 0.0000%</code></pre>
+## Best objective 5.470000000163e+02, best bound 5.469999999816e+02, gap 0.0000%</code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get actions from solution</span>
 <span class="va">actions.base_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">d.base_conn</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
@@ -396,11 +396,11 @@
 <pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># solve optimization problem</span>
-<span class="va">d.cons_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.cons_conn</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="va">d.cons_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.cons_conn</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros
-## Model fingerprint: 0x7df3efb0
+## Model fingerprint: 0x8ba6f640
 ## Variable types: 176 continuous, 10120 integer (10120 binary)
 ## Coefficient statistics:
 ##   Matrix range     [5e-01, 2e+00]
@@ -409,7 +409,7 @@
 ##   RHS range        [1e+00, 1e+01]
 ## Found heuristic solution: objective 964.0000000
 ## Presolve removed 5860 rows and 2081 columns
-## Presolve time: 0.19s
+## Presolve time: 0.21s
 ## Presolved: 24124 rows, 8215 columns, 56479 nonzeros
 ## Variable types: 0 continuous, 8215 integer (8210 binary)
 ##
@@ -420,13 +420,13 @@
 ##
 ## *    0     0               0     547.0000000  547.00000  0.00%     -    0s
 ##
-## Explored 0 nodes (9 simplex iterations) in 0.22 seconds
+## Explored 0 nodes (9 simplex iterations) in 0.28 seconds
 ## Thread count was 2 (of 4 available processors)
 ##
 ## Solution count 2: 547 964
 ##
 ## Optimal solution found (tolerance 0.00e+00)
-## Best objective 5.469999999700e+02, best bound 5.469999999700e+02, gap 0.0000%</code></pre>
+## Best objective 5.470000000163e+02, best bound 5.469999999524e+02, gap 0.0000%</code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get actions from solution</span>
 <span class="va">actions.cons_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">d.cons_conn</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>

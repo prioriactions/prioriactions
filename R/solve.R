@@ -16,7 +16,7 @@ NULL
 #'   [`"gurobi"`](https://www.gurobi.com/)(requires the \pkg{gurobi} package), and
 #'   [`"symphony"`](https://projects.coin-or.org/SYMPHONY)(requires the \pkg{Rsymphony} package).
 #'   We recommend using gurobi (for more information on how to obtain an academic license
-#'   [here](https://prioritizr.net/articles/gurobi_installation.html)).
+#'   [here](https://prioritizr.net/articles/gurobi_installation_guide.html)).
 #'
 #' @param gap_limit `numeric`. Value between 0 and 1 that represents the gap
 #'   to optimality, i.e., a relative number that cause the optimizer to
@@ -73,7 +73,7 @@ NULL
 #' @seealso For more information on how to install and obtain an academic
 #'   license of the Gurobi solver, see the *Gurobi installation guide*,
 #'   which can be found online at
-#'   [prioritizr vignette](<https://prioritizr.net/articles/gurobi_installation.html>).
+#'   [prioritizr vignette](https://prioritizr.net/articles/gurobi_installation_guide.html).
 #'
 #' @examples
 #' \dontrun{
@@ -96,18 +96,22 @@ NULL
 #'
 #' ## Solve the optimization model using a gap_limit and gurobi solver
 #' ## NOTE: The Gurobi solver must be previously installed and must have a valid license!
-#' s1 <- solve(a = problem_model, solver = "gurobi", gap_limit = 0.01, output_file = FALSE)
+#' s1 <- solve(a = problem_model, solver = "gurobi", gap_limit = 0.01, output_file = FALSE, cores = 2)
 #'
 #' print(s1)
 #'
 #' ## Solve the optimization model using a gap_limit and symphony solver
-#' s2 <- solve(a = problem_model, solver = "symphony", gap_limit = 0.01, output_file = FALSE)
+#' s2 <- solve(a = problem_model,
+#'             solver = "symphony",
+#'             gap_limit = 0.01,
+#'             output_file = FALSE,
+#'             cores = 2)
 #'
 #' print(s2)
 #'
 #' ## Solve the optimization model using a time_limit and gurobi solver
 
-#' s3 <- solve(a = problem_model, solver = "gurobi", time_limit = 10, output_file = FALSE)
+#' s3 <- solve(a = problem_model, solver = "gurobi", time_limit = 10, output_file = FALSE, cores = 2)
 #'
 #' print(s3)
 #' }

@@ -4,6 +4,9 @@
 \alias{data-class}
 \alias{Data}
 \title{Data class}
+\value{
+No return value.
+}
 \description{
 This class is used to represent data of the instances of the corresponding
 multi-action planning problem. It includes several methods for retrieving the information

@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -181,14 +181,14 @@ b_{is} = p_{is}^v r_{is}
 <span class="va">c.binary_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.binary_base</span>,
                          model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for
-## these cases</code></pre>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># solve the model</span>
 <span class="va">d.binary_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.binary_base</span>,
                        solver <span class="op">=</span> <span class="st">"gurobi"</span>,
                        verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                       output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+                       output_file <span class="op">=</span> <span class="cn">FALSE</span>,
+                       cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 785 nonzeros
@@ -262,13 +262,13 @@ b_{is} = p_{is}^v r_{is}
                    model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
                    curve <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for
-## these cases</code></pre>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d.binary_curve</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.binary_curve</span>,
                  solver <span class="op">=</span> <span class="st">"gurobi"</span>,
                  verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                 output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+                 output_file <span class="op">=</span> <span class="cn">FALSE</span>,
+                 cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 572 columns and 785 nonzeros
@@ -310,7 +310,7 @@ b_{is} = p_{is}^v r_{is}
 ##      0     0   33.24750    0   22   41.30000   33.24750  19.5%     -    0s
 ##      0     2   33.26000    0   22   41.30000   33.26000  19.5%     -    0s
 ## H  109    80                      39.3000000   35.47635  9.73%   3.6    0s
-##  37507  1645   38.81870   47    4   39.30000   38.81870  1.22%   2.8    5s
+##  37059  1687   38.81870   55    4   39.30000   38.81870  1.22%   2.8    5s
 ##
 ## Cutting planes:
 ##   Gomory: 1
@@ -423,18 +423,18 @@ p_{is} = \frac{{\sum_{k \in K_i \cap K_s: a_{sk} &lt;= h_{ik} &lt;= b_{sk}} \fra
 <span class="va">c.continuous</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.continuous</span>,
                          model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for
-## these cases</code></pre>
+<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># solve the model</span>
 <span class="va">d.continuous</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.continuous</span>,
                        solver <span class="op">=</span> <span class="st">"gurobi"</span>,
                        verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                       output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+                       output_file <span class="op">=</span> <span class="cn">FALSE</span>,
+                       cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
 ## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
 ## Optimize a model with 284 rows, 396 columns and 766 nonzeros
-## Model fingerprint: 0x7774a433
+## Model fingerprint: 0xfea67198
 ## Variable types: 176 continuous, 220 integer (220 binary)
 ## Coefficient statistics:
 ##   Matrix range     [2e-04, 2e+00]
@@ -448,34 +448,35 @@ p_{is} = \frac{{\sum_{k \in K_i \cap K_s: a_{sk} &lt;= h_{ik} &lt;= b_{sk}} \fra
 ## Found heuristic solution: objective 42.4000000
 ## Variable types: 0 continuous, 148 integer (146 binary)
 ##
-## Root relaxation: objective 2.011675e+01, 17 iterations, 0.00 seconds
+## Root relaxation: objective 2.011896e+01, 17 iterations, 0.00 seconds
 ##
 ##     Nodes    |    Current Node    |     Objective Bounds      |     Work
 ##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 ##
-##      0     0   20.11675    0    9   42.40000   20.11675  52.6%     -    0s
-## H    0     0                      29.1000000   20.11675  30.9%     -    0s
-## H    0     0                      21.9000000   20.11675  8.14%     -    0s
-## H    0     0                      21.8000000   20.11675  7.72%     -    0s
-##      0     0   20.82214    0    3   21.80000   20.82214  4.49%     -    0s
-##      0     0   20.91419    0    3   21.80000   20.91419  4.06%     -    0s
-##      0     0   21.09610    0    2   21.80000   21.09610  3.23%     -    0s
-##      0     0   21.48058    0    5   21.80000   21.48058  1.47%     -    0s
-##      0     0   21.52674    0    4   21.80000   21.52674  1.25%     -    0s
-##      0     0   21.54377    0    6   21.80000   21.54377  1.18%     -    0s
-##      0     0   21.56864    0    3   21.80000   21.56864  1.06%     -    0s
-##      0     0   21.57428    0    5   21.80000   21.57428  1.04%     -    0s
-##      0     0   21.57589    0    6   21.80000   21.57589  1.03%     -    0s
+##      0     0   20.11896    0    9   42.40000   20.11896  52.5%     -    0s
+## H    0     0                      29.1000000   20.11896  30.9%     -    0s
+## H    0     0                      21.9000000   20.11896  8.13%     -    0s
+## H    0     0                      21.8000000   20.11896  7.71%     -    0s
+##      0     0   20.82302    0    3   21.80000   20.82302  4.48%     -    0s
+##      0     0   20.91403    0    3   21.80000   20.91403  4.06%     -    0s
+##      0     0   21.21879    0    4   21.80000   21.21879  2.67%     -    0s
+##      0     0   21.47599    0    5   21.80000   21.47599  1.49%     -    0s
+##      0     0   21.53170    0    5   21.80000   21.53170  1.23%     -    0s
+##      0     0   21.54367    0    6   21.80000   21.54367  1.18%     -    0s
+##      0     0   21.58911    0    6   21.80000   21.58911  0.97%     -    0s
+##      0     0   21.59162    0    7   21.80000   21.59162  0.96%     -    0s
+##      0     0   21.59578    0    8   21.80000   21.59578  0.94%     -    0s
+##      0     0   21.61294    0    8   21.80000   21.61294  0.86%     -    0s
 ##      0     0     cutoff    0        21.80000   21.80000  0.00%     -    0s
 ##
 ## Cutting planes:
-##   Gomory: 1
+##   Gomory: 2
 ##   Cover: 3
-##   MIR: 3
-##   StrongCG: 1
+##   MIR: 1
+##   StrongCG: 2
 ##   RLT: 1
 ##
-## Explored 1 nodes (54 simplex iterations) in 0.01 seconds
+## Explored 1 nodes (56 simplex iterations) in 0.01 seconds
 ## Thread count was 2 (of 4 available processors)
 ##
 ## Solution count 5: 21.8 21.9 29.1 ... 153.7
@@ -486,16 +487,11 @@ p_{is} = \frac{{\sum_{k \in K_i \cap K_s: a_{sk} &lt;= h_{ik} &lt;= b_{sk}} \fra
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get potential benefits</span>
 <span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">b.continuous</span><span class="op">)</span></code></pre></div>
-<pre><code>##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit
-## 1       1   47              47                            0                  13.7781
-## 2       2   30              28                            2                  14.6788
-## 3       3   66              56                           10                  32.9739
-## 4       4   33              33                            0                  15.9912
-##   maximum.benefit
-## 1         13.7781
-## 2         16.6788
-## 3         42.9739
-## 4         15.9912</code></pre>
+<pre><code>##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit
+## 1       1   47              47                            0                  13.7781         13.7781
+## 2       2   30              28                            2                  14.6788         16.6788
+## 3       3   66              56                           10                  32.9739         42.9739
+## 4       4   33              33                            0                  15.9912         15.9912</code></pre>
 <p>Now by the <code><a href="../reference/getSolutionBenefit.html">getSolutionBenefit()</a></code> function, we can obtain how the benefits are distributed for the different features. Notice that we use the <code>type = "local"</code> argument to obtain the benefits per unit and feature.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get benefits of solution</span>

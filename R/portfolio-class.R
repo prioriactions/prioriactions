@@ -30,8 +30,9 @@ NULL
 #' Call print method.}
 #' }
 #'
+#' @return No return value.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # set seed for reproducibility
 #' set.seed(14)
 #'
@@ -45,7 +46,7 @@ NULL
 #'                 values = c(0.0, 0.01, 0.02, 0.03),
 #'                 model_type = "minimizeCosts",
 #'                 time_limit = 50,
-#'                 output_file = FALSE)
+#'                 output_file = FALSE, cores = 2)
 #'
 #' ## Use class methods
 #' port$getNames()
