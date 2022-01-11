@@ -1,3 +1,7 @@
+# prioriactions 0.3.3
+
+- Release candidate for CRAN.
+
 # prioriactions 0.3.2
 
 - Release candidate for CRAN.

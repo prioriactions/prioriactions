@@ -99,7 +99,8 @@ arma::sp_mat create_sensitivity_param_extended(DataFrame sensitivity_data, int f
   threat_id = threat_id - 1;
 
   arma::sp_mat sensitivity_param_extended(features, threats);
-  NumericVector sensitivity_param;
+  int size_sensitivity_data = sensitivity_data.nrows();
+  NumericVector sensitivity_param(size_sensitivity_data);
 
   if(param == "a"){
     sensitivity_param = sensitivity_data["a"];
@@ -114,7 +115,7 @@ arma::sp_mat create_sensitivity_param_extended(DataFrame sensitivity_data, int f
     sensitivity_param = sensitivity_data["d"];
   }
 
-  for(int i = 0; i < sensitivity_data.nrows(); i++){
+  for(int i = 0; i < size_sensitivity_data; i++){
     sensitivity_param_extended(feature_id[i], threat_id[i]) = sensitivity_param[i];
   }
   return sensitivity_param_extended;

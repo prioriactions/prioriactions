@@ -17,8 +17,8 @@ List rcpp_stats_recovery(std::vector<double> solution,
   int number_of_actions = dist_threats_data.nrows();
   int number_of_threats = threats_data.nrows();
   int number_of_dist_features = dist_features_data.nrows();
-  int pu_id;
-  int threat_id;
+  int pu_id = 0;
+  int threat_id = 0;
   int count_threats;
   int iter;
   NumericVector recovery_solution(number_of_dist_features);

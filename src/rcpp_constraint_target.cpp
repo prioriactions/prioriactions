@@ -20,13 +20,13 @@ bool rcpp_constraint_target(SEXP x,
   int number_of_actions = dist_threats_data.nrows();
   int number_of_threats = threats_data.nrows();
   int number_of_dist_features = dist_features_data.nrows();
-  int row_constraint;
-  int col_constraint;
-  int col_constraint_conservation;
-  int pu_id;
-  int threat_id;
-  int count_threats;
-  double feature_intensity;
+  int row_constraint = 0;
+  int col_constraint = 0;
+  //int col_constraint_conservation = 0;
+  int pu_id = 0;
+  int threat_id = 0;
+  int count_threats = 0;
+  double feature_intensity = 0.0;
 
   arma::sp_mat dist_features_extended = create_dist_features_extended(dist_features_data, number_of_units, number_of_features);
   NumericVector targets_recovery = features_data["target_recovery"];

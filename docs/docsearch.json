@@ -2,21 +2,21 @@
   "index_name": "prioriactions",
   "start_urls": [
     {
-      "url": "https://prioriactions.github.io/prioriactions//index.html",
+      "url": "https://prioriactions.github.io/prioriactions/index.html",
       "selectors_key": "homepage",
       "tags": [
         "homepage"
       ]
     },
     {
-      "url": "https://prioriactions.github.io/prioriactions//reference",
+      "url": "https://prioriactions.github.io/prioriactions/reference",
       "selectors_key": "reference",
       "tags": [
         "reference"
       ]
     },
     {
-      "url": "https://prioriactions.github.io/prioriactions//articles",
+      "url": "https://prioriactions.github.io/prioriactions/articles",
       "selectors_key": "articles",
       "tags": [
         "articles"
@@ -30,7 +30,7 @@
     "/articles/index.html"
   ],
   "sitemap_urls": [
-    "https://prioriactions.github.io/prioriactions//sitemap.xml"
+    "https://prioriactions.github.io/prioriactions/sitemap.xml"
   ],
   "selectors": {
     "homepage": {

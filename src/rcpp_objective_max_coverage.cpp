@@ -71,7 +71,7 @@ bool rcpp_objective_max_coverage(SEXP x,
                                                                     dist_threats_data["amount"]);
   for(int a = 0; a < number_of_actions; a++){
     if(boundary_size != 0 && blm_actions[threat_id[a]]){
-      int pu_id2_threat;
+      int pu_id2_threat = 0;
 
       for (auto it = dist_threats_extended.begin_col(threat_id[a]);
            it != dist_threats_extended.end_col(threat_id[a]); ++it) {
@@ -94,8 +94,8 @@ bool rcpp_objective_max_coverage(SEXP x,
 
   //variables
   int number_of_features = features_data.nrows();
-  double feature_intensity;
-  int pu_id;
+  double feature_intensity = 0.0;
+  int pu_id = 0;
 
   arma::sp_mat dist_features_extended = create_dist_features_extended(dist_features_data, number_of_units, number_of_features);
 
@@ -155,7 +155,7 @@ bool rcpp_objective_max_coverage(SEXP x,
   // auxiliary variables to normalize no-linear objective function
   //------------------------------------------------------------------------------------------
 
-  double connectivityCoeff;
+  double connectivityCoeff = 0.0;
   row_constraint = op->_rhs.size();
   col_constraint = op->_obj.size();
 
@@ -234,7 +234,7 @@ bool rcpp_objective_max_coverage(SEXP x,
 
   for(int a = 0; a < number_of_actions; a++){
     if(boundary_size != 0 && blm_actions[threat_id[a]] != 0){
-      int pu_id2_threat;
+      int pu_id2_threat = 0;
 
       for (auto it = dist_threats_extended.begin_col(threat_id[a]);
            it != dist_threats_extended.end_col(threat_id[a]); ++it) {

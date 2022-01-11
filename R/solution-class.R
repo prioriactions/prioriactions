@@ -50,7 +50,7 @@ NULL
 #' problem_model <- problem(x = problem_data, blm = 1)
 #'
 #' ## Solve the optimization model
-#' s <- solve(a = problem_model, time_limit = 2, output_file = FALSE, cores = 2)
+#' s <- solve(a = problem_model, time_limit = 5, output_file = FALSE, cores = 2)
 #'
 #' ## Use class methods
 #'

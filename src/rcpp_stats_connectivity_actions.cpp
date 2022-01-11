@@ -18,7 +18,7 @@ NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data,
   int number_of_units = pu_data.nrows();
   int number_of_threats = threats_data.nrows();
   int number_of_actions = dist_threats_data.nrows();
-  int boundary_size = boundary_data.nrows();
+  //int boundary_size = boundary_data.nrows();
   arma::sp_mat matrix_boundary_extended;
   NumericVector connectivity_actions(number_of_actions);
   NumericVector connectivity_actions_solution(number_of_actions);
@@ -36,14 +36,14 @@ NumericVector rcpp_stats_connectivity_actions(DataFrame pu_data,
                                                                     number_of_threats,
                                                                     dist_threats_data["amount"]);
 
-  double connectivityCoeff;
-  int id_action2;
+  double connectivityCoeff = 0.0;
+  int id_action2 = 0;
   arma::sp_mat actions_extended = create_actions_extended(dist_threats_data, number_of_units, number_of_threats);
 
   for(int a = 0; a < number_of_actions; a++){
     matrix_boundary_extended = create_boundary_matrix_extended(boundary_data, number_of_units);
 
-    int pu_id2_threat;
+    int pu_id2_threat = 0;
 
     for (auto it = dist_threats_extended.begin_col(threat_id[a]);
          it != dist_threats_extended.end_col(threat_id[a]); ++it) {

@@ -34,6 +34,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -46,18 +48,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-
-  </a>
-</li>
 <li>
   <a href="../articles/prioriactions.html">Get started</a>
 </li>
@@ -72,7 +68,8 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li class="divider">
-    <li class="dropdown-header">Introduction</li>
+    </li>
+<li class="dropdown-header">Introduction</li>
     <li>
       <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
@@ -80,7 +77,8 @@
       <a href="../articles/objectives.html">Planning objectives</a>
     </li>
     <li class="divider">
-    <li class="dropdown-header">Study cases</li>
+    </li>
+<li class="dropdown-header">Study cases</li>
     <li>
       <a href="../articles/MitchellRiver.html">Mitchell River</a>
     </li>
@@ -92,7 +90,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/prioriactions/prioriactions/">
+  <a href="https://github.com/prioriactions/prioriactions/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
 
   </a>
@@ -113,13 +111,13 @@
 
 
 
-      </header><script src="objectives_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Planning objectives</h1>
 
 
-      <small class="dont-index">Source: <a href="https://github.com/prioriactions/prioriactions/blob/master/vignettes/objectives.Rmd"><code>vignettes/objectives.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/prioriactions/prioriactions/blob/HEAD/vignettes/objectives.Rmd" class="external-link"><code>vignettes/objectives.Rmd</code></a></small>
       <div class="hidden name"><code>objectives.Rmd</code></div>
 
     </div>
@@ -129,23 +127,23 @@
 <p>The <code>prioriactions</code> package allows to address to planning goals: <strong>recovery</strong> and <strong>conservation</strong>. In order to understand the difference between each of them, let us consider the following figures:</p>
 <p><img src="figures/PR1.png" style="width:60.0%"></p>
 <p>According to the figure, for a conservation feature there are <strong>two</strong> planning units where it co-occurs with the threat it is sensitive to (and where, therefore, it can be impacted by the threat) and in <strong>four</strong> other units where the feature does not co-occur with the threat. Therefore, <strong>recovery targets</strong> could be achieved by prescribing management actions against the threat present in the two planning units where the feature co-occurs with that threat, while <strong>conservation targets</strong> could be achieved by selecting for conservation any of the planning units where the species does not co-occur with the threat. As we will show in this document, selecting planning units only for conservation purposes plays a crucial role in the conservation plan.</p>
-<p>If we aim at minimizing the conservation costs (<code>minimize costs</code>), the <code>prioriactions</code> package allows to explicitly impose a target for both, the <strong>recovery</strong> and the <strong>conservation</strong> levels that we aim at achieving. Please note that, by the default, only the <strong>recovery targets</strong> is requested, given the main focus of <code>prioriactions</code> is on the prioritization of management actions against threats, while conservation targets are optional. There are other software, like <a href="https://marxansolutions.org/">marxan</a>, and packages, like <a href="https://prioritizr.net/index.html">prioritizr</a>, that already solve conservation only problems. On the contrary, if we aim at maximizing the benefits (<code>maximize benefits</code>), we assume that the benefits are obtained only from <strong>recovery</strong> actions.</p>
+<p>If we aim at minimizing the conservation costs (<code>minimize costs</code>), the <code>prioriactions</code> package allows to explicitly impose a target for both, the <strong>recovery</strong> and the <strong>conservation</strong> levels that we aim at achieving. Please note that, by the default, only the <strong>recovery targets</strong> is requested, given the main focus of <code>prioriactions</code> is on the prioritization of management actions against threats, while conservation targets are optional. There are other software, like <a href="https://marxansolutions.org/" class="external-link">marxan</a>, and packages, like <a href="https://prioritizr.net/index.html" class="external-link">prioritizr</a>, that already solve conservation only problems. On the contrary, if we aim at maximizing the benefits (<code>maximize benefits</code>), we assume that the benefits are obtained only from <strong>recovery</strong> actions.</p>
 <p>The remainder of this document is organized as follows. In Section 1 we present the results obtained when only imposing <strong>recovery targets</strong>. In Section 2 we present the results obtained when imposing <strong>recovery targets</strong> and <strong>conservation targets</strong>. In Section 3 we present the results obtained when considering <strong>recovery targets</strong> along with a connectivity optimization. Finally, in Section 4 we present the results obtained when considering <strong>recovery targets</strong> and <strong>conservation targets</strong> along with a connectivity optimization.</p>
-<div id="model-i-only-recovery-targets" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-i-only-recovery-targets" class="anchor"></a>1) Model I: Only recovery targets</h2>
+<div class="section level2">
+<h2 id="model-i-only-recovery-targets">1) Model I: Only recovery targets<a class="anchor" aria-label="anchor" href="#model-i-only-recovery-targets"></a>
+</h2>
 <p>In order to analyze how planning decision behave when no <strong>conservation target</strong> is considered, we present some results using the example available in the <a href="https://prioriactions.github.io/prioriactions/articles/prioriactions.html">Get started</a> vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load package</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://prioriactions.github.io/prioriactions/">prioriactions</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://prioriactions.github.io/prioriactions/">prioriactions</a></span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">sim_boundary_data</span>, <span class="va">sim_dist_features_data</span>, <span class="va">sim_dist_threats_data</span>,
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_boundary_data</span>, <span class="va">sim_dist_features_data</span>, <span class="va">sim_dist_threats_data</span>,
      <span class="va">sim_features_data</span>, <span class="va">sim_pu_data</span>, <span class="va">sim_sensitivity_data</span>, <span class="va">sim_threats_data</span><span class="op">)</span>
 
 <span class="co">#create raster</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span>
-<span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">10</span>, nrow<span class="op">=</span><span class="fl">10</span>, xmn<span class="op">=</span><span class="fl">0</span>, xmx<span class="op">=</span><span class="fl">10</span>, ymn<span class="op">=</span><span class="fl">0</span>, ymx<span class="op">=</span><span class="fl">10</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">0</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span>
+<span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">10</span>, nrow<span class="op">=</span><span class="fl">10</span>, xmn<span class="op">=</span><span class="fl">0</span>, xmx<span class="op">=</span><span class="fl">10</span>, ymn<span class="op">=</span><span class="fl">0</span>, ymx<span class="op">=</span><span class="fl">10</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">0</span>
 
 <span class="co"># create data class using input data from prioriactions</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>,
@@ -162,11 +160,11 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get potential benefit</span>
 <span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></code></pre></div>
-<pre><code>##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit
-## 1       1   47              47                            0                       47              47
-## 2       2   30              28                            2                       28              30
-## 3       3   66              56                           10                       56              66
-## 4       4   33              33                            0                       33              33</code></pre>
+<pre><code><span class="co">##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit</span>
+<span class="co">## 1       1   47              47                            0                       47              47</span>
+<span class="co">## 2       2   30              28                            2                       28              30</span>
+<span class="co">## 3       3   66              56                           10                       56              66</span>
+<span class="co">## 4       4   33              33                            0                       33              33</span></code></pre>
 <p>As we can observe, features 2 and 3 are present in 2 and 10 units, respectively, where no threat is present. Therefore, if select these units just for monitoring, they could contribute to achieving the <strong>conservation</strong> target. In order to to show the impact of including recovery requirements, we now present the results obtained when setting the value of <code>target_recovery</code> to 10. After setting these values, we solve the corresponding model. These steps are shown below.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># setting the targets</span>
@@ -184,75 +182,75 @@
 
 <span class="co"># create optimization problem</span>
 <span class="va">c.base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.base</span>, model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
+<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></code></pre>
+<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># solve optimization problem</span>
 <span class="va">d.base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.base</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
-## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 284 rows, 396 columns and 785 nonzeros
-## Model fingerprint: 0xe4778898
-## Variable types: 176 continuous, 220 integer (220 binary)
-## Coefficient statistics:
-##   Matrix range     [5e-01, 2e+00]
-##   Objective range  [1e+00, 1e+01]
-##   Bounds range     [1e+00, 1e+00]
-##   RHS range        [1e+01, 1e+01]
-## Found heuristic solution: objective 964.0000000
-## Found heuristic solution: objective 371.0000000
-## Presolve removed 250 rows and 277 columns
-## Presolve time: 0.00s
-## Presolved: 34 rows, 119 columns, 237 nonzeros
-## Variable types: 0 continuous, 119 integer (101 binary)
-##
-## Root relaxation: objective 1.310000e+02, 30 iterations, 0.00 seconds
-##
-##     Nodes    |    Current Node    |     Objective Bounds      |     Work
-##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
-##
-##      0     0  131.00000    0    6  371.00000  131.00000  64.7%     -    0s
-## H    0     0                     143.0000000  131.00000  8.39%     -    0s
-## H    0     0                     142.0000000  131.00000  7.75%     -    0s
-##      0     0  134.00000    0    4  142.00000  134.00000  5.63%     -    0s
-## H    0     0                     138.0000000  134.00000  2.90%     -    0s
-## H    0     0                     134.0000000  134.00000  0.00%     -    0s
-##      0     0  134.00000    0    4  134.00000  134.00000  0.00%     -    0s
-##
-## Cutting planes:
-##   Gomory: 1
-##   Cover: 5
-##
-## Explored 1 nodes (39 simplex iterations) in 0.00 seconds
-## Thread count was 2 (of 4 available processors)
-##
-## Solution count 6: 134 138 142 ... 964
-##
-## Optimal solution found (tolerance 0.00e+00)
-## Best objective 1.340000000000e+02, best bound 1.340000000000e+02, gap 0.0000%</code></pre>
+<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span>
+<span class="co">## Model fingerprint: 0xe4778898</span>
+<span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span>
+<span class="co">## Coefficient statistics:</span>
+<span class="co">##   Matrix range     [5e-01, 2e+00]</span>
+<span class="co">##   Objective range  [1e+00, 1e+01]</span>
+<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">##   RHS range        [1e+01, 1e+01]</span>
+<span class="co">## Found heuristic solution: objective 964.0000000</span>
+<span class="co">## Found heuristic solution: objective 371.0000000</span>
+<span class="co">## Presolve removed 250 rows and 277 columns</span>
+<span class="co">## Presolve time: 0.00s</span>
+<span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span>
+<span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span>
+<span class="co">## </span>
+<span class="co">## Root relaxation: objective 1.310000e+02, 30 iterations, 0.00 seconds</span>
+<span class="co">## </span>
+<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">## </span>
+<span class="co">##      0     0  131.00000    0    6  371.00000  131.00000  64.7%     -    0s</span>
+<span class="co">## H    0     0                     143.0000000  131.00000  8.39%     -    0s</span>
+<span class="co">## H    0     0                     142.0000000  131.00000  7.75%     -    0s</span>
+<span class="co">##      0     0  134.00000    0    4  142.00000  134.00000  5.63%     -    0s</span>
+<span class="co">## H    0     0                     138.0000000  134.00000  2.90%     -    0s</span>
+<span class="co">## H    0     0                     134.0000000  134.00000  0.00%     -    0s</span>
+<span class="co">##      0     0  134.00000    0    4  134.00000  134.00000  0.00%     -    0s</span>
+<span class="co">## </span>
+<span class="co">## Cutting planes:</span>
+<span class="co">##   Gomory: 1</span>
+<span class="co">##   Cover: 5</span>
+<span class="co">## </span>
+<span class="co">## Explored 1 nodes (39 simplex iterations) in 0.00 seconds</span>
+<span class="co">## Thread count was 2 (of 4 available processors)</span>
+<span class="co">## </span>
+<span class="co">## Solution count 6: 134 138 142 ... 964</span>
+<span class="co">## </span>
+<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
+<span class="co">## Best objective 1.340000000000e+02, best bound 1.340000000000e+02, gap 0.0000%</span></code></pre>
 <p>Once the corresponding optimization problem is solved, we can retrieve the spatial distribution of the recovery actions using the <code><a href="../reference/getActions.html">getActions()</a></code> function. The results obtained for our test instance are shown below:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get actions from solution</span>
 <span class="va">actions.base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">d.base</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
 
 <span class="co"># plot actions</span>
-<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.base</span><span class="op">$</span><span class="va">`1`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.base</span><span class="op">$</span><span class="va">`2`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span><span class="op">)</span>
+<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.base</span><span class="op">$</span><span class="va">`1`</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.base</span><span class="op">$</span><span class="va">`2`</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
 <p><img src="figures/O5-1.png"></p>
 </div>
-<div id="model-ii-recovery-and-conservation-targets" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-ii-recovery-and-conservation-targets" class="anchor"></a>2) Model II: Recovery and conservation targets</h2>
+<div class="section level2">
+<h2 id="model-ii-recovery-and-conservation-targets">2) Model II: Recovery and conservation targets<a class="anchor" aria-label="anchor" href="#model-ii-recovery-and-conservation-targets"></a>
+</h2>
 <p>In this section, we present the results obtained when only considering <strong>conservation targets</strong>. Note that the value of these targets are bounded by the maximum possible benefits that can be obtained according to the structure of the planning area. The corresponding value of this maximum possible benefits can be retrieved using the <code><a href="../reference/getPotentialBenefit.html">getPotentialBenefit()</a></code> function. As we have already seen in the previous section, these values correspond to 0, 2, 10 and 0 respectively.Once the <strong>conservation targets</strong> values are defined, the corresponding optimization model is solved. These steps are shown below.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># setting the targets</span>
 <span class="va">features_data.cons</span> <span class="op">&lt;-</span> <span class="va">sim_features_data</span>
 <span class="va">features_data.cons</span><span class="op">$</span><span class="va">target_recovery</span> <span class="op">&lt;-</span> <span class="fl">10</span>
-<span class="va">features_data.cons</span><span class="op">$</span><span class="va">target_conservation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>
+<span class="va">features_data.cons</span><span class="op">$</span><span class="va">target_conservation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>
 
 <span class="co"># create conservation problem using data from prioriactions</span>
 <span class="va">b.cons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>,
@@ -265,180 +263,180 @@
 
 <span class="co"># create optimization problem</span>
 <span class="va">c.cons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.cons</span>, model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
+<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></code></pre>
+<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># solve optimization problem</span>
 <span class="va">d.cons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.cons</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
-## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 284 rows, 396 columns and 785 nonzeros
-## Model fingerprint: 0xf6bb92ed
-## Variable types: 176 continuous, 220 integer (220 binary)
-## Coefficient statistics:
-##   Matrix range     [5e-01, 2e+00]
-##   Objective range  [1e+00, 1e+01]
-##   Bounds range     [1e+00, 1e+00]
-##   RHS range        [2e+00, 1e+01]
-## Found heuristic solution: objective 964.0000000
-## Found heuristic solution: objective 381.0000000
-## Presolve removed 250 rows and 277 columns
-## Presolve time: 0.00s
-## Presolved: 34 rows, 119 columns, 237 nonzeros
-## Variable types: 0 continuous, 119 integer (101 binary)
-##
-## Root relaxation: objective 1.540000e+02, 30 iterations, 0.00 seconds
-##
-##     Nodes    |    Current Node    |     Objective Bounds      |     Work
-##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
-##
-##      0     0  154.00000    0    6  381.00000  154.00000  59.6%     -    0s
-## H    0     0                     166.0000000  154.00000  7.23%     -    0s
-## H    0     0                     165.0000000  154.00000  6.67%     -    0s
-##      0     0  157.00000    0    4  165.00000  157.00000  4.85%     -    0s
-## H    0     0                     161.0000000  157.00000  2.48%     -    0s
-## H    0     0                     157.0000000  157.00000  0.00%     -    0s
-##      0     0  157.00000    0    4  157.00000  157.00000  0.00%     -    0s
-##
-## Cutting planes:
-##   Gomory: 1
-##   Cover: 5
-##
-## Explored 1 nodes (39 simplex iterations) in 0.01 seconds
-## Thread count was 2 (of 4 available processors)
-##
-## Solution count 6: 157 161 165 ... 964
-##
-## Optimal solution found (tolerance 0.00e+00)
-## Best objective 1.570000000000e+02, best bound 1.570000000000e+02, gap 0.0000%</code></pre>
+<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span>
+<span class="co">## Model fingerprint: 0xf6bb92ed</span>
+<span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span>
+<span class="co">## Coefficient statistics:</span>
+<span class="co">##   Matrix range     [5e-01, 2e+00]</span>
+<span class="co">##   Objective range  [1e+00, 1e+01]</span>
+<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">##   RHS range        [2e+00, 1e+01]</span>
+<span class="co">## Found heuristic solution: objective 964.0000000</span>
+<span class="co">## Found heuristic solution: objective 381.0000000</span>
+<span class="co">## Presolve removed 250 rows and 277 columns</span>
+<span class="co">## Presolve time: 0.00s</span>
+<span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span>
+<span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span>
+<span class="co">## </span>
+<span class="co">## Root relaxation: objective 1.540000e+02, 30 iterations, 0.00 seconds</span>
+<span class="co">## </span>
+<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">## </span>
+<span class="co">##      0     0  154.00000    0    6  381.00000  154.00000  59.6%     -    0s</span>
+<span class="co">## H    0     0                     166.0000000  154.00000  7.23%     -    0s</span>
+<span class="co">## H    0     0                     165.0000000  154.00000  6.67%     -    0s</span>
+<span class="co">##      0     0  157.00000    0    4  165.00000  157.00000  4.85%     -    0s</span>
+<span class="co">## H    0     0                     161.0000000  157.00000  2.48%     -    0s</span>
+<span class="co">## H    0     0                     157.0000000  157.00000  0.00%     -    0s</span>
+<span class="co">##      0     0  157.00000    0    4  157.00000  157.00000  0.00%     -    0s</span>
+<span class="co">## </span>
+<span class="co">## Cutting planes:</span>
+<span class="co">##   Gomory: 1</span>
+<span class="co">##   Cover: 5</span>
+<span class="co">## </span>
+<span class="co">## Explored 1 nodes (39 simplex iterations) in 0.01 seconds</span>
+<span class="co">## Thread count was 2 (of 4 available processors)</span>
+<span class="co">## </span>
+<span class="co">## Solution count 6: 157 161 165 ... 964</span>
+<span class="co">## </span>
+<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
+<span class="co">## Best objective 1.570000000000e+02, best bound 1.570000000000e+02, gap 0.0000%</span></code></pre>
 <p>As can be seen from the log, the objective function value of the attained solution is 157. This value is 23 units larger than the value obtained for the same instance but without imposing conservation targets (the values was 134). This difference is explained by the fact that we now impose the implementation of monitoring actions.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get actions from solution</span>
 <span class="va">actions.cons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">d.cons</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
 
 <span class="co"># plot actions</span>
-<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons</span><span class="op">$</span><span class="va">`1`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons</span><span class="op">$</span><span class="va">`2`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons</span><span class="op">$</span><span class="va">`conservation`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span>, <span class="st">"conservation"</span><span class="op">)</span>
+<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons</span><span class="op">$</span><span class="va">`1`</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons</span><span class="op">$</span><span class="va">`2`</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons</span><span class="op">$</span><span class="va">`conservation`</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span>, <span class="st">"conservation"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
 <p><img src="figures/O7-1.png"></p>
 <p>We can observe that, in this case, the units selected for <strong>conservation</strong> do not overlap with those selected for applying action 1 and action 2. When comparing this solution with the one shown in the model I, we observe that in both cases the spatial distribution of the <strong>recovery</strong> actions is the same.</p>
 </div>
-<div id="model-iii-only-recovery-targets-and-connectivity" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-iii-only-recovery-targets-and-connectivity" class="anchor"></a>3) Model III: Only recovery targets and connectivity</h2>
+<div class="section level2">
+<h2 id="model-iii-only-recovery-targets-and-connectivity">3) Model III: Only recovery targets and connectivity<a class="anchor" aria-label="anchor" href="#model-iii-only-recovery-targets-and-connectivity"></a>
+</h2>
 <p>To demonstrate the influence of including connectivity constrains we will use the same inputs as above, but we will set the connectivity penalty factor (<em>blm</em>) to 100 in the <code><a href="../reference/problem.html">problem()</a></code> function. Next we will modify this parameter in the model that uses only <strong>recovery targets</strong>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># create optimization problem</span>
 <span class="va">c.base_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.base</span>,
                   model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
                   blm <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
+<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># solve optimization problem</span>
 <span class="va">d.base_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.base_conn</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
-## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros
-## Model fingerprint: 0x0d6e31a0
-## Variable types: 176 continuous, 10120 integer (10120 binary)
-## Coefficient statistics:
-##   Matrix range     [5e-01, 2e+00]
-##   Objective range  [1e+00, 7e+04]
-##   Bounds range     [1e+00, 1e+00]
-##   RHS range        [1e+00, 1e+01]
-## Found heuristic solution: objective 964.0000000
-## Presolve removed 190 rows and 181 columns
-## Presolve time: 0.22s
-## Presolved: 29794 rows, 10115 columns, 69709 nonzeros
-## Variable types: 0 continuous, 10115 integer (10110 binary)
-##
-## Root relaxation: objective 2.573214e+02, 253 iterations, 0.09 seconds
-##
-##     Nodes    |    Current Node    |     Objective Bounds      |     Work
-##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
-##
-## *    0     0               0     547.0000000  547.00000  0.00%     -    0s
-##
-## Explored 0 nodes (306 simplex iterations) in 0.43 seconds
-## Thread count was 2 (of 4 available processors)
-##
-## Solution count 2: 547 964
-##
-## Optimal solution found (tolerance 0.00e+00)
-## Best objective 5.470000000163e+02, best bound 5.469999999816e+02, gap 0.0000%</code></pre>
+<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">## Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros</span>
+<span class="co">## Model fingerprint: 0x0d6e31a0</span>
+<span class="co">## Variable types: 176 continuous, 10120 integer (10120 binary)</span>
+<span class="co">## Coefficient statistics:</span>
+<span class="co">##   Matrix range     [5e-01, 2e+00]</span>
+<span class="co">##   Objective range  [1e+00, 7e+04]</span>
+<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">##   RHS range        [1e+00, 1e+01]</span>
+<span class="co">## Found heuristic solution: objective 964.0000000</span>
+<span class="co">## Presolve removed 190 rows and 181 columns</span>
+<span class="co">## Presolve time: 0.22s</span>
+<span class="co">## Presolved: 29794 rows, 10115 columns, 69709 nonzeros</span>
+<span class="co">## Variable types: 0 continuous, 10115 integer (10110 binary)</span>
+<span class="co">## </span>
+<span class="co">## Root relaxation: objective 2.573214e+02, 253 iterations, 0.09 seconds</span>
+<span class="co">## </span>
+<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">## </span>
+<span class="co">## *    0     0               0     547.0000000  547.00000  0.00%     -    0s</span>
+<span class="co">## </span>
+<span class="co">## Explored 0 nodes (306 simplex iterations) in 0.43 seconds</span>
+<span class="co">## Thread count was 2 (of 4 available processors)</span>
+<span class="co">## </span>
+<span class="co">## Solution count 2: 547 964 </span>
+<span class="co">## </span>
+<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
+<span class="co">## Best objective 5.470000000163e+02, best bound 5.469999999816e+02, gap 0.0000%</span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get actions from solution</span>
 <span class="va">actions.base_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">d.base_conn</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
 
 <span class="co"># plot actions</span>
-<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.base_conn</span><span class="op">$</span><span class="va">`1`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.base_conn</span><span class="op">$</span><span class="va">`2`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span><span class="op">)</span>
+<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.base_conn</span><span class="op">$</span><span class="va">`1`</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.base_conn</span><span class="op">$</span><span class="va">`2`</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
 <p><img src="figures/O9-1.png"></p>
 <p>We can notice that the selected actions are more connected compared to the solutions shown for the previous models.</p>
 </div>
-<div id="model-iv-recovery-and-conservation-targets-and-connectivity" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-iv-recovery-and-conservation-targets-and-connectivity" class="anchor"></a>4) Model IV: Recovery and conservation targets and connectivity</h2>
+<div class="section level2">
+<h2 id="model-iv-recovery-and-conservation-targets-and-connectivity">4) Model IV: Recovery and conservation targets and connectivity<a class="anchor" aria-label="anchor" href="#model-iv-recovery-and-conservation-targets-and-connectivity"></a>
+</h2>
 <p>Same as above, we set the <em>blm</em> parameter to 100, but now using <strong>conservation targets</strong>.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># create optimization problem</span>
 <span class="va">c.cons_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.cons</span>,
                        model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
                        blm <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
+<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># solve optimization problem</span>
 <span class="va">d.cons_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.cons_conn</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
-## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros
-## Model fingerprint: 0x8ba6f640
-## Variable types: 176 continuous, 10120 integer (10120 binary)
-## Coefficient statistics:
-##   Matrix range     [5e-01, 2e+00]
-##   Objective range  [1e+00, 7e+04]
-##   Bounds range     [1e+00, 1e+00]
-##   RHS range        [1e+00, 1e+01]
-## Found heuristic solution: objective 964.0000000
-## Presolve removed 5860 rows and 2081 columns
-## Presolve time: 0.21s
-## Presolved: 24124 rows, 8215 columns, 56479 nonzeros
-## Variable types: 0 continuous, 8215 integer (8210 binary)
-##
-## Root relaxation: objective 5.470000e+02, 9 iterations, 0.01 seconds
-##
-##     Nodes    |    Current Node    |     Objective Bounds      |     Work
-##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
-##
-## *    0     0               0     547.0000000  547.00000  0.00%     -    0s
-##
-## Explored 0 nodes (9 simplex iterations) in 0.28 seconds
-## Thread count was 2 (of 4 available processors)
-##
-## Solution count 2: 547 964
-##
-## Optimal solution found (tolerance 0.00e+00)
-## Best objective 5.470000000163e+02, best bound 5.469999999524e+02, gap 0.0000%</code></pre>
+<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">## Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros</span>
+<span class="co">## Model fingerprint: 0x8ba6f640</span>
+<span class="co">## Variable types: 176 continuous, 10120 integer (10120 binary)</span>
+<span class="co">## Coefficient statistics:</span>
+<span class="co">##   Matrix range     [5e-01, 2e+00]</span>
+<span class="co">##   Objective range  [1e+00, 7e+04]</span>
+<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">##   RHS range        [1e+00, 1e+01]</span>
+<span class="co">## Found heuristic solution: objective 964.0000000</span>
+<span class="co">## Presolve removed 5860 rows and 2081 columns</span>
+<span class="co">## Presolve time: 0.21s</span>
+<span class="co">## Presolved: 24124 rows, 8215 columns, 56479 nonzeros</span>
+<span class="co">## Variable types: 0 continuous, 8215 integer (8210 binary)</span>
+<span class="co">## </span>
+<span class="co">## Root relaxation: objective 5.470000e+02, 9 iterations, 0.01 seconds</span>
+<span class="co">## </span>
+<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">## </span>
+<span class="co">## *    0     0               0     547.0000000  547.00000  0.00%     -    0s</span>
+<span class="co">## </span>
+<span class="co">## Explored 0 nodes (9 simplex iterations) in 0.28 seconds</span>
+<span class="co">## Thread count was 2 (of 4 available processors)</span>
+<span class="co">## </span>
+<span class="co">## Solution count 2: 547 964 </span>
+<span class="co">## </span>
+<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
+<span class="co">## Best objective 5.470000000163e+02, best bound 5.469999999524e+02, gap 0.0000%</span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get actions from solution</span>
 <span class="va">actions.cons_conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">d.cons_conn</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
 
 <span class="co"># plot actions</span>
-<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons_conn</span><span class="op">$</span><span class="va">`1`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons_conn</span><span class="op">$</span><span class="va">`2`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons_conn</span><span class="op">$</span><span class="va">`conservation`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span>, <span class="st">"conservation"</span><span class="op">)</span>
+<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons_conn</span><span class="op">$</span><span class="va">`1`</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons_conn</span><span class="op">$</span><span class="va">`2`</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions.cons_conn</span><span class="op">$</span><span class="va">`conservation`</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span>, <span class="st">"conservation"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
 <p><img src="figures/O11-1.png"></p>
 <p>Note that in the last two models (those that incorporate connectivity requirements) the solutions differ. Because in both we have used the same parameters, it is inferred that the sites selected for the conservation of species affect in a certain way the selection of units for <strong>recovery targets</strong>, which is why it is very important to carefully think about the planning objectives, as they might lead to different solutions.</p>
 </div>
@@ -455,11 +453,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://www.researchgate.net/profile/Jose_Salgado-Rojas">Jose Salgado-Rojas</a>, <a href="https://www.researchgate.net/profile/Irlanda_Ceballos">Irlanda Ceballos-Fuentealba</a>, <a href="https://www.researchgate.net/profile/Virgilio_Hermoso">Virgilio Hermoso</a>, <a href="https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda">Eduardo Alvarez-Miranda</a>, <a href="https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo">Jordi Garcia-Gonzalo</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://www.researchgate.net/profile/Jose_Salgado-Rojas" class="external-link">Jose Salgado-Rojas</a>, <a href="https://www.researchgate.net/profile/Irlanda_Ceballos" class="external-link">Irlanda Ceballos-Fuentealba</a>, <a href="https://www.researchgate.net/profile/Virgilio_Hermoso" class="external-link">Virgilio Hermoso</a>, <a href="https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda" class="external-link">Eduardo Alvarez-Miranda</a>, <a href="https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo" class="external-link">Jordi Garcia-Gonzalo</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>

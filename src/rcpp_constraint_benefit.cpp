@@ -18,7 +18,7 @@ bool rcpp_constraint_benefit(SEXP x,
   int number_of_units = pu_data.nrows();
   int number_of_features = features_data.nrows();
   int number_of_actions = dist_threats_data.nrows();
-  int number_of_dist_features = dist_features_data.nrows();
+  //int number_of_dist_features = dist_features_data.nrows();
 
   arma::sp_mat dist_threats_extended = create_dist_threats_extended(dist_threats_data,
                                                                     number_of_units,
@@ -32,23 +32,23 @@ bool rcpp_constraint_benefit(SEXP x,
   arma::sp_mat sensitivity_d_extended = create_sensitivity_param_extended(sensitivity_data, number_of_features, number_of_threats, "d");
   arma::sp_mat actions_extended = create_actions_extended(dist_threats_data, number_of_units, number_of_threats);
 
-  int pu_id;
-  int threat_id;
+  int pu_id = 0;
+  int threat_id = 0;
   int row_constraint = op->_rhs.size();
   int col_constraint = number_of_units + number_of_actions;
   int col_action = 0;
   //int iter = 0;
 
-  double response_coef_variable;
-  double response_coef_constant;
+  double response_coef_variable = 0.0;
+  double response_coef_constant = 0.0;
   //double coef_constant;
-  double alpha;
-  double sum_alpha;
-  double param_a;
-  double param_b;
-  double param_c;
-  double param_d;
-  double threat_intensity;
+  double alpha = 0.0;
+  double sum_alpha = 0.0;
+  double param_a = 0.0;
+  double param_b = 0.0;
+  double param_c = 0.0;
+  double param_d = 0.0;
+  double threat_intensity = 0.0;
 
   for(int s = 0; s < number_of_features; s++){
     for (auto it_species = dist_features_extended.begin_col(s);

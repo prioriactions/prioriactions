@@ -18,9 +18,7 @@ Rcpp::List rcpp_optimization_problem_as_list(SEXP x) {
     Rcpp::as<Rcpp::XPtr<OptimizationProblem>>(x);
 
   // create bounds
-  List bounds;
-
-  bounds = List::create(Rcpp::Named("lower") = List::create(Rcpp::Named("ind") = seq(1,op->_obj.size()),
+  List bounds = List::create(Rcpp::Named("lower") = List::create(Rcpp::Named("ind") = seq(1,op->_obj.size()),
                         Rcpp::Named("val") = op->_lb),
                         Rcpp::Named("upper") = List::create(Rcpp::Named("ind") = seq(1,op->_obj.size()),
                         Rcpp::Named("val") = op->_ub));

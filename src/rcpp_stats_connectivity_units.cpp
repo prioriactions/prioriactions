@@ -15,7 +15,7 @@ double rcpp_stats_connectivity_units(DataFrame pu_data,
 
   //variables
   int number_of_units = pu_data.nrows();
-  int boundary_size = boundary_data.nrows();
+  //int boundary_size = boundary_data.nrows();
   NumericVector connectivity_units(number_of_units);
   NumericVector connectivity_units_solution(number_of_units);
   arma::sp_mat matrix_boundary_extended;
@@ -37,7 +37,7 @@ double rcpp_stats_connectivity_units(DataFrame pu_data,
   //--------------------- (coefficients associated with y[i1,i2] variables) ------------------
   // auxiliary variables to normalize no-linear objective function
   //------------------------------------------------------------------------------------------
-  double connectivityCoeff;
+  double connectivityCoeff = 0.0;
 
   for(arma::sp_mat::const_iterator it = z.begin(); it != z.end(); ++it) {
     if(it.row() != it.col()){

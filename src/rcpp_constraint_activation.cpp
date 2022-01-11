@@ -14,7 +14,7 @@ bool rcpp_constraint_activation(SEXP x,
   int number_of_units = pu_data.nrows();
   int number_of_threats = threats_data.nrows();
   int row_constraint = op->_rhs.size();
-  int threat_id;
+  int threat_id = 0;
   int subset_size = 0;
   int col_action = 0;
 

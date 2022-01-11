@@ -73,7 +73,7 @@ bool rcpp_objective_min_set(SEXP x,
                                                                     dist_threats_data["amount"]);
   for(int a = 0; a < number_of_actions; a++){
     if(boundary_size != 0 && blm_actions[threat_id[a]] != 0){
-      int pu_id2_threat;
+      int pu_id2_threat = 0;
 
       for (auto it = dist_threats_extended.begin_col(threat_id[a]);
           it != dist_threats_extended.end_col(threat_id[a]); ++it) {
@@ -140,7 +140,7 @@ bool rcpp_objective_min_set(SEXP x,
   // auxiliary variables to normalize no-linear objective function
   //------------------------------------------------------------------------------------------
 
-  double connectivityCoeff;
+  double connectivityCoeff = 0.0;
   int row_constraint = op->_rhs.size();
   int number_y_variables = 0;
   col_constraint = op->_obj.size();
@@ -222,7 +222,7 @@ bool rcpp_objective_min_set(SEXP x,
 
   for(int a = 0; a < number_of_actions; a++){
     if(boundary_size != 0 && blm_actions[threat_id[a]] != 0){
-      int pu_id2_threat;
+      int pu_id2_threat = 0;
 
       for (auto it = dist_threats_extended.begin_col(threat_id[a]);
            it != dist_threats_extended.end_col(threat_id[a]); ++it) {

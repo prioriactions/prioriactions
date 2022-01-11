@@ -1,84 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//index.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/404.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/data-class.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/articles/MitchellRiver.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/evalBlm.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/evalBudget.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/articles/objectives.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/evalTarget.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/articles/prioriactions.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getActions.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/articles/sensitivities.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getConnectivityPenalty.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/authors.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getCost.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/index.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getModelInfo.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/news/index.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getPerformance.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/data-class.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getPotentialBenefit.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/evalBlm.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/getSolutionBenefit.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/evalBudget.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/inputData.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/evalTarget.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/optimizationProblem-class.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/getActions.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/pipe.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/getConnectivity.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/portfolio-class.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/getConnectivityPenalty.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/print.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/getCost.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/prioriactions.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/getModelInfo.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/problem.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/getPerformance.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/show.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/getPotentialBenefit.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/simData.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/getSolutionBenefit.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/solution-class.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//reference/solve.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/inputData.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//articles/MitchellRiver.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//articles/objectives.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//articles/prioriactions.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/portfolio-class.html</loc>
   </url>
   <url>
-    <loc>https://prioriactions.github.io/prioriactions//articles/sensitivities.html</loc>
+    <loc>https://prioriactions.github.io/prioriactions/reference/print.html</loc>
+  </url>
+  <url>
+    <loc>https://prioriactions.github.io/prioriactions/reference/prioriactions.html</loc>
+  </url>
+  <url>
+    <loc>https://prioriactions.github.io/prioriactions/reference/problem.html</loc>
+  </url>
+  <url>
+    <loc>https://prioriactions.github.io/prioriactions/reference/show.html</loc>
+  </url>
+  <url>
+    <loc>https://prioriactions.github.io/prioriactions/reference/simData.html</loc>
+  </url>
+  <url>
+    <loc>https://prioriactions.github.io/prioriactions/reference/sim_data.html</loc>
+  </url>
+  <url>
+    <loc>https://prioriactions.github.io/prioriactions/reference/solution-class.html</loc>
+  </url>
+  <url>
+    <loc>https://prioriactions.github.io/prioriactions/reference/solve.html</loc>
   </url>
 </urlset>

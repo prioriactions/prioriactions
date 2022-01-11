@@ -34,6 +34,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -46,18 +48,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-
-  </a>
-</li>
 <li>
   <a href="../articles/prioriactions.html">Get started</a>
 </li>
@@ -72,7 +68,8 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li class="divider">
-    <li class="dropdown-header">Introduction</li>
+    </li>
+<li class="dropdown-header">Introduction</li>
     <li>
       <a href="../articles/sensitivities.html">Benefits and sensitivities</a>
     </li>
@@ -80,7 +77,8 @@
       <a href="../articles/objectives.html">Planning objectives</a>
     </li>
     <li class="divider">
-    <li class="dropdown-header">Study cases</li>
+    </li>
+<li class="dropdown-header">Study cases</li>
     <li>
       <a href="../articles/MitchellRiver.html">Mitchell River</a>
     </li>
@@ -92,7 +90,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/prioriactions/prioriactions/">
+  <a href="https://github.com/prioriactions/prioriactions/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
 
   </a>
@@ -113,13 +111,13 @@
 
 
 
-      </header><script src="MitchellRiver_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Mitchell River</h1>
 
 
-      <small class="dont-index">Source: <a href="https://github.com/prioriactions/prioriactions/blob/master/vignettes/MitchellRiver.Rmd"><code>vignettes/MitchellRiver.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/prioriactions/prioriactions/blob/HEAD/vignettes/MitchellRiver.Rmd" class="external-link"><code>vignettes/MitchellRiver.Rmd</code></a></small>
       <div class="hidden name"><code>MitchellRiver.Rmd</code></div>
 
     </div>
@@ -131,54 +129,54 @@
 <p>We started loading libraries:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://prioriactions.github.io/prioriactions/">prioriactions</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span> <span class="co">#To plot of shapefiles</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mtennekes/tmap">tmap</a></span><span class="op">)</span> <span class="co">#To create cool maps</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org">scales</a></span><span class="op">)</span> <span class="co">#To standardize the value of amount</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/reshape">reshape2</a></span><span class="op">)</span> <span class="co">#To use the melt function</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/edzer/sp/">sp</a></span><span class="op">)</span> <span class="co">#To use the spplot function</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/">viridis</a></span><span class="op">)</span> <span class="co">#To use viridis pallete</span></code></pre></div>
-<div id="preparing-and-analyzing-input-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#preparing-and-analyzing-input-data" class="anchor"></a>1) Preparing and analyzing input data</h2>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://prioriactions.github.io/prioriactions/">prioriactions</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span> <span class="co">#To plot of shapefiles</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mtennekes/tmap" class="external-link">tmap</a></span><span class="op">)</span> <span class="co">#To create cool maps</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span> <span class="co">#To standardize the value of amount</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/reshape" class="external-link">reshape2</a></span><span class="op">)</span> <span class="co">#To use the melt function</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/edzer/sp/" class="external-link">sp</a></span><span class="op">)</span> <span class="co">#To use the spplot function</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/" class="external-link">viridis</a></span><span class="op">)</span> <span class="co">#To use viridis pallete</span></code></pre></div>
+<div class="section level2">
+<h2 id="preparing-and-analyzing-input-data">1) Preparing and analyzing input data<a class="anchor" aria-label="anchor" href="#preparing-and-analyzing-input-data"></a>
+</h2>
 <p>We divided the whole catchment (71,630 <span class="math inline">\(km^2\)</span>) into 2316 sites (i.e., sub-catchments), each one included the portion of river length between two consecutive river connections and the surrounding land draining into this river stretch. We sourced the distribution of 45 fish species in the Mitchell river catchment as our conservation features <span class="citation">[@cattarino2015]</span>. Also, we considered four major threats to freshwater fish species in the catchment: water buffalo (Bubalis bubalis), cane toad (Bufo marinus), river flow alteration (caused by infrastructure for water extractions and levee banks) and grazing land use . All input files will be loaded directly into the <code>prioriactions</code> package as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/mitchell_vignette_data/"</span>,
+<code class="sourceCode R"><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/mitchell_vignette_data/"</span>,
                     package <span class="op">=</span> <span class="st">"prioriactions"</span><span class="op">)</span>
 
-<span class="va">pu_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,
+<span class="va">pu_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>,
                                     <span class="st">"/pu_mitchell.csv"</span><span class="op">)</span>,
                              data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">features_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,
+<span class="va">features_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>,
                                           <span class="st">"/features_mitchell.csv"</span><span class="op">)</span>,
                                    data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">dist_features_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,
+<span class="va">dist_features_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>,
                                                <span class="st">"/dist_features_mitchell.csv"</span><span class="op">)</span>,
                                         data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">threats_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,
+<span class="va">threats_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>,
                                          <span class="st">"/threats_mitchell.csv"</span><span class="op">)</span>,
                                   data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">dist_threats_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,
+<span class="va">dist_threats_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>,
                                               <span class="st">"/dist_threats_mitchell.csv"</span><span class="op">)</span>,
                                        data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">bound_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,
+<span class="va">bound_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>,
                                        <span class="st">"/boundary_mitchell.csv"</span><span class="op">)</span>,
                                 data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">sensitivity_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path</span>,
+<span class="va">sensitivity_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>,
                                              <span class="st">"/sensibility_mitchell.csv"</span><span class="op">)</span>,
                                       data.table <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>We load the shapefile of the case study also included as part of the package installation:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># read shapefile</span>
-<span class="va">mit_pu</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/shapefile.html">shapefile</a></span><span class="op">(</span><span class="st">"data/Mitchell.shp"</span><span class="op">)</span>
+<span class="va">mit_pu</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/shapefile.html" class="external-link">shapefile</a></span><span class="op">(</span><span class="st">"data/Mitchell.shp"</span><span class="op">)</span>
 
 <span class="co"># plot sapefile</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span></code></pre></div>
 <p><img src="figures/MR3-1.png"></p>
 <p>After loading the instance’s data, we can plot different distributions of features or threats on the shapefile loaded. To do it, we can assign the values from tabular input to any of the fields in the shapefile containing the distribution of native species and threats:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load amount of dist_features data</span>
-<span class="va">dist_features</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html">dcast</a></span><span class="op">(</span><span class="va">dist_features_data</span>,
+<span class="va">dist_features</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">dist_features_data</span>,
                                  <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,
                                  value.var <span class="op">=</span> <span class="st">"amount"</span>,
                                  fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
@@ -188,18 +186,18 @@
 <span class="va">mit_pu</span><span class="op">$</span><span class="va">feature_distribution</span> <span class="op">&lt;-</span> <span class="va">dist_features</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>
 
 <span class="co"># plot distribution with tmap library</span>
-<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"feature_distribution"</span>,
-                pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"seagreen"</span><span class="op">)</span>,
-                labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
-                breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"feature_distribution"</span>,
+                pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"seagreen"</span><span class="op">)</span>,
+                labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
+                breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
                    lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="figures/MR4-1.jpg"></p>
 <p>Likewise, we can plot the distributions of any threats by applying the following instructions:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load amount of dist_threats data</span>
-<span class="va">dist_threats</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html">dcast</a></span><span class="op">(</span><span class="va">dist_threats_data</span>,
+<span class="va">dist_threats</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">dist_threats_data</span>,
                                 <span class="va">pu</span><span class="op">~</span><span class="va">threat</span>,
                                 value.var <span class="op">=</span> <span class="st">"amount"</span>,
                                 fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
@@ -209,20 +207,20 @@
 <span class="va">mit_pu</span><span class="op">$</span><span class="va">threat_distribution</span> <span class="op">&lt;-</span> <span class="va">dist_threats</span><span class="op">[</span>, <span class="fl">4</span><span class="op">]</span>
 
 <span class="co"># plot distribution with tmap library</span>
-<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"threat_distribution"</span>,
-                pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"red4"</span><span class="op">)</span>,
-                labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
-                breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"threat_distribution"</span>,
+                pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"red4"</span><span class="op">)</span>,
+                labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
+                breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
                    lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="figures/MR5-1.jpg"></p>
 <p>To solve all the models, the solver will be configured with a stop criterion of 5% of <em>gap</em> (<code>gap_limit = 0.05</code>), which means that the solver will end its execution when it finds a solution whose <em>gap</em> is at least 5%, indicating 0% that this solution is optimal. Similarly, there are other stopping criteria such as the time (<code>time_limit</code>), all available in the <code><a href="../reference/solve.html">solve()</a></code> reference. There is also the option of not using any stopping criteria that will make the solver run until it finds an optimal solution; however, this could take a long time period.</p>
 <p>In Section 2, we present the results obtained when solving the base model for the case study. Likewise, in Section 3 we report the results obtained when incorporating the different curves in the benefit calculation. And finally, in Section 4 we present the results obtained when incorporating the connectivity requirements to the model.</p>
 </div>
-<div id="base-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#base-model" class="anchor"></a>2) Base model</h2>
+<div class="section level2">
+<h2 id="base-model">2) Base model<a class="anchor" aria-label="anchor" href="#base-model"></a>
+</h2>
 <p>First, our base model considers the prioritization of management actions to abate a particular threat using previously loaded data. Note that for both features and threats we have presence/absence values (binary values). Some of the characteristics of the base model are the following:</p>
 <ol style="list-style-type: decimal">
 <li>We use <code>minimiCosts</code> type of model to minimize costs for reaching 15% of the maximum recovery benefit per feature as target.</li>
@@ -241,25 +239,25 @@
               bound <span class="op">=</span> <span class="va">bound_data</span><span class="op">)</span>
 
 <span class="va">input_data</span></code></pre></div>
-<pre><code>## Data
-##   planning units: data.frame (2316 units)
-##   monitoring costs:     min: 1, max: 1
-##   features:       scl_ja, nem_er, thr_sc, ... (45 features)
-##   threats:        threat1, threat2, threat3, threat4 (4 threats)
-##   action costs:   min: 1, max: 1</code></pre>
+<pre><code><span class="co">## Data</span>
+<span class="co">##   planning units: data.frame (2316 units)</span>
+<span class="co">##   monitoring costs:     min: 1, max: 1</span>
+<span class="co">##   features:       scl_ja, nem_er, thr_sc, ... (45 features)</span>
+<span class="co">##   threats:        threat1, threat2, threat3, threat4 (4 threats)</span>
+<span class="co">##   action costs:   min: 1, max: 1</span></code></pre>
 <p>Now, in order to set the <strong>recovery targets</strong> at 20%, we must know what is the maximum recovery benefit possible through the <code><a href="../reference/getPotentialBenefit.html">getPotentialBenefit()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># view the maximum benefit to achieve</span>
 <span class="va">maximum_benefits</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">input_data</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">maximum_benefits</span><span class="op">)</span></code></pre></div>
-<pre><code>##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit
-## 1       1  692             692                            0                      692             692
-## 2       2 1052            1052                            0                     1052            1052
-## 3       3  416             416                            0                      416             416
-## 4       4  653             653                            0                      653             653
-## 5       5  238             238                            0                      238             238
-## 6       6  276             276                            0                      276             276</code></pre>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">maximum_benefits</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit</span>
+<span class="co">## 1       1  692             692                            0                      692             692</span>
+<span class="co">## 2       2 1052            1052                            0                     1052            1052</span>
+<span class="co">## 3       3  416             416                            0                      416             416</span>
+<span class="co">## 4       4  653             653                            0                      653             653</span>
+<span class="co">## 5       5  238             238                            0                      238             238</span>
+<span class="co">## 6       6  276             276                            0                      276             276</span></code></pre>
 <p>We assign the new target (20% of maximum) to the corresponding column of the feature data input and create the object <code>Data-class</code> again.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">features_data</span><span class="op">$</span><span class="va">target_recovery</span> <span class="op">&lt;-</span> <span class="va">maximum_benefits</span><span class="op">$</span><span class="va">maximum.recovery.benefit</span> <span class="op">*</span> <span class="fl">0.2</span>
@@ -274,31 +272,31 @@
                         bound <span class="op">=</span> <span class="va">bound_data</span><span class="op">)</span>
 
 <span class="va">input_data</span></code></pre></div>
-<pre><code>## Data
-##   planning units: data.frame (2316 units)
-##   monitoring costs:     min: 1, max: 1
-##   features:       scl_ja, nem_er, thr_sc, ... (45 features)
-##   threats:        threat1, threat2, threat3, threat4 (4 threats)
-##   action costs:   min: 1, max: 1</code></pre>
+<pre><code><span class="co">## Data</span>
+<span class="co">##   planning units: data.frame (2316 units)</span>
+<span class="co">##   monitoring costs:     min: 1, max: 1</span>
+<span class="co">##   features:       scl_ja, nem_er, thr_sc, ... (45 features)</span>
+<span class="co">##   threats:        threat1, threat2, threat3, threat4 (4 threats)</span>
+<span class="co">##   action costs:   min: 1, max: 1</span></code></pre>
 <p>Once the input data is validated, we proceed to create the mathematical model using the <code><a href="../reference/problem.html">problem()</a></code> function with <code>curve = 1</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># step 2:</span>
 <span class="va">model.base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">input_data</span>,
                       model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
                       blm <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
+<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></code></pre>
+<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model.base</span></code></pre></div>
-<pre><code>## Optimization Problem
-##   model sense: minimization
-##   dimensions:  37371, 43180, 1813.016 kB (nrow, ncol, size)
-##   variables:   43180</code></pre>
+<pre><code><span class="co">## Optimization Problem</span>
+<span class="co">##   model sense: minimization</span>
+<span class="co">##   dimensions:  37371, 43180, 1813.016 kB (nrow, ncol, size)</span>
+<span class="co">##   variables:   43180</span></code></pre>
 <p>Note that the dimension of the model are 37371 mathematical constraints and 43180 variables. By using the <code><a href="../reference/getModelInfo.html">getModelInfo()</a></code> function, we can display additional information of the model:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/getModelInfo.html">getModelInfo</a></span><span class="op">(</span><span class="va">model.base</span><span class="op">)</span></code></pre></div>
-<pre><code>##    model_sense n_constraints n_variables        size
-## 1 minimization         37371       43180 1813.016 kB</code></pre>
+<pre><code><span class="co">##    model_sense n_constraints n_variables        size</span>
+<span class="co">## 1 minimization         37371       43180 1813.016 kB</span></code></pre>
 <p>To solve the corresponding model, the solver is set considering a 5% optimality <em>gap</em> as stopping criterion (note that a 0% <em>gap</em> means that the problem is solved to optimality) and using <em>gurobi</em> solver. In turn, the <code>verbose = TRUE</code> is used to display the execution of the solver and the <code>output_file = FALSE</code> to avoid generating output files with the results.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># step 3:</span>
@@ -307,83 +305,83 @@
                        verbose <span class="op">=</span> <span class="cn">TRUE</span>,
                        output_file <span class="op">=</span> <span class="cn">FALSE</span>,
                        cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
-## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 37371 rows, 43180 columns and 136566 nonzeros
-## Model fingerprint: 0xc61c114a
-## Variable types: 34965 continuous, 8215 integer (8215 binary)
-## Coefficient statistics:
-##   Matrix range     [3e-01, 4e+00]
-##   Objective range  [1e+00, 1e+00]
-##   Bounds range     [1e+00, 1e+00]
-##   RHS range        [1e+00, 4e+02]
-## Found heuristic solution: objective 7947.0000000
-## Found heuristic solution: objective 6638.0000000
-## Presolve removed 35017 rows and 35259 columns
-## Presolve time: 0.25s
-## Presolved: 2354 rows, 7921 columns, 66284 nonzeros
-## Variable types: 0 continuous, 7921 integer (7904 binary)
-##
-## Root relaxation: objective 1.145583e+03, 4158 iterations, 0.09 seconds
-##
-##     Nodes    |    Current Node    |     Objective Bounds      |     Work
-##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
-##
-##      0     0 1145.58333    0  547 6638.00000 1145.58333  82.7%     -    0s
-## H    0     0                    1396.0000000 1145.58333  17.9%     -    0s
-## H    0     0                    1393.0000000 1145.58333  17.8%     -    0s
-##      0     0 1173.77778    0  712 1393.00000 1173.77778  15.7%     -    0s
-## H    0     0                    1369.0000000 1173.77778  14.3%     -    0s
-##      0     0 1175.01235    0  696 1369.00000 1175.01235  14.2%     -    1s
-##      0     0 1175.12963    0  691 1369.00000 1175.12963  14.2%     -    1s
-##      0     0 1222.36111    0  479 1369.00000 1222.36111  10.7%     -    1s
-## H    0     0                    1333.0000000 1222.36111  8.30%     -    1s
-##      0     0 1225.44444    0  469 1333.00000 1225.44444  8.07%     -    1s
-##      0     0 1225.44444    0  472 1333.00000 1225.44444  8.07%     -    1s
-##      0     0 1241.19444    0  305 1333.00000 1241.19444  6.89%     -    1s
-##      0     0 1242.75000    0  292 1333.00000 1242.75000  6.77%     -    1s
-##      0     0 1242.75000    0  291 1333.00000 1242.75000  6.77%     -    1s
-##      0     0 1271.33333    0   68 1333.00000 1271.33333  4.63%     -    1s
-##
-## Cutting planes:
-##   Gomory: 1
-##   Cover: 1214
-##   Clique: 11
-##   MIR: 482
-##   StrongCG: 1
-##   RLT: 2
-##
-## Explored 1 nodes (14581 simplex iterations) in 1.58 seconds
-## Thread count was 2 (of 4 available processors)
-##
-## Solution count 6: 1333 1369 1393 ... 7947
-##
-## Optimal solution found (tolerance 5.00e-02)
-## Best objective 1.333000000000e+03, best bound 1.272000000000e+03, gap 4.5761%</code></pre>
+<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">## Optimize a model with 37371 rows, 43180 columns and 136566 nonzeros</span>
+<span class="co">## Model fingerprint: 0xc61c114a</span>
+<span class="co">## Variable types: 34965 continuous, 8215 integer (8215 binary)</span>
+<span class="co">## Coefficient statistics:</span>
+<span class="co">##   Matrix range     [3e-01, 4e+00]</span>
+<span class="co">##   Objective range  [1e+00, 1e+00]</span>
+<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">##   RHS range        [1e+00, 4e+02]</span>
+<span class="co">## Found heuristic solution: objective 7947.0000000</span>
+<span class="co">## Found heuristic solution: objective 6638.0000000</span>
+<span class="co">## Presolve removed 35017 rows and 35259 columns</span>
+<span class="co">## Presolve time: 0.25s</span>
+<span class="co">## Presolved: 2354 rows, 7921 columns, 66284 nonzeros</span>
+<span class="co">## Variable types: 0 continuous, 7921 integer (7904 binary)</span>
+<span class="co">## </span>
+<span class="co">## Root relaxation: objective 1.145583e+03, 4158 iterations, 0.09 seconds</span>
+<span class="co">## </span>
+<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">## </span>
+<span class="co">##      0     0 1145.58333    0  547 6638.00000 1145.58333  82.7%     -    0s</span>
+<span class="co">## H    0     0                    1396.0000000 1145.58333  17.9%     -    0s</span>
+<span class="co">## H    0     0                    1393.0000000 1145.58333  17.8%     -    0s</span>
+<span class="co">##      0     0 1173.77778    0  712 1393.00000 1173.77778  15.7%     -    0s</span>
+<span class="co">## H    0     0                    1369.0000000 1173.77778  14.3%     -    0s</span>
+<span class="co">##      0     0 1175.01235    0  696 1369.00000 1175.01235  14.2%     -    1s</span>
+<span class="co">##      0     0 1175.12963    0  691 1369.00000 1175.12963  14.2%     -    1s</span>
+<span class="co">##      0     0 1222.36111    0  479 1369.00000 1222.36111  10.7%     -    1s</span>
+<span class="co">## H    0     0                    1333.0000000 1222.36111  8.30%     -    1s</span>
+<span class="co">##      0     0 1225.44444    0  469 1333.00000 1225.44444  8.07%     -    1s</span>
+<span class="co">##      0     0 1225.44444    0  472 1333.00000 1225.44444  8.07%     -    1s</span>
+<span class="co">##      0     0 1241.19444    0  305 1333.00000 1241.19444  6.89%     -    1s</span>
+<span class="co">##      0     0 1242.75000    0  292 1333.00000 1242.75000  6.77%     -    1s</span>
+<span class="co">##      0     0 1242.75000    0  291 1333.00000 1242.75000  6.77%     -    1s</span>
+<span class="co">##      0     0 1271.33333    0   68 1333.00000 1271.33333  4.63%     -    1s</span>
+<span class="co">## </span>
+<span class="co">## Cutting planes:</span>
+<span class="co">##   Gomory: 1</span>
+<span class="co">##   Cover: 1214</span>
+<span class="co">##   Clique: 11</span>
+<span class="co">##   MIR: 482</span>
+<span class="co">##   StrongCG: 1</span>
+<span class="co">##   RLT: 2</span>
+<span class="co">## </span>
+<span class="co">## Explored 1 nodes (14581 simplex iterations) in 1.58 seconds</span>
+<span class="co">## Thread count was 2 (of 4 available processors)</span>
+<span class="co">## </span>
+<span class="co">## Solution count 6: 1333 1369 1393 ... 7947</span>
+<span class="co">## </span>
+<span class="co">## Optimal solution found (tolerance 5.00e-02)</span>
+<span class="co">## Best objective 1.333000000000e+03, best bound 1.272000000000e+03, gap 4.5761%</span></code></pre>
 <p>We have achieved a <em>gap</em> of 4.57% and a objective value of 1333 in a a time of 2.88 seconds. This and other relevant information can be obtained from the <code><a href="../reference/getPerformance.html">getPerformance()</a></code> function:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/getPerformance.html">getPerformance</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span></code></pre></div>
-<pre><code>##   solution_name objective_value   gap solving_time                                              status
-## 1           sol            1333 4.576         1.58 Optimal solution (according to gap tolerance: 0.05)</code></pre>
+<pre><code><span class="co">##   solution_name objective_value   gap solving_time                                              status</span>
+<span class="co">## 1           sol            1333 4.576         1.58 Optimal solution (according to gap tolerance: 0.05)</span></code></pre>
 <p>Since our objective function does not contain the connectivity component (because both <code>blm</code> and <code>blm_actions</code> were set to zero), the objective value corresponds to the sum of all actions and monitoring costs. We can check these using the <code><a href="../reference/getCost.html">getCost()</a></code> function:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span> </code></pre></div>
-<pre><code>##   solution_name monitoring threat_1 threat_2 threat_3 threat_4
-## 1           sol        486        0      395        0      452</code></pre>
+<pre><code><span class="co">##   solution_name monitoring threat_1 threat_2 threat_3 threat_4</span>
+<span class="co">## 1           sol        486        0      395        0      452</span></code></pre>
 <p>This shows that the actions with the highest total cost correspond to those that go against the threat 4, and then those corresponding to monitoring.</p>
 <p>We use the <code><a href="../reference/getActions.html">getActions()</a></code> function to get the distribution of conservation actions. Note that because we only set recovery targets we use a <strong>recovery target</strong> planning propose, there are only planning units selected for prescribing management actions against threats, while there are no planning units selected for conservation. There are no planning units selected for connectivity as both <em>blm</em> and <em>blm_actions</em> were set to zero.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get actions distribution</span>
 <span class="va">solution_actions.base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">solution_actions.base</span><span class="op">)</span></code></pre></div>
-<pre><code>##   solution_name pu 1 2 3 4 conservation connectivity
-## 1           sol  1 0 0 0 0            0            0
-## 2           sol  2 0 0 0 0            0            0
-## 3           sol  3 0 1 0 1            0            0
-## 4           sol  4 0 0 0 0            0            0
-## 5           sol  5 0 0 0 0            0            0
-## 6           sol  6 0 1 0 1            0            0</code></pre>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">solution_actions.base</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##   solution_name pu 1 2 3 4 conservation connectivity</span>
+<span class="co">## 1           sol  1 0 0 0 0            0            0</span>
+<span class="co">## 2           sol  2 0 0 0 0            0            0</span>
+<span class="co">## 3           sol  3 0 1 0 1            0            0</span>
+<span class="co">## 4           sol  4 0 0 0 0            0            0</span>
+<span class="co">## 5           sol  5 0 0 0 0            0            0</span>
+<span class="co">## 6           sol  6 0 1 0 1            0            0</span></code></pre>
 <p>In the same way that we plot the distributions of species and threats, we can also explore the spatial distribution of management actions included in the optimal solution:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># assign solution to shapefile field to plot it</span>
@@ -393,39 +391,39 @@
 <span class="va">mit_pu</span><span class="op">$</span><span class="va">action_4.base</span> <span class="op">&lt;-</span>  <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">`4`</span>
 
 <span class="co"># actions plots</span>
-<span class="va">plot_action1.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_1.base"</span>,
-                                   pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
-                                   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
-                                   breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
+<span class="va">plot_action1.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"action_1.base"</span>,
+                                   pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
+                                   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
+                                   breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
                                       lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
-<span class="va">plot_action2.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_2.base"</span>,
-                                   pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
-                                   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
-                                   breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
+<span class="va">plot_action2.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"action_2.base"</span>,
+                                   pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
+                                   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
+                                   breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
                                       lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
-<span class="va">plot_action3.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_3.base"</span>,
-                                   pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
-                                   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
-                                   breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
+<span class="va">plot_action3.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"action_3.base"</span>,
+                                   pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
+                                   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
+                                   breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
                                       lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
-<span class="va">plot_action4.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_4.base"</span>,
-                                   pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
-                                   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
-                                   breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
+<span class="va">plot_action4.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"action_4.base"</span>,
+                                   pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
+                                   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
+                                   breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+                     <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
                                       lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
-<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot_action1.base</span>,
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html" class="external-link">tmap_arrange</a></span><span class="op">(</span><span class="va">plot_action1.base</span>,
                    <span class="va">plot_action2.base</span>,
                    <span class="va">plot_action3.base</span>,
                    <span class="va">plot_action4.base</span><span class="op">)</span></code></pre></div>
@@ -439,26 +437,26 @@
                                  <span class="va">solution_actions.base</span><span class="op">$</span><span class="va">connectivity</span><span class="op">*</span><span class="fl">5</span>
 
 <span class="co"># plot sum of actions with tmap library</span>
-<span class="va">plot.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.base"</span>,
+<span class="va">plot.base</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.base"</span>,
                            palette<span class="op">=</span><span class="st">"viridis"</span>,
-                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>,
+                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>,
                                       <span class="st">"one action"</span>,
                                       <span class="st">"two actions"</span>,
                                       <span class="st">"three actions"</span>,
                                       <span class="st">"four actions"</span>,
                                       <span class="st">"connectivity"</span><span class="op">)</span>,
-                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-              <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
+                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+              <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
                                lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
 <span class="va">plot.base</span></code></pre></div>
 <p><img src="figures/MR16-1.jpg"></p>
 <p>We will use the results from this base model for comparisons with the following planning exercises.</p>
 </div>
-<div id="model-with-different-curve-param" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-with-different-curve-param" class="anchor"></a>3) Model with different <em>curve</em> param</h2>
+<div class="section level2">
+<h2 id="model-with-different-curve-param">3) Model with different <em>curve</em> param<a class="anchor" aria-label="anchor" href="#model-with-different-curve-param"></a>
+</h2>
 <p>This model differs from the previous one in that it tries to group conservation actions within the selected sites as part of the management plan (through a non-linear relationship in the calculation of benefits). This would be desirable when all or most of threats impacting a given species needed to be abated to ensure it long-term persistence (e.g., a species is highly sensitive to all the threats in a planning unit). The latter is done by adding a value other than 1 to the <em>curve</em> parameter. Where: (1) indicates that there is a linear relationship between the ratio between the actions carried out with respect to the possible actions to be carried out with respect to the benefit obtained by a characteristic so all actions are considered equally important, not being the species specially sensitive to any of them. (2) indicates a quadratic relationship between these values, and (3) a cubic relationship. The number of <em>segments</em> refers to the number of smaller portions in which the curve is divided to linealize it. Larger values of segments result in more complex models.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model.curve</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">input_data</span>,
@@ -466,14 +464,14 @@
                                       blm <span class="op">=</span> <span class="fl">0</span>,
                                       curve <span class="op">=</span> <span class="fl">3</span>,
                                       segments <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
+<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></code></pre>
+<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model.curve</span></code></pre></div>
-<pre><code>## Optimization Problem
-##   model sense: minimization
-##   dimensions:  37371, 78145, 1952.872 kB (nrow, ncol, size)
-##   variables:   78145</code></pre>
+<pre><code><span class="co">## Optimization Problem</span>
+<span class="co">##   model sense: minimization</span>
+<span class="co">##   dimensions:  37371, 78145, 1952.872 kB (nrow, ncol, size)</span>
+<span class="co">##   variables:   78145</span></code></pre>
 <p>Note that the new model associates a larger instance (from 43180 to 78145 variables) when compared to the previously presented model. As a consequence, the resulting problem is computationally more difficult. The solution of the resulting model has a objective function value equal to 1336 (greater than the previous one), although the corresponding optimality gap is 4.79% (similar than the one attained for the simple model). The complete output of the solver is shown below:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">solution.curve</span> <span class="op">&lt;-</span> <span class="fu">prioriactions</span><span class="fu">::</span><span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.curve</span>,
@@ -481,105 +479,105 @@
                                        verbose <span class="op">=</span> <span class="cn">TRUE</span>,
                                        output_file <span class="op">=</span> <span class="cn">FALSE</span>,
                                        cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
-## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 37371 rows, 78145 columns and 136566 nonzeros
-## Model fingerprint: 0x727af3a5
-## Model has 34965 general constraints
-## Variable types: 69930 continuous, 8215 integer (8215 binary)
-## Coefficient statistics:
-##   Matrix range     [3e-01, 4e+00]
-##   Objective range  [1e+00, 1e+00]
-##   Bounds range     [1e+00, 1e+00]
-##   RHS range        [1e+00, 4e+02]
-## Found heuristic solution: objective 8215.0000000
-## Presolve added 69869 rows and 174524 columns
-## Presolve time: 0.78s
-## Presolved: 107240 rows, 252669 columns, 695592 nonzeros
-## Presolved model has 34965 SOS constraint(s)
-## Found heuristic solution: objective 7947.0000000
-## Variable types: 244742 continuous, 7927 integer (7911 binary)
-##
-## Deterministic concurrent LP optimizer: primal and dual simplex
-## Showing first log only...
-##
-##
-## Root simplex log...
-##
-## Iteration    Objective       Primal Inf.    Dual Inf.      Time
-##    52139    2.7269611e+03   0.000000e+00   1.876868e+04      5s
-##    77100    2.2476995e+03   0.000000e+00   1.868763e+04     10s
-##    93792    2.0070600e+03   0.000000e+00   1.542965e+04     15s
-## Concurrent spin time: 0.01s
-##
-## Solved with dual simplex
-##
-## Root relaxation: objective 1.144050e+03, 54270 iterations, 14.95 seconds
-## Total elapsed time = 21.11s
-##
-##     Nodes    |    Current Node    |     Objective Bounds      |     Work
-##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
-##
-##      0     0 1144.05000    0 6203 7947.00000 1144.05000  85.6%     -   22s
-## H    0     0                    7924.0000000 1144.05000  85.6%     -   23s
-##      0     0 1148.84167    0 8970 7924.00000 1148.84167  85.5%     -   28s
-## H    0     0                    2094.0000000 1148.84167  45.1%     -   32s
-##      0     0 1162.52272    0 11530 2094.00000 1162.52272  44.5%     -   37s
-##      0     0 1187.87778    0 6309 2094.00000 1187.87778  43.3%     -   43s
-##      0     0 1201.60000    0 5121 2094.00000 1201.60000  42.6%     -   46s
-##      0     0 1201.60000    0 5072 2094.00000 1201.60000  42.6%     -   46s
-##      0     0 1205.21667    0 5214 2094.00000 1205.21667  42.4%     -   51s
-##      0     0 1221.05556    0 5864 2094.00000 1221.05556  41.7%     -   54s
-##      0     0 1245.76667    0 3135 2094.00000 1245.76667  40.5%     -   59s
-##      0     0 1247.26667    0 2809 2094.00000 1247.26667  40.4%     -   61s
-##      0     0 1247.26667    0 3125 2094.00000 1247.26667  40.4%     -   63s
-##      0     0 1269.26667    0 3240 2094.00000 1269.26667  39.4%     -   69s
-## H    0     0                    1472.0000000 1269.26667  13.8%     -   79s
-##      0     0 1269.26667    0 2501 1472.00000 1269.26667  13.8%     -   81s
-##      0     0 1269.92292    0 2699 1472.00000 1269.92292  13.7%     -   86s
-##      0     0 1270.83333    0 1876 1472.00000 1270.83333  13.7%     -   88s
-##      0     0 1270.83333    0 1741 1472.00000 1270.83333  13.7%     -   88s
-##      0     0 1272.00000    0 2068 1472.00000 1272.00000  13.6%     -   92s
-## H    0     0                    1371.0000000 1272.00000  7.22%     -  103s
-##      0     0 1272.00000    0 1726 1371.00000 1272.00000  7.22%     -  105s
-##      0     0 1272.00000    0 2194 1371.00000 1272.00000  7.22%     -  109s
-##      0     0 1272.00000    0 1548 1371.00000 1272.00000  7.22%     -  123s
-## H    0     0                    1353.0000000 1272.00000  5.99%     -  141s
-## H    0     0                    1348.0000000 1272.00000  5.64%     -  151s
-##      0     2 1272.00000    0 1537 1348.00000 1272.00000  5.64%     -  154s
-##      1     4 1272.00000    1 1672 1348.00000 1272.00000  5.64%  4286  156s
-##      5     8 1272.00000    2 1772 1348.00000 1272.00000  5.64%  2175  163s
-##      7    10 1272.00000    3 1883 1348.00000 1272.00000  5.64%  2229  165s
-##     17    26 1272.00000    5 1793 1348.00000 1272.00000  5.64%  1052  171s
-##     25    42 1272.00000    9 1689 1348.00000 1272.00000  5.64%   769  183s
-## H   27    42                    1344.0000000 1272.00000  5.36%   725  183s
-##     41    86 1272.00000   16 1691 1344.00000 1272.00000  5.36%   494  207s
-## H   62    86                    1341.0000000 1272.00000  5.15%   371  207s
-## H   84    86                    1340.0000000 1272.00000  5.07%   298  207s
-##     85   178 1272.00000   34 1689 1340.00000 1272.00000  5.07%   295  233s
-## H  108   178                    1339.0000000 1272.00000  5.00%   245  233s
-## H  111   178                    1338.0000000 1272.00000  4.93%   239  233s
-##
-## Cutting planes:
-##   Cover: 1439
-##   Implied bound: 29488
-##   Clique: 144
-##   MIR: 426
-##   Flow cover: 3219
-##   Network: 4
-##   RLT: 2
-##   Relax-and-lift: 12413
-##
-## Explored 177 nodes (219985 simplex iterations) in 233.32 seconds
-## Thread count was 2 (of 4 available processors)
-##
-## Solution count 10: 1338 1339 1340 ... 2094
-##
-## Optimal solution found (tolerance 5.00e-02)
-## Warning: max constraint violation (1.3502e-02) exceeds tolerance
-## Warning: max general constraint violation (1.3502e-02) exceeds tolerance
-##          (model may be infeasible or unbounded - try turning presolve off)
-## Best objective 1.338000000000e+03, best bound 1.272000000000e+03, gap 4.9327%</code></pre>
+<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">## Optimize a model with 37371 rows, 78145 columns and 136566 nonzeros</span>
+<span class="co">## Model fingerprint: 0x727af3a5</span>
+<span class="co">## Model has 34965 general constraints</span>
+<span class="co">## Variable types: 69930 continuous, 8215 integer (8215 binary)</span>
+<span class="co">## Coefficient statistics:</span>
+<span class="co">##   Matrix range     [3e-01, 4e+00]</span>
+<span class="co">##   Objective range  [1e+00, 1e+00]</span>
+<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">##   RHS range        [1e+00, 4e+02]</span>
+<span class="co">## Found heuristic solution: objective 8215.0000000</span>
+<span class="co">## Presolve added 69869 rows and 174524 columns</span>
+<span class="co">## Presolve time: 0.78s</span>
+<span class="co">## Presolved: 107240 rows, 252669 columns, 695592 nonzeros</span>
+<span class="co">## Presolved model has 34965 SOS constraint(s)</span>
+<span class="co">## Found heuristic solution: objective 7947.0000000</span>
+<span class="co">## Variable types: 244742 continuous, 7927 integer (7911 binary)</span>
+<span class="co">## </span>
+<span class="co">## Deterministic concurrent LP optimizer: primal and dual simplex</span>
+<span class="co">## Showing first log only...</span>
+<span class="co">## </span>
+<span class="co">## </span>
+<span class="co">## Root simplex log...</span>
+<span class="co">## </span>
+<span class="co">## Iteration    Objective       Primal Inf.    Dual Inf.      Time</span>
+<span class="co">##    52139    2.7269611e+03   0.000000e+00   1.876868e+04      5s</span>
+<span class="co">##    77100    2.2476995e+03   0.000000e+00   1.868763e+04     10s</span>
+<span class="co">##    93792    2.0070600e+03   0.000000e+00   1.542965e+04     15s</span>
+<span class="co">## Concurrent spin time: 0.01s</span>
+<span class="co">## </span>
+<span class="co">## Solved with dual simplex</span>
+<span class="co">## </span>
+<span class="co">## Root relaxation: objective 1.144050e+03, 54270 iterations, 14.95 seconds</span>
+<span class="co">## Total elapsed time = 21.11s</span>
+<span class="co">## </span>
+<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">## </span>
+<span class="co">##      0     0 1144.05000    0 6203 7947.00000 1144.05000  85.6%     -   22s</span>
+<span class="co">## H    0     0                    7924.0000000 1144.05000  85.6%     -   23s</span>
+<span class="co">##      0     0 1148.84167    0 8970 7924.00000 1148.84167  85.5%     -   28s</span>
+<span class="co">## H    0     0                    2094.0000000 1148.84167  45.1%     -   32s</span>
+<span class="co">##      0     0 1162.52272    0 11530 2094.00000 1162.52272  44.5%     -   37s</span>
+<span class="co">##      0     0 1187.87778    0 6309 2094.00000 1187.87778  43.3%     -   43s</span>
+<span class="co">##      0     0 1201.60000    0 5121 2094.00000 1201.60000  42.6%     -   46s</span>
+<span class="co">##      0     0 1201.60000    0 5072 2094.00000 1201.60000  42.6%     -   46s</span>
+<span class="co">##      0     0 1205.21667    0 5214 2094.00000 1205.21667  42.4%     -   51s</span>
+<span class="co">##      0     0 1221.05556    0 5864 2094.00000 1221.05556  41.7%     -   54s</span>
+<span class="co">##      0     0 1245.76667    0 3135 2094.00000 1245.76667  40.5%     -   59s</span>
+<span class="co">##      0     0 1247.26667    0 2809 2094.00000 1247.26667  40.4%     -   61s</span>
+<span class="co">##      0     0 1247.26667    0 3125 2094.00000 1247.26667  40.4%     -   63s</span>
+<span class="co">##      0     0 1269.26667    0 3240 2094.00000 1269.26667  39.4%     -   69s</span>
+<span class="co">## H    0     0                    1472.0000000 1269.26667  13.8%     -   79s</span>
+<span class="co">##      0     0 1269.26667    0 2501 1472.00000 1269.26667  13.8%     -   81s</span>
+<span class="co">##      0     0 1269.92292    0 2699 1472.00000 1269.92292  13.7%     -   86s</span>
+<span class="co">##      0     0 1270.83333    0 1876 1472.00000 1270.83333  13.7%     -   88s</span>
+<span class="co">##      0     0 1270.83333    0 1741 1472.00000 1270.83333  13.7%     -   88s</span>
+<span class="co">##      0     0 1272.00000    0 2068 1472.00000 1272.00000  13.6%     -   92s</span>
+<span class="co">## H    0     0                    1371.0000000 1272.00000  7.22%     -  103s</span>
+<span class="co">##      0     0 1272.00000    0 1726 1371.00000 1272.00000  7.22%     -  105s</span>
+<span class="co">##      0     0 1272.00000    0 2194 1371.00000 1272.00000  7.22%     -  109s</span>
+<span class="co">##      0     0 1272.00000    0 1548 1371.00000 1272.00000  7.22%     -  123s</span>
+<span class="co">## H    0     0                    1353.0000000 1272.00000  5.99%     -  141s</span>
+<span class="co">## H    0     0                    1348.0000000 1272.00000  5.64%     -  151s</span>
+<span class="co">##      0     2 1272.00000    0 1537 1348.00000 1272.00000  5.64%     -  154s</span>
+<span class="co">##      1     4 1272.00000    1 1672 1348.00000 1272.00000  5.64%  4286  156s</span>
+<span class="co">##      5     8 1272.00000    2 1772 1348.00000 1272.00000  5.64%  2175  163s</span>
+<span class="co">##      7    10 1272.00000    3 1883 1348.00000 1272.00000  5.64%  2229  165s</span>
+<span class="co">##     17    26 1272.00000    5 1793 1348.00000 1272.00000  5.64%  1052  171s</span>
+<span class="co">##     25    42 1272.00000    9 1689 1348.00000 1272.00000  5.64%   769  183s</span>
+<span class="co">## H   27    42                    1344.0000000 1272.00000  5.36%   725  183s</span>
+<span class="co">##     41    86 1272.00000   16 1691 1344.00000 1272.00000  5.36%   494  207s</span>
+<span class="co">## H   62    86                    1341.0000000 1272.00000  5.15%   371  207s</span>
+<span class="co">## H   84    86                    1340.0000000 1272.00000  5.07%   298  207s</span>
+<span class="co">##     85   178 1272.00000   34 1689 1340.00000 1272.00000  5.07%   295  233s</span>
+<span class="co">## H  108   178                    1339.0000000 1272.00000  5.00%   245  233s</span>
+<span class="co">## H  111   178                    1338.0000000 1272.00000  4.93%   239  233s</span>
+<span class="co">## </span>
+<span class="co">## Cutting planes:</span>
+<span class="co">##   Cover: 1439</span>
+<span class="co">##   Implied bound: 29488</span>
+<span class="co">##   Clique: 144</span>
+<span class="co">##   MIR: 426</span>
+<span class="co">##   Flow cover: 3219</span>
+<span class="co">##   Network: 4</span>
+<span class="co">##   RLT: 2</span>
+<span class="co">##   Relax-and-lift: 12413</span>
+<span class="co">## </span>
+<span class="co">## Explored 177 nodes (219985 simplex iterations) in 233.32 seconds</span>
+<span class="co">## Thread count was 2 (of 4 available processors)</span>
+<span class="co">## </span>
+<span class="co">## Solution count 10: 1338 1339 1340 ... 2094</span>
+<span class="co">## </span>
+<span class="co">## Optimal solution found (tolerance 5.00e-02)</span>
+<span class="co">## Warning: max constraint violation (1.3502e-02) exceeds tolerance</span>
+<span class="co">## Warning: max general constraint violation (1.3502e-02) exceeds tolerance</span>
+<span class="co">##          (model may be infeasible or unbounded - try turning presolve off)</span>
+<span class="co">## Best objective 1.338000000000e+03, best bound 1.272000000000e+03, gap 4.9327%</span></code></pre>
 <p>Note that the last solution was reached in 177326 seconds. This specifically demonstrates how complexity increases when using the different parameters of curves.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get action distribution</span>
@@ -598,27 +596,27 @@
                                   <span class="va">solution_actions.curve</span><span class="op">$</span><span class="va">connectivity</span><span class="op">*</span><span class="fl">5</span>
 
 <span class="co"># plot sum of actions with tmap library</span>
-<span class="va">plot.curve</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-              <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.curve"</span>,
+<span class="va">plot.curve</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+              <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.curve"</span>,
                             palette<span class="op">=</span><span class="st">"viridis"</span>,
-                            labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>,
+                            labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>,
                                        <span class="st">"one action"</span>,
                                        <span class="st">"two actions"</span>,
                                        <span class="st">"three actions"</span>,
                                        <span class="st">"four actions"</span>,
                                        <span class="st">"connectivity"</span><span class="op">)</span>,
-                            breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-              <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
+                            breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+              <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,
                                lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
 <span class="co"># comparative with base model solution</span>
-<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.curve</span><span class="op">)</span></code></pre></div>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html" class="external-link">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.curve</span><span class="op">)</span></code></pre></div>
 <p><img src="figures/MR19-1.jpg"></p>
 <p>Here, we display representations of the solution obtained for both, the base and curve models. As can be seen from these maps there are a greater number of sites with a larger concentration of management actions compared to the previous model (for example, a greater number of units in green).</p>
 </div>
-<div id="model-with-connectivity-requirements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-with-connectivity-requirements" class="anchor"></a>4) Model with connectivity requirements</h2>
+<div class="section level2">
+<h2 id="model-with-connectivity-requirements">4) Model with connectivity requirements<a class="anchor" aria-label="anchor" href="#model-with-connectivity-requirements"></a>
+</h2>
 <p>To add connectivity requirements to the model, there are two key parameters: <strong>blm</strong> (equivalent to the parameter <em>blm</em> used in <em>marxan</em>), which tries to minimize the connectivity penalty between the selected planning units (i.e. regardless if conservation actions are carried out within them).</p>
 <p>In the following we explore how solutions change when adding connectivity requirements.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
@@ -633,139 +631,139 @@
                       model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
                       blm <span class="op">=</span> <span class="fl">5</span>,
                       curve <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</code></pre>
+<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">solution.conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.conn</span>,
                        gap_limit <span class="op">=</span> <span class="fl">0.05</span>,
                        verbose <span class="op">=</span> <span class="cn">TRUE</span>,
                        output_file <span class="op">=</span> <span class="cn">FALSE</span>,
                        cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
-## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 78567 rows, 56912 columns and 232690 nonzeros
-## Model fingerprint: 0x5fa5d86a
-## Variable types: 34965 continuous, 21947 integer (21947 binary)
-## Coefficient statistics:
-##   Matrix range     [3e-01, 4e+00]
-##   Objective range  [1e+00, 6e+01]
-##   Bounds range     [1e+00, 1e+00]
-##   RHS range        [1e+00, 4e+02]
-## Found heuristic solution: objective 7947.0000000
-## Presolve removed 35010 rows and 35250 columns
-## Presolve time: 0.44s
-## Presolved: 43557 rows, 21662 columns, 162430 nonzeros
-## Variable types: 0 continuous, 21662 integer (21646 binary)
-##
-## Deterministic concurrent LP optimizer: primal and dual simplex
-## Showing first log only...
-##
-##
-## Root simplex log...
-##
-## Iteration    Objective       Primal Inf.    Dual Inf.      Time
-##    34261    1.6462609e+03   0.000000e+00   1.224723e+04      5s
-## Concurrent spin time: 0.00s
-##
-## Solved with dual simplex
-##
-## Root relaxation: objective 1.246656e+03, 17330 iterations, 8.14 seconds
-##
-##     Nodes    |    Current Node    |     Objective Bounds      |     Work
-##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
-##
-##      0     0 1246.65555    0 14894 7947.00000 1246.65555  84.3%     -   10s
-## H    0     0                    3698.1750000 1246.65555  66.3%     -   10s
-## H    0     0                    3596.0050000 1246.65555  65.3%     -   10s
-##      0     0 1309.93713    0 16243 3596.00500 1309.93713  63.6%     -   24s
-##      0     0 1439.10567    0 10246 3596.00500 1439.10567  60.0%     -   33s
-## H    0     0                    3516.8050000 1439.10567  59.1%     -   33s
-##      0     0 1445.28767    0 10627 3516.80500 1445.28767  58.9%     -   37s
-##      0     0 1448.58070    0 10616 3516.80500 1448.58070  58.8%     -   37s
-##      0     0 1451.95708    0 10273 3516.80500 1451.95708  58.7%     -   38s
-##      0     0 1453.67899    0 10278 3516.80500 1453.67899  58.7%     -   41s
-## H    0     0                    3395.0450000 1453.67899  57.2%     -   41s
-##      0     0 1455.14266    0 10282 3395.04500 1455.14266  57.1%     -   41s
-##      0     0 1455.14286    0 10280 3395.04500 1455.14286  57.1%     -   41s
-##      0     0 1456.20718    0 10336 3395.04500 1456.20718  57.1%     -   45s
-##      0     0 1459.99389    0 10267 3395.04500 1459.99389  57.0%     -   48s
-## H    0     0                    3309.2750000 1459.99389  55.9%     -   49s
-##      0     0 1459.99389    0 10268 3309.27500 1459.99389  55.9%     -   49s
-##      0     0 1461.98299    0 10272 3309.27500 1461.98299  55.8%     -   49s
-##      0     0 1462.38513    0 10269 3309.27500 1462.38513  55.8%     -   50s
-## H    0     0                    3228.9150000 1462.38513  54.7%     -   50s
-##      0     0 1462.54676    0 10270 3228.91500 1462.54676  54.7%     -   51s
-##      0     0 1463.90458    0 10278 3228.91500 1463.90458  54.7%     -   52s
-## H    0     0                    3202.0750000 1463.90458  54.3%     -   52s
-##      0     0 1463.90499    0 10278 3202.07500 1463.90499  54.3%     -   52s
-##      0     0 1463.95170    0 10271 3202.07500 1463.95170  54.3%     -   53s
-## H    0     0                    3159.7400000 1463.95170  53.7%     -   53s
-##      0     0 1463.95444    0 10269 3159.74000 1463.95444  53.7%     -   53s
-##      0     0 1463.95444    0 10259 3159.74000 1463.95444  53.7%     -   59s
-## H    0     0                    2681.2700000 1463.98668  45.4%     -   63s
-## H    0     0                    2669.5000000 1463.98668  45.2%     -   64s
-## H    0     2                    2663.2400000 1463.98668  45.0%     -   64s
-##      0     2 1463.98668    0 10258 2663.24000 1463.98668  45.0%     -   64s
-##      1     4 1479.00207    1 10266 2663.24000 1463.98668  45.0%  2422   67s
-##      3     6 1485.05504    2 10506 2663.24000 1470.82439  44.8%  2547   72s
-##      5     8 1497.89727    2 11879 2663.24000 1470.89149  44.8%  3705   78s
-##      7    10 1489.66829    3 9823 2663.24000 1477.28291  44.5%  3020   80s
-##     11    14 1500.40849    4 9901 2663.24000 1489.69722  44.1%  2744   86s
-##     13    16 1525.41094    4 9311 2663.24000 1492.54486  44.0%  3116   92s
-##     17    21 1538.21142    5 9950 2663.24000 1495.32210  43.9%  3237   96s
-##     24    27 1532.40163    7 8478 2663.24000 1495.32210  43.9%  2899  102s
-## H   26    32                    2641.8200000 1495.32210  43.4%  2778  105s
-## H   29    32                    1620.4800000 1495.32210  7.72%  2617  105s
-##     33    40 1545.13627    9 9169 1620.48000 1495.32210  7.72%  2574  110s
-##     43    50 1554.53682   13 7430 1620.48000 1495.32210  7.72%  2249  117s
-##     55    61 1609.51801   19 5050 1620.48000 1495.32210  7.72%  2170  122s
-## H   56    61                    1615.4100000 1495.32210  7.43%  2132  122s
-## H   57    61                    1604.9900000 1495.32210  6.83%  2126  122s
-##     66    73 1579.91224   21 6348 1604.99000 1495.32210  6.83%  1957  126s
-##     82    82 1590.35993   26 5939 1604.99000 1495.32210  6.83%  1742  131s
-## H   88    91                    1602.9900000 1495.32210  6.72%  1761  133s
-##     97    96     cutoff   28      1602.99000 1495.36416  6.71%  1609  136s
-##    114    99 1531.50176    4 5624 1602.99000 1495.36416  6.71%  1583  141s
-##    122   110 1535.54610    6 5703 1602.99000 1495.36416  6.71%  1589  150s
-##    153   136 1543.17555    9 3290 1602.99000 1495.36416  6.71%  1468  157s
-## H  171   112                    1589.1600000 1495.36416  5.90%  1338  160s
-##    184   116 1548.70522   12 2616 1589.16000 1495.36416  5.90%  1291  166s
-##    198   116 1572.42119   17 2476 1589.16000 1495.36416  5.90%  1361  175s
-## H  199   116                    1588.1600000 1495.36416  5.84%  1354  175s
-##    210   124 1579.00047   23 2452 1588.16000 1498.01688  5.68%  1418  184s
-##    226   127 1518.05974    4 6270 1588.16000 1498.01688  5.68%  1426  189s
-##    241   136 1526.96262    6 5569 1588.16000 1498.01688  5.68%  1400  194s
-##    250   141 1542.67287    8 3703 1588.16000 1498.01688  5.68%  1436  198s
-##    255   147 1555.54545   10 3384 1588.16000 1498.01688  5.68%  1469  205s
-##    261   157 1563.94638   13 2923 1588.16000 1498.01688  5.68%  1491  210s
-##    273   169 1582.15750   19  569 1588.16000 1498.01688  5.68%  1487  215s
-## H  285   161                    1583.4950000 1498.01688  5.40%  1429  215s
-##    298   150     cutoff   32      1583.49500 1504.40589  4.99%  1404  243s
-## H  306   140                    1582.4950000 1504.42814  4.93%  1392  243s
-##
-## Cutting planes:
-##   Gomory: 2
-##   Cover: 1
-##   MIR: 1
-##   Zero half: 10
-##   Mod-K: 1
-##   RLT: 92
-##
-## Explored 307 nodes (487058 simplex iterations) in 243.79 seconds
-## Thread count was 2 (of 4 available processors)
-##
-## Solution count 10: 1582.5 1583.5 1588.16 ... 2663.24
-##
-## Optimal solution found (tolerance 5.00e-02)
-## Best objective 1.582495000000e+03, best bound 1.504430000000e+03, gap 4.9330%</code></pre>
+<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">## Optimize a model with 78567 rows, 56912 columns and 232690 nonzeros</span>
+<span class="co">## Model fingerprint: 0x5fa5d86a</span>
+<span class="co">## Variable types: 34965 continuous, 21947 integer (21947 binary)</span>
+<span class="co">## Coefficient statistics:</span>
+<span class="co">##   Matrix range     [3e-01, 4e+00]</span>
+<span class="co">##   Objective range  [1e+00, 6e+01]</span>
+<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">##   RHS range        [1e+00, 4e+02]</span>
+<span class="co">## Found heuristic solution: objective 7947.0000000</span>
+<span class="co">## Presolve removed 35010 rows and 35250 columns</span>
+<span class="co">## Presolve time: 0.44s</span>
+<span class="co">## Presolved: 43557 rows, 21662 columns, 162430 nonzeros</span>
+<span class="co">## Variable types: 0 continuous, 21662 integer (21646 binary)</span>
+<span class="co">## </span>
+<span class="co">## Deterministic concurrent LP optimizer: primal and dual simplex</span>
+<span class="co">## Showing first log only...</span>
+<span class="co">## </span>
+<span class="co">## </span>
+<span class="co">## Root simplex log...</span>
+<span class="co">## </span>
+<span class="co">## Iteration    Objective       Primal Inf.    Dual Inf.      Time</span>
+<span class="co">##    34261    1.6462609e+03   0.000000e+00   1.224723e+04      5s</span>
+<span class="co">## Concurrent spin time: 0.00s</span>
+<span class="co">## </span>
+<span class="co">## Solved with dual simplex</span>
+<span class="co">## </span>
+<span class="co">## Root relaxation: objective 1.246656e+03, 17330 iterations, 8.14 seconds</span>
+<span class="co">## </span>
+<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">## </span>
+<span class="co">##      0     0 1246.65555    0 14894 7947.00000 1246.65555  84.3%     -   10s</span>
+<span class="co">## H    0     0                    3698.1750000 1246.65555  66.3%     -   10s</span>
+<span class="co">## H    0     0                    3596.0050000 1246.65555  65.3%     -   10s</span>
+<span class="co">##      0     0 1309.93713    0 16243 3596.00500 1309.93713  63.6%     -   24s</span>
+<span class="co">##      0     0 1439.10567    0 10246 3596.00500 1439.10567  60.0%     -   33s</span>
+<span class="co">## H    0     0                    3516.8050000 1439.10567  59.1%     -   33s</span>
+<span class="co">##      0     0 1445.28767    0 10627 3516.80500 1445.28767  58.9%     -   37s</span>
+<span class="co">##      0     0 1448.58070    0 10616 3516.80500 1448.58070  58.8%     -   37s</span>
+<span class="co">##      0     0 1451.95708    0 10273 3516.80500 1451.95708  58.7%     -   38s</span>
+<span class="co">##      0     0 1453.67899    0 10278 3516.80500 1453.67899  58.7%     -   41s</span>
+<span class="co">## H    0     0                    3395.0450000 1453.67899  57.2%     -   41s</span>
+<span class="co">##      0     0 1455.14266    0 10282 3395.04500 1455.14266  57.1%     -   41s</span>
+<span class="co">##      0     0 1455.14286    0 10280 3395.04500 1455.14286  57.1%     -   41s</span>
+<span class="co">##      0     0 1456.20718    0 10336 3395.04500 1456.20718  57.1%     -   45s</span>
+<span class="co">##      0     0 1459.99389    0 10267 3395.04500 1459.99389  57.0%     -   48s</span>
+<span class="co">## H    0     0                    3309.2750000 1459.99389  55.9%     -   49s</span>
+<span class="co">##      0     0 1459.99389    0 10268 3309.27500 1459.99389  55.9%     -   49s</span>
+<span class="co">##      0     0 1461.98299    0 10272 3309.27500 1461.98299  55.8%     -   49s</span>
+<span class="co">##      0     0 1462.38513    0 10269 3309.27500 1462.38513  55.8%     -   50s</span>
+<span class="co">## H    0     0                    3228.9150000 1462.38513  54.7%     -   50s</span>
+<span class="co">##      0     0 1462.54676    0 10270 3228.91500 1462.54676  54.7%     -   51s</span>
+<span class="co">##      0     0 1463.90458    0 10278 3228.91500 1463.90458  54.7%     -   52s</span>
+<span class="co">## H    0     0                    3202.0750000 1463.90458  54.3%     -   52s</span>
+<span class="co">##      0     0 1463.90499    0 10278 3202.07500 1463.90499  54.3%     -   52s</span>
+<span class="co">##      0     0 1463.95170    0 10271 3202.07500 1463.95170  54.3%     -   53s</span>
+<span class="co">## H    0     0                    3159.7400000 1463.95170  53.7%     -   53s</span>
+<span class="co">##      0     0 1463.95444    0 10269 3159.74000 1463.95444  53.7%     -   53s</span>
+<span class="co">##      0     0 1463.95444    0 10259 3159.74000 1463.95444  53.7%     -   59s</span>
+<span class="co">## H    0     0                    2681.2700000 1463.98668  45.4%     -   63s</span>
+<span class="co">## H    0     0                    2669.5000000 1463.98668  45.2%     -   64s</span>
+<span class="co">## H    0     2                    2663.2400000 1463.98668  45.0%     -   64s</span>
+<span class="co">##      0     2 1463.98668    0 10258 2663.24000 1463.98668  45.0%     -   64s</span>
+<span class="co">##      1     4 1479.00207    1 10266 2663.24000 1463.98668  45.0%  2422   67s</span>
+<span class="co">##      3     6 1485.05504    2 10506 2663.24000 1470.82439  44.8%  2547   72s</span>
+<span class="co">##      5     8 1497.89727    2 11879 2663.24000 1470.89149  44.8%  3705   78s</span>
+<span class="co">##      7    10 1489.66829    3 9823 2663.24000 1477.28291  44.5%  3020   80s</span>
+<span class="co">##     11    14 1500.40849    4 9901 2663.24000 1489.69722  44.1%  2744   86s</span>
+<span class="co">##     13    16 1525.41094    4 9311 2663.24000 1492.54486  44.0%  3116   92s</span>
+<span class="co">##     17    21 1538.21142    5 9950 2663.24000 1495.32210  43.9%  3237   96s</span>
+<span class="co">##     24    27 1532.40163    7 8478 2663.24000 1495.32210  43.9%  2899  102s</span>
+<span class="co">## H   26    32                    2641.8200000 1495.32210  43.4%  2778  105s</span>
+<span class="co">## H   29    32                    1620.4800000 1495.32210  7.72%  2617  105s</span>
+<span class="co">##     33    40 1545.13627    9 9169 1620.48000 1495.32210  7.72%  2574  110s</span>
+<span class="co">##     43    50 1554.53682   13 7430 1620.48000 1495.32210  7.72%  2249  117s</span>
+<span class="co">##     55    61 1609.51801   19 5050 1620.48000 1495.32210  7.72%  2170  122s</span>
+<span class="co">## H   56    61                    1615.4100000 1495.32210  7.43%  2132  122s</span>
+<span class="co">## H   57    61                    1604.9900000 1495.32210  6.83%  2126  122s</span>
+<span class="co">##     66    73 1579.91224   21 6348 1604.99000 1495.32210  6.83%  1957  126s</span>
+<span class="co">##     82    82 1590.35993   26 5939 1604.99000 1495.32210  6.83%  1742  131s</span>
+<span class="co">## H   88    91                    1602.9900000 1495.32210  6.72%  1761  133s</span>
+<span class="co">##     97    96     cutoff   28      1602.99000 1495.36416  6.71%  1609  136s</span>
+<span class="co">##    114    99 1531.50176    4 5624 1602.99000 1495.36416  6.71%  1583  141s</span>
+<span class="co">##    122   110 1535.54610    6 5703 1602.99000 1495.36416  6.71%  1589  150s</span>
+<span class="co">##    153   136 1543.17555    9 3290 1602.99000 1495.36416  6.71%  1468  157s</span>
+<span class="co">## H  171   112                    1589.1600000 1495.36416  5.90%  1338  160s</span>
+<span class="co">##    184   116 1548.70522   12 2616 1589.16000 1495.36416  5.90%  1291  166s</span>
+<span class="co">##    198   116 1572.42119   17 2476 1589.16000 1495.36416  5.90%  1361  175s</span>
+<span class="co">## H  199   116                    1588.1600000 1495.36416  5.84%  1354  175s</span>
+<span class="co">##    210   124 1579.00047   23 2452 1588.16000 1498.01688  5.68%  1418  184s</span>
+<span class="co">##    226   127 1518.05974    4 6270 1588.16000 1498.01688  5.68%  1426  189s</span>
+<span class="co">##    241   136 1526.96262    6 5569 1588.16000 1498.01688  5.68%  1400  194s</span>
+<span class="co">##    250   141 1542.67287    8 3703 1588.16000 1498.01688  5.68%  1436  198s</span>
+<span class="co">##    255   147 1555.54545   10 3384 1588.16000 1498.01688  5.68%  1469  205s</span>
+<span class="co">##    261   157 1563.94638   13 2923 1588.16000 1498.01688  5.68%  1491  210s</span>
+<span class="co">##    273   169 1582.15750   19  569 1588.16000 1498.01688  5.68%  1487  215s</span>
+<span class="co">## H  285   161                    1583.4950000 1498.01688  5.40%  1429  215s</span>
+<span class="co">##    298   150     cutoff   32      1583.49500 1504.40589  4.99%  1404  243s</span>
+<span class="co">## H  306   140                    1582.4950000 1504.42814  4.93%  1392  243s</span>
+<span class="co">## </span>
+<span class="co">## Cutting planes:</span>
+<span class="co">##   Gomory: 2</span>
+<span class="co">##   Cover: 1</span>
+<span class="co">##   MIR: 1</span>
+<span class="co">##   Zero half: 10</span>
+<span class="co">##   Mod-K: 1</span>
+<span class="co">##   RLT: 92</span>
+<span class="co">## </span>
+<span class="co">## Explored 307 nodes (487058 simplex iterations) in 243.79 seconds</span>
+<span class="co">## Thread count was 2 (of 4 available processors)</span>
+<span class="co">## </span>
+<span class="co">## Solution count 10: 1582.5 1583.5 1588.16 ... 2663.24</span>
+<span class="co">## </span>
+<span class="co">## Optimal solution found (tolerance 5.00e-02)</span>
+<span class="co">## Best objective 1.582495000000e+03, best bound 1.504430000000e+03, gap 4.9330%</span></code></pre>
 <p>In the same way as what occurs in the previous model, the addition of spatial requirements leads to higher costs requirement implies higher costs in the management plan, as well as a model with greater computational complexity. To obtain the costs of both solutions (base and with connectivity requirements) we use the <code><a href="../reference/getCost.html">getCost()</a></code> function:</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">solution.base</span><span class="op">)</span></code></pre></div>
-<pre><code>##   solution_name monitoring threat_1 threat_2 threat_3 threat_4
-## 1           sol        486        0      395        0      452</code></pre>
+<pre><code><span class="co">##   solution_name monitoring threat_1 threat_2 threat_3 threat_4</span>
+<span class="co">## 1           sol        486        0      395        0      452</span></code></pre>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">solution.conn</span><span class="op">)</span></code></pre></div>
-<pre><code>##   solution_name monitoring threat_1 threat_2 threat_3 threat_4
-## 1           sol        512        4      383       24      478</code></pre>
+<pre><code><span class="co">##   solution_name monitoring threat_1 threat_2 threat_3 threat_4</span>
+<span class="co">## 1           sol        512        4      383       24      478</span></code></pre>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get action distribution</span>
 <span class="va">solution_actions.conn</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">solution.conn</span><span class="op">)</span>
@@ -783,20 +781,20 @@
                                  <span class="va">solution_actions.conn</span><span class="op">$</span><span class="va">connectivity</span><span class="op">*</span><span class="fl">5</span>
 
 <span class="co"># plot sum of actions with tmap library</span>
-<span class="va">plot.conn</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.conn"</span>,
+<span class="va">plot.conn</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.conn"</span>,
                            palette<span class="op">=</span><span class="st">"viridis"</span>,
-                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>,
+                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>,
                                       <span class="st">"one action"</span>,
                                       <span class="st">"two actions"</span>,
                                       <span class="st">"three actions"</span>,
                                       <span class="st">"four actions"</span>,
                                       <span class="st">"connectivity"</span><span class="op">)</span>,
-                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
 <span class="co"># comparative with base model solution</span>
-<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.conn</span><span class="op">)</span></code></pre></div>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html" class="external-link">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.conn</span><span class="op">)</span></code></pre></div>
 <p><img src="figures/MR22-1.jpg"></p>
 <p>As can be seen from the displayed maps, including the connectivity penalty in the objective function allows to find a more compact solution when compared to the one obtained by the base model.</p>
 <p>Besides optimizing the spatial connectivity of the selected units, our package also allows to optimize the spatial connectivity among the units where a given action is applied. This penalty is encoded by factor <code>blm_actions</code>, and it aims at ensuring spatial coherence among units where the same action is applied. This spatial clumping of actions might beneficial in economic terms (because of the economy of scales) or even ecological terms (higher effectiveness of management plans, by creating larger areas threat-free and reducing the probability of reappearance of the threat).</p>
@@ -815,183 +813,183 @@
                               model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
                               blm <span class="op">=</span> <span class="fl">0</span>,
                               curve <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning: The blm argument was set to 0, so the boundary data has no effect</code></pre>
+<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></code></pre>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">solution.conn_actions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">model.conn_actions</span>,
                                gap_limit <span class="op">=</span> <span class="fl">0.05</span>,
                                verbose <span class="op">=</span> <span class="cn">TRUE</span>,
                                output_file <span class="op">=</span> <span class="cn">FALSE</span>,
                                cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)
-## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads
-## Optimize a model with 141237 rows, 77802 columns and 378920 nonzeros
-## Model fingerprint: 0x885bc8c7
-## Variable types: 34965 continuous, 42837 integer (42837 binary)
-## Coefficient statistics:
-##   Matrix range     [3e-01, 4e+00]
-##   Objective range  [1e+00, 1e+02]
-##   Bounds range     [1e+00, 1e+00]
-##   RHS range        [1e+00, 4e+02]
-## Found heuristic solution: objective 8210.0000000
-## Presolve removed 35014 rows and 34975 columns
-## Presolve time: 0.96s
-## Presolved: 106223 rows, 42827 columns, 308960 nonzeros
-## Variable types: 0 continuous, 42827 integer (42826 binary)
-##
-## Deterministic concurrent LP optimizer: primal and dual simplex
-## Showing first log only...
-##
-## Warning: Markowitz tolerance tightened to 0.5
-##
-## Root simplex log...
-##
-## Iteration    Objective       Primal Inf.    Dual Inf.      Time
-##    54062    1.6758547e+04   0.000000e+00   3.523879e+05      5s
-##    59110    1.4264445e+04   0.000000e+00   2.019730e+06     10s
-##    64902    1.1453028e+04   0.000000e+00   7.894121e+05     15s
-## Concurrent spin time: 0.00s
-##
-## Solved with dual simplex
-##
-## Root relaxation: objective 1.387112e+03, 12682 iterations, 16.66 seconds
-##
-##     Nodes    |    Current Node    |     Objective Bounds      |     Work
-##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
-##
-##      0     0 1387.11192    0 15106 8210.00000 1387.11192  83.1%     -   22s
-## H    0     0                    2930.1300000 1387.11192  52.7%     -   22s
-## H    0     0                    2816.8600000 1387.11192  50.8%     -   22s
-##      0     0 1497.64057    0 25226 2816.86000 1497.64057  46.8%     -   57s
-##      0     0 1602.83358    0 22616 2816.86000 1602.83358  43.1%     -   87s
-##      0     0 1629.59690    0 23347 2816.86000 1629.59690  42.1%     -  104s
-##      0     0 1629.62176    0 23347 2816.86000 1629.62176  42.1%     -  105s
-##      0     0 1629.62176    0 23349 2816.86000 1629.62176  42.1%     -  139s
-##      0     0 1642.01139    0 22540 2816.86000 1642.01139  41.7%     -  144s
-##      0     0 1643.38223    0 23350 2816.86000 1643.38223  41.7%     -  144s
-##      0     0 1664.68953    0 20463 2816.86000 1664.68953  40.9%     -  150s
-##      0     0 1666.68340    0 20477 2816.86000 1666.68340  40.8%     -  153s
-## H    0     0                    2556.0800000 1666.68340  34.8%     -  153s
-##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  154s
-##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  157s
-##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  159s
-##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  161s
-##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  163s
-##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  175s
-## H    0     0                    2361.1600000 1666.68340  29.4%     -  181s
-## H    0     0                    2097.7200000 1666.72070  20.5%     -  195s
-##      0     2 1666.72070    0 20477 2097.72000 1666.72070  20.5%     -  196s
-##      3     6 1715.75083    2 20386 2097.72000 1677.19380  20.0%  1240  203s
-##      5     8 1692.26282    2 13548 2097.72000 1692.26282  19.3%  1175  206s
-##      9    12 1782.34551    4 7349 2097.72000 1692.27111  19.3%  1083  211s
-##     13    16 1792.86198    5 15495 2097.72000 1692.27111  19.3%  1055  215s
-##     17    21 1811.72923    6 7176 2097.72000 1692.27111  19.3%   977  221s
-##     25    30 1849.43709   10 5992 2097.72000 1692.27111  19.3%   854  227s
-##     29    33 1924.53917   12 4683 2097.72000 1692.27111  19.3%   844  231s
-##     34    39 1926.12316   13 2864 2097.72000 1692.27111  19.3%   818  235s
-##     48    54 1969.45762   19 2604 2097.72000 1692.27111  19.3%   716  243s
-##     53    56 1997.25743   22 1961 2097.72000 1692.27111  19.3%   732  245s
-##     69    84 2028.65056   28 1020 2097.72000 1692.27111  19.3%   691  250s
-## H   86    98                    2054.2200000 1692.27111  17.6%   596  251s
-##    112    94 1722.88360    4 18041 2054.22000 1715.78538  16.5%   502  257s
-##    114    96 1731.39051    5 19458 2054.22000 1715.78538  16.5%   510  262s
-##    116    98 1760.04039    6 18070 2054.22000 1715.78538  16.5%   533  266s
-## H  120   102                    2053.2200000 1715.78538  16.4%   542  271s
-##    124   106 1854.93650    8 16198 2053.22000 1715.78538  16.4%   559  277s
-##    128   112 1893.15612    9 7120 2053.22000 1715.78538  16.4%   573  283s
-##    132   115 1904.84053   10 6441 2053.22000 1715.78538  16.4%   590  286s
-##    135   116 1942.18466   11 13828 2053.22000 1715.78538  16.4%   599  290s
-##    143   120 1976.64116   13 5546 2053.22000 1715.78538  16.4%   605  298s
-##    147   123 2008.69048   15 5092 2053.22000 1715.78538  16.4%   616  301s
-##    162   127 2040.30944   21 8430 2053.22000 1715.78538  16.4%   591  308s
-##    170   125     cutoff   24      2053.22000 1722.89852  16.1%   583  313s
-##    179   128 1848.87803    4 16419 2053.22000 1722.89852  16.1%   579  316s
-##    182   132 1903.19904    5 16409 2053.22000 1722.89852  16.1%   585  320s
-##    186   137 1930.89000    6 12783 2053.22000 1722.89852  16.1%   590  326s
-##    191   144 2016.77456    8 14455 2053.22000 1722.89852  16.1%   599  332s
-##    198   142     cutoff   10      2053.22000 1722.89852  16.1%   596  336s
-##    208   142     cutoff   11      2053.22000 1722.89852  16.1%   589  342s
-## H  210   108                    1955.8600000 1722.89852  11.9%   584  342s
-##    212   107     cutoff    9      1955.86000 1722.89852  11.9%   589  346s
-##    217   109     cutoff    7      1955.86000 1722.89852  11.9%   591  351s
-##    221   108     cutoff    8      1955.86000 1741.07771  11.0%   595  355s
-##    226   111 1869.85317    7 5571 1955.86000 1741.07771  11.0%   599  360s
-##    233   112 1915.79755   10 6748 1955.86000 1741.07771  11.0%   598  365s
-##    242   108     cutoff   15      1955.86000 1741.09877  11.0%   597  370s
-##    246   109 1798.56988    4 23201 1955.86000 1741.09877  11.0%   604  379s
-##    252   107 1836.72651    6 23535 1955.86000 1741.09877  11.0%   614  390s
-##    257   111 1840.77630    7 23289 1955.86000 1741.09877  11.0%   612  396s
-##    261   112 1886.17922    9 21572 1955.86000 1741.09877  11.0%   618  401s
-##    264   114 1917.28761   11 18382 1955.86000 1741.09877  11.0%   625  408s
-##    268   112 1950.88683   13 22722 1955.86000 1741.09877  11.0%   634  416s
-##    273   103     cutoff   14      1955.86000 1741.09877  11.0%   640  424s
-##    279   105     cutoff   13      1955.86000 1742.34798  10.9%   644  431s
-##    287   110 1798.64451    6 16895 1955.86000 1743.07059  10.9%   643  439s
-##    292   114 1849.97755    9 16451 1955.86000 1743.07059  10.9%   647  447s
-##    296   114 1905.28056   12 19863 1955.86000 1743.07059  10.9%   659  454s
-##    300   114 1951.49899   14 21190 1955.86000 1743.07059  10.9%   665  466s
-##    302   114     cutoff   15      1955.86000 1743.07059  10.9%   666  474s
-##    310   116     cutoff   14      1955.86000 1746.39579  10.7%   665  483s
-##    316   116 1924.19322    6 17963 1955.86000 1746.39579  10.7%   678  490s
-##    324   120 1955.63488    8 16868 1955.86000 1747.34019  10.7%   677  499s
-##    336   124 1827.53308    6 18787 1955.86000 1747.34019  10.7%   674  507s
-##    340   126 1874.75743    8 18972 1955.86000 1747.34019  10.7%   679  515s
-##    352   132 1911.71416   12 17434 1955.86000 1747.34019  10.7%   674  526s
-##    362   134     cutoff   14      1955.86000 1760.04355  10.0%   680  536s
-##    380   140 1861.38350    7 22553 1955.86000 1760.05177  10.0%   675  546s
-##    386   146 1926.94598   10 21717 1955.86000 1760.05177  10.0%   681  558s
-##    392   143     cutoff   13      1955.86000 1765.26924  9.74%   688  568s
-##    401   146 1824.79435    8 18323 1955.86000 1765.26924  9.74%   693  581s
-## H  406   143                    1945.0800000 1765.26924  9.24%   692  581s
-##    408   149 1890.66415   11 17915 1945.08000 1765.26924  9.24%   697  592s
-##    418   157     cutoff   14      1945.08000 1768.78005  9.06%   701  604s
-##    442   167 1876.71440    9 17448 1945.08000 1768.78005  9.06%   691  617s
-##    466   171 1941.47117   11 13810 1945.08000 1772.57410  8.87%   680  632s
-##    490   180 1867.06379    8 19807 1945.08000 1772.57410  8.87%   672  646s
-##    507   181 1934.92361   12 21389 1945.08000 1772.57410  8.87%   672  662s
-##    514   180     cutoff   12      1945.08000 1778.29638  8.57%   677  675s
-##    525   183 1932.15804    7 16272 1945.08000 1778.29638  8.57%   685  693s
-##    550   190 1924.29967    9 16817 1945.08000 1779.55964  8.51%   681  710s
-##    573   187 1931.03225    8 13196 1945.08000 1779.55964  8.51%   679  725s
-##    592   196     cutoff    7      1945.08000 1785.31926  8.21%   677  741s
-##    607   198     cutoff   13      1945.08000 1787.55603  8.10%   682  762s
-##    625   204 1895.91317   11 15343 1945.08000 1788.63906  8.04%   681  778s
-##    647   205     cutoff    8      1945.08000 1788.63906  8.04%   680  798s
-##    664   212 1929.65162   10 20394 1945.08000 1796.41834  7.64%   683  817s
-##    683   209 1931.90876   11 7852 1945.08000 1796.41834  7.64%   686  840s
-##    698   207 1935.81662   13 16737 1945.08000 1798.92171  7.51%   687  869s
-##    724   208 1927.13341   10 15588 1945.08000 1800.04610  7.46%   688  890s
-##    753   225 1869.45083   13 6983 1945.08000 1800.04610  7.46%   684  910s
-##    788   241 1943.88355   32 11904 1945.08000 1800.52986  7.43%   679  932s
-##    833   245 1934.28613   16 14407 1945.08000 1806.08808  7.15%   672  961s
-##    861   245 1940.71495   11 18743 1945.08000 1810.07917  6.94%   668  987s
-##    903   248 1919.31247    8 6785 1945.08000 1813.78912  6.75%   666 1014s
-##    934   255 1912.39802    9 9715 1945.08000 1816.14882  6.63%   671 1040s
-##    977   257     cutoff   14      1945.08000 1818.65888  6.50%   670 1106s
-##    983   255     cutoff   14      1945.08000 1819.30717  6.47%   670 1139s
-##   1009   259     cutoff   10      1945.08000 1823.30903  6.26%   675 1167s
-##   1055   269 1888.89817    9 17104 1945.08000 1825.01021  6.17%   670 1197s
-##   1137   278     cutoff   15      1945.08000 1825.11358  6.17%   653 1228s
-##   1198   291 1882.44430    7 14385 1945.08000 1828.59922  5.99%   648 1261s
-##   1235   296     cutoff   13      1945.08000 1829.84581  5.92%   649 1295s
-##   1308   305 1929.04687    9 15021 1945.08000 1832.07625  5.81%   645 1329s
-##   1363   305 1920.03769   12 4560 1945.08000 1835.44347  5.64%   644 1364s
-##   1411   306     cutoff   12      1945.08000 1837.33710  5.54%   646 1403s
-##   1443   322 1909.20286   15 6422 1945.08000 1837.46242  5.53%   650 1444s
-##   1534   320 1921.00778   12 14362 1945.08000 1841.27962  5.34%   639 1485s
-##   1592   321     cutoff   14      1945.08000 1845.32342  5.13%   641 1529s
-##
-## Cutting planes:
-##   Zero half: 3
-##   RLT: 54
-##   BQP: 3
-##
-## Explored 1677 nodes (1111591 simplex iterations) in 1529.26 seconds
-## Thread count was 2 (of 4 available processors)
-##
-## Solution count 10: 1945.08 1955.86 2053.22 ... 8210
-##
-## Optimal solution found (tolerance 5.00e-02)
-## Best objective 1.945080000000e+03, best bound 1.849470000000e+03, gap 4.9155%</code></pre>
+<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
+<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
+<span class="co">## Optimize a model with 141237 rows, 77802 columns and 378920 nonzeros</span>
+<span class="co">## Model fingerprint: 0x885bc8c7</span>
+<span class="co">## Variable types: 34965 continuous, 42837 integer (42837 binary)</span>
+<span class="co">## Coefficient statistics:</span>
+<span class="co">##   Matrix range     [3e-01, 4e+00]</span>
+<span class="co">##   Objective range  [1e+00, 1e+02]</span>
+<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
+<span class="co">##   RHS range        [1e+00, 4e+02]</span>
+<span class="co">## Found heuristic solution: objective 8210.0000000</span>
+<span class="co">## Presolve removed 35014 rows and 34975 columns</span>
+<span class="co">## Presolve time: 0.96s</span>
+<span class="co">## Presolved: 106223 rows, 42827 columns, 308960 nonzeros</span>
+<span class="co">## Variable types: 0 continuous, 42827 integer (42826 binary)</span>
+<span class="co">## </span>
+<span class="co">## Deterministic concurrent LP optimizer: primal and dual simplex</span>
+<span class="co">## Showing first log only...</span>
+<span class="co">## </span>
+<span class="co">## Warning: Markowitz tolerance tightened to 0.5</span>
+<span class="co">## </span>
+<span class="co">## Root simplex log...</span>
+<span class="co">## </span>
+<span class="co">## Iteration    Objective       Primal Inf.    Dual Inf.      Time</span>
+<span class="co">##    54062    1.6758547e+04   0.000000e+00   3.523879e+05      5s</span>
+<span class="co">##    59110    1.4264445e+04   0.000000e+00   2.019730e+06     10s</span>
+<span class="co">##    64902    1.1453028e+04   0.000000e+00   7.894121e+05     15s</span>
+<span class="co">## Concurrent spin time: 0.00s</span>
+<span class="co">## </span>
+<span class="co">## Solved with dual simplex</span>
+<span class="co">## </span>
+<span class="co">## Root relaxation: objective 1.387112e+03, 12682 iterations, 16.66 seconds</span>
+<span class="co">## </span>
+<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="co">## </span>
+<span class="co">##      0     0 1387.11192    0 15106 8210.00000 1387.11192  83.1%     -   22s</span>
+<span class="co">## H    0     0                    2930.1300000 1387.11192  52.7%     -   22s</span>
+<span class="co">## H    0     0                    2816.8600000 1387.11192  50.8%     -   22s</span>
+<span class="co">##      0     0 1497.64057    0 25226 2816.86000 1497.64057  46.8%     -   57s</span>
+<span class="co">##      0     0 1602.83358    0 22616 2816.86000 1602.83358  43.1%     -   87s</span>
+<span class="co">##      0     0 1629.59690    0 23347 2816.86000 1629.59690  42.1%     -  104s</span>
+<span class="co">##      0     0 1629.62176    0 23347 2816.86000 1629.62176  42.1%     -  105s</span>
+<span class="co">##      0     0 1629.62176    0 23349 2816.86000 1629.62176  42.1%     -  139s</span>
+<span class="co">##      0     0 1642.01139    0 22540 2816.86000 1642.01139  41.7%     -  144s</span>
+<span class="co">##      0     0 1643.38223    0 23350 2816.86000 1643.38223  41.7%     -  144s</span>
+<span class="co">##      0     0 1664.68953    0 20463 2816.86000 1664.68953  40.9%     -  150s</span>
+<span class="co">##      0     0 1666.68340    0 20477 2816.86000 1666.68340  40.8%     -  153s</span>
+<span class="co">## H    0     0                    2556.0800000 1666.68340  34.8%     -  153s</span>
+<span class="co">##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  154s</span>
+<span class="co">##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  157s</span>
+<span class="co">##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  159s</span>
+<span class="co">##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  161s</span>
+<span class="co">##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  163s</span>
+<span class="co">##      0     0 1666.68340    0 20477 2556.08000 1666.68340  34.8%     -  175s</span>
+<span class="co">## H    0     0                    2361.1600000 1666.68340  29.4%     -  181s</span>
+<span class="co">## H    0     0                    2097.7200000 1666.72070  20.5%     -  195s</span>
+<span class="co">##      0     2 1666.72070    0 20477 2097.72000 1666.72070  20.5%     -  196s</span>
+<span class="co">##      3     6 1715.75083    2 20386 2097.72000 1677.19380  20.0%  1240  203s</span>
+<span class="co">##      5     8 1692.26282    2 13548 2097.72000 1692.26282  19.3%  1175  206s</span>
+<span class="co">##      9    12 1782.34551    4 7349 2097.72000 1692.27111  19.3%  1083  211s</span>
+<span class="co">##     13    16 1792.86198    5 15495 2097.72000 1692.27111  19.3%  1055  215s</span>
+<span class="co">##     17    21 1811.72923    6 7176 2097.72000 1692.27111  19.3%   977  221s</span>
+<span class="co">##     25    30 1849.43709   10 5992 2097.72000 1692.27111  19.3%   854  227s</span>
+<span class="co">##     29    33 1924.53917   12 4683 2097.72000 1692.27111  19.3%   844  231s</span>
+<span class="co">##     34    39 1926.12316   13 2864 2097.72000 1692.27111  19.3%   818  235s</span>
+<span class="co">##     48    54 1969.45762   19 2604 2097.72000 1692.27111  19.3%   716  243s</span>
+<span class="co">##     53    56 1997.25743   22 1961 2097.72000 1692.27111  19.3%   732  245s</span>
+<span class="co">##     69    84 2028.65056   28 1020 2097.72000 1692.27111  19.3%   691  250s</span>
+<span class="co">## H   86    98                    2054.2200000 1692.27111  17.6%   596  251s</span>
+<span class="co">##    112    94 1722.88360    4 18041 2054.22000 1715.78538  16.5%   502  257s</span>
+<span class="co">##    114    96 1731.39051    5 19458 2054.22000 1715.78538  16.5%   510  262s</span>
+<span class="co">##    116    98 1760.04039    6 18070 2054.22000 1715.78538  16.5%   533  266s</span>
+<span class="co">## H  120   102                    2053.2200000 1715.78538  16.4%   542  271s</span>
+<span class="co">##    124   106 1854.93650    8 16198 2053.22000 1715.78538  16.4%   559  277s</span>
+<span class="co">##    128   112 1893.15612    9 7120 2053.22000 1715.78538  16.4%   573  283s</span>
+<span class="co">##    132   115 1904.84053   10 6441 2053.22000 1715.78538  16.4%   590  286s</span>
+<span class="co">##    135   116 1942.18466   11 13828 2053.22000 1715.78538  16.4%   599  290s</span>
+<span class="co">##    143   120 1976.64116   13 5546 2053.22000 1715.78538  16.4%   605  298s</span>
+<span class="co">##    147   123 2008.69048   15 5092 2053.22000 1715.78538  16.4%   616  301s</span>
+<span class="co">##    162   127 2040.30944   21 8430 2053.22000 1715.78538  16.4%   591  308s</span>
+<span class="co">##    170   125     cutoff   24      2053.22000 1722.89852  16.1%   583  313s</span>
+<span class="co">##    179   128 1848.87803    4 16419 2053.22000 1722.89852  16.1%   579  316s</span>
+<span class="co">##    182   132 1903.19904    5 16409 2053.22000 1722.89852  16.1%   585  320s</span>
+<span class="co">##    186   137 1930.89000    6 12783 2053.22000 1722.89852  16.1%   590  326s</span>
+<span class="co">##    191   144 2016.77456    8 14455 2053.22000 1722.89852  16.1%   599  332s</span>
+<span class="co">##    198   142     cutoff   10      2053.22000 1722.89852  16.1%   596  336s</span>
+<span class="co">##    208   142     cutoff   11      2053.22000 1722.89852  16.1%   589  342s</span>
+<span class="co">## H  210   108                    1955.8600000 1722.89852  11.9%   584  342s</span>
+<span class="co">##    212   107     cutoff    9      1955.86000 1722.89852  11.9%   589  346s</span>
+<span class="co">##    217   109     cutoff    7      1955.86000 1722.89852  11.9%   591  351s</span>
+<span class="co">##    221   108     cutoff    8      1955.86000 1741.07771  11.0%   595  355s</span>
+<span class="co">##    226   111 1869.85317    7 5571 1955.86000 1741.07771  11.0%   599  360s</span>
+<span class="co">##    233   112 1915.79755   10 6748 1955.86000 1741.07771  11.0%   598  365s</span>
+<span class="co">##    242   108     cutoff   15      1955.86000 1741.09877  11.0%   597  370s</span>
+<span class="co">##    246   109 1798.56988    4 23201 1955.86000 1741.09877  11.0%   604  379s</span>
+<span class="co">##    252   107 1836.72651    6 23535 1955.86000 1741.09877  11.0%   614  390s</span>
+<span class="co">##    257   111 1840.77630    7 23289 1955.86000 1741.09877  11.0%   612  396s</span>
+<span class="co">##    261   112 1886.17922    9 21572 1955.86000 1741.09877  11.0%   618  401s</span>
+<span class="co">##    264   114 1917.28761   11 18382 1955.86000 1741.09877  11.0%   625  408s</span>
+<span class="co">##    268   112 1950.88683   13 22722 1955.86000 1741.09877  11.0%   634  416s</span>
+<span class="co">##    273   103     cutoff   14      1955.86000 1741.09877  11.0%   640  424s</span>
+<span class="co">##    279   105     cutoff   13      1955.86000 1742.34798  10.9%   644  431s</span>
+<span class="co">##    287   110 1798.64451    6 16895 1955.86000 1743.07059  10.9%   643  439s</span>
+<span class="co">##    292   114 1849.97755    9 16451 1955.86000 1743.07059  10.9%   647  447s</span>
+<span class="co">##    296   114 1905.28056   12 19863 1955.86000 1743.07059  10.9%   659  454s</span>
+<span class="co">##    300   114 1951.49899   14 21190 1955.86000 1743.07059  10.9%   665  466s</span>
+<span class="co">##    302   114     cutoff   15      1955.86000 1743.07059  10.9%   666  474s</span>
+<span class="co">##    310   116     cutoff   14      1955.86000 1746.39579  10.7%   665  483s</span>
+<span class="co">##    316   116 1924.19322    6 17963 1955.86000 1746.39579  10.7%   678  490s</span>
+<span class="co">##    324   120 1955.63488    8 16868 1955.86000 1747.34019  10.7%   677  499s</span>
+<span class="co">##    336   124 1827.53308    6 18787 1955.86000 1747.34019  10.7%   674  507s</span>
+<span class="co">##    340   126 1874.75743    8 18972 1955.86000 1747.34019  10.7%   679  515s</span>
+<span class="co">##    352   132 1911.71416   12 17434 1955.86000 1747.34019  10.7%   674  526s</span>
+<span class="co">##    362   134     cutoff   14      1955.86000 1760.04355  10.0%   680  536s</span>
+<span class="co">##    380   140 1861.38350    7 22553 1955.86000 1760.05177  10.0%   675  546s</span>
+<span class="co">##    386   146 1926.94598   10 21717 1955.86000 1760.05177  10.0%   681  558s</span>
+<span class="co">##    392   143     cutoff   13      1955.86000 1765.26924  9.74%   688  568s</span>
+<span class="co">##    401   146 1824.79435    8 18323 1955.86000 1765.26924  9.74%   693  581s</span>
+<span class="co">## H  406   143                    1945.0800000 1765.26924  9.24%   692  581s</span>
+<span class="co">##    408   149 1890.66415   11 17915 1945.08000 1765.26924  9.24%   697  592s</span>
+<span class="co">##    418   157     cutoff   14      1945.08000 1768.78005  9.06%   701  604s</span>
+<span class="co">##    442   167 1876.71440    9 17448 1945.08000 1768.78005  9.06%   691  617s</span>
+<span class="co">##    466   171 1941.47117   11 13810 1945.08000 1772.57410  8.87%   680  632s</span>
+<span class="co">##    490   180 1867.06379    8 19807 1945.08000 1772.57410  8.87%   672  646s</span>
+<span class="co">##    507   181 1934.92361   12 21389 1945.08000 1772.57410  8.87%   672  662s</span>
+<span class="co">##    514   180     cutoff   12      1945.08000 1778.29638  8.57%   677  675s</span>
+<span class="co">##    525   183 1932.15804    7 16272 1945.08000 1778.29638  8.57%   685  693s</span>
+<span class="co">##    550   190 1924.29967    9 16817 1945.08000 1779.55964  8.51%   681  710s</span>
+<span class="co">##    573   187 1931.03225    8 13196 1945.08000 1779.55964  8.51%   679  725s</span>
+<span class="co">##    592   196     cutoff    7      1945.08000 1785.31926  8.21%   677  741s</span>
+<span class="co">##    607   198     cutoff   13      1945.08000 1787.55603  8.10%   682  762s</span>
+<span class="co">##    625   204 1895.91317   11 15343 1945.08000 1788.63906  8.04%   681  778s</span>
+<span class="co">##    647   205     cutoff    8      1945.08000 1788.63906  8.04%   680  798s</span>
+<span class="co">##    664   212 1929.65162   10 20394 1945.08000 1796.41834  7.64%   683  817s</span>
+<span class="co">##    683   209 1931.90876   11 7852 1945.08000 1796.41834  7.64%   686  840s</span>
+<span class="co">##    698   207 1935.81662   13 16737 1945.08000 1798.92171  7.51%   687  869s</span>
+<span class="co">##    724   208 1927.13341   10 15588 1945.08000 1800.04610  7.46%   688  890s</span>
+<span class="co">##    753   225 1869.45083   13 6983 1945.08000 1800.04610  7.46%   684  910s</span>
+<span class="co">##    788   241 1943.88355   32 11904 1945.08000 1800.52986  7.43%   679  932s</span>
+<span class="co">##    833   245 1934.28613   16 14407 1945.08000 1806.08808  7.15%   672  961s</span>
+<span class="co">##    861   245 1940.71495   11 18743 1945.08000 1810.07917  6.94%   668  987s</span>
+<span class="co">##    903   248 1919.31247    8 6785 1945.08000 1813.78912  6.75%   666 1014s</span>
+<span class="co">##    934   255 1912.39802    9 9715 1945.08000 1816.14882  6.63%   671 1040s</span>
+<span class="co">##    977   257     cutoff   14      1945.08000 1818.65888  6.50%   670 1106s</span>
+<span class="co">##    983   255     cutoff   14      1945.08000 1819.30717  6.47%   670 1139s</span>
+<span class="co">##   1009   259     cutoff   10      1945.08000 1823.30903  6.26%   675 1167s</span>
+<span class="co">##   1055   269 1888.89817    9 17104 1945.08000 1825.01021  6.17%   670 1197s</span>
+<span class="co">##   1137   278     cutoff   15      1945.08000 1825.11358  6.17%   653 1228s</span>
+<span class="co">##   1198   291 1882.44430    7 14385 1945.08000 1828.59922  5.99%   648 1261s</span>
+<span class="co">##   1235   296     cutoff   13      1945.08000 1829.84581  5.92%   649 1295s</span>
+<span class="co">##   1308   305 1929.04687    9 15021 1945.08000 1832.07625  5.81%   645 1329s</span>
+<span class="co">##   1363   305 1920.03769   12 4560 1945.08000 1835.44347  5.64%   644 1364s</span>
+<span class="co">##   1411   306     cutoff   12      1945.08000 1837.33710  5.54%   646 1403s</span>
+<span class="co">##   1443   322 1909.20286   15 6422 1945.08000 1837.46242  5.53%   650 1444s</span>
+<span class="co">##   1534   320 1921.00778   12 14362 1945.08000 1841.27962  5.34%   639 1485s</span>
+<span class="co">##   1592   321     cutoff   14      1945.08000 1845.32342  5.13%   641 1529s</span>
+<span class="co">## </span>
+<span class="co">## Cutting planes:</span>
+<span class="co">##   Zero half: 3</span>
+<span class="co">##   RLT: 54</span>
+<span class="co">##   BQP: 3</span>
+<span class="co">## </span>
+<span class="co">## Explored 1677 nodes (1111591 simplex iterations) in 1529.26 seconds</span>
+<span class="co">## Thread count was 2 (of 4 available processors)</span>
+<span class="co">## </span>
+<span class="co">## Solution count 10: 1945.08 1955.86 2053.22 ... 8210</span>
+<span class="co">## </span>
+<span class="co">## Optimal solution found (tolerance 5.00e-02)</span>
+<span class="co">## Best objective 1.945080000000e+03, best bound 1.849470000000e+03, gap 4.9155%</span></code></pre>
 <p>The impact of including this penalty (<code>blm_actions</code>) is shown below where we summarize the distribution of the different actions:</p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get action distribution</span>
@@ -1004,35 +1002,35 @@
 <span class="va">mit_pu</span><span class="op">$</span><span class="va">action_4.conn_actions</span> <span class="op">&lt;-</span> <span class="va">solution_actions.conn_actions</span><span class="op">$</span><span class="va">`4`</span>
 
 <span class="co"># actions plots</span>
-<span class="va">plot_action1.conn_actions</span><span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-                            <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_1.conn_actions"</span>,
-                                          pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
-                                          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
-                                          breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-                            <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+<span class="va">plot_action1.conn_actions</span><span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+                            <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"action_1.conn_actions"</span>,
+                                          pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
+                                          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
+                                          breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+                            <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
-<span class="va">plot_action2.conn_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_2.conn_actions"</span>,
-                                           pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
-                                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
-                                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+<span class="va">plot_action2.conn_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"action_2.conn_actions"</span>,
+                                           pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
+                                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
+                                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
-<span class="va">plot_action3.conn_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_3.conn_actions"</span>,
-                                           pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
-                                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
-                                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+<span class="va">plot_action3.conn_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"action_3.conn_actions"</span>,
+                                           pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
+                                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
+                                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
-<span class="va">plot_action4.conn_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"action_4.conn_actions"</span>,
-                                           pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
-                                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
-                                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+<span class="va">plot_action4.conn_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"action_4.conn_actions"</span>,
+                                           pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span>,
+                                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="op">)</span>,
+                                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+                             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
-<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot_action1.conn_actions</span>,
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html" class="external-link">tmap_arrange</a></span><span class="op">(</span><span class="va">plot_action1.conn_actions</span>,
                    <span class="va">plot_action2.conn_actions</span>,
                    <span class="va">plot_action3.conn_actions</span>,
                    <span class="va">plot_action4.conn_actions</span><span class="op">)</span></code></pre></div>
@@ -1046,26 +1044,26 @@
                                     <span class="va">solution_actions.conn_actions</span><span class="op">$</span><span class="va">connectivity</span><span class="op">*</span><span class="fl">5</span>
 
 <span class="co"># plot sum of actions with tmap library</span>
-<span class="va">plot.conn_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
-             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.conn_actions"</span>,
+<span class="va">plot.conn_actions</span> <span class="op">&lt;-</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span> <span class="op">+</span>
+             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_fill</a></span><span class="op">(</span><span class="st">"sum_actions.conn_actions"</span>,
                            palette<span class="op">=</span><span class="st">"viridis"</span>,
-                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>,
+                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"do nothing"</span>,
                                       <span class="st">"one action"</span>,
                                       <span class="st">"two actions"</span>,
                                       <span class="st">"three actions"</span>,
                                       <span class="st">"four actions"</span>,
                                       <span class="st">"connectivity"</span><span class="op">)</span>,
-                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+                           breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+             <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
 <span class="co"># comparative with base model solution</span>
-<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.conn_actions</span><span class="op">)</span></code></pre></div>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html" class="external-link">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.conn_actions</span><span class="op">)</span></code></pre></div>
 <p><img src="figures/MR25-1.jpg"></p>
 <p>As we can see in this case, the inclusion of connectivity requirements between actions and, therefore, the attempt to minimize the connectivity penalty between them, produced a very different solution than the previous one. Actions are selected along the river network but concentrating to a greater extent on the source and mouth of the river. In addition, it is observed that there is no planning unit painted yellow (connectivity), this is due to the fact that all the selected units have at least one management action in it, the opposite of the previous case. Note that the <em>blm</em> and <em>blm_actions</em> values used have been set in an exaggerated way to more clearly verify the behavior of the models.</p>
 </div>
-<div id="conclusions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#conclusions" class="anchor"></a>5) Conclusions</h2>
+<div class="section level2">
+<h2 id="conclusions">5) Conclusions<a class="anchor" aria-label="anchor" href="#conclusions"></a>
+</h2>
 <p>The previously resolved models show some of the capabilities of the <code>prioriactions</code> package. In this vignette, we specifically explore how we can obtain 20% representativeness of the species by modifying different input parameters. For the base case, we have assumed no spatial requirement for the solutions; this implies a less complex model than the later ones. The next measure incorporated a cubic relationship into the benefit calculation (parameter <code>curve = 3</code>)(see more about the benefit calculate in the <a href="https://prioriactions.github.io/prioriactions/articles/sensitivities.html">sensitivities</a> vignette), which was reduced to solutions with higher and more expensive actions densities. While the last two models assumed connectivity requirements in the solutions (through the <code>blm</code> and <code>blm_actions</code> parameters), which again increase costs compared to the base case.</p>
 <p>Note that the stopping criterion of all the models was by obtaining a minimum gap (<code>gap_limit</code> parameter). However, the solutions obtained gaps with important differences, and some, far from 0% (optimal solution), which implies that the comparison between different solutions should be done carefully and not generalize. To obtain lower gaps, it is suggested to use a longer resolution time.</p>
 </div>
@@ -1082,11 +1080,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://www.researchgate.net/profile/Jose_Salgado-Rojas">Jose Salgado-Rojas</a>, <a href="https://www.researchgate.net/profile/Irlanda_Ceballos">Irlanda Ceballos-Fuentealba</a>, <a href="https://www.researchgate.net/profile/Virgilio_Hermoso">Virgilio Hermoso</a>, <a href="https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda">Eduardo Alvarez-Miranda</a>, <a href="https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo">Jordi Garcia-Gonzalo</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://www.researchgate.net/profile/Jose_Salgado-Rojas" class="external-link">Jose Salgado-Rojas</a>, <a href="https://www.researchgate.net/profile/Irlanda_Ceballos" class="external-link">Irlanda Ceballos-Fuentealba</a>, <a href="https://www.researchgate.net/profile/Virgilio_Hermoso" class="external-link">Virgilio Hermoso</a>, <a href="https://www.researchgate.net/profile/Eduardo_Alvarez-Miranda" class="external-link">Eduardo Alvarez-Miranda</a>, <a href="https://www.researchgate.net/profile/Jordi_Garcia-Gonzalo" class="external-link">Jordi Garcia-Gonzalo</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
