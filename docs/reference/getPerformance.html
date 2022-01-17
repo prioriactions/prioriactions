@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4</span>
       </span>
     </div>
 
@@ -159,11 +159,11 @@ feasible solution (solution_limit = TRUE parameter in <code><a href="solve.html"
 <span class="r-out co"><span class="r-pr">#&gt;</span>   RHS range        [1e+00, 5e+01]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 964.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Presolve removed 190 rows and 181 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 0.19s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 0.17s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Presolved: 29794 rows, 10115 columns, 69709 nonzeros</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 0 continuous, 10115 integer (10110 binary)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Root relaxation: objective 8.477969e+02, 481 iterations, 0.16 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Root relaxation: objective 8.477969e+02, 481 iterations, 0.13 seconds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
@@ -171,27 +171,29 @@ feasible solution (solution_limit = TRUE parameter in <code><a href="solve.html"
 <span class="r-out co"><span class="r-pr">#&gt;</span>      0     0  847.79687    0 10083  964.00000  847.79687  12.1%     -    0s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H    0     0                     867.0000000  847.79687  2.21%     -    0s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H    0     0                     863.0000000  847.79687  1.76%     -    0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0          -    0       863.00000  847.79687  1.76%     -    2s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0  855.76769    0 10104  863.00000  855.76769  0.84%     -    1s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0  862.00000    0    1  863.00000  862.00000  0.12%     -    1s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0     cutoff    0       863.00000  863.00000  0.00%     -    1s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Cutting planes:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Gomory: 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Cover: 25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Zero half: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   MIR: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Relax-and-lift: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (633 simplex iterations) in 2.00 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (683 simplex iterations) in 1.87 seconds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Thread count was 2 (of 4 available processors)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Solution count 3: 863 867 964 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time limit reached</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Best objective 8.629999999999e+02, best bound 8.477968749987e+02, gap 1.7617%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Best objective 8.629999999999e+02, best bound 8.629999999997e+02, gap 0.0000%</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># get solution gap</span></span>
 <span class="r-in"><span class="fu">getPerformance</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   solution_name objective_value   gap solving_time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           sol             863 1.762        2.002</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                               status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Feasible solution (according to time limit: 2 sec)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   solution_name objective_value gap solving_time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           sol             863   0        1.871</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                             status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Optimal solution (according to gap tolerance: 0)</span>
 <span class="r-in"><span class="co"># }</span></span>
 <span class="r-in"></span>
 </code></pre></div>

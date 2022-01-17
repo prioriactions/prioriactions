@@ -1,3 +1,7 @@
+# prioriactions 0.4
+
+- Stable version.
+
 # prioriactions 0.3.3
 
 - Release candidate for CRAN.

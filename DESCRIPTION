@@ -1,6 +1,6 @@
 Package: prioriactions
 Type: Package
-Version: 0.3.3
+Version: 0.4
 Title: Multi-Action Conservation Planning             
 Description: This uses a mixed integer mathematical programming (MIP)
         approach for building and solving multi-action planning problems, 
