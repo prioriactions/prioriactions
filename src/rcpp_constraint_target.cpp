@@ -27,6 +27,8 @@ bool rcpp_constraint_target(SEXP x,
   int threat_id = 0;
   int count_threats = 0;
   double feature_intensity = 0.0;
+  int number_of_variables_conservation = 0;
+  int number_of_variables_recovery = 0;
 
   arma::sp_mat dist_features_extended = create_dist_features_extended(dist_features_data, number_of_units, number_of_features);
   NumericVector targets_recovery = features_data["target_recovery"];
@@ -48,6 +50,9 @@ bool rcpp_constraint_target(SEXP x,
   }
 
   for(int s = 0; s < number_of_features; s++){
+    number_of_variables_conservation = 0;
+    number_of_variables_recovery = 0;
+
     for (auto it_species = dist_features_extended.begin_col(s);
          it_species != dist_features_extended.end_col(s); ++it_species) {
 
@@ -68,21 +73,43 @@ bool rcpp_constraint_target(SEXP x,
       if(count_threats == 0){
         // conservation
         op->_A_i.push_back(row_constraint);
+        number_of_variables_conservation++;
       }
       else{
         //recovery
         op->_A_i.push_back(row_constraint + 1);
+        number_of_variables_recovery++;
       }
       op->_A_j.push_back(col_constraint);
       op->_A_x.push_back(feature_intensity);
 
       col_constraint++;
-    }
-    op->_rhs.push_back(targets_conservation[s]);
-    op->_sense.push_back(">=");
 
-    op->_rhs.push_back(targets_recovery[s]);
-    op->_sense.push_back(">=");
+    }
+
+    if(number_of_variables_conservation > 0){
+      op->_rhs.push_back(targets_conservation[s]);
+      op->_sense.push_back(">=");
+    }
+    else{
+      op->_A_i.push_back(row_constraint);
+      op->_A_j.push_back(1);
+      op->_A_x.push_back(0.0);
+      op->_rhs.push_back(0.0);
+      op->_sense.push_back(">=");
+    }
+
+    if(number_of_variables_recovery > 0){
+      op->_rhs.push_back(targets_recovery[s]);
+      op->_sense.push_back(">=");
+    }
+    else{
+      op->_A_i.push_back(row_constraint + 1);
+      op->_A_j.push_back(1);
+      op->_A_x.push_back(0.0);
+      op->_rhs.push_back(0.0);
+      op->_sense.push_back(">=");
+    }
 
     row_constraint = row_constraint + 2;
   }

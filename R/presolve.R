@@ -68,7 +68,7 @@ presolve.Data <- function(x, ...) {
               call.=FALSE, immediate. = TRUE)
 
       params$features$target_conservation[diff_features] <- a$maximum.conservation.benefit[diff_features] - 10**(-1)
-      warning("The targets of conservation for these features will be set to the maximum recovery benefit values", call.=FALSE, immediate. = TRUE)
+      warning("The targets of conservation for these features will be set to the maximum convervation benefit values", call.=FALSE, immediate. = TRUE)
     }
 
     return(params$features)
