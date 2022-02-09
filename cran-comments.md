@@ -2,9 +2,9 @@
 
 0 errors | 0 warnings | 3 notes
 
-## Resubmission
+## Submission
 
-* Feedback on Valgrind has been resolved: no longer exists memory definitely lost and indirectly lost.
+* New version released. Now, the problem() function works with all types of planning objectives.
   
 ## CRAN check notes
 

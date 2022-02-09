@@ -1,6 +1,6 @@
 # prioriactions 0.4
 
-- Stable version.
+- Fixed `problem()` function. Now it works with recovery objectives and data non-filtered, i.e. with non-threatened features.
 
 # prioriactions 0.3.3
 
