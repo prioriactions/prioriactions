@@ -91,7 +91,6 @@ getCost <- function(x) {
       out[1, ] <- c(x$name,
                     round(cost_units, 3),
                     round(cost_actions, 3))
-
       return(out)
     }
     else{
