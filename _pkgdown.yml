@@ -7,7 +7,7 @@ template:
     docsearch:
       api_key: f00985ff93067595b4da97a65fe69f1a
       index_name: prioriactions
-    ganalytics: G-7WG0HBKPY7
+    ganalytics: G-6YB8F3838H
     #bootswatch: litera
 
 
