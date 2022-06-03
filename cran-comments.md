@@ -9,12 +9,12 @@
 ## CRAN check notes
 
 * checking CRAN incoming feasibility ... NOTE
-  - Maintainer: ‘Jose Salgado-Rojas <jose.salgado.rojas@hotmail.com>’
+  - Maintainer: ‘Jose Salgado-Rojas <jose.salgroj@gmail.com>’
   
   **New submission**
  
 * checking package dependencies ... NOTE
-  Package suggested but not available for checking: ‘gurobi’
+  Package suggested but not available for checking: ‘gurobi’ and ‘cplexAPI’
 
   **This software is not yet available in CRAN, but it is perfectly documented on their website (https://www.gurobi.com/documentation/9.1/refman/r_api_overview.html). In addition, there are comprehensive instructions for its installation in the [`gurobi installation` vignette](https://prioritizr.net/articles/gurobi_installation.html) of the prioritizr package (referenced appropriately in prioriactions package)**
 

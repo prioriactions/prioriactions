@@ -135,7 +135,7 @@ threats reach the maximum intensity value in the study area.}
 \item{\code{c}}{\code{numeric} (\strong{optional}) minimum probability of persistence of a
 features when a threat reaches its maximum intensity value. Default is 0.}
 \item{\code{d}}{\code{numeric} (\strong{optional}) maximum probability of persistence of a
-features in absence of a given threat. Default is 1.}
+features in absence threats. Default is 1.}
 }
 Note that optional parameters \emph{a}, \emph{b}, \emph{c} and \emph{d} can be provided independently.}
 

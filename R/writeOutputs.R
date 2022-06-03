@@ -91,9 +91,9 @@ writeOutputs.Solution <- function(x, name = "output", ...) {
 
   #writing benefits
   name_output_benefits <- paste0(name,"_benefits.txt")
-  utils::write.csv(getSolutionBenefit(x), file = name_output_benefits, row.names = FALSE)
+  utils::write.csv(getSolutionBenefit(x, type = "local"), file = name_output_benefits, row.names = FALSE)
 
   #writing actions
   name_output_actions <- paste0(name,"_actions.txt")
-  utils::write.csv(getActions(x), file = name_output_actions, row.names = FALSE)
+  utils::write.csv(getActions(x, format = "large"), file = name_output_actions, row.names = FALSE)
 }

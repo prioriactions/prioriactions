@@ -37,7 +37,7 @@ the mathematical model created by the problem() function."><meta property="og:im
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -91,17 +91,17 @@ the mathematical model created by the <code><a href="problem.html">problem()</a>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">solve</span><span class="op">(</span>
-  <span class="va">a</span>,
-  solver <span class="op">=</span> <span class="st">""</span>,
-  gap_limit <span class="op">=</span> <span class="fl">0</span>,
-  time_limit <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">integer.max</span>,
-  solution_limit <span class="op">=</span> <span class="cn">FALSE</span>,
-  cores <span class="op">=</span> <span class="fl">2</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-  name_output_file <span class="op">=</span> <span class="st">"output"</span>,
-  output_file <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">solve</span><span class="op">(</span></span>
+<span>  <span class="va">a</span>,</span>
+<span>  solver <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  gap_limit <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  time_limit <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">integer.max</span>,</span>
+<span>  solution_limit <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cores <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  name_output_file <span class="op">=</span> <span class="st">"output"</span>,</span>
+<span>  output_file <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -110,6 +110,8 @@ the mathematical model created by the <code><a href="problem.html">problem()</a>
 <dd><p><a href="optimizationProblem-class.html">optimizationProblem</a> object. Optimization model created
 for the problem of prioritization of multiple conservation actions. This object must be
 created using the <code><a href="problem.html">problem()</a></code> function.</p></dd>
+
+
 <dt>solver</dt>
 <dd><p><code>string</code>. Name of solver to use to
 solve the model. The following solvers are supported:
@@ -117,6 +119,8 @@ solve the model. The following solvers are supported:
 <a href="https://projects.coin-or.org/SYMPHONY" class="external-link"><code>"symphony"</code></a>(requires the <span class="pkg">Rsymphony</span> package).
 We recommend using gurobi (for more information on how to obtain an academic license
 <a href="https://prioritizr.net/articles/gurobi_installation_guide.html" class="external-link">here</a>).</p></dd>
+
+
 <dt>gap_limit</dt>
 <dd><p><code>numeric</code>. Value between 0 and 1 that represents the gap
 to optimality, i.e., a relative number that cause the optimizer to
@@ -124,31 +128,46 @@ terminate when the difference between the upper and lower objective
 function bounds is less than the gap times the upper bound. For example, a
 value of 0.01 will result in the optimizer stopping when the difference
 between the bounds is 1 percent of the upper bound. Default is 0.0.</p></dd>
+
+
 <dt>time_limit</dt>
 <dd><p><code>numeric</code>. Time limit to run the optimizer (in seconds).
 The solver will return the current best solution when this time limit is exceeded.
 Default is the maximum integer number of your machine.</p></dd>
+
+
 <dt>solution_limit</dt>
 <dd><p><code>logical</code>. Indicates if the solution process
 should be stopped after the first feasible solution is found (<code>TRUE</code>),
 or not (<code>FALSE</code>).</p></dd>
+
+
 <dt>cores</dt>
 <dd><p><code>integer</code>. Number of parallel cores to use in the machine to solve the problem.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p><code>logical</code>. Indicates if the solver information is displayed while
 solving the optimization model (<code>TRUE</code>), or if it is not displayed (<code>FALSE</code>).</p></dd>
+
+
 <dt>name_output_file</dt>
 <dd><p><code>string</code>. Prefix of all output names.</p></dd>
+
+
 <dt>output_file</dt>
 <dd><p><code>logical</code>. Indicates if the outputs are exported as .csv files (<code>TRUE</code>),
 or they are not exported (<code>FALSE</code>). Currently, 5 files are exported. The
 distribution of actions in the solution, the distribution of the selected
 planning units, the benefits achieved by the features, the parameters used,
 and the optimization engine log.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An object of class <a href="solution-class.html">solution</a>.</p>
+    
+
+<p>An object of class <a href="solution-class.html">solution</a>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -183,44 +202,44 @@ which can be found online at
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co">## This example uses input files included into package.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Load data</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_pu_data</span>, <span class="va">sim_features_data</span>, <span class="va">sim_dist_features_data</span>,</span>
-<span class="r-in"><span class="va">sim_threats_data</span>, <span class="va">sim_dist_threats_data</span>, <span class="va">sim_sensitivity_data</span>,</span>
-<span class="r-in"><span class="va">sim_boundary_data</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create data instance</span></span>
-<span class="r-in"><span class="va">problem_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="inputData.html">inputData</a></span><span class="op">(</span></span>
-<span class="r-in">  pu <span class="op">=</span> <span class="va">sim_pu_data</span>, features <span class="op">=</span> <span class="va">sim_features_data</span>, dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,</span>
-<span class="r-in">  threats <span class="op">=</span> <span class="va">sim_threats_data</span>, dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,</span>
-<span class="r-in">  sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>, boundary <span class="op">=</span> <span class="va">sim_boundary_data</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create optimization model</span></span>
-<span class="r-in"><span class="va">problem_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="problem.html">problem</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">problem_data</span>, blm <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Solve the optimization model using a gap_limit and gurobi solver</span></span>
-<span class="r-in"><span class="co">## NOTE: The Gurobi solver must be previously installed and must have a valid license!</span></span>
-<span class="r-in"><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu">solve</span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, gap_limit <span class="op">=</span> <span class="fl">0.01</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Solve the optimization model using a gap_limit and symphony solver</span></span>
-<span class="r-in"><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu">solve</span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>,</span>
-<span class="r-in">            solver <span class="op">=</span> <span class="st">"symphony"</span>,</span>
-<span class="r-in">            gap_limit <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span class="r-in">            output_file <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">            cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">s2</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Solve the optimization model using a time_limit and gurobi solver</span></span>
-<span class="r-in"><span class="va">s3</span> <span class="op">&lt;-</span> <span class="fu">solve</span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, time_limit <span class="op">=</span> <span class="fl">10</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">s3</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co">## This example uses input files included into package.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Load data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_pu_data</span>, <span class="va">sim_features_data</span>, <span class="va">sim_dist_features_data</span>,</span></span>
+<span class="r-in"><span><span class="va">sim_threats_data</span>, <span class="va">sim_dist_threats_data</span>, <span class="va">sim_sensitivity_data</span>,</span></span>
+<span class="r-in"><span><span class="va">sim_boundary_data</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create data instance</span></span></span>
+<span class="r-in"><span><span class="va">problem_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="inputData.html">inputData</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  pu <span class="op">=</span> <span class="va">sim_pu_data</span>, features <span class="op">=</span> <span class="va">sim_features_data</span>, dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,</span></span>
+<span class="r-in"><span>  threats <span class="op">=</span> <span class="va">sim_threats_data</span>, dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,</span></span>
+<span class="r-in"><span>  sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>, boundary <span class="op">=</span> <span class="va">sim_boundary_data</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create optimization model</span></span></span>
+<span class="r-in"><span><span class="va">problem_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="problem.html">problem</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">problem_data</span>, blm <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Solve the optimization model using a gap_limit and gurobi solver</span></span></span>
+<span class="r-in"><span><span class="co">## NOTE: The Gurobi solver must be previously installed and must have a valid license!</span></span></span>
+<span class="r-in"><span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu">solve</span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, gap_limit <span class="op">=</span> <span class="fl">0.01</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Solve the optimization model using a gap_limit and symphony solver</span></span></span>
+<span class="r-in"><span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu">solve</span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>,</span></span>
+<span class="r-in"><span>            solver <span class="op">=</span> <span class="st">"symphony"</span>,</span></span>
+<span class="r-in"><span>            gap_limit <span class="op">=</span> <span class="fl">0.01</span>,</span></span>
+<span class="r-in"><span>            output_file <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>            cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">s2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Solve the optimization model using a time_limit and gurobi solver</span></span></span>
+<span class="r-in"><span><span class="va">s3</span> <span class="op">&lt;-</span> <span class="fu">solve</span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, time_limit <span class="op">=</span> <span class="fl">10</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">s3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -235,7 +254,7 @@ which can be found online at
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

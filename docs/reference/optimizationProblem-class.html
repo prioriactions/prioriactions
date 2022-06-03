@@ -36,7 +36,7 @@ using problem() function."><meta property="og:image" content="https://prioriacti
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -91,7 +91,9 @@ using <code><a href="problem.html">problem()</a></code> function.</p>
 
     <div id="value">
     <h2>Value</h2>
-    <p>No return value.</p>
+    
+
+<p>No return value.</p>
     </div>
     <div id="fields">
     <h2>Fields</h2>
@@ -134,30 +136,30 @@ to the mathematical model, such as "obj", "rhs", etc.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># set seed for reproducibility</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">14</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Load data</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_pu_data</span>, <span class="va">sim_features_data</span>, <span class="va">sim_dist_features_data</span>,</span>
-<span class="r-in"><span class="va">sim_threats_data</span>, <span class="va">sim_dist_threats_data</span>, <span class="va">sim_sensitivity_data</span>,</span>
-<span class="r-in"><span class="va">sim_boundary_data</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create data instance</span></span>
-<span class="r-in"><span class="va">problem_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="inputData.html">inputData</a></span><span class="op">(</span></span>
-<span class="r-in">  pu <span class="op">=</span> <span class="va">sim_pu_data</span>, features <span class="op">=</span> <span class="va">sim_features_data</span>, dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,</span>
-<span class="r-in">  threats <span class="op">=</span> <span class="va">sim_threats_data</span>, dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,</span>
-<span class="r-in">  sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>, boundary <span class="op">=</span> <span class="va">sim_boundary_data</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create optimization model</span></span>
-<span class="r-in"><span class="va">problem_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="problem.html">problem</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">problem_data</span>, blm <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># set seed for reproducibility</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">14</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Load data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_pu_data</span>, <span class="va">sim_features_data</span>, <span class="va">sim_dist_features_data</span>,</span></span>
+<span class="r-in"><span><span class="va">sim_threats_data</span>, <span class="va">sim_dist_threats_data</span>, <span class="va">sim_sensitivity_data</span>,</span></span>
+<span class="r-in"><span><span class="va">sim_boundary_data</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create data instance</span></span></span>
+<span class="r-in"><span><span class="va">problem_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="inputData.html">inputData</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  pu <span class="op">=</span> <span class="va">sim_pu_data</span>, features <span class="op">=</span> <span class="va">sim_features_data</span>, dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,</span></span>
+<span class="r-in"><span>  threats <span class="op">=</span> <span class="va">sim_threats_data</span>, dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,</span></span>
+<span class="r-in"><span>  sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>, boundary <span class="op">=</span> <span class="va">sim_boundary_data</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create optimization model</span></span></span>
+<span class="r-in"><span><span class="va">problem_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="problem.html">problem</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">problem_data</span>, blm <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Use class methods</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">problem_model</span><span class="op">$</span><span class="fu">getData</span><span class="op">(</span><span class="st">"obj"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Use class methods</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">problem_model</span><span class="op">$</span><span class="fu">getData</span><span class="op">(</span><span class="st">"obj"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 702.305 645.714 602.096 572.511 557.573 557.573</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">problem_model</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">problem_model</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Optimization Problem</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   model sense: minimization</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   dimensions:  29984, 10296, 883.856 kB (nrow, ncol, size)</span>
@@ -176,7 +178,7 @@ to the mathematical model, such as "obj", "rhs", etc.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -101,7 +101,7 @@ getSolutionBenefit <- function(x, type = "total") {
         #variables
         benefits <- x$OptimizationClass$ConservationClass$getData("dist_features")
         benefits <- benefits[!names(benefits) %in% c("amount","internal_feature","internal_pu")]
-        benefits <- benefits[order(benefits$feature), ]
+        benefits <- benefits[order(benefits$feature, benefits$pu), ]
 
         #getting information of solutions
         recovery_ben <- x$data$sol_recovery

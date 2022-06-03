@@ -124,7 +124,7 @@ NULL
 #'    \item{`c`}{`numeric` (**optional**) minimum probability of persistence of a
 #'    features when a threat reaches its maximum intensity value. Default is 0.}
 #'    \item{`d`}{`numeric` (**optional**) maximum probability of persistence of a
-#'    features in absence of a given threat. Default is 1.}
+#'    features in absence threats. Default is 1.}
 #'    }
 #'  Note that optional parameters *a*, *b*, *c* and *d* can be provided independently.
 #'
@@ -468,6 +468,7 @@ methods::setMethod(
         assertthat::noNA(boundary$boundary),
         all(boundary$id1 %in% pu$id), all(boundary$id2 %in% pu$id)
       )
+      boundary$boundary <- base::round(boundary$boundary, 3)
     }
 
 
@@ -531,7 +532,7 @@ methods::setMethod(
     sensitivity$b <- base::round(sensitivity$b, 3)
     sensitivity$c <- base::round(sensitivity$c, 3)
     sensitivity$d <- base::round(sensitivity$d, 3)
-    boundary$boundary <- base::round(boundary$boundary, 3)
+
 
 
     ## Creating internal id's

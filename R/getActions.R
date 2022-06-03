@@ -79,7 +79,7 @@ getActions <- function(x, format = "wide") {
       # Getting actions solution
       actions <- x$OptimizationClass$ConservationClass$getData("dist_threats")
       actions <- actions[names(actions) %in% c("pu","threat")]
-      colnames(actions) <- c("pu", "action")
+      actions <- actions %>% dplyr::rename(action = threat)
 
       # Getting local benefits
       benefits <- x$OptimizationClass$ConservationClass$getData("dist_features")
@@ -98,6 +98,7 @@ getActions <- function(x, format = "wide") {
       complete_dist_features <- merge(x = monitoring, y = benefits, by.x = "id", by.y = "pu", all = TRUE)
       complete_dist_features <- complete_dist_features %>% tidyr::spread(key = .data$feature, value = conservation)
 
+      complete_dist_features$`0` <- 0
       sum_rows <- rowSums(complete_dist_features[,!names(complete_dist_features) %in% c("id", "solution","<NA>")], na.rm = TRUE)
       conservation <- ifelse(sum_rows > 0, 1, 0)
 

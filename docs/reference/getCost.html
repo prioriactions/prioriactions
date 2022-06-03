@@ -35,7 +35,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -87,17 +87,20 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getCost</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getCost</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p><a href="solution-class.html">solution</a> or <a href="portfolio-class.html">portfolio</a> object.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a>.</p>
+    
+
+<p><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -125,35 +128,35 @@ the threat coincides with the index of the action used to abate it.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"><span class="co"># set seed for reproducibility</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">14</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Load data</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_pu_data</span>, <span class="va">sim_features_data</span>, <span class="va">sim_dist_features_data</span>,</span>
-<span class="r-in"><span class="va">sim_threats_data</span>, <span class="va">sim_dist_threats_data</span>, <span class="va">sim_sensitivity_data</span>,</span>
-<span class="r-in"><span class="va">sim_boundary_data</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create data instance</span></span>
-<span class="r-in"><span class="va">problem_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="inputData.html">inputData</a></span><span class="op">(</span></span>
-<span class="r-in">  pu <span class="op">=</span> <span class="va">sim_pu_data</span>, features <span class="op">=</span> <span class="va">sim_features_data</span>, dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,</span>
-<span class="r-in">  threats <span class="op">=</span> <span class="va">sim_threats_data</span>, dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,</span>
-<span class="r-in">  sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>, boundary <span class="op">=</span> <span class="va">sim_boundary_data</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create optimization model</span></span>
-<span class="r-in"><span class="va">problem_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="problem.html">problem</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">problem_data</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co"># set seed for reproducibility</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">14</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Load data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_pu_data</span>, <span class="va">sim_features_data</span>, <span class="va">sim_dist_features_data</span>,</span></span>
+<span class="r-in"><span><span class="va">sim_threats_data</span>, <span class="va">sim_dist_threats_data</span>, <span class="va">sim_sensitivity_data</span>,</span></span>
+<span class="r-in"><span><span class="va">sim_boundary_data</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create data instance</span></span></span>
+<span class="r-in"><span><span class="va">problem_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="inputData.html">inputData</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  pu <span class="op">=</span> <span class="va">sim_pu_data</span>, features <span class="op">=</span> <span class="va">sim_features_data</span>, dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,</span></span>
+<span class="r-in"><span>  threats <span class="op">=</span> <span class="va">sim_threats_data</span>, dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,</span></span>
+<span class="r-in"><span>  sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>, boundary <span class="op">=</span> <span class="va">sim_boundary_data</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create optimization model</span></span></span>
+<span class="r-in"><span><span class="va">problem_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="problem.html">problem</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">problem_data</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The blm argument was set to 0, so the boundary data has no effect</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Solve the optimization model</span></span>
-<span class="r-in"><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="solve.html">solve</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, time_limit <span class="op">=</span> <span class="fl">2</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Error 10009: License expired 2022-03-09</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Get costs</span></span>
-<span class="r-in"><span class="fu">getCost</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Solve the optimization model</span></span></span>
+<span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="solve.html">solve</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, time_limit <span class="op">=</span> <span class="fl">2</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in cplexAPI::setIntParmCPLEX(env, CPX_PARAM_SCRIND, ifelse(verbose,     CPX_ON, CPX_OFF)):</span> object 'CPX_PARAM_SCRIND' not found</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Get costs</span></span></span>
+<span class="r-in"><span><span class="fu">getCost</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in inherits(x, c("Solution", "Portfolio")):</span> object 's' not found</span>
-<span class="r-in"><span class="co"># }</span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -168,7 +171,7 @@ the threat coincides with the index of the action used to abate it.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

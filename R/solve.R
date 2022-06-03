@@ -146,8 +146,10 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
   gap_limit <- base::round(gap_limit, 3)
   time_limit <- base::round(time_limit, 3)
 
-
-  if (requireNamespace("gurobi", quietly = TRUE)) {
+  if (requireNamespace("cplexAPI", quietly = TRUE)) {
+    solver_default <- "cplex"
+  }
+  else if (requireNamespace("gurobi", quietly = TRUE)) {
     solver_default <- "gurobi"
   } else if (requireNamespace("Rsymphony", quietly = TRUE)) {
     solver_default <- "symphony"
@@ -161,7 +163,7 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
     solver <- solver_default
   }
   else {
-    if (!solver %in% c("gurobi", "symphony")) {
+    if (!solver %in% c("gurobi", "symphony", "cplex")) {
       stop("Solver not available")
     }
     else if (identical(solver, "gurobi") && !requireNamespace("gurobi", quietly = TRUE)) {
@@ -169,6 +171,9 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
     }
     else if (identical(solver, "symphony") && !requireNamespace("Rsymphony", quietly = TRUE)) {
       stop("SYMPHONY solver not found")
+    }
+    else if(identical(solver, "cplex") && !requireNamespace("cplexAPI", quietly = TRUE)){
+      stop("cplex solver not found")
     }
   }
 
@@ -230,6 +235,107 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
                 ),
                 OptimizationClass = a
     )
+  }
+  ## cplex solver
+  else if(solver == "cplex"){
+
+    cplex_matrix <- function(m) {
+      # inspired by Rcplex:::toCPXMatrix function
+      assertthat::assert_that(inherits(m, "dgCMatrix"))
+      matbeg <- m@p
+      matcnt <- diff(c(m@p, length(m@x)))
+      matind <- m@i
+      matval <- m@x
+      list(matbeg = as.integer(matbeg), matcnt = as.integer(matcnt),
+           matind = as.integer(matind), matval = as.double(matval))
+    }
+
+    ## cplex model
+    model$lb <- a$getData("bounds")$lower$val
+    model$ub <- a$getData("bounds")$upper$val
+    model$A2 <- cplex_matrix(a$getData("A"))
+
+    # change structure of some variables
+    model$sense[model$sense == ">="] <- "G"
+    model$sense[model$sense == "="] <- "E"
+    model$sense[model$sense == "<="] <- "L"
+    model$vtype[model$vtype == "S"] <- "C"
+
+    # prepare model data for CPLEX
+    model$lb[which(!is.finite(model$lb) & model$lb < 0)] <- -1 * cplexAPI::CPX_INFBOUND
+    model$lb[which(!is.finite(model$lb) & model$lb > 0)] <- cplexAPI::CPX_INFBOUND
+    model$ub[which(!is.finite(model$ub) & model$ub < 0)] <- -1 * cplexAPI::CPX_INFBOUND
+    model$ub[which(!is.finite(model$ub) & model$ub > 0)] <- cplexAPI::CPX_INFBOUND
+
+    ## cplex parameters
+    env <- cplexAPI::openEnvCPLEX()
+
+    cplexAPI::setDefaultParmCPLEX(env)
+    cplexAPI::setIntParmCPLEX(env, CPX_PARAM_SCRIND, ifelse(verbose, CPX_ON, CPX_OFF))
+    cplexAPI::setIntParmCPLEX(env = env, parm = cplexAPI::CPXPARAM_Threads, value = cores)
+    cplexAPI::setDblParmCPLEX(env = env, parm = cplexAPI::CPXPARAM_TimeLimit, value = time_limit)
+    cplexAPI::setDblParmCPLEX(env = env, parm = cplexAPI::CPX_PARAM_EPGAP, value = gap_limit)
+
+    #log cplex
+    params <- list()
+    #if(isTRUE(output_file)){
+    #  params$LogFile <- paste0(name_output_file,"_log.txt")
+    #}
+
+    # Stop condition: MIP feasible solution limit
+    if (!isTRUE(solution_limit)) {
+      params$SolutionLimit <- NULL
+    } else {
+      params$SolutionLimit <- 1
+    }
+
+    if(model$args$curve != 1){
+      params$FuncPieces <- 1
+      params$FuncPieceLength <- round(1/model$args$segments, digits = 1)
+    }
+
+    # initialize problem
+    p <- cplexAPI::initProbCPLEX(env)
+
+    result <- cplexAPI::copyLpwNamesCPLEX(
+      env = env, lp = p,
+      nCols = ncol(model$A),
+      nRows = nrow(model$A),
+      lpdir = ifelse(identical(model$modelsense, "max"),
+                     cplexAPI::CPX_MAX, cplexAPI::CPX_MIN),
+      obj = model$obj,
+      rhs = model$rhs,
+      sense = model$sense,
+      lb = model$lb,
+      ub = model$ub,
+      matbeg = model$A2$matbeg,
+      matcnt = model$A2$matcnt,
+      matind = model$A2$matind,
+      matval = model$A2$matval)
+
+    invisible(cplexAPI::copyColTypeCPLEX(env, p, model$vtype))
+    invisible(cplexAPI::mipoptCPLEX(env, p))
+    solution <- solutionCPLEX(env, p)
+
+    solution$status_code <- dplyr::case_when(
+      (solution$lpstat == 101L || solution$lpstat == 1L) ~ 0L,
+      (solution$lpstat == 2L || solution$lpstat == 3L || solution$lpstat == 103L || solution$lpstat == 118L) ~ 1L,
+      (solution$lpstat == 107L) ~ 2L,
+      (solution$lpstat == 108L) ~ 3L,
+      (solution$lpstat == 232L) ~ 4L,
+      TRUE ~ 999L
+    )
+
+    s <- pproto(NULL, Solution,
+                data = list(
+                  objval = solution$objval, sol = solution$x, gap = 0,
+                  status = solution$status_code, runtime = 0, args = args
+                ),
+                OptimizationClass = a
+    )
+
+    delProbCPLEX(env, p)
+    closeEnvCPLEX(env)
   }
   ## SYMPHONY solver
   else {
