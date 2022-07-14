@@ -25,6 +25,8 @@ writeOutputs <- function(x, ...) UseMethod("writeOutputs", x)
 writeOutputs.Solution <- function(x, name = "output", ...) {
   assertthat::assert_that(inherits(x, "Solution"))
 
+  #parameters file---------------------------------------------
+
   name_output_params <- paste0(name,"_params.txt")
   output_file <- base::file(name_output_params)
 
@@ -65,23 +67,33 @@ writeOutputs.Solution <- function(x, name = "output", ...) {
     "\n",
     "2) Instance information",
     "\n",
-    "Number of planning units:  ", x$OptimizationClass$ConservationClass$getPlanningUnitsAmount(),
+    "number of planning units:  ", x$OptimizationClass$ConservationClass$getPlanningUnitsAmount(),
     "\n",
-    "Number of features:  ", x$OptimizationClass$ConservationClass$getFeatureAmount(),
+    "number of features:  ", x$OptimizationClass$ConservationClass$getFeatureAmount(),
     "\n",
-    "Number of threats:  ", x$OptimizationClass$ConservationClass$getThreatsAmount(),
+    "number of threats:  ", x$OptimizationClass$ConservationClass$getThreatsAmount(),
     "\n",
-    "Number of actions:  ", x$OptimizationClass$ConservationClass$getActionsAmount(),
+    "number of actions:  ", x$OptimizationClass$ConservationClass$getActionsAmount(),
     "\n",
     "\n",
     "3) Mathematical model",
     "\n",
-    "Type of model:  ", x$OptimizationClass$data$args$name_model,
+    "type of model:  ", x$OptimizationClass$data$args$name_model,
     "\n",
-    "Number of variables:  ", base::ncol(x$OptimizationClass$data$A),
+    "number of variables:  ", base::ncol(x$OptimizationClass$data$A),
     "\n",
-    "Number of constraints:  ", base::nrow(x$OptimizationClass$data$A),
-    "\n"
+    "number of constraints:  ", base::nrow(x$OptimizationClass$data$A),
+    "\n",
+    "\n",
+    "4) Solution",
+    "\n",
+    "objective value:  ", x$data$objval,
+    "\n",
+    "gap achieved:  ", x$data$gap,
+    "\n",
+    "runtime:  ", x$data$runtime,
+    "\n",
+    "total cost:  ", sum(as.numeric(prioriactions::getCost(x)[-1]))
   )
 
   base::writeLines(msj_output, output_file)

@@ -465,8 +465,8 @@ methods::setMethod(
         is.numeric(boundary$boundary),
         assertthat::noNA(boundary$id1),
         assertthat::noNA(boundary$id2),
-        assertthat::noNA(boundary$boundary),
-        all(boundary$id1 %in% pu$id), all(boundary$id2 %in% pu$id)
+        assertthat::noNA(boundary$boundary)
+        #all(boundary$id1 %in% pu$id), all(boundary$id2 %in% pu$id)
       )
       boundary$boundary <- base::round(boundary$boundary, 3)
     }
@@ -519,6 +519,16 @@ methods::setMethod(
       threats <- threats[!threats$id %in% dif_threats_dangerous, ]
       dist_threats <- dist_threats[!dist_threats$threat %in% dif_threats_dangerous, ]
     }
+    if(!is.null(boundary)){
+      if(!all(boundary$id1 %in% pu$id) || !all(boundary$id2 %in% pu$id)){
+        warning("The boundary data contain pu which ids does not exist in pu data (it'll not be considered in the model)", call. = FALSE, immediate. = TRUE)
+
+        rows_boundary_leftover <- c(which(!boundary$id1 %in% pu$id), which(!boundary$id2 %in% pu$id))
+        boundary <- boundary[-rows_boundary_leftover,]
+      }
+    }
+
+
 
     ## Rounding numeric fields of input data
     pu$monitoring_cost <- base::round(pu$monitoring_cost, 3)

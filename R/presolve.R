@@ -33,17 +33,17 @@ presolve.Data <- function(x, ...) {
 
     pu <- x$getData("pu")
     dist_threats <- x$getData("dist_threats")
-    locked_out_units <- pu$id[c(which(pu$status == 3))]
+    locked_out_units <- c(which(pu$status == 3))
     pu$solution <- 1
     pu$solution[locked_out_units] <- 0
     dist_threats$solution <- 1
 
-    locked_out_actions <- any(dist_threats$pu %in% locked_out_units)
+    locked_out_actions <- any(dist_threats$internal_pu %in% pu$internal_id[locked_out_units])
     if(isTRUE(locked_out_actions)){
-      dist_threats[dist_threats$pu %in% locked_out_units, ]$solution <- 0
+      dist_threats[dist_threats$internal_pu %in% pu$internal_id[locked_out_units], ]$solution <- 0
     }
 
-    locked_out_actions <- pu$id[c(which(dist_threats$status == 3))]
+    locked_out_actions <- c(which(dist_threats$status == 3))
     dist_threats$solution[locked_out_actions] <- 0
 
     a <- getPotentialBenefit(x)

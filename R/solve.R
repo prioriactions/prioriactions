@@ -315,7 +315,10 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
 
     invisible(cplexAPI::copyColTypeCPLEX(env, p, model$vtype))
     invisible(cplexAPI::mipoptCPLEX(env, p))
-    solution <- solutionCPLEX(env, p)
+
+    rt <- system.time({
+      solution <- cplexAPI::solutionCPLEX(env, p)
+    })
 
     solution$status_code <- dplyr::case_when(
       (solution$lpstat == 101L || solution$lpstat == 1L) ~ 0L,
@@ -329,7 +332,7 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
     s <- pproto(NULL, Solution,
                 data = list(
                   objval = solution$objval, sol = solution$x, gap = 0,
-                  status = solution$status_code, runtime = 0, args = args
+                  status = solution$status_code, runtime = rt[[3]], args = args
                 ),
                 OptimizationClass = a
     )
