@@ -257,7 +257,7 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
 
     # change structure of some variables
     model$sense[model$sense == ">="] <- "G"
-    model$sense[model$sense == "="] <- "E"
+    model$sense[model$sense == "=="] <- "E"
     model$sense[model$sense == "<="] <- "L"
     model$vtype[model$vtype == "S"] <- "C"
 

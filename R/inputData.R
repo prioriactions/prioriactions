@@ -244,6 +244,7 @@ methods::setMethod(
     } else {
       pu$status <- 0
     }
+    pu <- pu[order(pu$id),]
 
     ## features
     assertthat::assert_that(
