@@ -61,7 +61,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
 
     <span class="caret"></span>
@@ -124,388 +124,544 @@
 
 
 
-<p>A key characteristic of <code>prioriactions</code> is that it allows to calculate an approximation of the <strong>benefit</strong> obtained by carrying out conservation actions. This approximation is based on the following assumptions <span class="citation">(Cattarino et al. 2015)</span><span class="citation">(Salgado-Rojas et al. 2020)</span>:</p>
+<p>A key characteristic of <code>prioriactions</code> is that it allows
+to calculate an approximation of the <strong>benefit</strong> obtained
+by carrying out conservation actions. This approximation is based on the
+following assumptions [<span class="citation">Cattarino et al.
+(2015)</span>]<span class="citation">(Salgado-Rojas et al.
+2020)</span>:</p>
 <ul>
-<li><p>Threats can be binary (presence/absence) or continuous (with levels of intensity).</p></li>
+<li><p>Threats can be binary (presence/absence) or continuous (with
+levels of intensity).</p></li>
 <li><p>There is only one action per threat.</p></li>
-<li><p>Actions are fully effective, that is, an action against a threat eliminates it completely.</p></li>
-<li><p>The <strong>probability of persistence</strong> of the features is proportional to the number of actions that are prescribed with respect to the total number of actions that would be needed to abate all threats that affect a given species in a given site.</p></li>
+<li><p>Actions are fully effective, that is, an action against a threat
+eliminates it completely.</p></li>
+<li><p>The <strong>probability of persistence</strong> of the features
+is proportional to the number of actions that are prescribed with
+respect to the total number of actions that would be needed to abate all
+threats that affect a given species in a given site.</p></li>
 </ul>
-<p>Thus, the expected <strong>benefit</strong> (<span class="math inline">\(b\)</span>) of a feature in an unit can be expressed mathematically for a set of planning units <span class="math inline">\(I\)</span> indexed by <span class="math inline">\(i\)</span>, a set of threats <span class="math inline">\(K\)</span> indexed by <span class="math inline">\(k\)</span> and a set of features <span class="math inline">\(S\)</span> indexed by <span class="math inline">\(s\)</span> as:</p>
+<p>Thus, the expected <strong>benefit</strong> (<span class="math inline">\(b\)</span>) of a feature in an unit can be
+expressed mathematically for a set of planning units <span class="math inline">\(I\)</span> indexed by <span class="math inline">\(i\)</span>, a set of threats <span class="math inline">\(K\)</span> indexed by <span class="math inline">\(k\)</span> and a set of features <span class="math inline">\(S\)</span> indexed by <span class="math inline">\(s\)</span> as:</p>
 <p><span class="math display">\[
 b_{is} = p_{is} r_{is}
-\]</span> Where <span class="math inline">\(p_is\)</span> is the probability of persistence of the feature (<span class="math inline">\(s\)</span>) in a planning unit <span class="math inline">\(i\)</span> and <span class="math inline">\(r_is\)</span> is the amount of that feature <span class="math inline">\(s\)</span> in said unit <span class="math inline">\(i\)</span>. <code>prioriactions</code> package focuses on the net benefit obtained after the application of actions, therefore, this probability of persistence is calculated with respect to the base situation, that is, when it does not take any action against threats.</p>
-<p>The remainder of this document is organized as follows. In Section 1 we present how <code>prioriactions</code> calculates the benefits when the threats are discrete (presence/absence), and in Section 2 we present how <code>prioriactions</code> calculates the benefits when the threats have continuous intensities.</p>
+\]</span> Where <span class="math inline">\(p_is\)</span> is the
+probability of persistence of the feature (<span class="math inline">\(s\)</span>) in a planning unit <span class="math inline">\(i\)</span> and <span class="math inline">\(r_is\)</span> is the amount of that feature <span class="math inline">\(s\)</span> in said unit <span class="math inline">\(i\)</span>. <code>prioriactions</code> package
+focuses on the net benefit obtained after the application of actions,
+therefore, this probability of persistence is calculated with respect to
+the base situation, that is, when it does not take any action against
+threats.</p>
+<p>The remainder of this document is organized as follows. In Section 1
+we present how <code>prioriactions</code> calculates the benefits when
+the threats are discrete (presence/absence), and in Section 2 we present
+how <code>prioriactions</code> calculates the benefits when the threats
+have continuous intensities.</p>
 <div class="section level2">
-<h2 id="calculating-benefits-when-threats-are-discrete-presenceabsence">1) Calculating benefits when threats are discrete (presence/absence)<a class="anchor" aria-label="anchor" href="#calculating-benefits-when-threats-are-discrete-presenceabsence"></a>
+<h2 id="calculating-benefits-when-threats-are-discrete-presenceabsence">1) Calculating benefits when threats are discrete
+(presence/absence)<a class="anchor" aria-label="anchor" href="#calculating-benefits-when-threats-are-discrete-presenceabsence"></a>
 </h2>
-<p>In order to calculate the <strong>benefit</strong> obtained for a features in a planning unit when all threats have binary intensities (presence / absence), we define the probability of persistence as:</p>
+<p>In order to calculate the <strong>benefit</strong> obtained for a
+features in a planning unit when all threats have binary intensities
+(presence / absence), we define the probability of persistence as:</p>
 <p><span class="math display">\[
 p_{is} = \frac{\sum_{k \in K_i \cap K_s} {x_{ik}}}{|K_i \cap K_s|}
-\]</span> Where, <span class="math inline">\(x_{ik}\)</span> is a decision variable that specifies whether an action to abate the threat <span class="math inline">\(k\)</span> in the planning unit <span class="math inline">\(i\)</span> has been selected (1) or not (0), <span class="math inline">\(K_i\)</span> is the set of all threats that exists in <span class="math inline">\(i\)</span> and <span class="math inline">\(K_s\)</span> is the set of all threats the feature <span class="math inline">\(s\)</span> is sensitive to.</p>
-<p>Note that <span class="math inline">\(|K_i \cap K_s|\)</span> indicates the intersection between these two sets, that is, the threats that exist on the site <span class="math inline">\(i\)</span> and that, in turn, the features <span class="math inline">\(s\)</span> is sensitive to. In the case when the intersection is zero, which means that feature <span class="math inline">\(s\)</span> does not coexist with any of its threats in <span class="math inline">\(i\)</span>, its <strong>probability of persistence</strong> is 1.</p>
-<p>Considers that there are two planning objectives (<code>recovery</code> and <code>conservation</code>), so if a feature does not coexist with any of its threats (as in the previous case), its <strong>benefit</strong> contributes to achieving the <strong>conservation target</strong> (in the case of exist). Otherwise, the <strong>benefits</strong> contribute to the <strong>recovery target</strong>. More information about this point can be found in <a href="https://prioriactions.github.io/prioriactions/articles/objectives.html">objectives</a> vignette.</p>
+\]</span> Where, <span class="math inline">\(x_{ik}\)</span> is a
+decision variable that specifies whether an action to abate the threat
+<span class="math inline">\(k\)</span> in the planning unit <span class="math inline">\(i\)</span> has been selected (1) or not (0), <span class="math inline">\(K_i\)</span> is the set of all threats that exists
+in <span class="math inline">\(i\)</span> and <span class="math inline">\(K_s\)</span> is the set of all threats the feature
+<span class="math inline">\(s\)</span> is sensitive to.</p>
+<p>Note that <span class="math inline">\(|K_i \cap K_s|\)</span>
+indicates the intersection between these two sets, that is, the threats
+that exist on the site <span class="math inline">\(i\)</span> and that,
+in turn, the features <span class="math inline">\(s\)</span> is
+sensitive to. In the case when the intersection is zero, which means
+that feature <span class="math inline">\(s\)</span> does not coexist
+with any of its threats in <span class="math inline">\(i\)</span>, its
+<strong>probability of persistence</strong> is 1.</p>
+<p>Considers that there are two planning objectives
+(<code>recovery</code> and <code>conservation</code>), so if a feature
+does not coexist with any of its threats (as in the previous case), its
+<strong>benefit</strong> contributes to achieving the
+<strong>conservation target</strong> (in the case of exist). Otherwise,
+the <strong>benefits</strong> contribute to the <strong>recovery
+target</strong>. More information about this point can be found in <a href="https://prioriactions.github.io/prioriactions/articles/objectives.html">objectives</a>
+vignette.</p>
 <div class="section level3">
 <h3 id="not-proportional-probability-of-persistence">Not proportional probability of persistence<a class="anchor" aria-label="anchor" href="#not-proportional-probability-of-persistence"></a>
 </h3>
-<p>As we have seen, the <strong>probability of persistence</strong> is calculated initially as a <em>linear</em> relationship of the actions carried out concerning the possible actions to face the threats of a feature on a site. However, this relationship assumes that all threats contribute equally to the probability of persistence of the features. This approach to estimating <strong>probabilities of persistence</strong> could also overestimate the benefit of addressing threats (e.g., if two threats are present, one of them more impacting than the other, but only one of them -the less impacting- was addressed). For this reason, <code>prioriactions</code> incorporates different non-linear <strong>curves (</strong><span class="math inline">\(v\)</span><strong>)</strong> as exponents to the original expression of <span class="math inline">\(p\)</span>:</p>
+<p>As we have seen, the <strong>probability of persistence</strong> is
+calculated initially as a <em>linear</em> relationship of the actions
+carried out concerning the possible actions to face the threats of a
+feature on a site. However, this relationship assumes that all threats
+contribute equally to the probability of persistence of the features.
+This approach to estimating <strong>probabilities of
+persistence</strong> could also overestimate the benefit of addressing
+threats (e.g., if two threats are present, one of them more impacting
+than the other, but only one of them -the less impacting- was
+addressed). For this reason, <code>prioriactions</code> incorporates
+different non-linear <strong>curves (</strong><span class="math inline">\(v\)</span><strong>)</strong> as exponents to the
+original expression of <span class="math inline">\(p\)</span>:</p>
 <p><span class="math display">\[
 b_{is} = p_{is}^v r_{is}
-\]</span> Thus, with <span class="math inline">\(v\)</span> as the type of <strong>curve</strong> or exponent, three options are possible: 1 = linear, 2 = quadratic, or 3 = cubic. The effect will be greater the higher the value of the parameter. In turn, the higher it is, the more complexity is added to the resolution of the resulting model and, for example, more likely it is to get solutions where all or almost all threats affecting a given features in a given site have been addressed. This <strong>curve</strong> parameter is built into <code>prioriactions</code> within the <code><a href="../reference/problem.html">problem()</a></code> function. Let’s see an example.</p>
-<p>To show the difference between both models of <strong>benefit</strong> calculation when working with binary intensities, we use two different curves (linear and cubic) employing the example available in the <a href="https://prioriactions.github.io/prioriactions/articles/prioriactions.html">Get started</a> vignette.</p>
+\]</span> Thus, with <span class="math inline">\(v\)</span> as the type
+of <strong>curve</strong> or exponent, three options are possible: 1 =
+linear, 2 = quadratic, or 3 = cubic. The effect will be greater the
+higher the value of the parameter. In turn, the higher it is, the more
+complexity is added to the resolution of the resulting model and, for
+example, more likely it is to get solutions where all or almost all
+threats affecting a given features in a given site have been addressed.
+This <strong>curve</strong> parameter is built into
+<code>prioriactions</code> within the <code><a href="../reference/problem.html">problem()</a></code> function.
+Let’s see an example.</p>
+<p>To show the difference between both models of
+<strong>benefit</strong> calculation when working with binary
+intensities, we use two different curves (linear and cubic) employing
+the example available in the <a href="https://prioriactions.github.io/prioriactions/articles/prioriactions.html">Get
+started</a> vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load the prioriactions package</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://prioriactions.github.io/prioriactions/">prioriactions</a></span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_boundary_data</span>, <span class="va">sim_dist_features_data</span>, <span class="va">sim_dist_threats_data</span>,
-     <span class="va">sim_features_data</span>, <span class="va">sim_pu_data</span>, <span class="va">sim_sensitivity_data</span>, <span class="va">sim_threats_data</span><span class="op">)</span>
-
-<span class="co"># set monitoring costs to 0.1</span>
-<span class="va">sim_pu_data</span><span class="op">$</span><span class="va">monitoring_cost</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>
-
-<span class="co"># set recovery_targets to 15% of maximum</span>
-<span class="va">sim_features_data</span><span class="op">$</span><span class="va">target_recovery</span> <span class="op">&lt;-</span> <span class="fl">0.15</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">47</span>, <span class="fl">28</span>, <span class="fl">56</span>, <span class="fl">33</span><span class="op">)</span>
-
-<span class="co"># evaluate input data</span>
-<span class="va">b.binary_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>,
-                           features <span class="op">=</span> <span class="va">sim_features_data</span>,
-                           dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,
-                           threats <span class="op">=</span> <span class="va">sim_threats_data</span>,
-                           dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,
-                           sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>,
-                           boundary <span class="op">=</span> <span class="va">sim_boundary_data</span><span class="op">)</span>
-
-<span class="co"># create the mathematic model</span>
-<span class="va">c.binary_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.binary_base</span>,
-                         model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></code></pre>
-<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># load the prioriactions package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://prioriactions.github.io/prioriactions/">prioriactions</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_boundary_data</span>, <span class="va">sim_dist_features_data</span>, <span class="va">sim_dist_threats_data</span>,</span>
+<span>     <span class="va">sim_features_data</span>, <span class="va">sim_pu_data</span>, <span class="va">sim_sensitivity_data</span>, <span class="va">sim_threats_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># set monitoring costs to 0.1</span></span>
+<span><span class="va">sim_pu_data</span><span class="op">$</span><span class="va">monitoring_cost</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span></span>
+<span><span class="co"># set recovery_targets to 15% of maximum</span></span>
+<span><span class="va">sim_features_data</span><span class="op">$</span><span class="va">target_recovery</span> <span class="op">&lt;-</span> <span class="fl">0.15</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">47</span>, <span class="fl">28</span>, <span class="fl">56</span>, <span class="fl">33</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># evaluate input data</span></span>
+<span><span class="va">b.binary_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>, </span>
+<span>                           features <span class="op">=</span> <span class="va">sim_features_data</span>, </span>
+<span>                           dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>, </span>
+<span>                           threats <span class="op">=</span> <span class="va">sim_threats_data</span>, </span>
+<span>                           dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>, </span>
+<span>                           sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>, </span>
+<span>                           boundary <span class="op">=</span> <span class="va">sim_boundary_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create the mathematic model</span></span>
+<span><span class="va">c.binary_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.binary_base</span>, </span>
+<span>                         model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># solve the model</span>
-<span class="va">d.binary_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.binary_base</span>,
-                       solver <span class="op">=</span> <span class="st">"gurobi"</span>,
-                       verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                       output_file <span class="op">=</span> <span class="cn">FALSE</span>,
-                       cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span>
-<span class="co">## Model fingerprint: 0xda1a7bc4</span>
-<span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span>
-<span class="co">## Coefficient statistics:</span>
-<span class="co">##   Matrix range     [5e-01, 2e+00]</span>
-<span class="co">##   Objective range  [1e-01, 1e+01]</span>
-<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">##   RHS range        [4e+00, 8e+00]</span>
-<span class="co">## Found heuristic solution: objective 489.0000000</span>
-<span class="co">## Found heuristic solution: objective 146.6000000</span>
-<span class="co">## Presolve removed 262 rows and 319 columns</span>
-<span class="co">## Presolve time: 0.00s</span>
-<span class="co">## Presolved: 22 rows, 77 columns, 169 nonzeros</span>
-<span class="co">## Found heuristic solution: objective 50.6000000</span>
-<span class="co">## Variable types: 0 continuous, 77 integer (63 binary)</span>
-<span class="co">## </span>
-<span class="co">## Root relaxation: objective 3.415000e+01, 14 iterations, 0.00 seconds</span>
-<span class="co">## </span>
-<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">## </span>
-<span class="co">##      0     0   34.15000    0    5   50.60000   34.15000  32.5%     -    0s</span>
-<span class="co">## H    0     0                      35.3000000   34.15000  3.26%     -    0s</span>
-<span class="co">## *    0     0               0      34.4000000   34.40000  0.00%     -    0s</span>
-<span class="co">## </span>
-<span class="co">## Cutting planes:</span>
-<span class="co">##   Gomory: 1</span>
-<span class="co">##   Cover: 4</span>
-<span class="co">##   MIR: 2</span>
-<span class="co">## </span>
-<span class="co">## Explored 1 nodes (22 simplex iterations) in 0.00 seconds</span>
-<span class="co">## Thread count was 2 (of 4 available processors)</span>
-<span class="co">## </span>
-<span class="co">## Solution count 5: 34.4 35.3 50.6 ... 489</span>
-<span class="co">## </span>
-<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
-<span class="co">## Best objective 3.440000000000e+01, best bound 3.440000000000e+01, gap 0.0000%</span></code></pre>
-<p>By using <code><a href="../reference/getCost.html">getCost()</a></code> we can explore the total cost of the solution and split into actions. We obtain a total cost of 34.4, divided into 1.4 for monitoring, 14 in actions to abated the threat 1 and another 19 in actions to abated the threat 2.</p>
+<code class="sourceCode R"><span><span class="co"># solve the model</span></span>
+<span><span class="va">d.binary_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.binary_base</span>, </span>
+<span>                       solver <span class="op">=</span> <span class="st">"gurobi"</span>, </span>
+<span>                       verbose <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                       output_file <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                       cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span></span>
+<span><span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span></span>
+<span><span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span></span>
+<span><span class="co">## Model fingerprint: 0xda1a7bc4</span></span>
+<span><span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span></span>
+<span><span class="co">## Coefficient statistics:</span></span>
+<span><span class="co">##   Matrix range     [5e-01, 2e+00]</span></span>
+<span><span class="co">##   Objective range  [1e-01, 1e+01]</span></span>
+<span><span class="co">##   Bounds range     [1e+00, 1e+00]</span></span>
+<span><span class="co">##   RHS range        [4e+00, 8e+00]</span></span>
+<span><span class="co">## Found heuristic solution: objective 489.0000000</span></span>
+<span><span class="co">## Found heuristic solution: objective 146.6000000</span></span>
+<span><span class="co">## Presolve removed 262 rows and 319 columns</span></span>
+<span><span class="co">## Presolve time: 0.00s</span></span>
+<span><span class="co">## Presolved: 22 rows, 77 columns, 169 nonzeros</span></span>
+<span><span class="co">## Found heuristic solution: objective 50.6000000</span></span>
+<span><span class="co">## Variable types: 0 continuous, 77 integer (63 binary)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Root relaxation: objective 3.415000e+01, 14 iterations, 0.00 seconds</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span></span>
+<span><span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      0     0   34.15000    0    5   50.60000   34.15000  32.5%     -    0s</span></span>
+<span><span class="co">## H    0     0                      35.3000000   34.15000  3.26%     -    0s</span></span>
+<span><span class="co">## *    0     0               0      34.4000000   34.40000  0.00%     -    0s</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Cutting planes:</span></span>
+<span><span class="co">##   Gomory: 1</span></span>
+<span><span class="co">##   Cover: 4</span></span>
+<span><span class="co">##   MIR: 2</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Explored 1 nodes (22 simplex iterations) in 0.00 seconds</span></span>
+<span><span class="co">## Thread count was 2 (of 4 available processors)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Solution count 5: 34.4 35.3 50.6 ... 489</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Optimal solution found (tolerance 0.00e+00)</span></span>
+<span><span class="co">## Best objective 3.440000000000e+01, best bound 3.440000000000e+01, gap 0.0000%</span></span></code></pre>
+<p>By using <code><a href="../reference/getCost.html">getCost()</a></code> we can explore the total cost of the
+solution and split into actions. We obtain a total cost of 34.4, divided
+into 1.4 for monitoring, 14 in actions to abated the threat 1 and
+another 19 in actions to abated the threat 2.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">d.binary_base</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   solution_name monitoring threat_1 threat_2</span>
-<span class="co">## 1           sol        1.4       14       19</span></code></pre>
-<p>Now by the <code><a href="../reference/getSolutionBenefit.html">getSolutionBenefit()</a></code> function, we can obtain how the benefits are distributed for the different features. Notice that we use the <code>type = "local"</code> argument to obtain the benefits per unit and feature.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">d.binary_base</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   solution_name monitoring threat_1 threat_2</span></span>
+<span><span class="co">## 1           sol        1.4       14       19</span></span></code></pre>
+<p>Now by the <code><a href="../reference/getSolutionBenefit.html">getSolutionBenefit()</a></code> function, we can obtain
+how the benefits are distributed for the different features. Notice that
+we use the <code>type = "local"</code> argument to obtain the benefits
+per unit and feature.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get benefits of solution</span>
-<span class="va">local_benefits</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSolutionBenefit.html">getSolutionBenefit</a></span><span class="op">(</span><span class="va">d.binary_base</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span>
-
-<span class="co"># plot local benefits</span>
-<span class="va">local_benefits</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">local_benefits</span>, <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,value.var <span class="op">=</span> <span class="st">"benefit.total"</span>, fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-
-<span class="co">#loead raster package</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span>
-
-<span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">10</span>, nrow<span class="op">=</span><span class="fl">10</span>, xmn<span class="op">=</span><span class="fl">0</span>, xmx<span class="op">=</span><span class="fl">10</span>, ymn<span class="op">=</span><span class="fl">0</span>, ymx<span class="op">=</span><span class="fl">10</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-
-<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`1`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`2`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`3`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`4`</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"feature 1"</span>, <span class="st">"feature 2"</span>, <span class="st">"feature 3"</span>, <span class="st">"feature 4"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># get benefits of solution</span></span>
+<span><span class="va">local_benefits</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSolutionBenefit.html">getSolutionBenefit</a></span><span class="op">(</span><span class="va">d.binary_base</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot local benefits</span></span>
+<span><span class="va">local_benefits</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">local_benefits</span>, <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,value.var <span class="op">=</span> <span class="st">"benefit.total"</span>, fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#loead raster package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">10</span>, nrow<span class="op">=</span><span class="fl">10</span>, xmn<span class="op">=</span><span class="fl">0</span>, xmx<span class="op">=</span><span class="fl">10</span>, ymn<span class="op">=</span><span class="fl">0</span>, ymx<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`1`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`2`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`3`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`4`</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"feature 1"</span>, <span class="st">"feature 2"</span>, <span class="st">"feature 3"</span>, <span class="st">"feature 4"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
 <p><img src="figures/S3-1.png"></p>
-<p>The second model use a parameter of <code>curve = 3</code> in its construction, and therefore, the calculate of probability of persistence is not proportional.</p>
+<p>The second model use a parameter of <code>curve = 3</code> in its
+construction, and therefore, the calculate of probability of persistence
+is not proportional.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">c.binary_curve</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.binary_base</span>,
-                   model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
-                   curve <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></code></pre>
-<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
+<code class="sourceCode R"><span><span class="va">c.binary_curve</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.binary_base</span>, </span>
+<span>                   model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>, </span>
+<span>                   curve <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">d.binary_curve</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.binary_curve</span>,
-                 solver <span class="op">=</span> <span class="st">"gurobi"</span>,
-                 verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                 output_file <span class="op">=</span> <span class="cn">FALSE</span>,
-                 cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">## Optimize a model with 284 rows, 572 columns and 785 nonzeros</span>
-<span class="co">## Model fingerprint: 0x6afe5081</span>
-<span class="co">## Model has 176 general constraints</span>
-<span class="co">## Variable types: 352 continuous, 220 integer (220 binary)</span>
-<span class="co">## Coefficient statistics:</span>
-<span class="co">##   Matrix range     [5e-01, 2e+00]</span>
-<span class="co">##   Objective range  [1e-01, 1e+01]</span>
-<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">##   RHS range        [4e+00, 8e+00]</span>
-<span class="co">## Found heuristic solution: objective 489.0000000</span>
-<span class="co">## Presolve added 242 rows and 557 columns</span>
-<span class="co">## Presolve time: 0.01s</span>
-<span class="co">## Presolved: 526 rows, 1129 columns, 2749 nonzeros</span>
-<span class="co">## Presolved model has 164 SOS constraint(s)</span>
-<span class="co">## Found heuristic solution: objective 488.0000000</span>
-<span class="co">## Variable types: 984 continuous, 145 integer (140 binary)</span>
-<span class="co">## </span>
-<span class="co">## Root relaxation: objective 3.285500e+01, 308 iterations, 0.00 seconds</span>
-<span class="co">## </span>
-<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">## </span>
-<span class="co">##      0     0   32.85500    0   22  488.00000   32.85500  93.3%     -    0s</span>
-<span class="co">## H    0     0                     457.6000000   32.85500  92.8%     -    0s</span>
-<span class="co">##      0     0   33.07500    0   19  457.60000   33.07500  92.8%     -    0s</span>
-<span class="co">## H    0     0                      51.5000000   33.07500  35.8%     -    0s</span>
-<span class="co">##      0     0   33.11500    0   20   51.50000   33.11500  35.7%     -    0s</span>
-<span class="co">##      0     0   33.12490    0   32   51.50000   33.12490  35.7%     -    0s</span>
-<span class="co">##      0     0   33.13125    0   34   51.50000   33.13125  35.7%     -    0s</span>
-<span class="co">## H    0     0                      41.3000000   33.13125  19.8%     -    0s</span>
-<span class="co">##      0     0   33.13333    0   27   41.30000   33.13333  19.8%     -    0s</span>
-<span class="co">##      0     0   33.13333    0   27   41.30000   33.13333  19.8%     -    0s</span>
-<span class="co">##      0     0   33.23750    0   28   41.30000   33.23750  19.5%     -    0s</span>
-<span class="co">##      0     0   33.24750    0   18   41.30000   33.24750  19.5%     -    0s</span>
-<span class="co">##      0     0   33.24750    0   17   41.30000   33.24750  19.5%     -    0s</span>
-<span class="co">##      0     0   33.24750    0   22   41.30000   33.24750  19.5%     -    0s</span>
-<span class="co">##      0     0   33.24750    0   22   41.30000   33.24750  19.5%     -    0s</span>
-<span class="co">##      0     2   33.26000    0   22   41.30000   33.26000  19.5%     -    0s</span>
-<span class="co">## H  109    80                      39.3000000   35.47635  9.73%   3.6    0s</span>
-<span class="co">##  37059  1687   38.81870   55    4   39.30000   38.81870  1.22%   2.8    5s</span>
-<span class="co">## </span>
-<span class="co">## Cutting planes:</span>
-<span class="co">##   Gomory: 1</span>
-<span class="co">##   MIR: 2</span>
-<span class="co">##   Flow cover: 2</span>
-<span class="co">## </span>
-<span class="co">## Explored 48097 nodes (128726 simplex iterations) in 5.95 seconds</span>
-<span class="co">## Thread count was 2 (of 4 available processors)</span>
-<span class="co">## </span>
-<span class="co">## Solution count 6: 39.3 41.3 51.5 ... 489</span>
-<span class="co">## </span>
-<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
-<span class="co">## Warning: max constraint violation (1.1895e-02) exceeds tolerance</span>
-<span class="co">## Warning: max general constraint violation (1.1895e-02) exceeds tolerance</span>
-<span class="co">##          (model may be infeasible or unbounded - try turning presolve off)</span>
-<span class="co">## Best objective 3.930000000000e+01, best bound 3.930000000000e+01, gap 0.0000%</span></code></pre>
-<p>Note that we obtain a total cost of 39.3, i.e. a higher cost than the when we use a linear curve. By using <code><a href="../reference/getCost.html">getCost()</a></code>, we see that there are fewer units where actions are carried out, which suggests that more actions are being carried out in less sites.</p>
+<code class="sourceCode R"><span><span class="va">d.binary_curve</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.binary_curve</span>, </span>
+<span>                 solver <span class="op">=</span> <span class="st">"gurobi"</span>, </span>
+<span>                 verbose <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                 output_file <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                 cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span></span>
+<span><span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span></span>
+<span><span class="co">## Optimize a model with 284 rows, 572 columns and 785 nonzeros</span></span>
+<span><span class="co">## Model fingerprint: 0x6afe5081</span></span>
+<span><span class="co">## Model has 176 general constraints</span></span>
+<span><span class="co">## Variable types: 352 continuous, 220 integer (220 binary)</span></span>
+<span><span class="co">## Coefficient statistics:</span></span>
+<span><span class="co">##   Matrix range     [5e-01, 2e+00]</span></span>
+<span><span class="co">##   Objective range  [1e-01, 1e+01]</span></span>
+<span><span class="co">##   Bounds range     [1e+00, 1e+00]</span></span>
+<span><span class="co">##   RHS range        [4e+00, 8e+00]</span></span>
+<span><span class="co">## Found heuristic solution: objective 489.0000000</span></span>
+<span><span class="co">## Presolve added 242 rows and 557 columns</span></span>
+<span><span class="co">## Presolve time: 0.01s</span></span>
+<span><span class="co">## Presolved: 526 rows, 1129 columns, 2749 nonzeros</span></span>
+<span><span class="co">## Presolved model has 164 SOS constraint(s)</span></span>
+<span><span class="co">## Found heuristic solution: objective 488.0000000</span></span>
+<span><span class="co">## Variable types: 984 continuous, 145 integer (140 binary)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Root relaxation: objective 3.285500e+01, 308 iterations, 0.00 seconds</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span></span>
+<span><span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      0     0   32.85500    0   22  488.00000   32.85500  93.3%     -    0s</span></span>
+<span><span class="co">## H    0     0                     457.6000000   32.85500  92.8%     -    0s</span></span>
+<span><span class="co">##      0     0   33.07500    0   19  457.60000   33.07500  92.8%     -    0s</span></span>
+<span><span class="co">## H    0     0                      51.5000000   33.07500  35.8%     -    0s</span></span>
+<span><span class="co">##      0     0   33.11500    0   20   51.50000   33.11500  35.7%     -    0s</span></span>
+<span><span class="co">##      0     0   33.12490    0   32   51.50000   33.12490  35.7%     -    0s</span></span>
+<span><span class="co">##      0     0   33.13125    0   34   51.50000   33.13125  35.7%     -    0s</span></span>
+<span><span class="co">## H    0     0                      41.3000000   33.13125  19.8%     -    0s</span></span>
+<span><span class="co">##      0     0   33.13333    0   27   41.30000   33.13333  19.8%     -    0s</span></span>
+<span><span class="co">##      0     0   33.13333    0   27   41.30000   33.13333  19.8%     -    0s</span></span>
+<span><span class="co">##      0     0   33.23750    0   28   41.30000   33.23750  19.5%     -    0s</span></span>
+<span><span class="co">##      0     0   33.24750    0   18   41.30000   33.24750  19.5%     -    0s</span></span>
+<span><span class="co">##      0     0   33.24750    0   17   41.30000   33.24750  19.5%     -    0s</span></span>
+<span><span class="co">##      0     0   33.24750    0   22   41.30000   33.24750  19.5%     -    0s</span></span>
+<span><span class="co">##      0     0   33.24750    0   22   41.30000   33.24750  19.5%     -    0s</span></span>
+<span><span class="co">##      0     2   33.26000    0   22   41.30000   33.26000  19.5%     -    0s</span></span>
+<span><span class="co">## H  109    80                      39.3000000   35.47635  9.73%   3.6    0s</span></span>
+<span><span class="co">##  37059  1687   38.81870   55    4   39.30000   38.81870  1.22%   2.8    5s</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Cutting planes:</span></span>
+<span><span class="co">##   Gomory: 1</span></span>
+<span><span class="co">##   MIR: 2</span></span>
+<span><span class="co">##   Flow cover: 2</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Explored 48097 nodes (128726 simplex iterations) in 5.95 seconds</span></span>
+<span><span class="co">## Thread count was 2 (of 4 available processors)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Solution count 6: 39.3 41.3 51.5 ... 489</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Optimal solution found (tolerance 0.00e+00)</span></span>
+<span><span class="co">## Warning: max constraint violation (1.1895e-02) exceeds tolerance</span></span>
+<span><span class="co">## Warning: max general constraint violation (1.1895e-02) exceeds tolerance</span></span>
+<span><span class="co">##          (model may be infeasible or unbounded - try turning presolve off)</span></span>
+<span><span class="co">## Best objective 3.930000000000e+01, best bound 3.930000000000e+01, gap 0.0000%</span></span></code></pre>
+<p>Note that we obtain a total cost of 39.3, i.e. a higher cost than the
+when we use a linear curve. By using <code><a href="../reference/getCost.html">getCost()</a></code>, we see that
+there are fewer units where actions are carried out, which suggests that
+more actions are being carried out in less sites.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">d.binary_curve</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   solution_name monitoring threat_1 threat_2</span>
-<span class="co">## 1           sol        1.3       14       24</span></code></pre>
-<p>In the same way as in the previous model, using the <code><a href="../reference/getSolutionBenefit.html">getSolutionBenefit()</a></code> function, we can obtain how the benefits are distributed for the different features:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">d.binary_curve</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   solution_name monitoring threat_1 threat_2</span></span>
+<span><span class="co">## 1           sol        1.3       14       24</span></span></code></pre>
+<p>In the same way as in the previous model, using the
+<code><a href="../reference/getSolutionBenefit.html">getSolutionBenefit()</a></code> function, we can obtain how the
+benefits are distributed for the different features:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get benefits of solution</span>
-<span class="va">local_benefits.curve</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSolutionBenefit.html">getSolutionBenefit</a></span><span class="op">(</span><span class="va">d.binary_curve</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span>
-
-<span class="co"># plot local benefits</span>
-<span class="va">local_benefits.curve</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">local_benefits.curve</span>, <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,value.var <span class="op">=</span> <span class="st">"benefit.total"</span>, fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.curve</span><span class="op">$</span><span class="va">`1`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.curve</span><span class="op">$</span><span class="va">`2`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.curve</span><span class="op">$</span><span class="va">`3`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.curve</span><span class="op">$</span><span class="va">`4`</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># get benefits of solution</span></span>
+<span><span class="va">local_benefits.curve</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSolutionBenefit.html">getSolutionBenefit</a></span><span class="op">(</span><span class="va">d.binary_curve</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot local benefits</span></span>
+<span><span class="va">local_benefits.curve</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">local_benefits.curve</span>, <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,value.var <span class="op">=</span> <span class="st">"benefit.total"</span>, fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.curve</span><span class="op">$</span><span class="va">`1`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.curve</span><span class="op">$</span><span class="va">`2`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.curve</span><span class="op">$</span><span class="va">`3`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.curve</span><span class="op">$</span><span class="va">`4`</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
 <p><img src="figures/S6-1.png"></p>
-<p>As we can see, for the base case, features 1 and 3 add to the total benefit sites where their <strong>probability of persistence</strong> is 0.5. Whereas when we use <code>curve = 3</code>, all but one site that contribute to reaching the target have a probability value of 1. This effect will be more evident when there are more threats in the planning exercise.</p>
+<p>As we can see, for the base case, features 1 and 3 add to the total
+benefit sites where their <strong>probability of persistence</strong> is
+0.5. Whereas when we use <code>curve = 3</code>, all but one site that
+contribute to reaching the target have a probability value of 1. This
+effect will be more evident when there are more threats in the planning
+exercise.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="calculating-benefits-when-threats-are-continuous">2) Calculating benefits when threats are continuous<a class="anchor" aria-label="anchor" href="#calculating-benefits-when-threats-are-continuous"></a>
 </h2>
-<p>So far we have worked with two important premises: 1) that threats exist or not (presence/absence) and 2) that all features are equally sensitive to threats. To make these assumptions more flexible, we introduce the possibility of using <strong>threat intensities</strong> (in the same way that we use <span class="math inline">\(r_{is}\)</span> for features) and, the relationship of these intensities with the <strong>probability of persistence</strong> of the features (through <strong>response curves</strong>). These response curves can be <em>fitted</em> by a piece-wise function by means of four parameters within the <code>sensitivities</code> input data, where:</p>
+<p>So far we have worked with two important premises: 1) that threats
+exist or not (presence/absence) and 2) that all features are equally
+sensitive to threats. To make these assumptions more flexible, we
+introduce the possibility of using <strong>threat intensities</strong>
+(in the same way that we use <span class="math inline">\(r_{is}\)</span>
+for features) and, the relationship of these intensities with the
+<strong>probability of persistence</strong> of the features (through
+<strong>response curves</strong>). These response curves can be
+<em>fitted</em> by a piece-wise function by means of four parameters
+within the <code>sensitivities</code> input data, where:</p>
 <ul>
-<li><p><em>a</em> : minimum intensity of the threat at which the features probability of persistence starts to decline.</p></li>
-<li><p><em>b</em> : value of intensity of the threat over which the feature has a probability of persistence of 0.</p></li>
-<li><p><em>c</em> : minimum probability of persistence of a features when a threat reaches its maximum intensity value.</p></li>
-<li><p><em>d</em> : maximum probability of persistence of a features in absence of a given threat.</p></li>
+<li><p><em>a</em> : minimum intensity of the threat at which the
+features probability of persistence starts to decline.</p></li>
+<li><p><em>b</em> : value of intensity of the threat over which the
+feature has a probability of persistence of 0.</p></li>
+<li><p><em>c</em> : minimum probability of persistence of a features
+when a threat reaches its maximum intensity value.</p></li>
+<li><p><em>d</em> : maximum probability of persistence of a features in
+absence of a given threat.</p></li>
 </ul>
 <p><img src="figures/sensitivities1.png" style="width:60.0%"></p>
-<p>Where the greater the intensity of the threat, lower <strong>probability of persistence</strong> of the feature. Thus, with the definition of these four parameters mentioned above, different response curves can be <em>fitted</em>:</p>
+<p>Where the greater the intensity of the threat, lower
+<strong>probability of persistence</strong> of the feature. Thus, with
+the definition of these four parameters mentioned above, different
+response curves can be <em>fitted</em>:</p>
 <p><img src="figures/sensitivities2.jpg"></p>
-<p>The latter are examples of the curves that could be fitted with these parameters; that can be customized by users according to their needs by using the four parameters detailed above. Note that each of the curves is a relationship between a feature and a particular threat, but what happens to the <strong>probability of persistence</strong> of a feature when it coexists with more than one threats?.</p>
-<p>We can define the <strong>probability of persistence</strong> of feature <span class="math inline">\(s\)</span> in the unit <span class="math inline">\(i\)</span> as a measure of the individual <strong>probability of persistence</strong> of feature <span class="math inline">\(s\)</span> with respect to threat <span class="math inline">\(k\)</span> in unit <span class="math inline">\(i\)</span> (<span class="math inline">\(p_{isk}\)</span>), i.e.:</p>
+<p>The latter are examples of the curves that could be fitted with these
+parameters; that can be customized by users according to their needs by
+using the four parameters detailed above. Note that each of the curves
+is a relationship between a feature and a particular threat, but what
+happens to the <strong>probability of persistence</strong> of a feature
+when it coexists with more than one threats?.</p>
+<p>We can define the <strong>probability of persistence</strong> of
+feature <span class="math inline">\(s\)</span> in the unit <span class="math inline">\(i\)</span> as a measure of the individual
+<strong>probability of persistence</strong> of feature <span class="math inline">\(s\)</span> with respect to threat <span class="math inline">\(k\)</span> in unit <span class="math inline">\(i\)</span> (<span class="math inline">\(p_{isk}\)</span>), i.e.:</p>
 <p><span class="math display">\[
 p_{is} = \sum_{k \in K_i \cap K_s}\gamma_{isk} p_{isk}
 \]</span></p>
-<p>With <span class="math inline">\(\sum_{k \in |K_i \cap K_s|}\gamma_{isk} = 1\)</span> and <span class="math inline">\(\gamma_{isk} = \gamma_{isk'} \forall k, k' \in |K_i \cap K_s|\)</span>.</p>
-<p>The <code>prioriactions</code> package internally calculates the values of <span class="math inline">\(\gamma_{isk}\)</span> reflecting the relative importance of each threat (considering its potential danger) when calculating the probability of persistence of each feature.</p>
-<p>Note the <strong>probability of persistence</strong> of a feature could be different from zero even if no actions are taken on it (depending on the type of <strong>response curve</strong>). This implies that doing nothing (no actions) in a unit could lead to, although small, benefits. These benefits are not considered to raise the targets regardless of the planning objective.</p>
-<p>Finally, the <strong>probability of persistence</strong> resulting can be calculated by:</p>
+<p>With <span class="math inline">\(\sum_{k \in |K_i \cap
+K_s|}\gamma_{isk} = 1\)</span> and <span class="math inline">\(\gamma_{isk} = \gamma_{isk'} \forall k, k'
+\in |K_i \cap K_s|\)</span>.</p>
+<p>The <code>prioriactions</code> package internally calculates the
+values of <span class="math inline">\(\gamma_{isk}\)</span> reflecting
+the relative importance of each threat (considering its potential
+danger) when calculating the probability of persistence of each
+feature.</p>
+<p>Note the <strong>probability of persistence</strong> of a feature
+could be different from zero even if no actions are taken on it
+(depending on the type of <strong>response curve</strong>). This implies
+that doing nothing (no actions) in a unit could lead to, although small,
+benefits. These benefits are not considered to raise the targets
+regardless of the planning objective.</p>
+<p>Finally, the <strong>probability of persistence</strong> resulting
+can be calculated by:</p>
 <p><span class="math display">\[
-p_{is} = \frac{{\sum_{k \in K_i \cap K_s: a_{sk} &lt;= h_{ik} &lt;= b_{sk}} \frac{x_{ik} (h_{ik} - a_{sk})(d_{sk} - c_{sk})}{b_{sk} - a_{sk}}
-(1 - \frac{c_{sk}(h_{ik} - a_{sk}) - d_{sk}(h_{ik} - b_{sk})}{b_{sk} - a_{sk}}+ \sum_{k \in K_i \cap K_s: h_{ik} &gt; b_{sk}} x_{ik}(1- c_{sk})(d_{sk} - c_{sk})}}{
-{\sum_{k \in K_i \cap K_s: h_{ik} &lt; a_{sk}}  1 - d_{sk}} + \sum_{k \in K_i \cap K_s: a_{sk} &lt;= h_{ik} &lt;= b_{sk}} 1 - \frac{c_{sk}(h_{ik} - a_{sk}) - d_{sk}(h_{ik} - b_{sk})}{b_{sk} - a_{sk}}+ \sum_{k in K_i \cap K_s: h_{ik} &gt; b_{sk}} 1 - c_{sk}}
-\]</span> Where <span class="math inline">\(h_{ik}\)</span> is the intensity of the threat <span class="math inline">\(k\)</span> in the unit <span class="math inline">\(i\)</span>.</p>
+p_{is} = \frac{{\sum_{k \in K_i \cap K_s: a_{sk} &lt;= h_{ik} &lt;=
+b_{sk}} \frac{x_{ik} (h_{ik} - a_{sk})(d_{sk} - c_{sk})}{b_{sk} -
+a_{sk}}
+(1 - \frac{c_{sk}(h_{ik} - a_{sk}) - d_{sk}(h_{ik} - b_{sk})}{b_{sk} -
+a_{sk}}+ \sum_{k \in K_i \cap K_s: h_{ik} &gt; b_{sk}} x_{ik}(1-
+c_{sk})(d_{sk} - c_{sk})}}{
+{\sum_{k \in K_i \cap K_s: h_{ik} &lt; a_{sk}}  1 - d_{sk}} + \sum_{k
+\in K_i \cap K_s: a_{sk} &lt;= h_{ik} &lt;= b_{sk}} 1 -
+\frac{c_{sk}(h_{ik} - a_{sk}) - d_{sk}(h_{ik} - b_{sk})}{b_{sk} -
+a_{sk}}+ \sum_{k in K_i \cap K_s: h_{ik} &gt; b_{sk}} 1 - c_{sk}}
+\]</span> Where <span class="math inline">\(h_{ik}\)</span> is the
+intensity of the threat <span class="math inline">\(k\)</span> in the
+unit <span class="math inline">\(i\)</span>.</p>
 <div class="section level3">
 <h3 id="example-with-continuous-intensities-of-threats">Example with continuous intensities of threats<a class="anchor" aria-label="anchor" href="#example-with-continuous-intensities-of-threats"></a>
 </h3>
-<p>In order to demonstrate the use of the package when we have continuous values of intensities, we use the same example considered for the models with binary threat intensities. Note that both examples will not be compared due to differences in potential benefits and therefore in the targets used. Also, we assume that we only have information about the sensitivity of feature 1 to both threats, whose <strong>response curves</strong> have been fitted as follow:</p>
+<p>In order to demonstrate the use of the package when we have
+continuous values of intensities, we use the same example considered for
+the models with binary threat intensities. Note that both examples will
+not be compared due to differences in potential benefits and therefore
+in the targets used. Also, we assume that we only have information about
+the sensitivity of feature 1 to both threats, whose <strong>response
+curves</strong> have been fitted as follow:</p>
 <p><img src="figures/sensitivities3.jpg"></p>
-<p>Note the feature is sensitive to any intensity of threat-1, while this is less sensitive to threat 2, as its <strong>probability of persistence</strong> remains invariant until the threat reaches high intensity values.</p>
-<p>First, we add the parameters <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span> to the input of sensitivities, leaving the measures that we do not know as <code>NA</code>. <code>pioriractions</code> is responsible for assuming them by their <strong>default</strong> values; for example, for parameter <span class="math inline">\(a\)</span>, it is considered that the values not provided as 0, for <span class="math inline">\(b\)</span>, the value will be the maximum intensity of said threat in the case of study, <span class="math inline">\(c\)</span> will be 0 and <span class="math inline">\(d\)</span> 1. In addition, we simulate the intensity of threats continuously using the <code><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif()</a></code> function; values between 0 and 150 for threat 1 and values between 0 and 1 for threat 2.</p>
+<p>Note the feature is sensitive to any intensity of threat-1, while
+this is less sensitive to threat 2, as its <strong>probability of
+persistence</strong> remains invariant until the threat reaches high
+intensity values.</p>
+<p>First, we add the parameters <span class="math inline">\(a\)</span>,
+<span class="math inline">\(b\)</span> to the input of sensitivities,
+leaving the measures that we do not know as <code>NA</code>.
+<code>pioriractions</code> is responsible for assuming them by their
+<strong>default</strong> values; for example, for parameter <span class="math inline">\(a\)</span>, it is considered that the values not
+provided as 0, for <span class="math inline">\(b\)</span>, the value
+will be the maximum intensity of said threat in the case of study, <span class="math inline">\(c\)</span> will be 0 and <span class="math inline">\(d\)</span> 1. In addition, we simulate the
+intensity of threats continuously using the <code><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif()</a></code>
+function; values between 0 and 150 for threat 1 and values between 0 and
+1 for threat 2.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># set a,b,c and d parameters</span>
-<span class="va">sim_sensitivity_data</span><span class="op">$</span><span class="va">a</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">0.8</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>
-<span class="va">sim_sensitivity_data</span><span class="op">$</span><span class="va">b</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">1</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>
-<span class="va">sim_sensitivity_data</span><span class="op">$</span><span class="va">c</span> <span class="op">=</span> <span class="fl">0.0</span>
-<span class="va">sim_sensitivity_data</span><span class="op">$</span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">0.6</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>
-
-<span class="co"># set continuous intensities</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-
-<span class="va">sim_dist_threats_data</span><span class="op">$</span><span class="va">amount</span><span class="op">[</span><span class="va">sim_dist_threats_data</span><span class="op">$</span><span class="va">threat</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">57</span>, <span class="fl">0</span>, <span class="fl">123</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>
-<span class="va">sim_dist_threats_data</span><span class="op">$</span><span class="va">amount</span><span class="op">[</span><span class="va">sim_dist_threats_data</span><span class="op">$</span><span class="va">threat</span> <span class="op">==</span> <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">63</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>
-
-<span class="co"># evaluate input data</span>
-<span class="va">b.continuous</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>,
-                           features <span class="op">=</span> <span class="va">sim_features_data</span>,
-                           dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,
-                           threats <span class="op">=</span> <span class="va">sim_threats_data</span>,
-                           dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,
-                           sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>,
-                           boundary <span class="op">=</span> <span class="va">sim_boundary_data</span><span class="op">)</span>
-
-<span class="co"># set the target of recovery to 15%</span>
-<span class="va">max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">b.continuous</span><span class="op">)</span>
-<span class="va">sim_features_data</span><span class="op">$</span><span class="va">target_recovery</span> <span class="op">&lt;-</span> <span class="fl">0.15</span> <span class="op">*</span> <span class="va">max</span><span class="op">$</span><span class="va">maximum.recovery.benefit</span>
-
-<span class="co"># evaluate input data</span>
-<span class="va">b.continuous</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>,
-                           features <span class="op">=</span> <span class="va">sim_features_data</span>,
-                           dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,
-                           threats <span class="op">=</span> <span class="va">sim_threats_data</span>,
-                           dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,
-                           sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>,
-                           boundary <span class="op">=</span> <span class="va">sim_boundary_data</span><span class="op">)</span>
-
-<span class="co"># create the mathematic model</span>
-<span class="va">c.continuous</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.continuous</span>,
-                         model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></code></pre>
-<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># set a,b,c and d parameters</span></span>
+<span><span class="va">sim_sensitivity_data</span><span class="op">$</span><span class="va">a</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">0.8</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="va">sim_sensitivity_data</span><span class="op">$</span><span class="va">b</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">1</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="va">sim_sensitivity_data</span><span class="op">$</span><span class="va">c</span> <span class="op">=</span> <span class="fl">0.0</span></span>
+<span><span class="va">sim_sensitivity_data</span><span class="op">$</span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">0.6</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># set continuous intensities</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sim_dist_threats_data</span><span class="op">$</span><span class="va">amount</span><span class="op">[</span><span class="va">sim_dist_threats_data</span><span class="op">$</span><span class="va">threat</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">57</span>, <span class="fl">0</span>, <span class="fl">123</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">sim_dist_threats_data</span><span class="op">$</span><span class="va">amount</span><span class="op">[</span><span class="va">sim_dist_threats_data</span><span class="op">$</span><span class="va">threat</span> <span class="op">==</span> <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">63</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># evaluate input data</span></span>
+<span><span class="va">b.continuous</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>, </span>
+<span>                           features <span class="op">=</span> <span class="va">sim_features_data</span>, </span>
+<span>                           dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>, </span>
+<span>                           threats <span class="op">=</span> <span class="va">sim_threats_data</span>, </span>
+<span>                           dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>, </span>
+<span>                           sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>, </span>
+<span>                           boundary <span class="op">=</span> <span class="va">sim_boundary_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># set the target of recovery to 15%</span></span>
+<span><span class="va">max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">b.continuous</span><span class="op">)</span></span>
+<span><span class="va">sim_features_data</span><span class="op">$</span><span class="va">target_recovery</span> <span class="op">&lt;-</span> <span class="fl">0.15</span> <span class="op">*</span> <span class="va">max</span><span class="op">$</span><span class="va">maximum.recovery.benefit</span></span>
+<span></span>
+<span><span class="co"># evaluate input data</span></span>
+<span><span class="va">b.continuous</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>, </span>
+<span>                           features <span class="op">=</span> <span class="va">sim_features_data</span>, </span>
+<span>                           dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>, </span>
+<span>                           threats <span class="op">=</span> <span class="va">sim_threats_data</span>, </span>
+<span>                           dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>, </span>
+<span>                           sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>, </span>
+<span>                           boundary <span class="op">=</span> <span class="va">sim_boundary_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create the mathematic model</span></span>
+<span><span class="va">c.continuous</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b.continuous</span>, </span>
+<span>                         model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># solve the model</span>
-<span class="va">d.continuous</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.continuous</span>,
-                       solver <span class="op">=</span> <span class="st">"gurobi"</span>,
-                       verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                       output_file <span class="op">=</span> <span class="cn">FALSE</span>,
-                       cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">## Optimize a model with 284 rows, 396 columns and 766 nonzeros</span>
-<span class="co">## Model fingerprint: 0xfea67198</span>
-<span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span>
-<span class="co">## Coefficient statistics:</span>
-<span class="co">##   Matrix range     [2e-04, 2e+00]</span>
-<span class="co">##   Objective range  [1e-01, 1e+01]</span>
-<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">##   RHS range        [2e+00, 5e+00]</span>
-<span class="co">## Found heuristic solution: objective 153.7000000</span>
-<span class="co">## Presolve removed 250 rows and 248 columns</span>
-<span class="co">## Presolve time: 0.00s</span>
-<span class="co">## Presolved: 34 rows, 148 columns, 278 nonzeros</span>
-<span class="co">## Found heuristic solution: objective 42.4000000</span>
-<span class="co">## Variable types: 0 continuous, 148 integer (146 binary)</span>
-<span class="co">## </span>
-<span class="co">## Root relaxation: objective 2.011896e+01, 17 iterations, 0.00 seconds</span>
-<span class="co">## </span>
-<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">## </span>
-<span class="co">##      0     0   20.11896    0    9   42.40000   20.11896  52.5%     -    0s</span>
-<span class="co">## H    0     0                      29.1000000   20.11896  30.9%     -    0s</span>
-<span class="co">## H    0     0                      21.9000000   20.11896  8.13%     -    0s</span>
-<span class="co">## H    0     0                      21.8000000   20.11896  7.71%     -    0s</span>
-<span class="co">##      0     0   20.82302    0    3   21.80000   20.82302  4.48%     -    0s</span>
-<span class="co">##      0     0   20.91403    0    3   21.80000   20.91403  4.06%     -    0s</span>
-<span class="co">##      0     0   21.21879    0    4   21.80000   21.21879  2.67%     -    0s</span>
-<span class="co">##      0     0   21.47599    0    5   21.80000   21.47599  1.49%     -    0s</span>
-<span class="co">##      0     0   21.53170    0    5   21.80000   21.53170  1.23%     -    0s</span>
-<span class="co">##      0     0   21.54367    0    6   21.80000   21.54367  1.18%     -    0s</span>
-<span class="co">##      0     0   21.58911    0    6   21.80000   21.58911  0.97%     -    0s</span>
-<span class="co">##      0     0   21.59162    0    7   21.80000   21.59162  0.96%     -    0s</span>
-<span class="co">##      0     0   21.59578    0    8   21.80000   21.59578  0.94%     -    0s</span>
-<span class="co">##      0     0   21.61294    0    8   21.80000   21.61294  0.86%     -    0s</span>
-<span class="co">##      0     0     cutoff    0        21.80000   21.80000  0.00%     -    0s</span>
-<span class="co">## </span>
-<span class="co">## Cutting planes:</span>
-<span class="co">##   Gomory: 2</span>
-<span class="co">##   Cover: 3</span>
-<span class="co">##   MIR: 1</span>
-<span class="co">##   StrongCG: 2</span>
-<span class="co">##   RLT: 1</span>
-<span class="co">## </span>
-<span class="co">## Explored 1 nodes (56 simplex iterations) in 0.01 seconds</span>
-<span class="co">## Thread count was 2 (of 4 available processors)</span>
-<span class="co">## </span>
-<span class="co">## Solution count 5: 21.8 21.9 29.1 ... 153.7</span>
-<span class="co">## </span>
-<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
-<span class="co">## Best objective 2.180000000000e+01, best bound 2.180000000000e+01, gap 0.0000%</span></code></pre>
-<p>Note that the maximum benefits to be achieved have changed due to the presence of intensities in the threats and the sensitivity curves (with respect to the base model). We can use <code><a href="../reference/getPotentialBenefit.html">getPotentialBenefit()</a></code> to explore the difference between these benefits:</p>
+<code class="sourceCode R"><span><span class="co"># solve the model</span></span>
+<span><span class="va">d.continuous</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c.continuous</span>, </span>
+<span>                       solver <span class="op">=</span> <span class="st">"gurobi"</span>, </span>
+<span>                       verbose <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                       output_file <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                       cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span></span>
+<span><span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span></span>
+<span><span class="co">## Optimize a model with 284 rows, 396 columns and 766 nonzeros</span></span>
+<span><span class="co">## Model fingerprint: 0xfea67198</span></span>
+<span><span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span></span>
+<span><span class="co">## Coefficient statistics:</span></span>
+<span><span class="co">##   Matrix range     [2e-04, 2e+00]</span></span>
+<span><span class="co">##   Objective range  [1e-01, 1e+01]</span></span>
+<span><span class="co">##   Bounds range     [1e+00, 1e+00]</span></span>
+<span><span class="co">##   RHS range        [2e+00, 5e+00]</span></span>
+<span><span class="co">## Found heuristic solution: objective 153.7000000</span></span>
+<span><span class="co">## Presolve removed 250 rows and 248 columns</span></span>
+<span><span class="co">## Presolve time: 0.00s</span></span>
+<span><span class="co">## Presolved: 34 rows, 148 columns, 278 nonzeros</span></span>
+<span><span class="co">## Found heuristic solution: objective 42.4000000</span></span>
+<span><span class="co">## Variable types: 0 continuous, 148 integer (146 binary)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Root relaxation: objective 2.011896e+01, 17 iterations, 0.00 seconds</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span></span>
+<span><span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      0     0   20.11896    0    9   42.40000   20.11896  52.5%     -    0s</span></span>
+<span><span class="co">## H    0     0                      29.1000000   20.11896  30.9%     -    0s</span></span>
+<span><span class="co">## H    0     0                      21.9000000   20.11896  8.13%     -    0s</span></span>
+<span><span class="co">## H    0     0                      21.8000000   20.11896  7.71%     -    0s</span></span>
+<span><span class="co">##      0     0   20.82302    0    3   21.80000   20.82302  4.48%     -    0s</span></span>
+<span><span class="co">##      0     0   20.91403    0    3   21.80000   20.91403  4.06%     -    0s</span></span>
+<span><span class="co">##      0     0   21.21879    0    4   21.80000   21.21879  2.67%     -    0s</span></span>
+<span><span class="co">##      0     0   21.47599    0    5   21.80000   21.47599  1.49%     -    0s</span></span>
+<span><span class="co">##      0     0   21.53170    0    5   21.80000   21.53170  1.23%     -    0s</span></span>
+<span><span class="co">##      0     0   21.54367    0    6   21.80000   21.54367  1.18%     -    0s</span></span>
+<span><span class="co">##      0     0   21.58911    0    6   21.80000   21.58911  0.97%     -    0s</span></span>
+<span><span class="co">##      0     0   21.59162    0    7   21.80000   21.59162  0.96%     -    0s</span></span>
+<span><span class="co">##      0     0   21.59578    0    8   21.80000   21.59578  0.94%     -    0s</span></span>
+<span><span class="co">##      0     0   21.61294    0    8   21.80000   21.61294  0.86%     -    0s</span></span>
+<span><span class="co">##      0     0     cutoff    0        21.80000   21.80000  0.00%     -    0s</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Cutting planes:</span></span>
+<span><span class="co">##   Gomory: 2</span></span>
+<span><span class="co">##   Cover: 3</span></span>
+<span><span class="co">##   MIR: 1</span></span>
+<span><span class="co">##   StrongCG: 2</span></span>
+<span><span class="co">##   RLT: 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Explored 1 nodes (56 simplex iterations) in 0.01 seconds</span></span>
+<span><span class="co">## Thread count was 2 (of 4 available processors)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Solution count 5: 21.8 21.9 29.1 ... 153.7</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Optimal solution found (tolerance 0.00e+00)</span></span>
+<span><span class="co">## Best objective 2.180000000000e+01, best bound 2.180000000000e+01, gap 0.0000%</span></span></code></pre>
+<p>Note that the maximum benefits to be achieved have changed due to the
+presence of intensities in the threats and the sensitivity curves (with
+respect to the base model). We can use
+<code><a href="../reference/getPotentialBenefit.html">getPotentialBenefit()</a></code> to explore the difference between
+these benefits:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get potential benefits</span>
-<span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">b.continuous</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit</span>
-<span class="co">## 1       1   47              47                            0                  13.7781         13.7781</span>
-<span class="co">## 2       2   30              28                            2                  14.6788         16.6788</span>
-<span class="co">## 3       3   66              56                           10                  32.9739         42.9739</span>
-<span class="co">## 4       4   33              33                            0                  15.9912         15.9912</span></code></pre>
-<p>Now by the <code><a href="../reference/getSolutionBenefit.html">getSolutionBenefit()</a></code> function, we can obtain how the benefits are distributed for the different features. Notice that we use the <code>type = "local"</code> argument to obtain the benefits per unit and feature.</p>
+<code class="sourceCode R"><span><span class="co"># get potential benefits</span></span>
+<span><span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">b.continuous</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit</span></span>
+<span><span class="co">## 1       1   47              47                            0                  13.7781         13.7781</span></span>
+<span><span class="co">## 2       2   30              28                            2                  14.6788         16.6788</span></span>
+<span><span class="co">## 3       3   66              56                           10                  32.9739         42.9739</span></span>
+<span><span class="co">## 4       4   33              33                            0                  15.9912         15.9912</span></span></code></pre>
+<p>Now by the <code><a href="../reference/getSolutionBenefit.html">getSolutionBenefit()</a></code> function, we can obtain
+how the benefits are distributed for the different features. Notice that
+we use the <code>type = "local"</code> argument to obtain the benefits
+per unit and feature.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get benefits of solution</span>
-<span class="va">local_benefits.continuous</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSolutionBenefit.html">getSolutionBenefit</a></span><span class="op">(</span><span class="va">d.continuous</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span>
-
-<span class="co"># plot local benefits</span>
-<span class="va">local_benefits.continuous</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">local_benefits.continuous</span>, <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,value.var <span class="op">=</span> <span class="st">"benefit.total"</span>, fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.continuous</span><span class="op">$</span><span class="va">`1`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.continuous</span><span class="op">$</span><span class="va">`2`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.continuous</span><span class="op">$</span><span class="va">`3`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.continuous</span><span class="op">$</span><span class="va">`4`</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># get benefits of solution</span></span>
+<span><span class="va">local_benefits.continuous</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSolutionBenefit.html">getSolutionBenefit</a></span><span class="op">(</span><span class="va">d.continuous</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot local benefits</span></span>
+<span><span class="va">local_benefits.continuous</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">local_benefits.continuous</span>, <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,value.var <span class="op">=</span> <span class="st">"benefit.total"</span>, fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.continuous</span><span class="op">$</span><span class="va">`1`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.continuous</span><span class="op">$</span><span class="va">`2`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.continuous</span><span class="op">$</span><span class="va">`3`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.continuous</span><span class="op">$</span><span class="va">`4`</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
 <p><img src="figures/S9-1.png"></p>
-<p>Note that the selected sites differ to a greater extent from those chosen in the base model with binary threat intensities. From the above, the effect that can bring with the use of sensitivities and intensities of continuous threats on the management of conservation actions is extracted.</p>
+<p>Note that the selected sites differ to a greater extent from those
+chosen in the base model with binary threat intensities. From the above,
+the effect that can bring with the use of sensitivities and intensities
+of continuous threats on the management of conservation actions is
+extracted.</p>
 </div>
 </div>
 <div class="section level2 unnumbered">
@@ -513,10 +669,17 @@ p_{is} = \frac{{\sum_{k \in K_i \cap K_s: a_{sk} &lt;= h_{ik} &lt;= b_{sk}} \fra
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-cattarino2015" class="csl-entry">
-Cattarino, Lorenzo, Virgilio Hermoso, Josie Carwardine, Mark J. Kennard, and Simon Linke. 2015. <span>“Multi-Action Planning for Threat Management: A Novel Approach for the Spatial Prioritization of Conservation Actions.”</span> Edited by Duccio Rocchini. <em>PLOS ONE</em> 10 (5): e0128027. <a href="https://doi.org/10.1371/journal.pone.0128027" class="external-link">https://doi.org/10.1371/journal.pone.0128027</a>.
+Cattarino, Lorenzo, Virgilio Hermoso, Josie Carwardine, Mark J. Kennard,
+and Simon Linke. 2015. <span>“Multi-Action Planning for Threat
+Management: A Novel Approach for the Spatial Prioritization of
+Conservation Actions.”</span> Edited by Duccio Rocchini. <em>PLOS
+ONE</em> 10 (5): e0128027. <a href="https://doi.org/10.1371/journal.pone.0128027" class="external-link">https://doi.org/10.1371/journal.pone.0128027</a>.
 </div>
 <div id="ref-salgado-rojas2020" class="csl-entry">
-Salgado-Rojas, José, Eduardo Álvarez-Miranda, Virgilio Hermoso, Jordi Garcia-Gonzalo, and Andrés Weintraub. 2020. <span>“A Mixed Integer Programming Approach for Multi-Action Planning for Threat Management.”</span> <em>Ecological Modelling</em> 418: 108901.
+Salgado-Rojas, José, Eduardo Álvarez-Miranda, Virgilio Hermoso, Jordi
+Garcia-Gonzalo, and Andrés Weintraub. 2020. <span>“A Mixed Integer
+Programming Approach for Multi-Action Planning for Threat
+Management.”</span> <em>Ecological Modelling</em> 418: 108901.
 </div>
 </div>
 </div>
@@ -539,7 +702,7 @@ Salgado-Rojas, José, Eduardo Álvarez-Miranda, Virgilio Hermoso, Jordi Garcia-G
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

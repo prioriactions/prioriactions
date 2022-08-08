@@ -79,7 +79,7 @@ getActions <- function(x, format = "wide") {
       # Getting actions solution
       actions <- x$OptimizationClass$ConservationClass$getData("dist_threats")
       actions <- actions[names(actions) %in% c("pu","threat")]
-      actions <- actions %>% dplyr::rename(action = threat)
+      actions <- actions %>% dplyr::rename("action" = "threat")
 
       # Getting local benefits
       benefits <- x$OptimizationClass$ConservationClass$getData("dist_features")

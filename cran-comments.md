@@ -4,25 +4,35 @@
 
 ## Submission
 
-* New version released. Now, the problem() function works with all types of planning objectives.
+* New version released:
+  -   Now `solve()` function allows CPLEX solver.
+  -   Update `inputData()` description about *d* parameter.
+  -   Update documentation.
+  -   Now `solve()` function exports solution scores.
+  -   Now we sort *id's* of inputs data in `inputData()` function.
+
   
 ## CRAN check notes
 
 * checking CRAN incoming feasibility ... NOTE
-  - Maintainer: ‘Jose Salgado-Rojas <jose.salgroj@gmail.com>’
+  Maintainer: ‘Jose Salgado-Rojas <jose.salgroj@gmail.com>’
   
-  **New submission**
+  New maintainer:
+    Jose Salgado-Rojas <jose.salgroj@gmail.com>
+  Old maintainer(s):
+    Jose Salgado-Rojas <jose.salgado.rojas@hotmail.com>
+  
+  **New submission. I changed my personal email account to jose.salgroj@gmail.com from jose.salgado.rojas@hotmail.com. I hope this is not a problem.**
  
 * checking package dependencies ... NOTE
-  Package suggested but not available for checking: ‘gurobi’ and ‘cplexAPI’
+  Packages suggested but not available for checking: 'gurobi', 'cplexAPI'
 
-  **This software is not yet available in CRAN, but it is perfectly documented on their website (https://www.gurobi.com/documentation/9.1/refman/r_api_overview.html). In addition, there are comprehensive instructions for its installation in the [`gurobi installation` vignette](https://prioritizr.net/articles/gurobi_installation.html) of the prioritizr package (referenced appropriately in prioriactions package)**
+  **gurobi software is not yet available in CRAN, but it is perfectly documented on their website (https://www.gurobi.com/documentation/9.1/refman/r_api_overview.html). In addition, there are comprehensive instructions for its installation in the [`gurobi installation` vignette](https://prioritizr.net/articles/gurobi_installation.html) of the prioritizr package (referenced appropriately in prioriactions package). Instead, cplexAPI is not available in CRAN now but was a while ago (archived on 2021-11-05). We are using the updated version sourced on GitHub (https://github.com/cran/cplexAPI). In addition, there are comprehensive instructions for its installation in https://github.com/cran/cplexAPI/blob/master/inst/INSTALL. We noticed the creators are working in a new version for CRAN here (https://github.com/SysBioChalmers/sybil-cplexAPI).**
 
 * checking installed package size ... NOTE
-  - installed size is 20.8Mb
-  - sub-directories of 1Mb or more:
-      doc   3.4Mb
-      libs  16.3Mb
+    installed size is  5.0Mb
+    sub-directories of 1Mb or more:
+      doc   3.3Mb
 
 ## Test environments
 

@@ -8,7 +8,7 @@ Description: This uses a mixed integer mathematical programming (MIP)
         abate threats, in an efficient way while accounting for spatial aspects. 
         Thus, optimizing the connectivity and conservation effectiveness of 
         the prioritized units and of the deployed actions. The package is capable of 
-        handling different commercial (gurobi) and non-commercial (symphony) MIP solvers. 
+        handling different commercial (gurobi, cplex) and non-commercial (symphony) MIP solvers. 
         Gurobi optimization solver can be installed using comprehensive instructions in 
         the gurobi installation vignette of the prioritizr package (available in 
         <https://prioritizr.net/articles/gurobi_installation_guide.html>). Methods used in the 
@@ -42,6 +42,7 @@ Suggests:
     gurobi (>= 9.0),
     cplexAPI,
     roxygen2,
+    Rsymphony (>= 0.1-31),
     rmarkdown,
     testthat (>= 3.0.0),
     raster,
@@ -64,7 +65,7 @@ LazyData: true
 SystemRequirements: C++11
 License: GPL (>= 2)
 Language: en-US
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 URL: https://prioriactions.github.io/prioriactions/, 
   https://github.com/prioriactions/prioriactions
 BugReports: https://github.com/prioriactions/prioriactions/issues

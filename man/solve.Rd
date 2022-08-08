@@ -23,8 +23,9 @@ created using the \code{problem()} function.}
 
 \item{solver}{\code{string}. Name of solver to use to
 solve the model. The following solvers are supported:
-\href{https://www.gurobi.com/}{\code{"gurobi"}}(requires the \pkg{gurobi} package), and
-\href{https://projects.coin-or.org/SYMPHONY}{\code{"symphony"}}(requires the \pkg{Rsymphony} package).
+\href{https://www.gurobi.com/}{\code{"gurobi"}}(requires the \pkg{gurobi} package),
+\href{https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio}{\code{"cplex"}}(requires the \pkg{cplexAPI} package) and
+\href{https://github.com/coin-or/SYMPHONY}{\code{"symphony"}}(requires the \pkg{Rsymphony} package).
 We recommend using gurobi (for more information on how to obtain an academic license
 \href{https://prioritizr.net/articles/gurobi_installation_guide.html}{here}).}
 
@@ -71,13 +72,20 @@ described below. \describe{
 \item{\verb{Gurobi solver}}{ \href{https://www.gurobi.com/}{\emph{Gurobi}} is a
 state-of-the-art commercial optimization software with an R package
 interface. It is by far the fastest of the solvers available in this
-package, however, it is also the only solver that is not freely available.
+package, however, also this solver is not freely available.
 That said, licenses are available to academics at no cost. The \pkg{gurobi}
 package is distributed with the \emph{Gurobi} software suite. This solver
 uses the \pkg{gurobi} package to solve problems.}
 
+\item{\verb{CPLEX solver}}{
+\href{https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio}{\emph{cplex}} is a
+state-of-the-art commercial optimization software with an R package
+interface. As well as gurobi, is not freely available but licenses are available
+on the webpage. This solver uses the
+\pkg{cplexAPI} package to solve problems.}
+
 \item{\verb{Symphony solver}}{
-\href{https://projects.coin-or.org/SYMPHONY}{\emph{SYMPHONY}} is an
+\href{https://github.com/coin-or/SYMPHONY}{\emph{SYMPHONY}} is an
 open-source integer programming solver that is part of the Computational
 Infrastructure for Operations Research (COIN-OR) project, an initiative to
 promote development of open-source tools for operations research (a field

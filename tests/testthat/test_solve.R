@@ -6,6 +6,8 @@ test_that("new solution-class", {
 })
 
 test_that("data.frame inputs", {
+
+  skip_if_not_installed("cplexAPI")
   # create data
   data(sim_pu_data, sim_features_data, sim_dist_features_data,
        sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
@@ -30,9 +32,10 @@ test_that("data.frame inputs", {
   expect_equal(s$data$sol[1:10], c(0, 0, 0, 0, 0, 0, 0, 1, 1, 1))
 })
 
-test_that("verify gurobi and rphymphony", {
+test_that("verify cplex and rphymphony", {
   skip_on_ci()
   skip_on_cran()
+
   # create data
   data(sim_pu_data, sim_features_data, sim_dist_features_data,
        sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
@@ -49,7 +52,7 @@ test_that("verify gurobi and rphymphony", {
                                   boundary = sim_boundary_data))
 
   p <- suppressWarnings(problem(x))
-  s1 <- solve(p, output_file = FALSE, solver = "gurobi")
+  s1 <- solve(p, output_file = FALSE, solver = "cplex")
   s2 <- solve(p, output_file = FALSE, solver = "symphony")
 
   # tests

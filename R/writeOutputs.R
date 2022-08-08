@@ -93,7 +93,11 @@ writeOutputs.Solution <- function(x, name = "output", ...) {
     "\n",
     "runtime:  ", x$data$runtime,
     "\n",
-    "total cost:  ", sum(as.numeric(prioriactions::getCost(x)[-1]))
+    "total cost:  ", sum(as.numeric(prioriactions::getCost(x)[-1])),
+    "\n",
+    "cost of units:  ", sum(as.numeric(prioriactions::getCost(x)[2])),
+    "\n",
+    "cost of actions:  ", sum(as.numeric(prioriactions::getCost(x)[-c(1, 2)]))
   )
 
   base::writeLines(msj_output, output_file)

@@ -1,5 +1,6 @@
 test_that("evaluate function whith porftolio object and format = wide", {
   skip_on_cran()
+  skip_if_not_installed("cplexAPI")
 
   # create data
   data(sim_pu_data, sim_features_data, sim_dist_features_data,
@@ -38,6 +39,7 @@ test_that("evaluate function whith porftolio object and format = wide", {
 
 test_that("evaluate function whith portfolio object and format = large", {
   skip_on_cran()
+  skip_if_no_commercial_solvers_installed()
 
   # create data
   data(sim_pu_data, sim_features_data, sim_dist_features_data,
@@ -72,6 +74,8 @@ test_that("evaluate function whith portfolio object and format = large", {
 
 test_that("evaluate function whith solution object and format = wide", {
 
+  skip_if_not_installed("cplexAPI")
+
   # create data
   data(sim_pu_data, sim_features_data, sim_dist_features_data,
        sim_threats_data, sim_dist_threats_data, sim_sensitivity_data,
@@ -104,6 +108,7 @@ test_that("evaluate function whith solution object and format = wide", {
 
 test_that("evaluate function whith solution object and format = large", {
   skip_on_cran()
+  skip_if_not_installed("cplexAPI")
 
   # create data
   data(sim_pu_data, sim_features_data, sim_dist_features_data,

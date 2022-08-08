@@ -61,7 +61,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
 
     <span class="caret"></span>
@@ -125,344 +125,539 @@
 
 
 <p><img src="figures/diagram_prioriactions.jpg"></p>
-<p>The <code>prioriactions</code> package is a new effort to bring exact modeling methods from operations research (OR) to conservation decision-making. Taking advantage of the benefits offered by these models over heuristics models (find more efficient solutions in a much shorter period of time) <span class="citation">(Beyer et al. 2016)</span>. <code>prioriactions</code> aims to identify what actions should be implemented against what threats to achieve certain planning objectives. These objectives are usually to minimize the costs of the actions by achieving recovery targets or to maximize the benefit reached using a certain available budget. This package has the functionality of reading input data formatted in a similar way to that of the widely used conservation planning program <a href="https://marxansolutions.org/" class="external-link">Marxan</a> <span class="citation">(Watts et al. 2009)</span>.</p>
-<p>The prioritizations are generated using mathematical programming models and then solved employing optimizers (gurobi or rsymphony). Structurally, models comprise an objective function that is generally minimized or maximized and a series of constraints. The <code>prioriactions</code> package currently can deal with two types of models: cost minimization and benefit maximization—both with an internally defined structure.</p>
-<p>In addition, an essential part of the model is made up of the variables; these generally define the decisions to be made concerning the input data of the model. This data includes spatial information on planning units, conservation features, threats to those features, and, if it is the case, the sensitivities of those features to those threats.</p>
-<p>Decision-making about what action to implement and where is complex given many possible options (combinations of species, threats in space). In turn, there is little knowledge about the effectiveness of actions against threats and how these actions benefit or increase the probability of persistence of conservation characteristics. Concerning what was described above, the <code>prioriactions</code> package takes a series of assumptions:</p>
+<p>The <code>prioriactions</code> package is a new effort to bring exact
+modeling methods from operations research (OR) to conservation
+decision-making. Taking advantage of the benefits offered by these
+models over heuristics models (find more efficient solutions in a much
+shorter period of time) <span class="citation">(Beyer et al.
+2016)</span>. <code>prioriactions</code> aims to identify what actions
+should be implemented against what threats to achieve certain planning
+objectives. These objectives are usually to minimize the costs of the
+actions by achieving recovery targets or to maximize the benefit reached
+using a certain available budget. This package has the functionality of
+reading input data formatted in a similar way to that of the widely used
+conservation planning program <a href="https://marxansolutions.org/" class="external-link">Marxan</a> <span class="citation">(Watts et al. 2009)</span>.</p>
+<p>The prioritizations are generated using mathematical programming
+models and then solved employing optimizers (gurobi or rsymphony).
+Structurally, models comprise an objective function that is generally
+minimized or maximized and a series of constraints. The
+<code>prioriactions</code> package currently can deal with two types of
+models: cost minimization and benefit maximization—both with an
+internally defined structure.</p>
+<p>In addition, an essential part of the model is made up of the
+variables; these generally define the decisions to be made concerning
+the input data of the model. This data includes spatial information on
+planning units, conservation features, threats to those features, and,
+if it is the case, the sensitivities of those features to those
+threats.</p>
+<p>Decision-making about what action to implement and where is complex
+given many possible options (combinations of species, threats in space).
+In turn, there is little knowledge about the effectiveness of actions
+against threats and how these actions benefit or increase the
+probability of persistence of conservation characteristics. Concerning
+what was described above, the <code>prioriactions</code> package takes a
+series of assumptions:</p>
 <ul>
-<li>Threats can be binary (presence/absence) or continuous (with levels of intensity).</li>
+<li>Threats can be binary (presence/absence) or continuous (with levels
+of intensity).</li>
 <li>Only one action available by threat.</li>
-<li>Actions are fully effective, that is, an action against a threat eliminates it completely.</li>
-<li>The probability of persistence of the features is proportional to the ratio between threats addressed vs all threats affecting a feature in a given place. More information on the calculation of the probability of persistence in different conditions is presented in the <a href="https://prioriactions.github.io/prioriactions/articles/sensitivities.html">sensitivities</a> vignette.</li>
+<li>Actions are fully effective, that is, an action against a threat
+eliminates it completely.</li>
+<li>The probability of persistence of the features is proportional to
+the ratio between threats addressed vs all threats affecting a feature
+in a given place. More information on the calculation of the probability
+of persistence in different conditions is presented in the <a href="https://prioriactions.github.io/prioriactions/articles/sensitivities.html">sensitivities</a>
+vignette.</li>
 </ul>
-<p>Another essential aspect directly related to the probability of persistence of the features is the planning objectives that is independent of the objective function of the mathematical model. We define two types: if the aim is to <strong>recover</strong> threatened features ultimately or if the aim includes non-threatened features through their <strong>conservation</strong>. In simple terms, a conservation feature may be threatened in 80% of the planning units where it occurs, but it might not co-occur with threats in the remaining 20% of its distribution range. To address mixed prioritization exercises where both recovery and conservation objectives are pursued, we set two targets as inputs (set in the <em>features data</em>): the <strong>recovery target</strong>; where the user indicates how much proportion of that 80% is the one that he wants to solve through actions, and the <strong>conservation target</strong>; where it is established how much proportion of that 20% is the one to be incorporated. Because the primary objective of this package is to prioritise management actions against threats, a recovery target is mandatory, while conservation is optional. If the objective is to maximize benefits, it is assumed that it is required to maximize only the benefits related to recovery (prioritization of actions). For more information about these types of planning objectives see the <a href="https://prioriactions.github.io/prioriactions/articles/objectives.html">planning objectives</a> vignette.</p>
+<p>Another essential aspect directly related to the probability of
+persistence of the features is the planning objectives that is
+independent of the objective function of the mathematical model. We
+define two types: if the aim is to <strong>recover</strong> threatened
+features ultimately or if the aim includes non-threatened features
+through their <strong>conservation</strong>. In simple terms, a
+conservation feature may be threatened in 80% of the planning units
+where it occurs, but it might not co-occur with threats in the remaining
+20% of its distribution range. To address mixed prioritization exercises
+where both recovery and conservation objectives are pursued, we set two
+targets as inputs (set in the <em>features data</em>): the
+<strong>recovery target</strong>; where the user indicates how much
+proportion of that 80% is the one that he wants to solve through
+actions, and the <strong>conservation target</strong>; where it is
+established how much proportion of that 20% is the one to be
+incorporated. Because the primary objective of this package is to
+prioritise management actions against threats, a recovery target is
+mandatory, while conservation is optional. If the objective is to
+maximize benefits, it is assumed that it is required to maximize only
+the benefits related to recovery (prioritization of actions). For more
+information about these types of planning objectives see the <a href="https://prioriactions.github.io/prioriactions/articles/objectives.html">planning
+objectives</a> vignette.</p>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The <code>prioriactions</code> package is characterized by using two main types of functions: The creation and solve functions of mathematical models (through three-steps logic); and the functions to obtain information about the objects created (e.g. <code><a href="../reference/getActions.html">getActions()</a></code>). The first group of functions is comprised of three clear steps:</p>
+<p>The <code>prioriactions</code> package is characterized by using two
+main types of functions: The creation and solve functions of
+mathematical models (through three-steps logic); and the functions to
+obtain information about the objects created
+(e.g. <code><a href="../reference/getActions.html">getActions()</a></code>). The first group of functions is
+comprised of three clear steps:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Input data validation</strong>, using the <code><a href="../reference/inputData.html">inputData()</a></code> function. This function returns a <a href="https://prioriactions.github.io/prioriactions/reference/data-class.html">data-class</a> object that contains all the information about input data.</p></li>
-<li><p><strong>Create mathematical model</strong>, using the <code><a href="../reference/problem.html">problem()</a></code> function. This function returns a <a href="https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html">optimizationProblem-class</a> object that contains information related to the mathematical model created.</p></li>
-<li><p><strong>Solve model</strong>, using the <code><a href="../reference/solve.html">solve()</a></code> function. This function returns a <a href="https://prioriactions.github.io/prioriactions/reference/solution-class.html">solution-class</a> object that contains information related to the solution.</p></li>
+<li><p><strong>Input data validation</strong>, using the
+<code><a href="../reference/inputData.html">inputData()</a></code> function. This function returns a <a href="https://prioriactions.github.io/prioriactions/reference/data-class.html">data-class</a>
+object that contains all the information about input data.</p></li>
+<li><p><strong>Create mathematical model</strong>, using the
+<code><a href="../reference/problem.html">problem()</a></code> function. This function returns a <a href="https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html">optimizationProblem-class</a>
+object that contains information related to the mathematical model
+created.</p></li>
+<li><p><strong>Solve model</strong>, using the <code><a href="../reference/solve.html">solve()</a></code>
+function. This function returns a <a href="https://prioriactions.github.io/prioriactions/reference/solution-class.html">solution-class</a>
+object that contains information related to the solution.</p></li>
 </ol>
 <p><img src="figures/prioriactions_steps.jpg" style="width:95.0%"></p>
-<p>These three steps can be summarized using a single function: the <strong><code><a href="../reference/prioriactions.html">prioriactions()</a></code></strong> function. This allows the input data validation, the creation of the mathematical model and its resolution in a single step, returning a <a href="https://prioriactions.github.io/prioriactions/reference/solution-class.html">solution-class</a> object that contains information related to the solution. We recommend the three step scheme due this allows us to verify that all the steps are correct, and it can be helpful to check for errors without completely rerunning everything again. For example, note that <a href="https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html">optimizationProblem-class</a> object can take significant time to create (depending on how large the inputs are). therefore, the stepwise scheme allows us to generate the <a href="https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html">optimizationProblem-class</a> object (following the first two steps) and then experiment with different parameters for solving through the <code><a href="../reference/solve.html">solve()</a></code> function.</p>
+<p>These three steps can be summarized using a single function: the
+<strong><code><a href="../reference/prioriactions.html">prioriactions()</a></code></strong> function. This allows the
+input data validation, the creation of the mathematical model and its
+resolution in a single step, returning a <a href="https://prioriactions.github.io/prioriactions/reference/solution-class.html">solution-class</a>
+object that contains information related to the solution. We recommend
+the three step scheme due this allows us to verify that all the steps
+are correct, and it can be helpful to check for errors without
+completely rerunning everything again. For example, note that <a href="https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html">optimizationProblem-class</a>
+object can take significant time to create (depending on how large the
+inputs are). therefore, the stepwise scheme allows us to generate the <a href="https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html">optimizationProblem-class</a>
+object (following the first two steps) and then experiment with
+different parameters for solving through the <code><a href="../reference/solve.html">solve()</a></code>
+function.</p>
 </div>
 <div class="section level2">
 <h2 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
 </h2>
-<p>The general workflow when working with <code>prioriactions</code> is:</p>
+<p>The general workflow when working with <code>prioriactions</code>
+is:</p>
 <ol style="list-style-type: decimal">
-<li>Call the <code><a href="../reference/inputData.html">inputData()</a></code> function to verify that the inputs have a correct structure.</li>
-<li>Call the <code><a href="../reference/problem.html">problem()</a></code> function to create a mathematical model. This has a series of parameters that allow you to control different aspects of your model.</li>
-<li>Call the <code><a href="../reference/solve.html">solve()</a></code> function to solve the model created in the previous step.</li>
-<li>Get information about solutions with <em>get</em> prefix functions (e.g. <code><a href="../reference/getActions.html">getActions()</a></code> or <code><a href="../reference/getSolutionBenefit.html">getSolutionBenefit()</a></code>).</li>
+<li>Call the <code><a href="../reference/inputData.html">inputData()</a></code> function to verify that the inputs
+have a correct structure.</li>
+<li>Call the <code><a href="../reference/problem.html">problem()</a></code> function to create a mathematical
+model. This has a series of parameters that allow you to control
+different aspects of your model.</li>
+<li>Call the <code><a href="../reference/solve.html">solve()</a></code> function to solve the model created in
+the previous step.</li>
+<li>Get information about solutions with <em>get</em> prefix functions
+(e.g. <code><a href="../reference/getActions.html">getActions()</a></code> or
+<code><a href="../reference/getSolutionBenefit.html">getSolutionBenefit()</a></code>).</li>
 </ol>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>Here we will introduce the use of the <code>prioriactions</code> package from presenting the inputs data style to obtaining results. First, we will load the <code>prioriactions</code> package.</p>
+<p>Here we will introduce the use of the <code>prioriactions</code>
+package from presenting the inputs data style to obtaining results.
+First, we will load the <code>prioriactions</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load package</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://prioriactions.github.io/prioriactions/">prioriactions</a></span><span class="op">)</span></code></pre></div>
-<p>The package inherits the input data from the marxan software, which is widely known for conservation planning (more details in <a href="https://marxansolutions.org/download/marxan-user-manual-2021/" class="external-link">marxan user manual</a>). The data contains information about the species/features of our case study and spatial information about them. For this, the case study is divided into multiple sites called <em>planning units</em> (PU). In turn, information is provided on the representativeness values (<em>targets</em>) to be obtained for each species/feature. And other filds such as the cost associated with each PU. The package follows this data format and incorporates information about the threats and their relationship with those species/features.</p>
-<p>All inputs in this package are in tabular format (i.e. <code>data.frame</code>). For more information on he mandatory fields in the input data, please see the help page for the <code><a href="../reference/inputData.html">inputData()</a></code> function.</p>
-<p>Below you can find a basic example of using <code>prioriactions</code>.</p>
+<code class="sourceCode R"><span><span class="co"># load package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://prioriactions.github.io/prioriactions/">prioriactions</a></span><span class="op">)</span></span></code></pre></div>
+<p>The package inherits the input data from the marxan software, which
+is widely known for conservation planning (more details in <a href="https://marxansolutions.org/download/marxan-user-manual-2021/" class="external-link">marxan
+user manual</a>). The data contains information about the
+species/features of our case study and spatial information about them.
+For this, the case study is divided into multiple sites called
+<em>planning units</em> (PU). In turn, information is provided on the
+representativeness values (<em>targets</em>) to be obtained for each
+species/feature. And other filds such as the cost associated with each
+PU. The package follows this data format and incorporates information
+about the threats and their relationship with those
+species/features.</p>
+<p>All inputs in this package are in tabular format
+(i.e. <code>data.frame</code>). For more information on he mandatory
+fields in the input data, please see the help page for the
+<code><a href="../reference/inputData.html">inputData()</a></code> function.</p>
+<p>Below you can find a basic example of using
+<code>prioriactions</code>.</p>
 <div class="section level3">
 <h3 id="planning-units-data">Planning units data<a class="anchor" aria-label="anchor" href="#planning-units-data"></a>
 </h3>
-<p>This is a <code>data.frame</code> that contains information about the PU ids, monitoring costs, and status. <em>Monitoring cost</em> reflects the cost of monitoring a planning unit either if selected for recovery (e.g., monitoring presence of threats and their intensity) or conservation (e.g., monitoring to ensure that no threats are present and,therefore, only conservation might be needed). <em>Status</em> indicates if the PU must (locked in or out) be part of the solution or not.</p>
+<p>This is a <code>data.frame</code> that contains information about the
+PU ids, monitoring costs, and status. <em>Monitoring cost</em> reflects
+the cost of monitoring a planning unit either if selected for recovery
+(e.g., monitoring presence of threats and their intensity) or
+conservation (e.g., monitoring to ensure that no threats are present
+and,therefore, only conservation might be needed). <em>Status</em>
+indicates if the PU must (locked in or out) be part of the solution or
+not.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load planning unit data from prioriactions</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_pu_data</span><span class="op">)</span>
-
-<span class="co"># print first six rows of data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_pu_data</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   id monitoring_cost status</span>
-<span class="co">## 1  1               2      0</span>
-<span class="co">## 2  2               2      0</span>
-<span class="co">## 3  3               2      0</span>
-<span class="co">## 4  4               2      0</span>
-<span class="co">## 5  5               2      0</span>
-<span class="co">## 6  6               2      0</span></code></pre>
-<p>The example contains 100 planning units, each with monitoring cost values ranging from 1 to 10 and all status of 0 (not locked). A <code>RasterLayer</code>object can be used to present this spatial information. Here, the planning units are represented as a raster (i.e. a <code>RasterLayer</code> object) and each pixel corresponds to the spatial extent of each panning unit. Here, the pixel values correspond to the monitoring costs of each planning unit.</p>
+<code class="sourceCode R"><span><span class="co"># load planning unit data from prioriactions</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_pu_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print first six rows of data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_pu_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   id monitoring_cost status</span></span>
+<span><span class="co">## 1  1               2      0</span></span>
+<span><span class="co">## 2  2               2      0</span></span>
+<span><span class="co">## 3  3               2      0</span></span>
+<span><span class="co">## 4  4               2      0</span></span>
+<span><span class="co">## 5  5               2      0</span></span>
+<span><span class="co">## 6  6               2      0</span></span></code></pre>
+<p>The example contains 100 planning units, each with monitoring cost
+values ranging from 1 to 10 and all status of 0 (not locked). A
+<code>RasterLayer</code>object can be used to present this spatial
+information. Here, the planning units are represented as a raster (i.e.
+a <code>RasterLayer</code> object) and each pixel corresponds to the
+spatial extent of each panning unit. Here, the pixel values correspond
+to the monitoring costs of each planning unit.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#plot monitoring costs</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span>
-
-<span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">10</span>, nrow<span class="op">=</span><span class="fl">10</span>, xmn<span class="op">=</span><span class="fl">0</span>, xmx<span class="op">=</span><span class="fl">10</span>, ymn<span class="op">=</span><span class="fl">0</span>, ymx<span class="op">=</span><span class="fl">10</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">sim_pu_data</span><span class="op">$</span><span class="va">monitoring_cost</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#plot monitoring costs</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">10</span>, nrow<span class="op">=</span><span class="fl">10</span>, xmn<span class="op">=</span><span class="fl">0</span>, xmx<span class="op">=</span><span class="fl">10</span>, ymn<span class="op">=</span><span class="fl">0</span>, ymx<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">sim_pu_data</span><span class="op">$</span><span class="va">monitoring_cost</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></code></pre></div>
 <p><img src="figures/P3-1.png"></p>
 </div>
 <div class="section level3">
 <h3 id="features-data">Features data<a class="anchor" aria-label="anchor" href="#features-data"></a>
 </h3>
-<p>There are two input data related to features; the first one is a <code>data.frame</code> that contains information about the <strong>features</strong> such as its <em>id</em> and <em>targets</em> (mandatory when minimizing costs). And the second is a <code>data.frame</code> that contains information on the <strong>spatial distribution of these features</strong> across planning units. As mentioned above, this information can be either binary (presence-absence) or continuous (e.g., probability of occurrence of a feature in a planning unit, or the area of occupancy of a features in a planning unit).</p>
+<p>There are two input data related to features; the first one is a
+<code>data.frame</code> that contains information about the
+<strong>features</strong> such as its <em>id</em> and <em>targets</em>
+(mandatory when minimizing costs). And the second is a
+<code>data.frame</code> that contains information on the <strong>spatial
+distribution of these features</strong> across planning units. As
+mentioned above, this information can be either binary
+(presence-absence) or continuous (e.g., probability of occurrence of a
+feature in a planning unit, or the area of occupancy of a features in a
+planning unit).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load features data from prioriactions</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_features_data</span>, <span class="va">sim_dist_features_data</span><span class="op">)</span>
-
-<span class="co"># print first six rows of data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_features_data</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   id target_recovery     name</span>
-<span class="co">## 1  1              11 feature1</span>
-<span class="co">## 2  2              16 feature2</span>
-<span class="co">## 3  3               8 feature3</span>
-<span class="co">## 4  4               9 feature4</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># load features data from prioriactions</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_features_data</span>, <span class="va">sim_dist_features_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print first six rows of data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_features_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   id target_recovery     name</span></span>
+<span><span class="co">## 1  1              11 feature1</span></span>
+<span><span class="co">## 2  2              16 feature2</span></span>
+<span><span class="co">## 3  3               8 feature3</span></span>
+<span><span class="co">## 4  4               9 feature4</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_dist_features_data</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##     pu feature amount</span>
-<span class="co">## 201  1       3      1</span>
-<span class="co">## 202  2       3      1</span>
-<span class="co">## 203  3       3      1</span>
-<span class="co">## 204  4       3      1</span>
-<span class="co">## 205  5       3      1</span>
-<span class="co">## 206  6       3      1</span></code></pre>
-<p>In the same way as planning units, a <code>RasterLayer</code>object can be used to present this spatial information. The pixel values in each layer correspond to the amount of suitable feature available in a given planning unit. Note that our planning unit raster layer and our conservation feature stack have exactly the same spatial properties (i.e. resolution, extent, coordinate reference system) so their pixels line up perfectly. In this example, we assume binary values of amount (presence and absence of features).</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_dist_features_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##     pu feature amount</span></span>
+<span><span class="co">## 201  1       3      1</span></span>
+<span><span class="co">## 202  2       3      1</span></span>
+<span><span class="co">## 203  3       3      1</span></span>
+<span><span class="co">## 204  4       3      1</span></span>
+<span><span class="co">## 205  5       3      1</span></span>
+<span><span class="co">## 206  6       3      1</span></span></code></pre>
+<p>In the same way as planning units, a <code>RasterLayer</code>object
+can be used to present this spatial information. The pixel values in
+each layer correspond to the amount of suitable feature available in a
+given planning unit. Note that our planning unit raster layer and our
+conservation feature stack have exactly the same spatial properties
+(i.e. resolution, extent, coordinate reference system) so their pixels
+line up perfectly. In this example, we assume binary values of amount
+(presence and absence of features).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load amount of features data</span>
-<span class="va">features</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">sim_dist_features_data</span>,
-                            <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,
-                            value.var <span class="op">=</span> <span class="st">"amount"</span>,
-                            fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-
-<span class="co"># create stack layer</span>
-<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">features</span><span class="op">$</span><span class="va">`1`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">features</span><span class="op">$</span><span class="va">`2`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">features</span><span class="op">$</span><span class="va">`3`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">features</span><span class="op">$</span><span class="va">`4`</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"feature 1"</span>, <span class="st">"feature 2"</span>, <span class="st">"feature 3"</span>, <span class="st">"feature 4"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># load amount of features data</span></span>
+<span><span class="va">features</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">sim_dist_features_data</span>, </span>
+<span>                            <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,</span>
+<span>                            value.var <span class="op">=</span> <span class="st">"amount"</span>, </span>
+<span>                            fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create stack layer</span></span>
+<span><span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">features</span><span class="op">$</span><span class="va">`1`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">features</span><span class="op">$</span><span class="va">`2`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">features</span><span class="op">$</span><span class="va">`3`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">features</span><span class="op">$</span><span class="va">`4`</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"feature 1"</span>, <span class="st">"feature 2"</span>, <span class="st">"feature 3"</span>, <span class="st">"feature 4"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
 <p><img src="figures/P5-1.png"></p>
 </div>
 <div class="section level3">
 <h3 id="threats-data">Threats data<a class="anchor" aria-label="anchor" href="#threats-data"></a>
 </h3>
-<p>There are three input data related to threats. The first one provides information about the <strong>threats</strong> such as their <em>id</em> and <em>name</em>. The second provides information on the <strong>spatial distribution of these threats</strong> and the last one indicates which features is sensitive to what threat (<strong>sensitivities</strong> data).</p>
+<p>There are three input data related to threats. The first one provides
+information about the <strong>threats</strong> such as their <em>id</em>
+and <em>name</em>. The second provides information on the
+<strong>spatial distribution of these threats</strong> and the last one
+indicates which features is sensitive to what threat
+(<strong>sensitivities</strong> data).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load threats data from prioriactions</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_threats_data</span>, <span class="va">sim_dist_threats_data</span>, <span class="va">sim_sensitivity_data</span><span class="op">)</span>
-
-<span class="co"># print first six rows of data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_threats_data</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   id    name blm_actions</span>
-<span class="co">## 1  1 threat1           0</span>
-<span class="co">## 2  2 threat2           0</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># load threats data from prioriactions</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_threats_data</span>, <span class="va">sim_dist_threats_data</span>, <span class="va">sim_sensitivity_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print first six rows of data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_threats_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   id    name blm_actions</span></span>
+<span><span class="co">## 1  1 threat1           0</span></span>
+<span><span class="co">## 2  2 threat2           0</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_dist_threats_data</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##     pu threat amount action_cost status</span>
-<span class="co">## 108  8      2      1           2      0</span>
-<span class="co">## 109  9      2      1           2      0</span>
-<span class="co">## 110 10      2      1           2      0</span>
-<span class="co">## 11  11      1      1           3      0</span>
-<span class="co">## 111 11      2      1           4      0</span>
-<span class="co">## 12  12      1      1           3      0</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_dist_threats_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##     pu threat amount action_cost status</span></span>
+<span><span class="co">## 108  8      2      1           2      0</span></span>
+<span><span class="co">## 109  9      2      1           2      0</span></span>
+<span><span class="co">## 110 10      2      1           2      0</span></span>
+<span><span class="co">## 11  11      1      1           3      0</span></span>
+<span><span class="co">## 111 11      2      1           4      0</span></span>
+<span><span class="co">## 12  12      1      1           3      0</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_sensitivity_data</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   feature threat</span>
-<span class="co">## 1       1      1</span>
-<span class="co">## 2       2      1</span>
-<span class="co">## 3       3      1</span>
-<span class="co">## 4       4      1</span>
-<span class="co">## 5       1      2</span>
-<span class="co">## 6       2      2</span></code></pre>
-<p>Note that the <code>sim_dist_threats_data</code> file contains information on the <em>cost</em> of implementing an action against a threat on a site, in addition to the <em>status</em> of a given action in a planning that works in the same way as the <em>status</em> associated with PU’s. In this example, a binary amount of threats (presence/absence) is assumed. However, this amount can be continuous, which implies a more in-depth analysis of the consequences for the features (see more details in the <a href="https://prioriactions.github.io/prioriactions/articles/sensitivities.html">sensitivities</a> vignette).</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_sensitivity_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   feature threat</span></span>
+<span><span class="co">## 1       1      1</span></span>
+<span><span class="co">## 2       2      1</span></span>
+<span><span class="co">## 3       3      1</span></span>
+<span><span class="co">## 4       4      1</span></span>
+<span><span class="co">## 5       1      2</span></span>
+<span><span class="co">## 6       2      2</span></span></code></pre>
+<p>Note that the <code>sim_dist_threats_data</code> file contains
+information on the <em>cost</em> of implementing an action against a
+threat on a site, in addition to the <em>status</em> of a given action
+in a planning that works in the same way as the <em>status</em>
+associated with PU’s. In this example, a binary amount of threats
+(presence/absence) is assumed. However, this amount can be continuous,
+which implies a more in-depth analysis of the consequences for the
+features (see more details in the <a href="https://prioriactions.github.io/prioriactions/articles/sensitivities.html">sensitivities</a>
+vignette).</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load amount of threat data</span>
-<span class="va">threats</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">sim_dist_threats_data</span>,
-                           <span class="va">pu</span><span class="op">~</span><span class="va">threat</span>,
-                           value.var <span class="op">=</span> <span class="st">"amount"</span>,
-                           fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-<span class="va">threats</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/complete.html" class="external-link">complete</a></span><span class="op">(</span><span class="va">threats</span>, pu <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>
-
-<span class="co"># create stack layer</span>
-<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">threats</span><span class="op">$</span><span class="va">`1`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">threats</span><span class="op">$</span><span class="va">`2`</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"threat 1"</span>, <span class="st">"threat 2"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># load amount of threat data</span></span>
+<span><span class="va">threats</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">sim_dist_threats_data</span>, </span>
+<span>                           <span class="va">pu</span><span class="op">~</span><span class="va">threat</span>,</span>
+<span>                           value.var <span class="op">=</span> <span class="st">"amount"</span>, </span>
+<span>                           fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">threats</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/complete.html" class="external-link">complete</a></span><span class="op">(</span><span class="va">threats</span>, pu <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create stack layer</span></span>
+<span><span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">threats</span><span class="op">$</span><span class="va">`1`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">threats</span><span class="op">$</span><span class="va">`2`</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"threat 1"</span>, <span class="st">"threat 2"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
 <p><img src="figures/P7-1.png"></p>
 </div>
 <div class="section level3">
 <h3 id="boundary-data">Boundary data<a class="anchor" aria-label="anchor" href="#boundary-data"></a>
 </h3>
-<p>Provides information on the spatial relationship between PU and they are presented in long format. This input is not mandatory and is only necessary if you are interested in addressing connectivity.</p>
+<p>Provides information on the spatial relationship between PU and they
+are presented in long format. This input is not mandatory and is only
+necessary if you are interested in addressing connectivity.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load boundary data from prioriactions</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_boundary_data</span><span class="op">)</span>
-
-<span class="co"># print first six rows of data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_boundary_data</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   id1 id2 boundary</span>
-<span class="co">## 1   1   1        0</span>
-<span class="co">## 2   2   1        1</span>
-<span class="co">## 3   3   1        2</span>
-<span class="co">## 4   4   1        3</span>
-<span class="co">## 5   5   1        4</span>
-<span class="co">## 6   6   1        5</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># load boundary data from prioriactions</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim_boundary_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print first six rows of data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_boundary_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   id1 id2 boundary</span></span>
+<span><span class="co">## 1   1   1        0</span></span>
+<span><span class="co">## 2   2   1        1</span></span>
+<span><span class="co">## 3   3   1        2</span></span>
+<span><span class="co">## 4   4   1        3</span></span>
+<span><span class="co">## 5   5   1        4</span></span>
+<span><span class="co">## 6   6   1        5</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="step-1-initialize-the-problem">Step 1: Initialize the problem<a class="anchor" aria-label="anchor" href="#step-1-initialize-the-problem"></a>
 </h3>
-<p>After having loaded our data, we will now create the <a href="https://prioriactions.github.io/prioriactions/reference/data-class.html">data object</a> through the <code><a href="../reference/inputData.html">inputData()</a></code> function. With it you can check if all the fields of the different inputs are correct.</p>
+<p>After having loaded our data, we will now create the <a href="https://prioriactions.github.io/prioriactions/reference/data-class.html">data
+object</a> through the <code><a href="../reference/inputData.html">inputData()</a></code> function. With it you
+can check if all the fields of the different inputs are correct.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># create conservation problem</span>
-<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>,
-               features <span class="op">=</span> <span class="va">sim_features_data</span>,
-               dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,
-               threats <span class="op">=</span> <span class="va">sim_threats_data</span>,
-               dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,
-               sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>,
-               boundary <span class="op">=</span> <span class="va">sim_boundary_data</span><span class="op">)</span>
-
-<span class="co"># print problem</span>
-<span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Data</span>
-<span class="co">##   planning units: data.frame (100 units)</span>
-<span class="co">##   monitoring costs:     min: 1, max: 10</span>
-<span class="co">##   features:       feature1, feature2, feature3, feature4 (4 features)</span>
-<span class="co">##   threats:        threat1, threat2 (2 threats)</span>
-<span class="co">##   action costs:   min: 1, max: 10</span></code></pre>
-<p>Note that once the problem is created, we can obtain information from the object and thus know if the data was loaded correctly. For this, we can use some functions that are inside the object (e.g <code>getThreatsAmount()</code>).</p>
+<code class="sourceCode R"><span><span class="co"># create conservation problem</span></span>
+<span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/inputData.html">inputData</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>, </span>
+<span>               features <span class="op">=</span> <span class="va">sim_features_data</span>, </span>
+<span>               dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>, </span>
+<span>               threats <span class="op">=</span> <span class="va">sim_threats_data</span>, </span>
+<span>               dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>, </span>
+<span>               sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>, </span>
+<span>               boundary <span class="op">=</span> <span class="va">sim_boundary_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print problem</span></span>
+<span><span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Data</span></span>
+<span><span class="co">##   planning units: data.frame (100 units)</span></span>
+<span><span class="co">##   monitoring costs:     min: 1, max: 10</span></span>
+<span><span class="co">##   features:       feature1, feature2, feature3, feature4 (4 features)</span></span>
+<span><span class="co">##   threats:        threat1, threat2 (2 threats)</span></span>
+<span><span class="co">##   action costs:   min: 1, max: 10</span></span></code></pre>
+<p>Note that once the problem is created, we can obtain information from
+the object and thus know if the data was loaded correctly. For this, we
+can use some functions that are inside the object (e.g
+<code>getThreatsAmount()</code>).</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get information about object</span>
-<span class="va">b</span><span class="op">$</span><span class="fu">getThreatsAmount</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 2</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># get information about object</span></span>
+<span><span class="va">b</span><span class="op">$</span><span class="fu">getThreatsAmount</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 2</span></span></code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">b</span><span class="op">$</span><span class="fu">getPlanningUnitsAmount</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 100</span></code></pre>
-<p>These are only two of all the methods you can use to get quick information about your data. The others can be found along with <a href="https://prioriactions.github.io/prioriactions/reference/data-class.html">data-class</a> information.</p>
-<p>Furthermore, it is advisable to determine the maximum benefit achievable for each conservation feature through the <code><a href="../reference/getPotentialBenefit.html">getPotentialBenefit()</a></code> function. Since this process can be carried out before the creation of the mathematical model, it can help establish recovery and conservation targets if the objective of the mathematical model is to minimize costs.</p>
+<code class="sourceCode R"><span><span class="va">b</span><span class="op">$</span><span class="fu">getPlanningUnitsAmount</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 100</span></span></code></pre>
+<p>These are only two of all the methods you can use to get quick
+information about your data. The others can be found along with <a href="https://prioriactions.github.io/prioriactions/reference/data-class.html">data-class</a>
+information.</p>
+<p>Furthermore, it is advisable to determine the maximum benefit
+achievable for each conservation feature through the
+<code><a href="../reference/getPotentialBenefit.html">getPotentialBenefit()</a></code> function. Since this process can be
+carried out before the creation of the mathematical model, it can help
+establish recovery and conservation targets if the objective of the
+mathematical model is to minimize costs.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get benefit information</span>
-<span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit</span>
-<span class="co">## 1       1   47              47                            0                       47              47</span>
-<span class="co">## 2       2   30              28                            2                       28              30</span>
-<span class="co">## 3       3   66              56                           10                       56              66</span>
-<span class="co">## 4       4   33              33                            0                       33              33</span></code></pre>
-<p>Note that the total distribution of the features (<em>dist</em>) and the threatened distribution (<em>dist_threatened</em>) is reported. Also, we report the amount of each features where they co-occur with threats they are sensitive to (<em>maximum.recovery.benefit</em>) and where they do not co-occur with any threats they are sensitive to (<em>maximum.conservation.benefit</em>). The inclusion of these last units in the solutions will depend on the <strong>target_conservation</strong> field in the input <em>feature data</em>.</p>
+<code class="sourceCode R"><span><span class="co"># get benefit information</span></span>
+<span><span class="fu"><a href="../reference/getPotentialBenefit.html">getPotentialBenefit</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   feature dist dist_threatened maximum.conservation.benefit maximum.recovery.benefit maximum.benefit</span></span>
+<span><span class="co">## 1       1   47              47                            0                       47              47</span></span>
+<span><span class="co">## 2       2   30              28                            2                       28              30</span></span>
+<span><span class="co">## 3       3   66              56                           10                       56              66</span></span>
+<span><span class="co">## 4       4   33              33                            0                       33              33</span></span></code></pre>
+<p>Note that the total distribution of the features (<em>dist</em>) and
+the threatened distribution (<em>dist_threatened</em>) is reported.
+Also, we report the amount of each features where they co-occur with
+threats they are sensitive to (<em>maximum.recovery.benefit</em>) and
+where they do not co-occur with any threats they are sensitive to
+(<em>maximum.conservation.benefit</em>). The inclusion of these last
+units in the solutions will depend on the
+<strong>target_conservation</strong> field in the input <em>feature
+data</em>.</p>
 </div>
 <div class="section level3">
 <h3 id="step-2-create-the-mathematical-model">Step 2: Create the mathematical model<a class="anchor" aria-label="anchor" href="#step-2-create-the-mathematical-model"></a>
 </h3>
-<p>The next step is to create the <a href="https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html">optimization problem</a> object with those data. <code>prioriactions</code> allows types of models: <code>minimizeCosts</code> and <code>maximizeBenefits</code>. The first one, minimizes the cost of the solution whilst ensuring that all targets are met. Instead, the second maximizes the benefits achieved by the features subject to a certain budget. The use of one or the other is set in the <code>type_model</code> parameter of the <code><a href="../reference/problem.html">problem()</a></code> function.</p>
+<p>The next step is to create the <a href="https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html">optimization
+problem</a> object with those data. <code>prioriactions</code> allows
+types of models: <code>minimizeCosts</code> and
+<code>maximizeBenefits</code>. The first one, minimizes the cost of the
+solution whilst ensuring that all targets are met. Instead, the second
+maximizes the benefits achieved by the features subject to a certain
+budget. The use of one or the other is set in the
+<code>type_model</code> parameter of the <code><a href="../reference/problem.html">problem()</a></code>
+function.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># create optimization problem</span>
-<span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b</span>, model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></code></pre>
-<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># create optimization problem</span></span>
+<span><span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/problem.html">problem</a></span><span class="op">(</span><span class="va">b</span>, model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></span></code></pre>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># print problem</span>
-<span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">c</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Optimization Problem</span>
-<span class="co">##   model sense: minimization</span>
-<span class="co">##   dimensions:  284, 396, 12.632 kB (nrow, ncol, size)</span>
-<span class="co">##   variables:   396</span></code></pre>
-<p>Internally, the <code><a href="../reference/problem.html">problem()</a></code> function has a presolve that identifies these problems and prevents you from continuing to the next steps. In case the target set for a given species is higher than the maximum achievable, the value will be internally replaced with the maximum achievable.</p>
-<p>The two warnings indicate that there are no values for <em>blm</em> and <em>blm_actions</em> (arguments to achieve greater connectivity in the solution), and therefore the input boundary file will have no effect.</p>
+<code class="sourceCode R"><span><span class="co"># print problem</span></span>
+<span><span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">c</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Optimization Problem</span></span>
+<span><span class="co">##   model sense: minimization</span></span>
+<span><span class="co">##   dimensions:  284, 396, 12.632 kB (nrow, ncol, size)</span></span>
+<span><span class="co">##   variables:   396</span></span></code></pre>
+<p>Internally, the <code><a href="../reference/problem.html">problem()</a></code> function has a presolve that
+identifies these problems and prevents you from continuing to the next
+steps. In case the target set for a given species is higher than the
+maximum achievable, the value will be internally replaced with the
+maximum achievable.</p>
+<p>The two warnings indicate that there are no values for <em>blm</em>
+and <em>blm_actions</em> (arguments to achieve greater connectivity in
+the solution), and therefore the input boundary file will have no
+effect.</p>
 </div>
 <div class="section level3">
 <h3 id="step-3-solve-the-model">Step 3: Solve the model<a class="anchor" aria-label="anchor" href="#step-3-solve-the-model"></a>
 </h3>
-<p>Finally, after creating the mathematical model, we can now solve it with the <code><a href="../reference/solve.html">solve()</a></code> function. To solve our model, we need an optimizer. Currently, <code>prioriactions</code> have available two: <em>gurobi</em> (it needs a license to work) and <em>rsymphony</em> (free to use). We highly recommend using gurobi (for more information on how to obtain an academic license <a href="https://prioritizr.net/articles/gurobi_installation_guide.html" class="external-link">here</a>).</p>
+<p>Finally, after creating the mathematical model, we can now solve it
+with the <code><a href="../reference/solve.html">solve()</a></code> function. To solve our model, we need an
+optimizer. Currently, <code>prioriactions</code> have available two:
+<em>gurobi</em> (it needs a license to work) and <em>rsymphony</em>
+(free to use). We highly recommend using gurobi (for more information on
+how to obtain an academic license <a href="https://prioritizr.net/articles/gurobi_installation_guide.html" class="external-link">here</a>).</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># solve optimization problem</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span>
-<span class="co">## Model fingerprint: 0xc6718513</span>
-<span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span>
-<span class="co">## Coefficient statistics:</span>
-<span class="co">##   Matrix range     [5e-01, 2e+00]</span>
-<span class="co">##   Objective range  [1e+00, 1e+01]</span>
-<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">##   RHS range        [8e+00, 2e+01]</span>
-<span class="co">## Found heuristic solution: objective 964.0000000</span>
-<span class="co">## Found heuristic solution: objective 396.0000000</span>
-<span class="co">## Presolve removed 250 rows and 277 columns</span>
-<span class="co">## Presolve time: 0.00s</span>
-<span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span>
-<span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span>
-<span class="co">## </span>
-<span class="co">## Root relaxation: objective 1.445000e+02, 22 iterations, 0.00 seconds</span>
-<span class="co">## </span>
-<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">## </span>
-<span class="co">##      0     0  144.50000    0    2  396.00000  144.50000  63.5%     -    0s</span>
-<span class="co">## H    0     0                     149.0000000  144.50000  3.02%     -    0s</span>
-<span class="co">## *    0     0               0     146.0000000  146.00000  0.00%     -    0s</span>
-<span class="co">## </span>
-<span class="co">## Cutting planes:</span>
-<span class="co">##   Cover: 2</span>
-<span class="co">## </span>
-<span class="co">## Explored 1 nodes (26 simplex iterations) in 0.00 seconds</span>
-<span class="co">## Thread count was 2 (of 4 available processors)</span>
-<span class="co">## </span>
-<span class="co">## Solution count 4: 146 149 396 964 </span>
-<span class="co">## </span>
-<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
-<span class="co">## Best objective 1.460000000000e+02, best bound 1.460000000000e+02, gap 0.0000%</span></code></pre>
-<p>Note that the log is shown by default with relevant information about the optimization process (<em>verbose</em> = TRUE). This information can be important when evaluating how the process is being carried out. For example, to check the solution’s quality (<em>gaps</em>), the size of the problem, or the cores being used. More information on how to read this log in <a href="https://www.gurobi.com/documentation/9.1/refman/mip_logging.html" class="external-link">MIP_logging documentation</a>.</p>
-<p>These three steps can be shortened to just one with the <code><a href="../reference/prioriactions.html">prioriactions()</a></code> function. This function inherits all the parameters of the <code><a href="../reference/inputData.html">inputData()</a></code>, <code><a href="../reference/problem.html">problem()</a></code>, and <code><a href="../reference/solve.html">solve()</a></code> functions:</p>
+<code class="sourceCode R"><span><span class="co"># solve optimization problem</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solve.html">solve</a></span><span class="op">(</span><span class="va">c</span>, solver <span class="op">=</span> <span class="st">"gurobi"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span></span>
+<span><span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span></span>
+<span><span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span></span>
+<span><span class="co">## Model fingerprint: 0xc6718513</span></span>
+<span><span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span></span>
+<span><span class="co">## Coefficient statistics:</span></span>
+<span><span class="co">##   Matrix range     [5e-01, 2e+00]</span></span>
+<span><span class="co">##   Objective range  [1e+00, 1e+01]</span></span>
+<span><span class="co">##   Bounds range     [1e+00, 1e+00]</span></span>
+<span><span class="co">##   RHS range        [8e+00, 2e+01]</span></span>
+<span><span class="co">## Found heuristic solution: objective 964.0000000</span></span>
+<span><span class="co">## Found heuristic solution: objective 396.0000000</span></span>
+<span><span class="co">## Presolve removed 250 rows and 277 columns</span></span>
+<span><span class="co">## Presolve time: 0.00s</span></span>
+<span><span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span></span>
+<span><span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Root relaxation: objective 1.445000e+02, 22 iterations, 0.00 seconds</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span></span>
+<span><span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      0     0  144.50000    0    2  396.00000  144.50000  63.5%     -    0s</span></span>
+<span><span class="co">## H    0     0                     149.0000000  144.50000  3.02%     -    0s</span></span>
+<span><span class="co">## *    0     0               0     146.0000000  146.00000  0.00%     -    0s</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Cutting planes:</span></span>
+<span><span class="co">##   Cover: 2</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Explored 1 nodes (26 simplex iterations) in 0.00 seconds</span></span>
+<span><span class="co">## Thread count was 2 (of 4 available processors)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Solution count 4: 146 149 396 964 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Optimal solution found (tolerance 0.00e+00)</span></span>
+<span><span class="co">## Best objective 1.460000000000e+02, best bound 1.460000000000e+02, gap 0.0000%</span></span></code></pre>
+<p>Note that the log is shown by default with relevant information about
+the optimization process (<em>verbose</em> = TRUE). This information can
+be important when evaluating how the process is being carried out. For
+example, to check the solution’s quality (<em>gaps</em>), the size of
+the problem, or the cores being used. More information on how to read
+this log in <a href="https://www.gurobi.com/documentation/9.1/refman/mip_logging.html" class="external-link">MIP_logging
+documentation</a>.</p>
+<p>These three steps can be shortened to just one with the
+<code><a href="../reference/prioriactions.html">prioriactions()</a></code> function. This function inherits all the
+parameters of the <code><a href="../reference/inputData.html">inputData()</a></code>, <code><a href="../reference/problem.html">problem()</a></code>, and
+<code><a href="../reference/solve.html">solve()</a></code> functions:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># use prioriactions function</span>
-<span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prioriactions.html">prioriactions</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>, features <span class="op">=</span> <span class="va">sim_features_data</span>,
-                    dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,
-                    threats <span class="op">=</span> <span class="va">sim_threats_data</span>,
-                    dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,
-                    sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>,
-                    boundary <span class="op">=</span> <span class="va">sim_boundary_data</span>,
-                    model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>,
-                    solver <span class="op">=</span> <span class="st">"gurobi"</span>,
-                    verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-                    output_file <span class="op">=</span> <span class="cn">FALSE</span>,
-                    cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></code></pre>
-<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
-<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span>
-<span class="co">## Model fingerprint: 0xc6718513</span>
-<span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span>
-<span class="co">## Coefficient statistics:</span>
-<span class="co">##   Matrix range     [5e-01, 2e+00]</span>
-<span class="co">##   Objective range  [1e+00, 1e+01]</span>
-<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">##   RHS range        [8e+00, 2e+01]</span>
-<span class="co">## Found heuristic solution: objective 964.0000000</span>
-<span class="co">## Found heuristic solution: objective 396.0000000</span>
-<span class="co">## Presolve removed 250 rows and 277 columns</span>
-<span class="co">## Presolve time: 0.00s</span>
-<span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span>
-<span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span>
-<span class="co">## </span>
-<span class="co">## Root relaxation: objective 1.445000e+02, 22 iterations, 0.00 seconds</span>
-<span class="co">## </span>
-<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">## </span>
-<span class="co">##      0     0  144.50000    0    2  396.00000  144.50000  63.5%     -    0s</span>
-<span class="co">## H    0     0                     149.0000000  144.50000  3.02%     -    0s</span>
-<span class="co">## *    0     0               0     146.0000000  146.00000  0.00%     -    0s</span>
-<span class="co">## </span>
-<span class="co">## Cutting planes:</span>
-<span class="co">##   Cover: 2</span>
-<span class="co">## </span>
-<span class="co">## Explored 1 nodes (26 simplex iterations) in 0.00 seconds</span>
-<span class="co">## Thread count was 2 (of 4 available processors)</span>
-<span class="co">## </span>
-<span class="co">## Solution count 4: 146 149 396 964 </span>
-<span class="co">## </span>
-<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
-<span class="co">## Best objective 1.460000000000e+02, best bound 1.460000000000e+02, gap 0.0000%</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># use prioriactions function</span></span>
+<span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prioriactions.html">prioriactions</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>, features <span class="op">=</span> <span class="va">sim_features_data</span>,</span>
+<span>                    dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,</span>
+<span>                    threats <span class="op">=</span> <span class="va">sim_threats_data</span>,</span>
+<span>                    dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,</span>
+<span>                    sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>,</span>
+<span>                    boundary <span class="op">=</span> <span class="va">sim_boundary_data</span>,</span>
+<span>                    model_type <span class="op">=</span> <span class="st">"minimizeCosts"</span>, </span>
+<span>                    solver <span class="op">=</span> <span class="st">"gurobi"</span>, </span>
+<span>                    verbose <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                    output_file <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                    cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></span></code></pre>
+<pre><code><span><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span></span>
+<span><span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span></span>
+<span><span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span></span>
+<span><span class="co">## Model fingerprint: 0xc6718513</span></span>
+<span><span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span></span>
+<span><span class="co">## Coefficient statistics:</span></span>
+<span><span class="co">##   Matrix range     [5e-01, 2e+00]</span></span>
+<span><span class="co">##   Objective range  [1e+00, 1e+01]</span></span>
+<span><span class="co">##   Bounds range     [1e+00, 1e+00]</span></span>
+<span><span class="co">##   RHS range        [8e+00, 2e+01]</span></span>
+<span><span class="co">## Found heuristic solution: objective 964.0000000</span></span>
+<span><span class="co">## Found heuristic solution: objective 396.0000000</span></span>
+<span><span class="co">## Presolve removed 250 rows and 277 columns</span></span>
+<span><span class="co">## Presolve time: 0.00s</span></span>
+<span><span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span></span>
+<span><span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Root relaxation: objective 1.445000e+02, 22 iterations, 0.00 seconds</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span></span>
+<span><span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      0     0  144.50000    0    2  396.00000  144.50000  63.5%     -    0s</span></span>
+<span><span class="co">## H    0     0                     149.0000000  144.50000  3.02%     -    0s</span></span>
+<span><span class="co">## *    0     0               0     146.0000000  146.00000  0.00%     -    0s</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Cutting planes:</span></span>
+<span><span class="co">##   Cover: 2</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Explored 1 nodes (26 simplex iterations) in 0.00 seconds</span></span>
+<span><span class="co">## Thread count was 2 (of 4 available processors)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Solution count 4: 146 149 396 964 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Optimal solution found (tolerance 0.00e+00)</span></span>
+<span><span class="co">## Best objective 1.460000000000e+02, best bound 1.460000000000e+02, gap 0.0000%</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -472,294 +667,359 @@
 <h3 id="getactions">
 <code>getActions()</code><a class="anchor" aria-label="anchor" href="#getactions"></a>
 </h3>
-<p>This function retrieves the distribution of actions for each threat across planning units, the set of planning units that have been selected for conservation in case a mix of recovery and conservation targets had been set, and the group of planning units selected for connectivity. In all cases selection of a particular planning unit for either of these objectives is indicated with a value of 1. Note that a planning unit could have been selected for example for the implementation of different actions, so multiple 1s could be found for a single planning unit.</p>
+<p>This function retrieves the distribution of actions for each threat
+across planning units, the set of planning units that have been selected
+for conservation in case a mix of recovery and conservation targets had
+been set, and the group of planning units selected for connectivity. In
+all cases selection of a particular planning unit for either of these
+objectives is indicated with a value of 1. Note that a planning unit
+could have been selected for example for the implementation of different
+actions, so multiple 1s could be found for a single planning unit.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get actions from solution</span>
-<span class="va">actions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">d</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
-
-<span class="co"># print first six rows of data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">actions</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   solution_name pu 1 2 conservation connectivity</span>
-<span class="co">## 1           sol  1 0 0            0            0</span>
-<span class="co">## 2           sol  2 0 0            0            0</span>
-<span class="co">## 3           sol  3 0 0            0            0</span>
-<span class="co">## 4           sol  4 0 0            0            0</span>
-<span class="co">## 5           sol  5 0 0            0            0</span>
-<span class="co">## 6           sol  6 0 0            0            0</span></code></pre>
-<p>Note that the <code><a href="../reference/getActions.html">getActions()</a></code> function automatically assumes that the index of the action corresponds to the threat <em>id</em> (since there is an action per threat), in this case, 1 and 2 respectively.</p>
+<code class="sourceCode R"><span><span class="co"># get actions from solution</span></span>
+<span><span class="va">actions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getActions.html">getActions</a></span><span class="op">(</span><span class="va">d</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print first six rows of data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">actions</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   solution_name pu 1 2 conservation connectivity</span></span>
+<span><span class="co">## 1           sol  1 0 0            0            0</span></span>
+<span><span class="co">## 2           sol  2 0 0            0            0</span></span>
+<span><span class="co">## 3           sol  3 0 0            0            0</span></span>
+<span><span class="co">## 4           sol  4 0 0            0            0</span></span>
+<span><span class="co">## 5           sol  5 0 0            0            0</span></span>
+<span><span class="co">## 6           sol  6 0 0            0            0</span></span></code></pre>
+<p>Note that the <code><a href="../reference/getActions.html">getActions()</a></code> function automatically
+assumes that the index of the action corresponds to the threat
+<em>id</em> (since there is an action per threat), in this case, 1 and 2
+respectively.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># plot actions</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions</span><span class="op">$</span><span class="va">`1`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions</span><span class="op">$</span><span class="va">`2`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># plot actions</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions</span><span class="op">$</span><span class="va">`1`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">actions</span><span class="op">$</span><span class="va">`2`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
 <p><img src="figures/P16-1.png"></p>
 </div>
 <div class="section level3">
 <h3 id="getsolutionbenefit">
 <code>getSolutionBenefit()</code><a class="anchor" aria-label="anchor" href="#getsolutionbenefit"></a>
 </h3>
-<p>This function retrieves the benefits achieved by each feature. The output contains information on the benefit achieved by conservation (<em>benefit.conservation</em>), the benefit achieved by recovery (<em>benefit.recovery</em>) and the sum of both (<em>benefit.total</em>).</p>
+<p>This function retrieves the benefits achieved by each feature. The
+output contains information on the benefit achieved by conservation
+(<em>benefit.conservation</em>), the benefit achieved by recovery
+(<em>benefit.recovery</em>) and the sum of both
+(<em>benefit.total</em>).</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get benefits of solution</span>
-<span class="va">benefits</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSolutionBenefit.html">getSolutionBenefit</a></span><span class="op">(</span><span class="va">d</span>, type <span class="op">=</span> <span class="st">"total"</span><span class="op">)</span>
-
-<span class="co"># print first six rows of benefit data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">benefits</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   solution_name feature benefit.conservation benefit.recovery benefit.total</span>
-<span class="co">## 1           sol       1                    0               11            11</span>
-<span class="co">## 2           sol       2                    0               16            16</span>
-<span class="co">## 3           sol       3                    0               10            10</span>
-<span class="co">## 4           sol       4                    0                9             9</span></code></pre>
-<p>In this specific case, it can be seen that we have only obtained <strong>recovery</strong> benefits (for doing actions to abate threats) and not <strong>conservation</strong> of sites. This is specifically due to the fact that we have not set any conservation target. If we compare the benefits obtained concerning the established recovery targets, we see that for feature 3, we got more benefits than set as target (8). This is commonly achieved by incidental representation, where specific actions necessary to achieve the objective of a feature end up benefiting other features.</p>
-<p>The <code><a href="../reference/getSolutionBenefit.html">getSolutionBenefit()</a></code> function also allows to obtain all the benefits achieved from each planning unit using the <em>type</em> param:</p>
+<code class="sourceCode R"><span><span class="co"># get benefits of solution</span></span>
+<span><span class="va">benefits</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSolutionBenefit.html">getSolutionBenefit</a></span><span class="op">(</span><span class="va">d</span>, type <span class="op">=</span> <span class="st">"total"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print first six rows of benefit data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">benefits</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   solution_name feature benefit.conservation benefit.recovery benefit.total</span></span>
+<span><span class="co">## 1           sol       1                    0               11            11</span></span>
+<span><span class="co">## 2           sol       2                    0               16            16</span></span>
+<span><span class="co">## 3           sol       3                    0               10            10</span></span>
+<span><span class="co">## 4           sol       4                    0                9             9</span></span></code></pre>
+<p>In this specific case, it can be seen that we have only obtained
+<strong>recovery</strong> benefits (for doing actions to abate threats)
+and not <strong>conservation</strong> of sites. This is specifically due
+to the fact that we have not set any conservation target. If we compare
+the benefits obtained concerning the established recovery targets, we
+see that for feature 3, we got more benefits than set as target (8).
+This is commonly achieved by incidental representation, where specific
+actions necessary to achieve the objective of a feature end up
+benefiting other features.</p>
+<p>The <code><a href="../reference/getSolutionBenefit.html">getSolutionBenefit()</a></code> function also allows to obtain
+all the benefits achieved from each planning unit using the
+<em>type</em> param:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get benefits of solution</span>
-<span class="va">local_benefits</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSolutionBenefit.html">getSolutionBenefit</a></span><span class="op">(</span><span class="va">d</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span>
-
-<span class="co"># plot local benefits</span>
-<span class="va">local_benefits</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">local_benefits</span>,
-                                  <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,
-                                  value.var <span class="op">=</span> <span class="st">"benefit.total"</span>,
-                                  fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-
-<span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`1`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`2`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`3`</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`4`</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"feature 1"</span>, <span class="st">"feature 2"</span>, <span class="st">"feature 3"</span>, <span class="st">"feature 4"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># get benefits of solution</span></span>
+<span><span class="va">local_benefits</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSolutionBenefit.html">getSolutionBenefit</a></span><span class="op">(</span><span class="va">d</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot local benefits</span></span>
+<span><span class="va">local_benefits</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/cast.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">local_benefits</span>, </span>
+<span>                                  <span class="va">pu</span><span class="op">~</span><span class="va">feature</span>,</span>
+<span>                                  value.var <span class="op">=</span> <span class="st">"benefit.total"</span>, </span>
+<span>                                  fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">group_rasters</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html" class="external-link">stack</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span>, <span class="va">r</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`1`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`2`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`3`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits</span><span class="op">$</span><span class="va">`4`</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"feature 1"</span>, <span class="st">"feature 2"</span>, <span class="st">"feature 3"</span>, <span class="st">"feature 4"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
 <p><img src="figures/P18-1.png"></p>
 </div>
 <div class="section level3">
 <h3 id="getcost">
 <code>getCost()</code><a class="anchor" aria-label="anchor" href="#getcost"></a>
 </h3>
-<p>Function to obtain the costs for each of the actions prescribed in each planning unit, including monitoring actions.</p>
+<p>Function to obtain the costs for each of the actions prescribed in
+each planning unit, including monitoring actions.</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get costs of solution</span>
-<span class="va">costs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
-
-<span class="co"># print the costs data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">costs</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   solution_name monitoring threat_1 threat_2</span>
-<span class="co">## 1           sol         61       20       65</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># get costs of solution</span></span>
+<span><span class="va">costs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print the costs data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">costs</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   solution_name monitoring threat_1 threat_2</span></span>
+<span><span class="co">## 1           sol         61       20       65</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="getconnectivitypenalty">
 <code>getConnectivityPenalty()</code><a class="anchor" aria-label="anchor" href="#getconnectivitypenalty"></a>
 </h3>
-<p>Function to the connectivity penalty of the solution, split by overall connectivity penalty among all planning units selected as part of the solution (regardless of what action has been prescribed), and connectivity penalties for each action individually (e.g., considering only the subset of planning units where a particular action has been prescribed). Note that in all cases the connectivity penalty shows the degree disaggregation of planning units in solutions, so high penalty values indicate solutions poorly connected.</p>
+<p>Function to the connectivity penalty of the solution, split by
+overall connectivity penalty among all planning units selected as part
+of the solution (regardless of what action has been prescribed), and
+connectivity penalties for each action individually (e.g., considering
+only the subset of planning units where a particular action has been
+prescribed). Note that in all cases the connectivity penalty shows the
+degree disaggregation of planning units in solutions, so high penalty
+values indicate solutions poorly connected.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get connectivity penalty of solution</span>
-<span class="va">conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getConnectivityPenalty.html">getConnectivityPenalty</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
-
-<span class="co"># print the connectivity penalty data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   solution_name    units threat_1 threat_2</span>
-<span class="co">## 1           sol 9042.102  917.544   4095.1</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># get connectivity penalty of solution</span></span>
+<span><span class="va">conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getConnectivityPenalty.html">getConnectivityPenalty</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print the connectivity penalty data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   solution_name    units threat_1 threat_2</span></span>
+<span><span class="co">## 1           sol 9042.102  917.544   4095.1</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="getperformance">
 <code>getPerformance()</code><a class="anchor" aria-label="anchor" href="#getperformance"></a>
 </h3>
-<p>Function to obtain information about the solving process of the mathematical model. Four parameters of the solution are presented: the <em>objective value</em> that will depend on what type of model used (<em>minimizeCosts</em> or <em>maximizeBenefits</em>); the <em>gap</em>, which indicates the quality of the solution; the <em>solving time</em> and <em>status</em>, which indicates the status of the solution (whether it is optimal or not).</p>
+<p>Function to obtain information about the solving process of the
+mathematical model. Four parameters of the solution are presented: the
+<em>objective value</em> that will depend on what type of model used
+(<em>minimizeCosts</em> or <em>maximizeBenefits</em>); the <em>gap</em>,
+which indicates the quality of the solution; the <em>solving time</em>
+and <em>status</em>, which indicates the status of the solution (whether
+it is optimal or not).</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get performance of solution</span>
-<span class="va">perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getPerformance.html">getPerformance</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
-
-<span class="co"># print the performance data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">perf</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   solution_name objective_value gap solving_time                                           status</span>
-<span class="co">## 1           sol             146   0        0.004 Optimal solution (according to gap tolerance: 0)</span></code></pre>
-<p>More details of these functions in the <a href="https://prioriactions.github.io/prioriactions/reference/index.html">references</a> section.</p>
+<code class="sourceCode R"><span><span class="co"># get performance of solution</span></span>
+<span><span class="va">perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getPerformance.html">getPerformance</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print the performance data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">perf</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   solution_name objective_value gap solving_time                                           status</span></span>
+<span><span class="co">## 1           sol             146   0        0.004 Optimal solution (according to gap tolerance: 0)</span></span></code></pre>
+<p>More details of these functions in the <a href="https://prioriactions.github.io/prioriactions/reference/index.html">references</a>
+section.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="sensitivity-analyses-on-blm-budget-and-target-parameters">Sensitivity analyses on <em>blm</em>, <em>budget</em> and <em>target</em> parameters<a class="anchor" aria-label="anchor" href="#sensitivity-analyses-on-blm-budget-and-target-parameters"></a>
+<h2 id="sensitivity-analyses-on-blm-budget-and-target-parameters">Sensitivity analyses on <em>blm</em>, <em>budget</em> and
+<em>target</em> parameters<a class="anchor" aria-label="anchor" href="#sensitivity-analyses-on-blm-budget-and-target-parameters"></a>
 </h2>
-<p>You may be interested in evaluating different values of targets or budgets. We have implemented evaluation functions that allow different parameters to be run in sequence for the same mathematical model. You can do this by manually running the previous steps for the different parameters (i.e., running the previous steps once by parameter, such as different targets, budgets or blm values). However, the <em>eval</em> functions have two advantages: 1) they are more efficient at creating the models. This is because the model needs to be build only once and then updated with the new information; 2) the output is a <a href="https://prioriactions.github.io/prioriactions/reference/portfolio-class.html">portfolio</a> object, which allows obtaining information about the group of solutions, including, all <em>get</em> functions related with all solution objects simultaneously.</p>
-<p>Now, we want to evaluate different levels of targets. For example, 20%, 30% and 40% of the maximum benefit per feature. For this, we use the <code><a href="../reference/evalTarget.html">evalTarget()</a></code> function:</p>
+<p>You may be interested in evaluating different values of targets or
+budgets. We have implemented evaluation functions that allow different
+parameters to be run in sequence for the same mathematical model. You
+can do this by manually running the previous steps for the different
+parameters (i.e., running the previous steps once by parameter, such as
+different targets, budgets or blm values). However, the <em>eval</em>
+functions have two advantages: 1) they are more efficient at creating
+the models. This is because the model needs to be build only once and
+then updated with the new information; 2) the output is a <a href="https://prioriactions.github.io/prioriactions/reference/portfolio-class.html">portfolio</a>
+object, which allows obtaining information about the group of solutions,
+including, all <em>get</em> functions related with all solution objects
+simultaneously.</p>
+<p>Now, we want to evaluate different levels of targets. For example,
+20%, 30% and 40% of the maximum benefit per feature. For this, we use
+the <code><a href="../reference/evalTarget.html">evalTarget()</a></code> function:</p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># evaluate differents targets</span>
-<span class="va">port</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evalTarget.html">evalTarget</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>, features <span class="op">=</span> <span class="va">sim_features_data</span>,
-                   dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,
-                   threats <span class="op">=</span> <span class="va">sim_threats_data</span>,
-                   dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,
-                   sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>,
-                   boundary <span class="op">=</span> <span class="va">sim_boundary_data</span>,
-                   values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span>,
-                   output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## *********************************</span>
-<span class="co">##  Iteration 1 of 3: Prop0.2</span>
-<span class="co">## *********************************</span></code></pre>
-<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></code></pre>
-<pre><code><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
-<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span>
-<span class="co">## Model fingerprint: 0x61c57d26</span>
-<span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span>
-<span class="co">## Coefficient statistics:</span>
-<span class="co">##   Matrix range     [5e-01, 2e+00]</span>
-<span class="co">##   Objective range  [1e+00, 1e+01]</span>
-<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">##   RHS range        [4e-01, 1e+01]</span>
-<span class="co">## Found heuristic solution: objective 964.0000000</span>
-<span class="co">## Found heuristic solution: objective 311.0000000</span>
-<span class="co">## Presolve removed 250 rows and 277 columns</span>
-<span class="co">## Presolve time: 0.00s</span>
-<span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span>
-<span class="co">## Found heuristic solution: objective 169.0000000</span>
-<span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span>
-<span class="co">## </span>
-<span class="co">## Root relaxation: objective 1.155000e+02, 30 iterations, 0.00 seconds</span>
-<span class="co">## </span>
-<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">## </span>
-<span class="co">##      0     0  115.50000    0    6  169.00000  115.50000  31.7%     -    0s</span>
-<span class="co">## H    0     0                     132.0000000  115.50000  12.5%     -    0s</span>
-<span class="co">## H    0     0                     128.0000000  115.50000  9.77%     -    0s</span>
-<span class="co">## H    0     0                     127.0000000  115.50000  9.06%     -    0s</span>
-<span class="co">##      0     0  118.50000    0    3  127.00000  118.50000  6.69%     -    0s</span>
-<span class="co">## H    0     0                     125.0000000  118.50000  5.20%     -    0s</span>
-<span class="co">## *    0     0               0     120.0000000  120.00000  0.00%     -    0s</span>
-<span class="co">## </span>
-<span class="co">## Cutting planes:</span>
-<span class="co">##   Gomory: 2</span>
-<span class="co">##   Cover: 8</span>
-<span class="co">##   MIR: 1</span>
-<span class="co">## </span>
-<span class="co">## Explored 1 nodes (42 simplex iterations) in 0.00 seconds</span>
-<span class="co">## Thread count was 2 (of 4 available processors)</span>
-<span class="co">## </span>
-<span class="co">## Solution count 8: 120 125 127 ... 964</span>
-<span class="co">## </span>
-<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
-<span class="co">## Best objective 1.200000000000e+02, best bound 1.200000000000e+02, gap 0.0000%</span></code></pre>
-<pre><code><span class="co">## *********************************</span>
-<span class="co">##  Iteration 2 of 3: Prop0.3</span>
-<span class="co">## *********************************</span></code></pre>
-<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span>
-
-<span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
-<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span>
-<span class="co">## Model fingerprint: 0xd3db0e90</span>
-<span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span>
-<span class="co">## Coefficient statistics:</span>
-<span class="co">##   Matrix range     [5e-01, 2e+00]</span>
-<span class="co">##   Objective range  [1e+00, 1e+01]</span>
-<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">##   RHS range        [6e-01, 2e+01]</span>
-<span class="co">## Found heuristic solution: objective 964.0000000</span>
-<span class="co">## Found heuristic solution: objective 445.0000000</span>
-<span class="co">## Presolve removed 250 rows and 277 columns</span>
-<span class="co">## Presolve time: 0.00s</span>
-<span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span>
-<span class="co">## Found heuristic solution: objective 241.0000000</span>
-<span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span>
-<span class="co">## </span>
-<span class="co">## Root relaxation: objective 1.865000e+02, 34 iterations, 0.00 seconds</span>
-<span class="co">## </span>
-<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">## </span>
-<span class="co">##      0     0  186.50000    0    8  241.00000  186.50000  22.6%     -    0s</span>
-<span class="co">## H    0     0                     205.0000000  186.50000  9.02%     -    0s</span>
-<span class="co">##      0     0  193.00000    0    2  205.00000  193.00000  5.85%     -    0s</span>
-<span class="co">## H    0     0                     197.0000000  193.00000  2.03%     -    0s</span>
-<span class="co">##      0     0  195.50000    0    3  197.00000  195.50000  0.76%     -    0s</span>
-<span class="co">## *    0     0               0     196.0000000  196.00000  0.00%     -    0s</span>
-<span class="co">## </span>
-<span class="co">## Cutting planes:</span>
-<span class="co">##   Gomory: 2</span>
-<span class="co">##   Cover: 7</span>
-<span class="co">##   MIR: 1</span>
-<span class="co">##   Relax-and-lift: 1</span>
-<span class="co">## </span>
-<span class="co">## Explored 1 nodes (52 simplex iterations) in 0.00 seconds</span>
-<span class="co">## Thread count was 2 (of 4 available processors)</span>
-<span class="co">## </span>
-<span class="co">## Solution count 6: 196 197 205 ... 964</span>
-<span class="co">## </span>
-<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
-<span class="co">## Best objective 1.960000000000e+02, best bound 1.960000000000e+02, gap 0.0000%</span></code></pre>
-<pre><code><span class="co">## *********************************</span>
-<span class="co">##  Iteration 3 of 3: Prop0.4</span>
-<span class="co">## *********************************</span></code></pre>
-<pre><code><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span>
-
-<span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></code></pre>
-<pre><code><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span>
-<span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span>
-<span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span>
-<span class="co">## Model fingerprint: 0xa62c2e48</span>
-<span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span>
-<span class="co">## Coefficient statistics:</span>
-<span class="co">##   Matrix range     [5e-01, 2e+00]</span>
-<span class="co">##   Objective range  [1e+00, 1e+01]</span>
-<span class="co">##   Bounds range     [1e+00, 1e+00]</span>
-<span class="co">##   RHS range        [8e-01, 2e+01]</span>
-<span class="co">## Found heuristic solution: objective 964.0000000</span>
-<span class="co">## Found heuristic solution: objective 564.0000000</span>
-<span class="co">## Presolve removed 250 rows and 277 columns</span>
-<span class="co">## Presolve time: 0.00s</span>
-<span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span>
-<span class="co">## Found heuristic solution: objective 317.0000000</span>
-<span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span>
-<span class="co">## </span>
-<span class="co">## Root relaxation: objective 2.670000e+02, 43 iterations, 0.00 seconds</span>
-<span class="co">## </span>
-<span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="co">## </span>
-<span class="co">##      0     0  267.00000    0   10  317.00000  267.00000  15.8%     -    0s</span>
-<span class="co">## H    0     0                     290.0000000  267.00000  7.93%     -    0s</span>
-<span class="co">## H    0     0                     284.0000000  267.00000  5.99%     -    0s</span>
-<span class="co">##      0     0  276.50000    0    6  284.00000  276.50000  2.64%     -    0s</span>
-<span class="co">## H    0     0                     279.0000000  276.50000  0.90%     -    0s</span>
-<span class="co">##      0     0  276.50000    0    3  279.00000  276.50000  0.90%     -    0s</span>
-<span class="co">## H    0     0                     278.0000000  276.50000  0.54%     -    0s</span>
-<span class="co">##      0     0     cutoff    0       278.00000  278.00000  0.00%     -    0s</span>
-<span class="co">## </span>
-<span class="co">## Explored 1 nodes (68 simplex iterations) in 0.01 seconds</span>
-<span class="co">## Thread count was 2 (of 4 available processors)</span>
-<span class="co">## </span>
-<span class="co">## Solution count 7: 278 279 284 ... 964</span>
-<span class="co">## </span>
-<span class="co">## Optimal solution found (tolerance 0.00e+00)</span>
-<span class="co">## Best objective 2.780000000000e+02, best bound 2.780000000000e+02, gap 0.0000%</span></code></pre>
-<p>Like the <code><a href="../reference/prioriactions.html">prioriactions()</a></code> function, all <em>eval</em> functions inherit the parameters of the <code><a href="../reference/inputData.html">inputData()</a></code>, <code><a href="../reference/problem.html">problem()</a></code>, and <code><a href="../reference/solve.html">solve()</a></code> functions.</p>
+<code class="sourceCode R"><span><span class="co"># evaluate differents targets</span></span>
+<span><span class="va">port</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evalTarget.html">evalTarget</a></span><span class="op">(</span>pu <span class="op">=</span> <span class="va">sim_pu_data</span>, features <span class="op">=</span> <span class="va">sim_features_data</span>,</span>
+<span>                   dist_features <span class="op">=</span> <span class="va">sim_dist_features_data</span>,</span>
+<span>                   threats <span class="op">=</span> <span class="va">sim_threats_data</span>,</span>
+<span>                   dist_threats <span class="op">=</span> <span class="va">sim_dist_threats_data</span>,</span>
+<span>                   sensitivity <span class="op">=</span> <span class="va">sim_sensitivity_data</span>,</span>
+<span>                   boundary <span class="op">=</span> <span class="va">sim_boundary_data</span>,</span>
+<span>                   values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span>, </span>
+<span>                   output_file <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## *********************************</span></span>
+<span><span class="co">##  Iteration 1 of 3: Prop0.2</span></span>
+<span><span class="co">## *********************************</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></span></code></pre>
+<pre><code><span><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span></span>
+<span><span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span></span>
+<span><span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span></span>
+<span><span class="co">## Model fingerprint: 0x61c57d26</span></span>
+<span><span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span></span>
+<span><span class="co">## Coefficient statistics:</span></span>
+<span><span class="co">##   Matrix range     [5e-01, 2e+00]</span></span>
+<span><span class="co">##   Objective range  [1e+00, 1e+01]</span></span>
+<span><span class="co">##   Bounds range     [1e+00, 1e+00]</span></span>
+<span><span class="co">##   RHS range        [4e-01, 1e+01]</span></span>
+<span><span class="co">## Found heuristic solution: objective 964.0000000</span></span>
+<span><span class="co">## Found heuristic solution: objective 311.0000000</span></span>
+<span><span class="co">## Presolve removed 250 rows and 277 columns</span></span>
+<span><span class="co">## Presolve time: 0.00s</span></span>
+<span><span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span></span>
+<span><span class="co">## Found heuristic solution: objective 169.0000000</span></span>
+<span><span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Root relaxation: objective 1.155000e+02, 30 iterations, 0.00 seconds</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span></span>
+<span><span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      0     0  115.50000    0    6  169.00000  115.50000  31.7%     -    0s</span></span>
+<span><span class="co">## H    0     0                     132.0000000  115.50000  12.5%     -    0s</span></span>
+<span><span class="co">## H    0     0                     128.0000000  115.50000  9.77%     -    0s</span></span>
+<span><span class="co">## H    0     0                     127.0000000  115.50000  9.06%     -    0s</span></span>
+<span><span class="co">##      0     0  118.50000    0    3  127.00000  118.50000  6.69%     -    0s</span></span>
+<span><span class="co">## H    0     0                     125.0000000  118.50000  5.20%     -    0s</span></span>
+<span><span class="co">## *    0     0               0     120.0000000  120.00000  0.00%     -    0s</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Cutting planes:</span></span>
+<span><span class="co">##   Gomory: 2</span></span>
+<span><span class="co">##   Cover: 8</span></span>
+<span><span class="co">##   MIR: 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Explored 1 nodes (42 simplex iterations) in 0.00 seconds</span></span>
+<span><span class="co">## Thread count was 2 (of 4 available processors)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Solution count 8: 120 125 127 ... 964</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Optimal solution found (tolerance 0.00e+00)</span></span>
+<span><span class="co">## Best objective 1.200000000000e+02, best bound 1.200000000000e+02, gap 0.0000%</span></span></code></pre>
+<pre><code><span><span class="co">## *********************************</span></span>
+<span><span class="co">##  Iteration 2 of 3: Prop0.3</span></span>
+<span><span class="co">## *********************************</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></span>
+<span></span>
+<span><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></span></code></pre>
+<pre><code><span><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span></span>
+<span><span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span></span>
+<span><span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span></span>
+<span><span class="co">## Model fingerprint: 0xd3db0e90</span></span>
+<span><span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span></span>
+<span><span class="co">## Coefficient statistics:</span></span>
+<span><span class="co">##   Matrix range     [5e-01, 2e+00]</span></span>
+<span><span class="co">##   Objective range  [1e+00, 1e+01]</span></span>
+<span><span class="co">##   Bounds range     [1e+00, 1e+00]</span></span>
+<span><span class="co">##   RHS range        [6e-01, 2e+01]</span></span>
+<span><span class="co">## Found heuristic solution: objective 964.0000000</span></span>
+<span><span class="co">## Found heuristic solution: objective 445.0000000</span></span>
+<span><span class="co">## Presolve removed 250 rows and 277 columns</span></span>
+<span><span class="co">## Presolve time: 0.00s</span></span>
+<span><span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span></span>
+<span><span class="co">## Found heuristic solution: objective 241.0000000</span></span>
+<span><span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Root relaxation: objective 1.865000e+02, 34 iterations, 0.00 seconds</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span></span>
+<span><span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      0     0  186.50000    0    8  241.00000  186.50000  22.6%     -    0s</span></span>
+<span><span class="co">## H    0     0                     205.0000000  186.50000  9.02%     -    0s</span></span>
+<span><span class="co">##      0     0  193.00000    0    2  205.00000  193.00000  5.85%     -    0s</span></span>
+<span><span class="co">## H    0     0                     197.0000000  193.00000  2.03%     -    0s</span></span>
+<span><span class="co">##      0     0  195.50000    0    3  197.00000  195.50000  0.76%     -    0s</span></span>
+<span><span class="co">## *    0     0               0     196.0000000  196.00000  0.00%     -    0s</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Cutting planes:</span></span>
+<span><span class="co">##   Gomory: 2</span></span>
+<span><span class="co">##   Cover: 7</span></span>
+<span><span class="co">##   MIR: 1</span></span>
+<span><span class="co">##   Relax-and-lift: 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Explored 1 nodes (52 simplex iterations) in 0.00 seconds</span></span>
+<span><span class="co">## Thread count was 2 (of 4 available processors)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Solution count 6: 196 197 205 ... 964</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Optimal solution found (tolerance 0.00e+00)</span></span>
+<span><span class="co">## Best objective 1.960000000000e+02, best bound 1.960000000000e+02, gap 0.0000%</span></span></code></pre>
+<pre><code><span><span class="co">## *********************************</span></span>
+<span><span class="co">##  Iteration 3 of 3: Prop0.4</span></span>
+<span><span class="co">## *********************************</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: The blm argument was set to 0, so the boundary data has no effect</span></span>
+<span></span>
+<span><span class="co">## Warning: Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span></span></code></pre>
+<pre><code><span><span class="co">## Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (linux64)</span></span>
+<span><span class="co">## Thread count: 2 physical cores, 4 logical processors, using up to 2 threads</span></span>
+<span><span class="co">## Optimize a model with 284 rows, 396 columns and 785 nonzeros</span></span>
+<span><span class="co">## Model fingerprint: 0xa62c2e48</span></span>
+<span><span class="co">## Variable types: 176 continuous, 220 integer (220 binary)</span></span>
+<span><span class="co">## Coefficient statistics:</span></span>
+<span><span class="co">##   Matrix range     [5e-01, 2e+00]</span></span>
+<span><span class="co">##   Objective range  [1e+00, 1e+01]</span></span>
+<span><span class="co">##   Bounds range     [1e+00, 1e+00]</span></span>
+<span><span class="co">##   RHS range        [8e-01, 2e+01]</span></span>
+<span><span class="co">## Found heuristic solution: objective 964.0000000</span></span>
+<span><span class="co">## Found heuristic solution: objective 564.0000000</span></span>
+<span><span class="co">## Presolve removed 250 rows and 277 columns</span></span>
+<span><span class="co">## Presolve time: 0.00s</span></span>
+<span><span class="co">## Presolved: 34 rows, 119 columns, 237 nonzeros</span></span>
+<span><span class="co">## Found heuristic solution: objective 317.0000000</span></span>
+<span><span class="co">## Variable types: 0 continuous, 119 integer (101 binary)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Root relaxation: objective 2.670000e+02, 43 iterations, 0.00 seconds</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Nodes    |    Current Node    |     Objective Bounds      |     Work</span></span>
+<span><span class="co">##  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      0     0  267.00000    0   10  317.00000  267.00000  15.8%     -    0s</span></span>
+<span><span class="co">## H    0     0                     290.0000000  267.00000  7.93%     -    0s</span></span>
+<span><span class="co">## H    0     0                     284.0000000  267.00000  5.99%     -    0s</span></span>
+<span><span class="co">##      0     0  276.50000    0    6  284.00000  276.50000  2.64%     -    0s</span></span>
+<span><span class="co">## H    0     0                     279.0000000  276.50000  0.90%     -    0s</span></span>
+<span><span class="co">##      0     0  276.50000    0    3  279.00000  276.50000  0.90%     -    0s</span></span>
+<span><span class="co">## H    0     0                     278.0000000  276.50000  0.54%     -    0s</span></span>
+<span><span class="co">##      0     0     cutoff    0       278.00000  278.00000  0.00%     -    0s</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Explored 1 nodes (68 simplex iterations) in 0.01 seconds</span></span>
+<span><span class="co">## Thread count was 2 (of 4 available processors)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Solution count 7: 278 279 284 ... 964</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Optimal solution found (tolerance 0.00e+00)</span></span>
+<span><span class="co">## Best objective 2.780000000000e+02, best bound 2.780000000000e+02, gap 0.0000%</span></span></code></pre>
+<p>Like the <code><a href="../reference/prioriactions.html">prioriactions()</a></code> function, all <em>eval</em>
+functions inherit the parameters of the <code><a href="../reference/inputData.html">inputData()</a></code>,
+<code><a href="../reference/problem.html">problem()</a></code>, and <code><a href="../reference/solve.html">solve()</a></code> functions.</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get cost of solutions inside portfolio</span>
-<span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">port</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   solution_name monitoring threat_1 threat_2</span>
-<span class="co">## 1       Prop0.2         63       10       47</span>
-<span class="co">## 2       Prop0.3         98       26       72</span>
-<span class="co">## 3       Prop0.4        141       48       89</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># get cost of solutions inside portfolio</span></span>
+<span><span class="fu"><a href="../reference/getCost.html">getCost</a></span><span class="op">(</span><span class="va">port</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   solution_name monitoring threat_1 threat_2</span></span>
+<span><span class="co">## 1       Prop0.2         63       10       47</span></span>
+<span><span class="co">## 2       Prop0.3         98       26       72</span></span>
+<span><span class="co">## 3       Prop0.4        141       48       89</span></span></code></pre>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getConnectivityPenalty.html">getConnectivityPenalty</a></span><span class="op">(</span><span class="va">port</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##   solution_name     units threat_1 threat_2</span>
-<span class="co">## 1       Prop0.2  8123.805   904.68 3229.636</span>
-<span class="co">## 2       Prop0.3 11334.252 1760.095 4431.999</span>
-<span class="co">## 3       Prop0.4 12726.708 2336.171 4739.123</span></code></pre>
-<p>Note that increasing the target per feature naturally increases the number of actions to be taken to achieve it and therefore the associated cost. This, in turn, increases the connectivity values between conservation actions.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getConnectivityPenalty.html">getConnectivityPenalty</a></span><span class="op">(</span><span class="va">port</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   solution_name     units threat_1 threat_2</span></span>
+<span><span class="co">## 1       Prop0.2  8123.805   904.68 3229.636</span></span>
+<span><span class="co">## 2       Prop0.3 11334.252 1760.095 4431.999</span></span>
+<span><span class="co">## 3       Prop0.4 12726.708 2336.171 4739.123</span></span></code></pre>
+<p>Note that increasing the target per feature naturally increases the
+number of actions to be taken to achieve it and therefore the associated
+cost. This, in turn, increases the connectivity values between
+conservation actions.</p>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-beyer2016" class="csl-entry">
-Beyer, Hawthorne L., Yann Dujardin, Matthew E. Watts, and Hugh P. Possingham. 2016. <span>“Solving Conservation Planning Problems with Integer Linear Programming.”</span> <em>Ecological Modelling</em> 328 (May): 14–22. <a href="https://doi.org/10.1016/j.ecolmodel.2016.02.005" class="external-link">https://doi.org/10.1016/j.ecolmodel.2016.02.005</a>.
+Beyer, Hawthorne L., Yann Dujardin, Matthew E. Watts, and Hugh P.
+Possingham. 2016. <span>“Solving Conservation Planning Problems with
+Integer Linear Programming.”</span> <em>Ecological Modelling</em> 328
+(May): 14–22. <a href="https://doi.org/10.1016/j.ecolmodel.2016.02.005" class="external-link">https://doi.org/10.1016/j.ecolmodel.2016.02.005</a>.
 </div>
 <div id="ref-watts2009" class="csl-entry">
-Watts, Matthew E., Ian R. Ball, Romola S. Stewart, Carissa J. Klein, Kerrie Wilson, Charles Steinback, Reinaldo Lourival, Lindsay Kircher, and Hugh P. Possingham. 2009. <span>“Marxan with Zones: Software for Optimal Conservation Based Land- and Sea-Use Zoning.”</span> <em>Environmental Modelling &amp; Software</em> 24 (12): 1513–21. <a href="https://doi.org/10.1016/j.envsoft.2009.06.005" class="external-link">https://doi.org/10.1016/j.envsoft.2009.06.005</a>.
+Watts, Matthew E., Ian R. Ball, Romola S. Stewart, Carissa J. Klein,
+Kerrie Wilson, Charles Steinback, Reinaldo Lourival, Lindsay Kircher,
+and Hugh P. Possingham. 2009. <span>“Marxan with Zones: Software for
+Optimal Conservation Based Land- and Sea-Use Zoning.”</span>
+<em>Environmental Modelling &amp; Software</em> 24 (12): 1513–21. <a href="https://doi.org/10.1016/j.envsoft.2009.06.005" class="external-link">https://doi.org/10.1016/j.envsoft.2009.06.005</a>.
 </div>
 </div>
 </div>
@@ -782,7 +1042,7 @@ Watts, Matthew E., Ian R. Ball, Romola S. Stewart, Carissa J. Klein, Kerrie Wils
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

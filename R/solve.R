@@ -13,8 +13,9 @@ NULL
 #'
 #' @param solver `string`. Name of solver to use to
 #'   solve the model. The following solvers are supported:
-#'   [`"gurobi"`](https://www.gurobi.com/)(requires the \pkg{gurobi} package), and
-#'   [`"symphony"`](https://projects.coin-or.org/SYMPHONY)(requires the \pkg{Rsymphony} package).
+#'   [`"gurobi"`](https://www.gurobi.com/)(requires the \pkg{gurobi} package),
+#'   [`"cplex"`](https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio)(requires the \pkg{cplexAPI} package) and
+#'   [`"symphony"`](https://github.com/coin-or/SYMPHONY)(requires the \pkg{Rsymphony} package).
 #'   We recommend using gurobi (for more information on how to obtain an academic license
 #'   [here](https://prioritizr.net/articles/gurobi_installation_guide.html)).
 #'
@@ -56,13 +57,20 @@ NULL
 #'   \item{`Gurobi solver`}{ [*Gurobi*](https://www.gurobi.com/) is a
 #'   state-of-the-art commercial optimization software with an R package
 #'   interface. It is by far the fastest of the solvers available in this
-#'   package, however, it is also the only solver that is not freely available.
+#'   package, however, also this solver is not freely available.
 #'   That said, licenses are available to academics at no cost. The \pkg{gurobi}
 #'   package is distributed with the *Gurobi* software suite. This solver
 #'   uses the \pkg{gurobi} package to solve problems.}
 #'
+#'   \item{`CPLEX solver`}{
+#'   [*cplex*](https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio) is a
+#'   state-of-the-art commercial optimization software with an R package
+#'   interface. As well as gurobi, is not freely available but licenses are available
+#'   on the webpage. This solver uses the
+#'   \pkg{cplexAPI} package to solve problems.}
+#'
 #'   \item{`Symphony solver`}{
-#'   [*SYMPHONY*](https://projects.coin-or.org/SYMPHONY) is an
+#'   [*SYMPHONY*](https://github.com/coin-or/SYMPHONY) is an
 #'   open-source integer programming solver that is part of the Computational
 #'   Infrastructure for Operations Research (COIN-OR) project, an initiative to
 #'   promote development of open-source tools for operations research (a field
@@ -271,7 +279,7 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
     env <- cplexAPI::openEnvCPLEX()
 
     cplexAPI::setDefaultParmCPLEX(env)
-    cplexAPI::setIntParmCPLEX(env, CPX_PARAM_SCRIND, ifelse(verbose, CPX_ON, CPX_OFF))
+    cplexAPI::setIntParmCPLEX(env, cplexAPI::CPX_PARAM_SCRIND, ifelse(verbose, cplexAPI::CPX_ON, cplexAPI::CPX_OFF))
     cplexAPI::setIntParmCPLEX(env = env, parm = cplexAPI::CPXPARAM_Threads, value = cores)
     cplexAPI::setDblParmCPLEX(env = env, parm = cplexAPI::CPXPARAM_TimeLimit, value = time_limit)
     cplexAPI::setDblParmCPLEX(env = env, parm = cplexAPI::CPX_PARAM_EPGAP, value = gap_limit)
@@ -337,8 +345,8 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
                 OptimizationClass = a
     )
 
-    delProbCPLEX(env, p)
-    closeEnvCPLEX(env)
+    cplexAPI::delProbCPLEX(env, p)
+    cplexAPI::closeEnvCPLEX(env)
   }
   ## SYMPHONY solver
   else {
