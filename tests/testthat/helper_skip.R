@@ -6,8 +6,7 @@
 #'   for commercial solvers. Defaults to `"gurobi"` and `"cplexAPI"`.
 #'
 #' @return `logical` indicating success.
-skip_if_no_commercial_solvers_installed <- function(
-    packages = c("gurobi", "cplexAPI")) {
+skip_if_no_commercial_solvers_installed <- function(packages = c("gurobi", "Rcplex")) {
   # assert arguments are valid
   assertthat::assert_that(
     is.character(packages), assertthat::noNA(packages))
@@ -19,3 +18,4 @@ skip_if_no_commercial_solvers_installed <- function(
   }
   testthat::skip("No commercial solvers installed")
 }
+

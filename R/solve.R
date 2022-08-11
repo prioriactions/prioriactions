@@ -1,4 +1,4 @@
-#' @include presolve.R writeOutputs.R
+#' @include presolve.R writeOutputs.R internal.R
 NULL
 
 #' @title Solve mathematical models
@@ -14,7 +14,7 @@ NULL
 #' @param solver `string`. Name of solver to use to
 #'   solve the model. The following solvers are supported:
 #'   [`"gurobi"`](https://www.gurobi.com/)(requires the \pkg{gurobi} package),
-#'   [`"cplex"`](https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio)(requires the \pkg{cplexAPI} package) and
+#'   [`"cplex"`](https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio)(requires the \pkg{Rcplex} package) and
 #'   [`"symphony"`](https://github.com/coin-or/SYMPHONY)(requires the \pkg{Rsymphony} package).
 #'   We recommend using gurobi (for more information on how to obtain an academic license
 #'   [here](https://prioritizr.net/articles/gurobi_installation_guide.html)).
@@ -65,9 +65,11 @@ NULL
 #'   \item{`CPLEX solver`}{
 #'   [*cplex*](https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio) is a
 #'   state-of-the-art commercial optimization software with an R package
-#'   interface. As well as gurobi, is not freely available but licenses are available
-#'   on the webpage. This solver uses the
-#'   \pkg{cplexAPI} package to solve problems.}
+#'   interface. Like Gurobi, it is not freely accessible, but we can obtain academic
+#'   licenses. We recommend using this solver if the Gurobi solver is not available.
+#'   Licenses are available for the IBM CPLEX software to academics at no cost
+#'   [here](https://www.ibm.com/products/ilog-cplex-optimization-studio). This solver uses the
+#'   \pkg{Rcplex} package to solve problems.}
 #'
 #'   \item{`Symphony solver`}{
 #'   [*SYMPHONY*](https://github.com/coin-or/SYMPHONY) is an
@@ -82,6 +84,10 @@ NULL
 #'   license of the Gurobi solver, see the *Gurobi installation guide*,
 #'   which can be found online at
 #'   [prioritizr vignette](https://prioritizr.net/articles/gurobi_installation_guide.html).
+#'   Just like Gurobi, cplex needs an academic licence to work. Details about how to install
+#'   the cplex solver, see the [webpage IBM CPLEX](https://www.ibm.com/products/ilog-cplex-optimization-studio).
+#'   Once installed, see the *\pkg{Rcplex} installation guide*, which can be found online at
+#'   [Rcplex package](https://github.com/cran/Rcplex/blob/master/inst/INSTALL).
 #'
 #' @examples
 #' \dontrun{
@@ -153,18 +159,19 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
   # Rounding numeric parameters
   gap_limit <- base::round(gap_limit, 3)
   time_limit <- base::round(time_limit, 3)
+  available_gurobi <- available_to_solve("gurobi")
+  available_cplex <- available_to_solve("cplex")
+  available_symphony <- available_to_solve("symphony")
 
-  if (requireNamespace("cplexAPI", quietly = TRUE)) {
+  if (requireNamespace("Rcplex", quietly = TRUE) && available_cplex) {
     solver_default <- "cplex"
   }
-  else if (requireNamespace("gurobi", quietly = TRUE)) {
+  else if (requireNamespace("gurobi", quietly = TRUE) && available_gurobi) {
     solver_default <- "gurobi"
-  } else if (requireNamespace("Rsymphony", quietly = TRUE)) {
+  } else if (requireNamespace("Rsymphony", quietly = TRUE) && available_symphony) {
     solver_default <- "symphony"
-    #} else if (requireNamespace("Rglpk", quietly = TRUE)) {
-    #  solver_default <- "glpk"
   } else {
-    stop("No optimization problem solvers found on system")
+    stop("No optimization problem solvers availables on system")
   }
 
   if (solver == "") {
@@ -174,14 +181,22 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
     if (!solver %in% c("gurobi", "symphony", "cplex")) {
       stop("Solver not available")
     }
-    else if (identical(solver, "gurobi") && !requireNamespace("gurobi", quietly = TRUE)) {
-      stop("Gurobi solver not found")
+    else if (identical(solver, "gurobi") && (!requireNamespace("gurobi", quietly = TRUE) || !available_gurobi)) {
+      warning("Gurobi solver not found (More information on how to install it on
+           https://prioritizr.net/articles/gurobi_installation_guide.html)", call. = FALSE, immediate. = TRUE)
+
+      solver <- solver_default
     }
-    else if (identical(solver, "symphony") && !requireNamespace("Rsymphony", quietly = TRUE)) {
-      stop("SYMPHONY solver not found")
+    else if (identical(solver, "symphony") && (!requireNamespace("Rsymphony", quietly = TRUE) || !available_symphony)) {
+      warning("SYMPHONY solver not found (Please install it using install.packages('Rsymphony'))", call. = FALSE, immediate. = TRUE)
+
+      solver <- solver_default
     }
-    else if(identical(solver, "cplex") && !requireNamespace("cplexAPI", quietly = TRUE)){
-      stop("cplex solver not found")
+    else if(identical(solver, "cplex") && (!requireNamespace("Rcplex", quietly = TRUE) || !available_cplex)){
+      warning("Rcplex solver not found (More information on how to install it on
+           https://cran.r-project.org/web/packages/Rcplex/INSTALL)", call. = FALSE, immediate. = TRUE)
+
+      solver <- solver_default
     }
   }
 
@@ -247,106 +262,58 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
   ## cplex solver
   else if(solver == "cplex"){
 
-    cplex_matrix <- function(m) {
-      # inspired by Rcplex:::toCPXMatrix function
-      assertthat::assert_that(inherits(m, "dgCMatrix"))
-      matbeg <- m@p
-      matcnt <- diff(c(m@p, length(m@x)))
-      matind <- m@i
-      matval <- m@x
-      list(matbeg = as.integer(matbeg), matcnt = as.integer(matcnt),
-           matind = as.integer(matind), matval = as.double(matval))
-    }
-
     ## cplex model
     model$lb <- a$getData("bounds")$lower$val
     model$ub <- a$getData("bounds")$upper$val
-    model$A2 <- cplex_matrix(a$getData("A"))
 
     # change structure of some variables
     model$sense[model$sense == ">="] <- "G"
     model$sense[model$sense == "=="] <- "E"
     model$sense[model$sense == "<="] <- "L"
-    model$vtype[model$vtype == "S"] <- "C"
-
-    # prepare model data for CPLEX
-    model$lb[which(!is.finite(model$lb) & model$lb < 0)] <- -1 * cplexAPI::CPX_INFBOUND
-    model$lb[which(!is.finite(model$lb) & model$lb > 0)] <- cplexAPI::CPX_INFBOUND
-    model$ub[which(!is.finite(model$ub) & model$ub < 0)] <- -1 * cplexAPI::CPX_INFBOUND
-    model$ub[which(!is.finite(model$ub) & model$ub > 0)] <- cplexAPI::CPX_INFBOUND
 
     ## cplex parameters
-    env <- cplexAPI::openEnvCPLEX()
-
-    cplexAPI::setDefaultParmCPLEX(env)
-    cplexAPI::setIntParmCPLEX(env, cplexAPI::CPX_PARAM_SCRIND, ifelse(verbose, cplexAPI::CPX_ON, cplexAPI::CPX_OFF))
-    cplexAPI::setIntParmCPLEX(env = env, parm = cplexAPI::CPXPARAM_Threads, value = cores)
-    cplexAPI::setDblParmCPLEX(env = env, parm = cplexAPI::CPXPARAM_TimeLimit, value = time_limit)
-    cplexAPI::setDblParmCPLEX(env = env, parm = cplexAPI::CPX_PARAM_EPGAP, value = gap_limit)
-
-    #log cplex
     params <- list()
-    #if(isTRUE(output_file)){
-    #  params$LogFile <- paste0(name_output_file,"_log.txt")
-    #}
-
-    # Stop condition: MIP feasible solution limit
-    if (!isTRUE(solution_limit)) {
-      params$SolutionLimit <- NULL
-    } else {
-      params$SolutionLimit <- 1
-    }
-
-    if(model$args$curve != 1){
-      params$FuncPieces <- 1
-      params$FuncPieceLength <- round(1/model$args$segments, digits = 1)
+    params$trace <- as.integer(verbose)
+    # Stop condition: Relative MIP optimality gap
+    params$epgap <- gap_limit
+    # Stop condition: Time limit
+    params$tilim <- time_limit
+    #export log
+    params_cplex <- c("solution_limit", "output_file")
+    if(any(solution_limit, output_file)) {
+      warning(paste0("The following options are not availables using cplex solver: ", paste(params_cplex[which(c(solution_limit, output_file))], collapse = " ")), call. = FALSE, immediate. = TRUE)
     }
 
     # initialize problem
-    p <- cplexAPI::initProbCPLEX(env)
-
-    result <- cplexAPI::copyLpwNamesCPLEX(
-      env = env, lp = p,
-      nCols = ncol(model$A),
-      nRows = nrow(model$A),
-      lpdir = ifelse(identical(model$modelsense, "max"),
-                     cplexAPI::CPX_MAX, cplexAPI::CPX_MIN),
-      obj = model$obj,
-      rhs = model$rhs,
-      sense = model$sense,
-      lb = model$lb,
-      ub = model$ub,
-      matbeg = model$A2$matbeg,
-      matcnt = model$A2$matcnt,
-      matind = model$A2$matind,
-      matval = model$A2$matval)
-
-    invisible(cplexAPI::copyColTypeCPLEX(env, p, model$vtype))
-    invisible(cplexAPI::mipoptCPLEX(env, p))
-
     rt <- system.time({
-      solution <- cplexAPI::solutionCPLEX(env, p)
+      solution <- Rcplex::Rcplex(
+        cvec = model$obj,
+        Amat = model$A,
+        bvec = model$rhs,
+        lb = model$lb,
+        ub = model$ub,
+        objsense = model$modelsense,
+        sense = model$sense,
+        vtype = model$vtype,
+        control = params)
     })
 
     solution$status_code <- dplyr::case_when(
-      (solution$lpstat == 101L || solution$lpstat == 1L) ~ 0L,
-      (solution$lpstat == 2L || solution$lpstat == 3L || solution$lpstat == 103L || solution$lpstat == 118L) ~ 1L,
-      (solution$lpstat == 107L) ~ 2L,
-      (solution$lpstat == 108L) ~ 3L,
-      (solution$lpstat == 232L) ~ 4L,
+      (solution$status == 101L || solution$status == 1L) ~ 0L,
+      (solution$status == 2L || solution$status == 3L || solution$status == 103L || solution$status == 118L) ~ 1L,
+      (solution$status == 107L) ~ 2L,
+      (solution$status == 108L) ~ 3L,
+      (solution$status == 232L) ~ 4L,
       TRUE ~ 999L
     )
 
     s <- pproto(NULL, Solution,
                 data = list(
-                  objval = solution$objval, sol = solution$x, gap = 0,
+                  objval = solution$obj, sol = solution$xopt, gap = 0,
                   status = solution$status_code, runtime = rt[[3]], args = args
                 ),
                 OptimizationClass = a
     )
-
-    cplexAPI::delProbCPLEX(env, p)
-    cplexAPI::closeEnvCPLEX(env)
   }
   ## SYMPHONY solver
   else {

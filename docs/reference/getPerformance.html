@@ -150,11 +150,12 @@ feasible solution (solution_limit = TRUE parameter in <code><a href="solve.html"
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Solve the optimization model</span></span></span>
 <span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="solve.html">solve</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, time_limit <span class="op">=</span> <span class="fl">2</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rcplex: num variables=10296 num constraints=29984</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># get solution gap</span></span></span>
 <span class="r-in"><span><span class="fu">getPerformance</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   solution_name objective_value gap solving_time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           sol             863   0        0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           sol             863   0        1.618</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                             status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Optimal solution (according to gap tolerance: 0)</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>

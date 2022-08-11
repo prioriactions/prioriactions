@@ -116,7 +116,7 @@ created using the <code><a href="problem.html">problem()</a></code> function.</p
 <dd><p><code>string</code>. Name of solver to use to
 solve the model. The following solvers are supported:
 <a href="https://www.gurobi.com/" class="external-link"><code>"gurobi"</code></a>(requires the <span class="pkg">gurobi</span> package),
-<a href="https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio" class="external-link"><code>"cplex"</code></a>(requires the <span class="pkg">cplexAPI</span> package) and
+<a href="https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio" class="external-link"><code>"cplex"</code></a>(requires the <span class="pkg">Rcplex</span> package) and
 <a href="https://github.com/coin-or/SYMPHONY" class="external-link"><code>"symphony"</code></a>(requires the <span class="pkg">Rsymphony</span> package).
 We recommend using gurobi (for more information on how to obtain an academic license
 <a href="https://prioritizr.net/articles/gurobi_installation_guide.html" class="external-link">here</a>).</p></dd>
@@ -186,9 +186,11 @@ uses the <span class="pkg">gurobi</span> package to solve problems.</p></dd>
 <dt><code>CPLEX solver</code></dt>
 <dd><p><a href="https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio" class="external-link"><em>cplex</em></a> is a
 state-of-the-art commercial optimization software with an R package
-interface. As well as gurobi, is not freely available but licenses are available
-on the webpage. This solver uses the
-<span class="pkg">cplexAPI</span> package to solve problems.</p></dd>
+interface. Like Gurobi, it is not freely accessible, but we can obtain academic
+licenses. We recommend using this solver if the Gurobi solver is not available.
+Licenses are available for the IBM CPLEX software to academics at no cost
+<a href="https://www.ibm.com/products/ilog-cplex-optimization-studio" class="external-link">here</a>. This solver uses the
+<span class="pkg">Rcplex</span> package to solve problems.</p></dd>
 
 
 <dt><code>Symphony solver</code></dt>
@@ -206,7 +208,11 @@ interface to COIN-OR and is available on CRAN. This solver uses the
     <div class="dont-index"><p>For more information on how to install and obtain an academic
 license of the Gurobi solver, see the <em>Gurobi installation guide</em>,
 which can be found online at
-<a href="https://prioritizr.net/articles/gurobi_installation_guide.html" class="external-link">prioritizr vignette</a>.</p></div>
+<a href="https://prioritizr.net/articles/gurobi_installation_guide.html" class="external-link">prioritizr vignette</a>.
+Just like Gurobi, cplex needs an academic licence to work. Details about how to install
+the cplex solver, see the <a href="https://www.ibm.com/products/ilog-cplex-optimization-studio" class="external-link">webpage IBM CPLEX</a>.
+Once installed, see the <em><span class="pkg">Rcplex</span> installation guide</em>, which can be found online at
+<a href="https://github.com/cran/Rcplex/blob/master/inst/INSTALL" class="external-link">Rcplex package</a>.</p></div>
     </div>
 
     <div id="ref-examples">

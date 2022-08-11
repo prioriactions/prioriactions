@@ -151,6 +151,7 @@ the threat coincides with the index of the action used to abate it.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Solve the optimization model</span></span></span>
 <span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="solve.html">solve</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, time_limit <span class="op">=</span> <span class="fl">2</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rcplex: num variables=396 num constraints=284</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Get costs</span></span></span>
 <span class="r-in"><span><span class="fu">getCost</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>

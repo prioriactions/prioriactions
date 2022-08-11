@@ -5,6 +5,6 @@ library(prioriactions)
 # load solver packages
 require(gurobi)
 require(Rsymphony)
-require(cplexAPI)
+require(Rcplex)
 
 test_check("prioriactions")

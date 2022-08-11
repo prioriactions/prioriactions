@@ -143,25 +143,17 @@ pproto <- function(`_class` = NULL, `_inherit` = NULL, ...) {
 
 #' Get status
 #'
-#' Provides the status of solver at the end of the optimization period.
+#' Construct a new object with `pproto`. This object system is inspired
+#' from the `ggproto` system used in the `ggplot2` package.
 #'
-#' @param x [solution-class] or [portfolio-class] object.
+#' @param _class Class name to assign to the object. This is stored as the class
+#'   attribute of the object. This is optional: if `NULL` (the default),
+#'   no class name will be added to the object.
 #'
-#' `GetStatus` can have five states:
+#' @param _inherit `pproto` object to inherit from. If `NULL`, don"t
+#'   inherit from any object.
 #'
-#' 1) *Optimal solution (according to gap tolerance)* : When the resolution of the model stop
-#' when the quality of the solution (*gap*) is less than or equal to
-#' `gap_limit` (parameter of the `solve` function).
-#' 2) *No solution (model was proven to be infeasible or unbounded)*: When the model is infeasible.
-#' 3) *Feasible solution (according to time limit)*: When the resolution of the model
-#' stops when a `time_limit` has been reached finding a feasible solution
-#' (parameter of the `solve` function).
-#' 4) *No solution (according to time limit)*: When the resolution of the model
-#' stops when a `time_limit` has been reached without finding a feasible solution
-#' (parameter of the `solve` function).
-#' 5) *First feasible solution*: When the resolution of the model stops when it has
-#' found the first feasible solution (`solution_limit = TRUE` parameter in `solve` function).
-#' 6) *No solution information is available*: For any other case.
+#' @param ... A list of members to add to the new `pproto` object.
 #'
 #' @examples
 #' # set seed for reproducibility
@@ -214,6 +206,124 @@ getStatus <- function(x) {
   }
   else{
     return("No solution information available")
+  }
+}
+
+
+#' Check if solvers are working
+#'
+#' Provides the status of solver. Being TRUE if it's working fine and FALSE in otherwise.
+#'
+#' @param package `character` object. Posible values: "gurobi", "cplex", and "symphony".
+#'
+#' @examples
+#' available_to_solve("cplex")
+#'
+
+#' @noRd
+available_to_solve <- function(package = ""){
+
+  # define primitive data
+  nPlants     <- 1
+  nWarehouses <- 1
+  # Warehouse demand in thousands of units
+  Demand      <- c(10)
+  # Plant capacity in thousands of units
+  Capacity    <- c(20)
+  # Fixed costs for each plant
+  FixedCosts  <- c(100)
+  # Transportation costs per thousand units
+  TransCosts  <- c(100)
+
+  flowidx <- function(w, p) {nPlants * (w-1) + p}
+
+   # Build model
+  model <- list()
+  model$modelname <- 'facility'
+  model$modelsense <- 'min'
+
+  # initialize data for variables
+  model$lb       <- 0
+  model$ub       <- c(rep(1, nPlants),   rep(Inf, nPlants * nWarehouses))
+  model$vtype    <- c(rep('B', nPlants), rep('C', nPlants * nWarehouses))
+  model$obj      <- c(FixedCosts, TransCosts)
+  model$varnames <- c(paste0(rep('Open',nPlants),1:nPlants),
+                      sprintf('Trans%d,%d',
+                              c(mapply(rep,1:nWarehouses,nPlants)),
+                              1:nPlants))
+
+  # build production constraint matrix
+  A1 <- Matrix::spMatrix(nPlants, nPlants, i = c(1:nPlants), j = (1:nPlants), x = -Capacity)
+  A2 <- Matrix::spMatrix(nPlants, nPlants * nWarehouses,
+                 i = c(mapply(rep, 1:nPlants, nWarehouses)),
+                 j = mapply(flowidx,1:nWarehouses,c(mapply(rep,1:nPlants,nWarehouses))),
+                 x = rep(1, nWarehouses * nPlants))
+  A3 <- Matrix::spMatrix(nWarehouses, nPlants)
+  A4 <- Matrix::spMatrix(nWarehouses, nPlants * nWarehouses,
+                 i = c(mapply(rep, 1:nWarehouses, nPlants)),
+                 j = mapply(flowidx,c(mapply(rep,1:nWarehouses,nPlants)),1:nPlants),
+                 x = rep(1, nPlants * nWarehouses))
+  model$A           <- rbind(cbind(A1, A2), cbind(A3, A4))
+  model$rhs         <- c(rep(0, nPlants),   Demand)
+  model$sense       <- c(rep('<=', nPlants), rep('==', nWarehouses))
+  model$constrnames <- c(sprintf('Capacity%d',1:nPlants),
+                         sprintf('Demand%d',1:nWarehouses))
+
+
+  if(package == "gurobi"){
+    # set parameters
+    params <- list()
+    params$TimeLimit <- 0.01
+    params$LogToConsole <- 0
+
+    sol <- invisible(try(gurobi::gurobi(model, params), silent = TRUE))
+  }
+  else if(package == "cplex"){
+    model$sense[model$sense == ">="] <- "G"
+    model$sense[model$sense == "=="] <- "E"
+    model$sense[model$sense == "<="] <- "L"
+
+    # set parameters
+    params <- list()
+    params$tilim <- 0.01
+    params$trace <- 0
+
+    sol <- try(Rcplex::Rcplex(cvec = model$obj,
+                              Amat = model$A,
+                              bvec = model$rhs,
+                              lb = model$lb,
+                              ub = model$ub,
+                              objsense = model$modelsense,
+                              sense = model$sense,
+                              vtype = model$vtype,
+                              control = params),
+               silent = TRUE)
+  }
+  else if(package == "symphony"){
+    model$mat <- model$A
+    model$dir <- model$sense
+    model$max <- ifelse(model$modelsense == "min", FALSE, TRUE)
+    model$types <- model$vtype
+
+    sol <- invisible(try(Rsymphony::Rsymphony_solve_LP(model$obj,
+                                             model$mat,
+                                             model$dir,
+                                             model$rhs,
+                                             model$bounds,
+                                             model$types,
+                                             model$max,
+                                             gap_limit = 100,
+                                             time_limit = 0.01),
+               silent = TRUE))
+
+  }
+
+
+  if(inherits(sol, "try-error")){
+    return(FALSE)
+  }
+  else{
+    return(TRUE)
   }
 }
 

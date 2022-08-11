@@ -24,7 +24,7 @@ created using the \code{problem()} function.}
 \item{solver}{\code{string}. Name of solver to use to
 solve the model. The following solvers are supported:
 \href{https://www.gurobi.com/}{\code{"gurobi"}}(requires the \pkg{gurobi} package),
-\href{https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio}{\code{"cplex"}}(requires the \pkg{cplexAPI} package) and
+\href{https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio}{\code{"cplex"}}(requires the \pkg{Rcplex} package) and
 \href{https://github.com/coin-or/SYMPHONY}{\code{"symphony"}}(requires the \pkg{Rsymphony} package).
 We recommend using gurobi (for more information on how to obtain an academic license
 \href{https://prioritizr.net/articles/gurobi_installation_guide.html}{here}).}
@@ -80,9 +80,11 @@ uses the \pkg{gurobi} package to solve problems.}
 \item{\verb{CPLEX solver}}{
 \href{https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio}{\emph{cplex}} is a
 state-of-the-art commercial optimization software with an R package
-interface. As well as gurobi, is not freely available but licenses are available
-on the webpage. This solver uses the
-\pkg{cplexAPI} package to solve problems.}
+interface. Like Gurobi, it is not freely accessible, but we can obtain academic
+licenses. We recommend using this solver if the Gurobi solver is not available.
+Licenses are available for the IBM CPLEX software to academics at no cost
+\href{https://www.ibm.com/products/ilog-cplex-optimization-studio}{here}. This solver uses the
+\pkg{Rcplex} package to solve problems.}
 
 \item{\verb{Symphony solver}}{
 \href{https://github.com/coin-or/SYMPHONY}{\emph{SYMPHONY}} is an
@@ -138,4 +140,8 @@ For more information on how to install and obtain an academic
 license of the Gurobi solver, see the \emph{Gurobi installation guide},
 which can be found online at
 \href{https://prioritizr.net/articles/gurobi_installation_guide.html}{prioritizr vignette}.
+Just like Gurobi, cplex needs an academic licence to work. Details about how to install
+the cplex solver, see the \href{https://www.ibm.com/products/ilog-cplex-optimization-studio}{webpage IBM CPLEX}.
+Once installed, see the \emph{\pkg{Rcplex} installation guide}, which can be found online at
+\href{https://github.com/cran/Rcplex/blob/master/inst/INSTALL}{Rcplex package}.
 }
