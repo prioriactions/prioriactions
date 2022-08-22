@@ -317,8 +317,6 @@ available_to_solve <- function(package = ""){
                silent = TRUE))
 
   }
-
-
   if(inherits(sol, "try-error")){
     return(FALSE)
   }

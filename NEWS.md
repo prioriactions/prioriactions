@@ -1,3 +1,7 @@
+# prioriactions 0.4.1.1
+
+-   Fix URL in vignette.
+
 # prioriactions 0.4.1
 
 -   Now `solve()` function allows CPLEX solver.
