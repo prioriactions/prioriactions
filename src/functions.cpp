@@ -102,17 +102,17 @@ arma::sp_mat create_sensitivity_param_extended(DataFrame sensitivity_data, int f
   int size_sensitivity_data = sensitivity_data.nrows();
   NumericVector sensitivity_param(size_sensitivity_data);
 
-  if(param == "a"){
-    sensitivity_param = sensitivity_data["a"];
+  if(param == "delta1"){
+    sensitivity_param = sensitivity_data["delta1"];
   }
-  else if( param == "b"){
-    sensitivity_param = sensitivity_data["b"];
+  else if( param == "delta2"){
+    sensitivity_param = sensitivity_data["delta2"];
   }
-  else if( param == "c"){
-    sensitivity_param = sensitivity_data["c"];
+  else if( param == "delta3"){
+    sensitivity_param = sensitivity_data["delta3"];
   }
-  else if( param == "d"){
-    sensitivity_param = sensitivity_data["d"];
+  else if( param == "delta4"){
+    sensitivity_param = sensitivity_data["delta4"];
   }
 
   for(int i = 0; i < size_sensitivity_data; i++){

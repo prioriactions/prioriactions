@@ -168,7 +168,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
   dist_features <- dist_features[, c("internal_pu", "internal_feature", "amount")]
   threats <- threats[, c("internal_id", "blm_actions")]
   dist_threats <- dist_threats[, c("internal_pu", "internal_threat", "amount", "action_cost", "status")]
-  sensitivity <- sensitivity[, c("internal_feature", "internal_threat", "a", "b", "c", "d")]
+  sensitivity <- sensitivity[, c("internal_feature", "internal_threat", "delta1", "delta2", "delta3", "delta4")]
 
   if (!is.null(boundary)) {
     boundary <- boundary[, c("internal_id1", "internal_id2", "boundary")]

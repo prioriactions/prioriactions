@@ -1,6 +1,6 @@
 Package: prioriactions
 Type: Package
-Version: 0.4.1.1
+Version: 0.4.2
 Title: Multi-Action Conservation Planning             
 Description: This uses a mixed integer mathematical programming (MIP)
         approach for building and solving multi-action planning problems, 
@@ -42,7 +42,7 @@ Imports:
 Suggests: 
     knitr,
     gurobi (>= 9.0),
-    Rcplex (>= 0.3.5),
+    Rcplex,
     roxygen2,
     Rsymphony (>= 0.1-31),
     rmarkdown,
@@ -67,7 +67,7 @@ LazyData: true
 SystemRequirements: C++11
 License: GPL (>= 2)
 Language: en-US
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 URL: https://prioriactions.github.io/prioriactions/, 
   https://github.com/prioriactions/prioriactions
 BugReports: https://github.com/prioriactions/prioriactions/issues

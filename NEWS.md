@@ -1,3 +1,9 @@
+# prioriactions 0.4.2
+
+-   Fix gurobi solver params in `solve()` function.
+-   Update `inputData()` function reference.
+-   Now parameters *a*, *b*, *c*, *d* for `sensitivity` input are called *delta1*, *delta2*, *delta3*, *delta4* respectively.
+
 # prioriactions 0.4.1.1
 
 -   Fix URL in vignette.

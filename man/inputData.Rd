@@ -114,30 +114,30 @@ Sensitivity can be parameterized in two ways: \strong{binary}; the feature is
 sensitive or not, or \strong{continuous}; with response curves of the probability of
 persistence of the features to threats. For the first case, it is only necessary
 to indicate the ids of the threats and the respective features sensitive to them.
-In the second case, the response can be parameterized through four values: \emph{a}, \emph{b}, \emph{c}
-and \emph{d}. See
+In the second case, the response can be parameterized through four values: \emph{\eqn{\delta_1}}, \emph{\eqn{\delta_2}}, \emph{\eqn{\delta_3}}
+and \emph{\eqn{\delta_4}}. See
 \href{https://prioriactions.github.io/prioriactions/articles/sensitivities.html}{sensitivities}
 vignette for more information on continuous sensitivities. Then, the sensitivity input must contain the following columns:
 \describe{
 \item{\code{feature}}{\code{integer} \emph{id} of each conservation feature.}
 \item{\code{threat}}{\code{integer} \emph{id} of each threat.}
-\item{\code{a}}{\code{numeric} (\strong{optional}) the minimum intensity of the threat at
+\item{\code{delta1}}{\code{numeric} (\strong{optional}) the minimum intensity of the threat at
 which the features probability of persistence starts to decline. The more
 sensitive the feature is to the threat, the lowest this value will be. Default
 is 0.}
-\item{\code{b}}{\code{numeric} (\strong{optional}) the value of intensity of the threat
+\item{\code{delta2}}{\code{numeric} (\strong{optional}) the value of intensity of the threat
 over which the feature has a probability of persistence of 0. If it is not
 established,it is assumed as the \strong{maximum value of the threat across all planning units}
 in the study area.
 Note that this might overestimate the sensitivity of features to threats,
 as they will only be assumed to disappear from planning units if the
 threats reach the maximum intensity value in the study area.}
-\item{\code{c}}{\code{numeric} (\strong{optional}) minimum probability of persistence of a
+\item{\code{delta3}}{\code{numeric} (\strong{optional}) minimum probability of persistence of a
 features when a threat reaches its maximum intensity value. Default is 0.}
-\item{\code{d}}{\code{numeric} (\strong{optional}) maximum probability of persistence of a
+\item{\code{delta4}}{\code{numeric} (\strong{optional}) maximum probability of persistence of a
 features in absence threats. Default is 1.}
 }
-Note that optional parameters \emph{a}, \emph{b}, \emph{c} and \emph{d} can be provided independently.}
+Note that optional parameters \emph{delta1}, \emph{delta2}, \emph{delta3} and \emph{delta4} can be provided independently.}
 
 \item{boundary}{(\strong{optional}) Object of class \code{\link[=data.frame]{data.frame()}} that specifies
 the spatial relationship between pair of planning units. Each row corresponds

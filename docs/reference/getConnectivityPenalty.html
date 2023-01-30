@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
       </span>
     </div>
 
@@ -144,12 +144,56 @@ the threat coincides with the index of the action used to abate it.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Solve the optimization model</span></span></span>
 <span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="solve.html">solve</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, time_limit <span class="op">=</span> <span class="fl">2</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rcplex: num variables=10296 num constraints=29984</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (linux64)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CPU model: 12th Gen Intel(R) Core(TM) i5-1240P, instruction set [SSE2|AVX|AVX2]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Thread count: 16 physical cores, 16 logical processors, using up to 2 threads</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model fingerprint: 0x197c5e8d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 176 continuous, 10120 integer (10120 binary)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficient statistics:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Objective range  [3e-02, 3e+01]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   RHS range        [1e+00, 5e+01]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 964.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve removed 19990 rows and 5131 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 0.14s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Presolved: 9994 rows, 5165 columns, 20209 nonzeros</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 0 continuous, 5165 integer (5160 binary)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 868.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Root relaxation: objective 8.477969e+02, 6685 iterations, 0.42 seconds (0.96 work units)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0  847.79688    0 5133  868.00000  847.79688  2.33%     -    0s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H    0     0                     867.0000000  847.79688  2.21%     -    0s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0  852.59894    0 5154  867.00000  852.59894  1.66%     -    0s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H    0     0                     865.0000000  852.59894  1.43%     -    0s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0  852.71808    0 5153  865.00000  852.71808  1.42%     -    1s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0  852.71808    0 5153  865.00000  852.71808  1.42%     -    1s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H    0     0                     863.0000000  852.71808  1.19%     -    1s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Cutting planes:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Gomory: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Cover: 24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Zero half: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (7888 simplex iterations) in 2.00 seconds (4.53 work units)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Thread count was 2 (of 16 available processors)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Solution count 5: 863 865 867 ... 964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Time limit reached</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Best objective 8.630000000000e+02, best bound 8.527180805001e+02, gap 1.1914%</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># get connectivity penalty values</span></span></span>
 <span class="r-in"><span><span class="fu">getConnectivityPenalty</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   solution_name units threat_1 threat_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           sol     0 2890.835 1518.804</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           sol     0 2861.172 1319.892</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -166,7 +210,7 @@ the threat coincides with the index of the action used to abate it.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

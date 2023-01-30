@@ -95,10 +95,10 @@ test_that("evaluate solutions values", {
   sensitivity_sim <- data.frame(
     feature = c(1, 2),
     threat = 1,
-    a = 0,
-    b = 1,
-    c = 0,
-    d = 1
+    delta1 = 0,
+    delta2 = 1,
+    delta3 = 0,
+    delta4 = 1
   )
 
   # eval different blm values
