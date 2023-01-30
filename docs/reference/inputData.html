@@ -26,7 +26,7 @@ data, threats data, and their spatial distributions.)"><meta property="og:image"
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@ recovery of features threatened (through the <strong>recovery target</strong>), 
 take into account benefits when taking action against threats and there is no benefit
 when selecting planning units where the features are not threatened;
 or include the benefits of the features sites where they are not threatened
-(through the <strong>conservation target</strong>). The above is exemplified in the following diagram:
+(through the <strong>conservation target</strong>).The above is exemplified in the following diagram:
 <img src='figures/../inputdata1.png' width=80% /></p>
 <p>Note that by default only information on recovery targets is necessary,
 while conservation targets equal to zero are assumed. The maximum values of
@@ -246,8 +246,8 @@ are assumed to be sensitive to all threats.</p>
 sensitive or not, or <strong>continuous</strong>; with response curves of the probability of
 persistence of the features to threats. For the first case, it is only necessary
 to indicate the ids of the threats and the respective features sensitive to them.
-In the second case, the response can be parameterized through four values: <em>a</em>, <em>b</em>, <em>c</em>
-and <em>d</em>, given by the following:
+In the second case, the response can be parameterized through four values: <em>\(\delta_1\)</em>, <em>\(\delta_2\)</em>, <em>\(\delta_3\)</em>
+and <em>\(\delta_4\)</em>. given by the following:
 <img src='figures/../inputdata2.png' width=70% /></p>
 <p> See
 <a href="https://prioriactions.github.io/prioriactions/articles/sensitivities.html">sensitivities</a>
@@ -257,13 +257,13 @@ vignette for more information on continuous sensitivities. Then, the sensitivity
 <dt><code>threat</code></dt>
 <dd><p><code>integer</code> <em>id</em> of each threat.</p></dd>
 
-<dt><code>a</code></dt>
+<dt><code>delta1</code></dt>
 <dd><p><code>numeric</code> (<strong>optional</strong>) the minimum intensity of the threat at
 which the features probability of persistence starts to decline. The more
 sensitive the feature is to the threat, the lowest this value will be. Default
 is 0.</p></dd>
 
-<dt><code>b</code></dt>
+<dt><code>delta2</code></dt>
 <dd><p><code>numeric</code> (<strong>optional</strong>) the value of intensity of the threat
 over which the feature has a probability of persistence of 0. If it is not
 established,it is assumed as the <strong>maximum value of the threat across all planning units</strong>
@@ -272,16 +272,16 @@ Note that this might overestimate the sensitivity of features to threats,
 as they will only be assumed to disappear from planning units if the
 threats reach the maximum intensity value in the study area.</p></dd>
 
-<dt><code>c</code></dt>
+<dt><code>delta3</code></dt>
 <dd><p><code>numeric</code> (<strong>optional</strong>) minimum probability of persistence of a
 features when a threat reaches its maximum intensity value. Default is 0.</p></dd>
 
-<dt><code>d</code></dt>
+<dt><code>delta4</code></dt>
 <dd><p><code>numeric</code> (<strong>optional</strong>) maximum probability of persistence of a
 features in absence threats. Default is 1.</p></dd>
 
 
-</dl><p>Note that optional parameters <em>a</em>, <em>b</em>, <em>c</em> and <em>d</em> can be provided independently.</p></dd>
+</dl><p>Note that optional parameters <em>delta1</em>, <em>delta2</em>, <em>delta3</em> and <em>delta4</em> can be provided independently.</p></dd>
 
 
 <dt>boundary</dt>
@@ -437,7 +437,7 @@ methods and computational tools 2009.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

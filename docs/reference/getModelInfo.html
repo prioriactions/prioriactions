@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
       </span>
     </div>
 
@@ -134,12 +134,11 @@ number of constraints and number of variables).</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create optimization model</span></span></span>
 <span class="r-in"><span><span class="va">problem_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="problem.html">problem</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">problem_data</span>, blm <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in `[.data.frame`(sensitivity, , c("internal_feature", "internal_threat",     "a", "b", "c", "d")):</span> undefined columns selected</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># get model information</span></span></span>
 <span class="r-in"><span><span class="fu">getModelInfo</span><span class="op">(</span><span class="va">problem_model</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    model_sense n_constraints n_variables       size</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 minimization         29984       10296 883.856 kB</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in inherits(x, c("OptimizationProblem", "Solution", "Portfolio")):</span> object 'problem_model' not found</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -155,7 +154,7 @@ number of constraints and number of variables).</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

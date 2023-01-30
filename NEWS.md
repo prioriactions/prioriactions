@@ -1,3 +1,8 @@
+# prioriactions 0.4.2
+
+-   Fix gurobi solver params in `solve()` function.
+-   Update `inputData()` function reference.
+
 # prioriactions 0.4.1.1
 
 -   Fix URL in vignette.

@@ -24,7 +24,7 @@ using problem() function."><meta property="og:image" content="https://prioriacti
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
       </span>
     </div>
 
@@ -153,17 +153,14 @@ to the mathematical model, such as "obj", "rhs", etc.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create optimization model</span></span></span>
 <span class="r-in"><span><span class="va">problem_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="problem.html">problem</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">problem_data</span>, blm <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in `[.data.frame`(sensitivity, , c("internal_feature", "internal_threat",     "a", "b", "c", "d")):</span> undefined columns selected</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Use class methods</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">problem_model</span><span class="op">$</span><span class="fu">getData</span><span class="op">(</span><span class="st">"obj"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 702.305 645.714 602.096 572.511 557.573 557.573</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in head(problem_model$getData("obj")):</span> object 'problem_model' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">problem_model</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Optimization Problem</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   model sense: minimization</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   dimensions:  29984, 10296, 883.856 kB (nrow, ncol, size)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   variables:   10296</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'problem_model' not found</span>
 </code></pre></div>
     </div>
   </div>
@@ -178,7 +175,7 @@ to the mathematical model, such as "obj", "rhs", etc.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

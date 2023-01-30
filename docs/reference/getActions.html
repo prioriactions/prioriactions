@@ -24,7 +24,7 @@ the corresponding solution."><meta property="og:image" content="https://prioriac
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
       </span>
     </div>
 
@@ -141,34 +141,23 @@ or actions against a threat in said unit).</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create optimization model</span></span></span>
 <span class="r-in"><span><span class="va">problem_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="problem.html">problem</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">problem_data</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The blm argument was set to 0, so the boundary data has no effect</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Some blm_actions argument were set to 0, so the boundary data has no effect for these cases</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in `[.data.frame`(sensitivity, , c("internal_feature", "internal_threat",     "a", "b", "c", "d")):</span> undefined columns selected</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Solve the optimization model</span></span></span>
 <span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="solve.html">solve</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, time_limit <span class="op">=</span> <span class="fl">2</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rcplex: num variables=396 num constraints=284</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in inherits(a, "OptimizationProblem"):</span> object 'problem_model' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># get actions information in large format</span></span></span>
 <span class="r-in"><span><span class="va">actions</span> <span class="op">&lt;-</span> <span class="fu">getActions</span><span class="op">(</span><span class="va">s</span>, format <span class="op">=</span> <span class="st">"large"</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in inherits(x, c("Solution", "Portfolio")):</span> object 's' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">actions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     solution_name pu action solution</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 108           sol  8      2        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 109           sol  9      2        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 110           sol 10      2        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11            sol 11      1        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 111           sol 11      2        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12            sol 12      1        1</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in head(actions):</span> object 'actions' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># get actions information in wide format</span></span></span>
 <span class="r-in"><span><span class="va">actions</span> <span class="op">&lt;-</span> <span class="fu">getActions</span><span class="op">(</span><span class="va">s</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in inherits(x, c("Solution", "Portfolio")):</span> object 's' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">actions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   solution_name pu 1 2 conservation connectivity</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           sol  1 0 0            0            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           sol  2 0 0            0            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           sol  3 0 0            0            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           sol  4 0 0            0            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           sol  5 0 0            0            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6           sol  6 0 0            0            0</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in head(actions):</span> object 'actions' not found</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -185,7 +174,7 @@ or actions against a threat in said unit).</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

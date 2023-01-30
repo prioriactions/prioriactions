@@ -103,30 +103,30 @@ NULL
 #' sensitive or not, or **continuous**; with response curves of the probability of
 #' persistence of the features to threats. For the first case, it is only necessary
 #' to indicate the ids of the threats and the respective features sensitive to them.
-#' In the second case, the response can be parameterized through four values: *a*, *b*, *c*
-#' and *d*. See
+#' In the second case, the response can be parameterized through four values: *\eqn{\delta_1}*, *\eqn{\delta_2}*, *\eqn{\delta_3}*
+#' and *\eqn{\delta_4}*. See
 #' [sensitivities](https://prioriactions.github.io/prioriactions/articles/sensitivities.html)
 #' vignette for more information on continuous sensitivities. Then, the sensitivity input must contain the following columns:
 #'    \describe{
 #'    \item{`feature`}{`integer` *id* of each conservation feature.}
 #'    \item{`threat`}{`integer` *id* of each threat.}
-#'    \item{`a`}{`numeric` (**optional**) the minimum intensity of the threat at
+#'    \item{`delta1`}{`numeric` (**optional**) the minimum intensity of the threat at
 #'    which the features probability of persistence starts to decline. The more
 #'    sensitive the feature is to the threat, the lowest this value will be. Default
 #'    is 0.}
-#'    \item{`b`}{`numeric` (**optional**) the value of intensity of the threat
+#'    \item{`delta2`}{`numeric` (**optional**) the value of intensity of the threat
 #'    over which the feature has a probability of persistence of 0. If it is not
 #'    established,it is assumed as the **maximum value of the threat across all planning units**
 #'    in the study area.
 #'    Note that this might overestimate the sensitivity of features to threats,
 #'    as they will only be assumed to disappear from planning units if the
 #'    threats reach the maximum intensity value in the study area.}
-#'    \item{`c`}{`numeric` (**optional**) minimum probability of persistence of a
+#'    \item{`delta3`}{`numeric` (**optional**) minimum probability of persistence of a
 #'    features when a threat reaches its maximum intensity value. Default is 0.}
-#'    \item{`d`}{`numeric` (**optional**) maximum probability of persistence of a
+#'    \item{`delta4`}{`numeric` (**optional**) maximum probability of persistence of a
 #'    features in absence threats. Default is 1.}
 #'    }
-#'  Note that optional parameters *a*, *b*, *c* and *d* can be provided independently.
+#'  Note that optional parameters *delta1*, *delta2*, *delta3* and *delta4* can be provided independently.
 #'
 #' @param boundary (**optional**) Object of class [data.frame()] that specifies
 #' the spatial relationship between pair of planning units. Each row corresponds
@@ -400,20 +400,20 @@ methods::setMethod(
       sensitivity <- base::expand.grid("feature" = features$id, "threat" = threats$id)
     }
 
-    if ("a" %in% names(sensitivity)) {
+    if ("delta1" %in% names(sensitivity)) {
       assertthat::assert_that(
-        !is.character(sensitivity$a)
+        !is.character(sensitivity$delta1)
       )
-      sensitivity$a[is.na(sensitivity$a)] = 0
+      sensitivity$delta1[is.na(sensitivity$delta1)] = 0
     } else {
-      sensitivity$a <- 0
+      sensitivity$delta1 <- 0
     }
-    if ("b" %in% names(sensitivity)) {
+    if ("delta2" %in% names(sensitivity)) {
       assertthat::assert_that(
-        !is.character(sensitivity$b)
+        !is.character(sensitivity$delta2)
       )
     } else {
-      sensitivity$b <- NA
+      sensitivity$delta2 <- NA
     }
 
     vector_max_intensities <- c()
@@ -425,32 +425,32 @@ methods::setMethod(
         vector_max_intensities[sensitivity$threat == max_intensities$threat[i][[1]]] <- max_intensities$value[i][[1]]
       }
     }
-    sensitivity$b[is.na(sensitivity$b)] <- vector_max_intensities[is.na(sensitivity$b)]
+    sensitivity$delta2[is.na(sensitivity$delta2)] <- vector_max_intensities[is.na(sensitivity$delta2)]
 
 
-    if ("c" %in% names(sensitivity)) {
+    if ("delta3" %in% names(sensitivity)) {
       assertthat::assert_that(
-        !is.character(sensitivity$c)
+        !is.character(sensitivity$delta3)
       )
-      sensitivity$c[is.na(sensitivity$c)] = 0
+      sensitivity$delta3[is.na(sensitivity$delta3)] = 0
     } else {
-      sensitivity$c <- 0
+      sensitivity$delta3 <- 0
     }
-    if ("d" %in% names(sensitivity)) {
+    if ("delta4" %in% names(sensitivity)) {
       assertthat::assert_that(
-        !is.character(sensitivity$d)
+        !is.character(sensitivity$delta4)
       )
-      sensitivity$d[is.na(sensitivity$d)] = 1
+      sensitivity$delta4[is.na(sensitivity$delta4)] = 1
     } else {
-      sensitivity$d <- 1
+      sensitivity$delta4 <- 1
     }
 
-    if(isFALSE(all(sensitivity$b > sensitivity$a))){
-      stop("Every value of a parameter must be less than every value of b parameter", call. = FALSE, immediate. = TRUE)
+    if(isFALSE(all(sensitivity$delta2 > sensitivity$delta1))){
+      stop("Every value of delta1 parameter must be less than every value of delta2 parameter", call. = FALSE, immediate. = TRUE)
     }
 
-    if(isFALSE(all(sensitivity$d > sensitivity$c))){
-      stop("Every value of c parameter must be less than every value of d parameter", call. = FALSE, immediate. = TRUE)
+    if(isFALSE(all(sensitivity$delta4 > sensitivity$delta3))){
+      stop("Every value of delta3 parameter must be less than every value of delta4 parameter", call. = FALSE, immediate. = TRUE)
     }
 
 
@@ -539,10 +539,10 @@ methods::setMethod(
     threats$blm_actions <- base::round(threats$blm_actions, 3)
     dist_threats$amount <- base::round(dist_threats$amount, 3)
     dist_threats$action_cost <- base::round(dist_threats$action_cost, 3)
-    sensitivity$a <- base::round(sensitivity$a, 3)
-    sensitivity$b <- base::round(sensitivity$b, 3)
-    sensitivity$c <- base::round(sensitivity$c, 3)
-    sensitivity$d <- base::round(sensitivity$d, 3)
+    sensitivity$delta1 <- base::round(sensitivity$delta1, 3)
+    sensitivity$delta2 <- base::round(sensitivity$delta2, 3)
+    sensitivity$delta3 <- base::round(sensitivity$delta3, 3)
+    sensitivity$delta4 <- base::round(sensitivity$delta4, 3)
 
 
 
