@@ -304,6 +304,13 @@ methods::setMethod(
     # eliminate features with amount equal to zero
     dist_features <- dist_features[!dist_features$amount == 0, ]
 
+    # verify if exist rows duplicates
+    dist_features_copy <- dist_features[,c("pu", "feature")]
+    dist_features_copy <- dist_features_copy %>% dplyr::distinct()
+
+    if(nrow(dist_features_copy) != nrow(dist_features)){
+      stop("There are duplicate values of the pu and feature pair in the dis_features input file.", call. = FALSE, immediate. = TRUE)
+    }
 
     ## threats
     assertthat::assert_that(
@@ -331,7 +338,6 @@ methods::setMethod(
     else{
       threats$blm_actions <- 0.0
     }
-
 
     ## dist_threats
     assertthat::assert_that(
@@ -382,6 +388,13 @@ methods::setMethod(
     # eliminate threats with amount equal to zero
     dist_threats <- dist_threats[!dist_threats$amount == 0, ]
 
+    # verify if exist rows duplicates
+    dist_threats_copy <- dist_threats[,c("pu", "threat")]
+    dist_threats_copy <- dist_threats_copy %>% dplyr::distinct()
+
+    if(nrow(dist_threats_copy) != nrow(dist_threats)){
+      stop("There are duplicate values of the pu and threat pair in the dis_threats input file.", call. = FALSE, immediate. = TRUE)
+    }
 
     ## sensitivity
     assertthat::assert_that(inherits(sensitivity, c("NULL", "data.frame")))

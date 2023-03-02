@@ -104,7 +104,7 @@ evalTarget <- function(values = c(), ...) {
     #Creating mathematical model--------------------------------------------------
     if(it == 1){
       conservation_model$data$features$target_recovery <- maximum_target_recovery * i
-      conservation_model$data$features$target_conservation <- maximum_target_conservation * i
+      #conservation_model$data$features$target_conservation <- maximum_target_conservation * i
 
       optimization_model <- do.call(problem, args = append(x = conservation_model,
                                                               params_iter[names(params_iter) %in% params_model]))

@@ -2,38 +2,23 @@
 % Please edit documentation in R/show.R
 \name{show}
 \alias{show}
-\alias{show,}
-\alias{ConservationProblem-method}
-\alias{OptimizationProblem-method}
-\alias{Solution-method}
-\alias{show.Data}
-\alias{show.OptimizationProblem}
-\alias{show.Solution}
-\alias{show.Portfolio}
+\alias{show,Data-method}
+\alias{show,OptimizationProblem-method}
+\alias{show,Solution-method}
+\alias{show,Portfolio-method}
 \title{Show}
 \usage{
-\method{show}{Data}(x, ...)
+\S4method{show}{Data}(x)
 
-\method{show}{OptimizationProblem}(x, ...)
+\S4method{show}{OptimizationProblem}(x)
 
-\method{show}{Solution}(x, ...)
-
-\method{show}{Portfolio}(x, ...)
+\S4method{show}{Portfolio}(x)
 }
 \arguments{
 \item{x}{Any object.}
-
-\item{...}{Not used.}
-}
-\value{
-None.
 }
 \description{
-Displays information about an object.
-}
-\examples{
-a <- 1:4
-show(a)
+Display information about an object.
 }
 \seealso{
 \code{\link[methods:show]{methods::show()}}.
