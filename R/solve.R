@@ -218,6 +218,7 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
     params <- list()
     params$Threads <- cores
     params$LogToConsole <- as.integer(verbose)
+    params$NodefileStart <- 0.5
     # Stop condition: Relative MIP optimality gap
     params$MIPGap <- gap_limit
     # Stop condition: Time limit

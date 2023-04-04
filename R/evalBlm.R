@@ -80,7 +80,7 @@ evalBlm <- function(values = c(), ...) {
 
   for(blm in values){
 
-    name_iter <- paste0("Blm", base::round(blm, 3))
+    name_iter <- paste0("Blm", blm)
     params_iter <- params
     params_iter$blm <- blm
 

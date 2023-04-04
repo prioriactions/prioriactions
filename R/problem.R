@@ -153,7 +153,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
 
   # Rounding numeric parameters
   budget <- base::round(budget, 3)
-  blm <- base::round(blm, 3)
+  #blm <- base::round(blm, 3).
 
   ## Getting data
   pu <- x$getData("pu")
