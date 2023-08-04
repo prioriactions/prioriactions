@@ -279,6 +279,29 @@ available_to_solve <- function(package = ""){
 
     sol <- invisible(try(gurobi::gurobi(model, params), silent = TRUE))
   }
+  else if(package == "cbc"){
+    # set parameters
+    cbc_args <- list()
+    cbc_args$sec <- "0.01"
+    cbc_args$log <- "0"
+
+    constraints_minus_equal <- which(model$sense != "<=")
+    constraints_plus_equal <- which(model$sense == "<=")
+    row_ub <- model$rhs
+    row_ub[constraints_minus_equal] <- Inf
+    row_lb <- model$rhs
+    row_lb[constraints_plus_equal] <- -Inf
+
+    sol <- invisible(try(rcbc::cbc_solve(obj = model$obj,
+                                         mat = model$A,
+                                         is_integer = ifelse(model$vtype == "B", TRUE, FALSE),
+                                         row_ub = row_ub,
+                                         row_lb = row_lb,
+                                         col_lb = rep(0, length(model$vtype)),
+                                         col_ub = model$ub,
+                                         max = ifelse(model$modelsense == "min", FALSE, TRUE),
+                                         cbc_args = cbc_args), silent = TRUE))
+  }
   else if(package == "cplex"){
     model$sense[model$sense == ">="] <- "G"
     model$sense[model$sense == "=="] <- "E"

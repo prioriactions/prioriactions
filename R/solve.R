@@ -162,37 +162,40 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
   available_gurobi <- available_to_solve("gurobi")
   available_cplex <- available_to_solve("cplex")
   available_symphony <- available_to_solve("symphony")
+  available_cbc <- available_to_solve("cbc")
 
   if (requireNamespace("Rcplex", quietly = TRUE) && available_cplex) {
     solver_default <- "cplex"
-  }
-  else if (requireNamespace("gurobi", quietly = TRUE) && available_gurobi) {
+  }else if (requireNamespace("gurobi", quietly = TRUE) && available_gurobi) {
     solver_default <- "gurobi"
-  } else if (requireNamespace("Rsymphony", quietly = TRUE) && available_symphony) {
+  }else if (requireNamespace("rcbc", quietly = TRUE) && available_cbc) {
+    solver_default <- "cbc"
+  }else if (requireNamespace("Rsymphony", quietly = TRUE) && available_symphony) {
     solver_default <- "symphony"
-  } else {
+  }else {
     stop("No optimization problem solvers availables on system")
   }
 
   if (solver == "") {
     solver <- solver_default
-  }
-  else {
-    if (!solver %in% c("gurobi", "symphony", "cplex")) {
+  }else {
+    if (!solver %in% c("gurobi", "cbc","symphony", "cplex")) {
       stop("Solver not available")
-    }
-    else if (identical(solver, "gurobi") && (!requireNamespace("gurobi", quietly = TRUE) || !available_gurobi)) {
+    }else if (identical(solver, "gurobi") && (!requireNamespace("gurobi", quietly = TRUE) || !available_gurobi)) {
       warning("Gurobi solver not found (More information on how to install it on
            https://prioritizr.net/articles/gurobi_installation_guide.html)", call. = FALSE, immediate. = TRUE)
 
       solver <- solver_default
-    }
-    else if (identical(solver, "symphony") && (!requireNamespace("Rsymphony", quietly = TRUE) || !available_symphony)) {
+    }else if (identical(solver, "cbc") && (!requireNamespace("rcbc", quietly = TRUE) || !available_cbc)) {
+      warning("CBC solver not found (More information on how to install it on
+           https://github.com/dirkschumacher/rcbc)", call. = FALSE, immediate. = TRUE)
+
+      solver <- solver_default
+    }else if (identical(solver, "symphony") && (!requireNamespace("Rsymphony", quietly = TRUE) || !available_symphony)) {
       warning("SYMPHONY solver not found (Please install it using install.packages('Rsymphony'))", call. = FALSE, immediate. = TRUE)
 
       solver <- solver_default
-    }
-    else if(identical(solver, "cplex") && (!requireNamespace("Rcplex", quietly = TRUE) || !available_cplex)){
+    }else if(identical(solver, "cplex") && (!requireNamespace("Rcplex", quietly = TRUE) || !available_cplex)){
       warning("Rcplex solver not found (More information on how to install it on
            https://cran.r-project.org/web/packages/Rcplex/INSTALL)", call. = FALSE, immediate. = TRUE)
 
@@ -256,6 +259,63 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
                 data = list(
                   objval = solution$objval, sol = solution$x, gap = solution$mipgap,
                   status = solution$status_code, runtime = solution$runtime, args = args
+                ),
+                OptimizationClass = a
+    )
+  }
+  ## cbc solver
+  else if (solver == "cbc") {
+    ## cbc model
+    constraints_minus_equal <- which(model$sense != "<=")
+    constraints_plus_equal <- which(model$sense == "<=")
+    row_ub <- model$rhs
+    row_ub[constraints_minus_equal] <- Inf
+    row_lb <- model$rhs
+    row_lb[constraints_plus_equal] <- -Inf
+
+    ## cbc parameters
+    cbc_args <- list()
+    cbc_args$threads <- cores
+    cbc_args$log <- as.integer(verbose)
+    cbc_args$verbose <- 15
+    # Stop condition: Relative MIP optimality gap
+    cbc_args$ratio <- gap_limit
+    # Stop condition: Time limit
+    cbc_args$sec <- time_limit
+
+    runtime_cbc <- system.time(
+      solution <- rcbc::cbc_solve(obj = model$obj,
+                                 mat = model$A,
+                                 is_integer = ifelse(model$vtype == "B", TRUE, FALSE),
+                                 row_ub = row_ub,
+                                 row_lb = row_lb,
+                                 col_lb = model$bounds$lower$val,
+                                 col_ub = model$bounds$upper$val,
+                                 max = ifelse(model$modelsense == "min", FALSE, TRUE),
+                                 cbc_args = cbc_args)
+    )[[1]]
+
+    status_cbc <- rcbc::solution_status(solution)
+    solution$status_code <- dplyr::case_when(
+      status_cbc == "optimal" ~ 0L,
+      status_cbc == "infeasible" ~ 1L,
+      (status_cbc == "timelimit" && !is.null(solution$objective_value)) ~ 2L,
+      (status_cbc == "timelimit" && is.null(solution$objective_value)) ~ 3L,
+      TRUE ~ 999L
+    )
+
+    #Gap_limit
+    if(isTRUE(solution$status == 0L)){
+      solution$gap <- gap_limit
+    }
+    else{
+      solution$gap <- "No reported"
+    }
+
+    s <- pproto(NULL, Solution,
+                data = list(
+                  objval = solution$objective_value, sol = solution$column_solution, gap = solution$gap,
+                  status = solution$status_code, runtime = runtime_cbc, args = args
                 ),
                 OptimizationClass = a
     )
