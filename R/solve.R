@@ -282,6 +282,8 @@ solve <- function(a, solver = "", gap_limit = 0.0, time_limit = .Machine$integer
     cbc_args$ratio <- gap_limit
     # Stop condition: Time limit
     cbc_args$sec <- time_limit
+    # Activate heuristics methods
+    cbc_args$heuristicsOnOff <- "on"
 
     runtime_cbc <- system.time(
       solution <- rcbc::cbc_solve(obj = model$obj,
