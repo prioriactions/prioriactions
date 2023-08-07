@@ -1,3 +1,12 @@
+# prioriactions 0.5.0
+
+-   Now we add the non-academic cbc solver as option in `solve()` function.
+-   Update `solve()` function reference.
+-   Add the `CONTRIBUTING` file. 
+-   New **solver benchmarking** vignette is added.
+-   Now `blm` parameter in `problem()` is not rounded.
+-   Now the parameter `NodefileStart` is incorporated internally in the **gurobi** solver. Set in 0.5.
+
 # prioriactions 0.4.2
 
 -   Fix gurobi solver params in `solve()` function.

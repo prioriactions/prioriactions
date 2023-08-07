@@ -30,7 +30,13 @@ The `prioriactions` package allows you to create and solve conservation planning
 
 ## Installation
 
-The latest development version of `prioriactions` can be installed from [GitHub](https://github.com/prioriactions/prioriactions/) using the following code.
+Package `prioriactions` can be found at CRAN, where it is updated every few months. Installation from CRAN can be done via:
+
+```{r, eval = FALSE}
+install.packages("prioriactions")
+```
+
+Also, the latest development version of `prioriactions` can be installed from [GitHub](https://github.com/prioriactions/prioriactions/) using the following code (If you are using Windows, it is necessary to install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) beforehand).
 
 ```{r, eval = FALSE}
 if (!require(remotes)) install.packages("remotes")

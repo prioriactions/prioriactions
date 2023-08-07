@@ -34,7 +34,7 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
-
+    
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -63,7 +63,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-
+     
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -75,6 +75,9 @@
     </li>
     <li>
       <a href="../articles/objectives.html">Planning objectives</a>
+    </li>
+    <li>
+      <a href="../articles/benchmark.html">Solver benchmarks</a>
     </li>
     <li class="divider">
     </li>
@@ -92,7 +95,7 @@
 <li>
   <a href="https://github.com/prioriactions/prioriactions/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-
+     
   </a>
 </li>
       </ul>
@@ -101,7 +104,7 @@
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
       </form>
-
+      
     </div>
 <!--/.nav-collapse -->
   </div>
@@ -109,21 +112,21 @@
 </div>
 <!--/.navbar -->
 
-
+      
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Benefits and sensitivities</h1>
-
-
+            
+      
       <small class="dont-index">Source: <a href="https://github.com/prioriactions/prioriactions/blob/HEAD/vignettes/sensitivities.Rmd" class="external-link"><code>vignettes/sensitivities.Rmd</code></a></small>
       <div class="hidden name"><code>sensitivities.Rmd</code></div>
 
     </div>
 
-
-
+    
+    
 <p>A key characteristic of <code>prioriactions</code> is that it allows
 to calculate an approximation of the <strong>benefit</strong> obtained
 by carrying out conservation actions. This approximation is based on the
@@ -324,7 +327,7 @@ per unit and feature.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"feature 1"</span>, <span class="st">"feature 2"</span>, <span class="st">"feature 3"</span>, <span class="st">"feature 4"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/S3-1.png"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/S3-1.png"></p>
 <p>The second model use a parameter of <code>curve = 3</code> in its
 construction, and therefore, the calculate of probability of persistence
 is not proportional.</p>
@@ -422,7 +425,7 @@ benefits are distributed for the different features:</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.curve</span><span class="op">$</span><span class="va">`4`</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/S6-1.png"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/S6-1.png"></p>
 <p>As we can see, for the base case, features 1 and 3 add to the total
 benefit sites where their <strong>probability of persistence</strong> is
 0.5. Whereas when we use <code>curve = 3</code>, all but one site that
@@ -454,12 +457,12 @@ when a threat reaches its maximum intensity value.</p></li>
 <li><p><em>d</em> : maximum probability of persistence of a features in
 absence of a given threat.</p></li>
 </ul>
-<p><img src="figures/sensitivities1.png" style="width:60.0%"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/sensitivities1.png" style="width:60.0%"></p>
 <p>Where the greater the intensity of the threat, lower
 <strong>probability of persistence</strong> of the feature. Thus, with
 the definition of these four parameters mentioned above, different
 response curves can be <em>fitted</em>:</p>
-<p><img src="figures/sensitivities2.jpg"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/sensitivities2.jpg"></p>
 <p>The latter are examples of the curves that could be fitted with these
 parameters; that can be customized by users according to their needs by
 using the four parameters detailed above. Note that each of the curves
@@ -512,7 +515,7 @@ not be compared due to differences in potential benefits and therefore
 in the targets used. Also, we assume that we only have information about
 the sensitivity of feature 1 to both threats, whose <strong>response
 curves</strong> have been fitted as follow:</p>
-<p><img src="figures/sensitivities3.jpg"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/sensitivities3.jpg"></p>
 <p>Note the feature is sensitive to any intensity of threat-1, while
 this is less sensitive to threat 2, as its <strong>probability of
 persistence</strong> remains invariant until the threat reaches high
@@ -656,7 +659,7 @@ per unit and feature.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">local_benefits.continuous</span><span class="op">$</span><span class="va">`4`</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/S9-1.png"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/S9-1.png"></p>
 <p>Note that the selected sites differ to a greater extent from those
 chosen in the base model with binary threat intensities. From the above,
 the effect that can bring with the use of sensitivities and intensities
@@ -708,11 +711,11 @@ Management.”</span> <em>Ecological Modelling</em> 418: 108901.
       </footer>
 </div>
 
-
+  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-
-
+    
+    
     apiKey: 'f00985ff93067595b4da97a65fe69f1a',
     indexName: 'prioriactions',
     inputSelector: 'input#search-input.form-control',

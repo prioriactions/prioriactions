@@ -84,7 +84,7 @@ articles:
 
   - title: Introduction of prioriactions
     navbar: Introduction
-    contents: [sensitivities, objectives]
+    contents: [sensitivities, objectives, benchmark]
 
   - title: Study cases of prioriactions
     navbar: Study cases

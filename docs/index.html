@@ -26,12 +26,15 @@
         abate threats, in an efficient way while accounting for spatial aspects. 
         Thus, optimizing the connectivity and conservation effectiveness of 
         the prioritized units and of the deployed actions. The package is capable of 
-        handling different commercial (gurobi, CPLEX) and non-commercial (symphony) MIP solvers. 
+        handling different commercial (gurobi, CPLEX) and non-commercial (symphony, CBC) MIP solvers. 
         Gurobi optimization solver can be installed using comprehensive instructions in 
         the gurobi installation vignette of the prioritizr package (available in 
         &lt;https://prioritizr.net/articles/gurobi_installation_guide.html&gt;). Instead, CPLEX
         optimization solver can be obtain from IBM CPLEX web page (available here 
-        &lt;https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio&gt;). Methods used in the 
+        &lt;https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio&gt;). Additionally, 
+        the rcbc R package (available at
+    &lt;https://github.com/dirkschumacher/rcbc&gt;) can be used to obtain solutions
+    using the CBC optimization software (&lt;https://github.com/coin-or/Cbc&gt;). Methods used in the 
         package refers to Salgado-Rojas et al. (2020) &lt;doi:10.1016/j.ecolmodel.2019.108901&gt;,
         Beyer et al. (2016) &lt;doi:10.1016/j.ecolmodel.2016.02.005&gt;, Cattarino et al. (2015)
         &lt;doi:10.1371/journal.pone.0128027&gt; and Watts et al. (2009) &lt;doi:10.1016/j.envsoft.2009.06.005&gt;. 
@@ -63,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -90,6 +93,9 @@
     </li>
     <li>
       <a href="articles/objectives.html">Planning objectives</a>
+    </li>
+    <li>
+      <a href="articles/benchmark.html">Solver benchmarks</a>
     </li>
     <li class="divider">
     </li>
@@ -133,7 +139,6 @@
 </h1></div>
 <!-- badges: start -->
 
-<!-- badges: end -->
 <p><strong>This project was financed by the National Agency of Research and Development, ANID, Chile, through the grant FONDECYT N.1180670 and through the Complex Engineering Systems Institute PIA/BASAL AFB180003. Also it has received funding from the European Union’s H2020 research and innovation program under the Marie Sklodowska-Curie grant agreement N.691149 (SuFoRun).</strong></p>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
@@ -143,8 +148,11 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>The latest development version of <code>prioriactions</code> can be installed from <a href="https://github.com/prioriactions/prioriactions/" class="external-link">GitHub</a> using the following code.</p>
+<p>Package <code>prioriactions</code> can be found at CRAN, where it is updated every few months. Installation from CRAN can be done via:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"prioriactions"</span><span class="op">)</span></span></code></pre></div>
+<p>Also, the latest development version of <code>prioriactions</code> can be installed from <a href="https://github.com/prioriactions/prioriactions/" class="external-link">GitHub</a> using the following code (If you are using Windows, it is necessary to install <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">Rtools</a> beforehand).</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"prioriactions/prioriactions"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -159,7 +167,7 @@
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <ul>
-<li>Salgado-Rojas J, Alvarez-Miranda E, Hermoso V, Garcia-Gonzalo J, Weintraub A. <em>A mixed integer programming approach for multi-action planning for threat management</em>. Ecological Modelling 2020; 418:108901.</li>
+<li>Salgado-Rojas J, Alvarez-Miranda E, Hermoso V, Garcia-Gonzalo J, Weintraub A. <em>A mixed integer programming approach for multi-action planning for threat management</em>. Ecological Modelling 2020; 418:108901. DOI: <a href="https://doi.org/10.1016/j.ecolmodel.2019.108901" class="external-link uri">https://doi.org/10.1016/j.ecolmodel.2019.108901</a>.</li>
 </ul>
 </div>
 </div>
@@ -182,6 +190,12 @@
 </ul>
 </div>
 
+<div class="community">
+<h2 data-toc-skip>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+</ul>
+</div>
 
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>

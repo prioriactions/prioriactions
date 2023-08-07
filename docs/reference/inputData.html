@@ -12,7 +12,7 @@ data, threats data, and their spatial distributions.)"><meta property="og:image"
 
   gtag('config', 'G-6YB8F3838H');
 </script></head><body data-spy="scroll" data-target="#toc">
-
+    
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -26,7 +26,7 @@ data, threats data, and their spatial distributions.)"><meta property="og:image"
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -40,7 +40,7 @@ data, threats data, and their spatial distributions.)"><meta property="og:image"
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-
+     
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li class="divider">
@@ -50,6 +50,9 @@ data, threats data, and their spatial distributions.)"><meta property="og:image"
     </li>
     <li>
       <a href="../articles/objectives.html">Planning objectives</a>
+    </li>
+    <li>
+      <a href="../articles/benchmark.html">Solver benchmarks</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Study cases</li>
@@ -63,19 +66,19 @@ data, threats data, and their spatial distributions.)"><meta property="og:image"
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/prioriactions/prioriactions/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-
+     
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-
+      
 
       </header><div class="row">
   <div class="col-md-9 contents">
@@ -137,8 +140,7 @@ recovery of features threatened (through the <strong>recovery target</strong>), 
 take into account benefits when taking action against threats and there is no benefit
 when selecting planning units where the features are not threatened;
 or include the benefits of the features sites where they are not threatened
-(through the <strong>conservation target</strong>). The above is exemplified in the following diagram:
-<img src='figures/../inputdata1.png' width=80% /></p>
+(through the <strong>conservation target</strong>).</p>
 <p>Note that by default only information on recovery targets is necessary,
 while conservation targets equal to zero are assumed. The maximum values of
 benefits to achieve both recovery and conservation per feature can be verified
@@ -247,9 +249,7 @@ sensitive or not, or <strong>continuous</strong>; with response curves of the pr
 persistence of the features to threats. For the first case, it is only necessary
 to indicate the ids of the threats and the respective features sensitive to them.
 In the second case, the response can be parameterized through four values: <em>\(\delta_1\)</em>, <em>\(\delta_2\)</em>, <em>\(\delta_3\)</em>
-and <em>\(\delta_4\)</em> given by the following:</p>
-<img src='figures/../inputdata2.png' width=70% /></p>
-<p> See
+and <em>\(\delta_4\)</em>. See
 <a href="https://prioriactions.github.io/prioriactions/articles/sensitivities.html">sensitivities</a>
 vignette for more information on continuous sensitivities. Then, the sensitivity input must contain the following columns:</p><dl><dt><code>feature</code></dt>
 <dd><p><code>integer</code> <em>id</em> of each conservation feature.</p></dd>
@@ -304,13 +304,13 @@ when only one of the planning units is present in the solution.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-
+    
 
 <p>An object of class <a href="data-class.html">data</a>.</p>
     </div>
     <div id="references">
     <h2>References</h2>
-
+    
 <ul><li><p>Ball I, Possingham H, Watts, M. <em>Marxan and relatives: software for spatial
 conservation prioritization</em>. Spatial conservation prioritisation: quantitative
 methods and computational tools 2009.</p></li>
@@ -442,11 +442,11 @@ methods and computational tools 2009.</p></li>
 
       </footer></div>
 
-
+  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-
-
+    
+    
     apiKey: 'f00985ff93067595b4da97a65fe69f1a',
     indexName: 'prioriactions',
     inputSelector: 'input#search-input.form-control',

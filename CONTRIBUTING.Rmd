@@ -9,67 +9,47 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 devtools::load_all()
 ```
-First of all, thanks for considering contributing to prioriactions!. We greatly appreciate your interest in improving and expanding the package. All people are very much welcome to contribute to code, documentation, testing and suggestions.
+First of all, thanks for considering contributing to `prioriactions`. We greatly appreciate your interest in improving and expanding the package.  `prioriactions` is the result of collaborative work between programmers and experts in different disciplines. Since successful modelling projects involve long-term investments and the participation of multiple teams, we are open to further expanding the set of people contributing to the project. All people are very much welcome to **contribute to code**, **documentation**, **testing** and **suggestions**.
 
 [repo]: https://github.com/prioriactions/prioriactions
 [issues]: https://github.com/prioriactions/prioriactions/issues
 [new_issue]: https://github.com/prioriactions/prioriactions/issues/new
 [website]: https://prioriactions.net
 
-## How you can contribute
+## Fixing typos and documentation
 
-There are several ways you can contribute to this project. We welcome and encourage contributions from all members of the community.
+The contents of this website have been produced through the utilization of the [pkgdown R package](https://pkgdown.r-lib.org/). This implies that there's no need for manual HTML coding; the website's content is automatically aggregated from various sources including code documentation, vignettes, and Markdown files. If you're familiar with using [pkgdown](https://pkgdown.r-lib.org/), you're welcome to suggest modifications to enhance the documentation by submitting a file change. If you're not acquainted with [pkgdown](https://pkgdown.r-lib.org/), feel free to raise an [issue](https://github.com/prioriactions/prioriactions/issues).
 
-## Share
+## Report a bug
 
-Think prioriactions is useful? Let others discover it by telling them in person, via Twitter, or writing a blog post about it. If you are using prioriactions for a research paper, consider citing it to acknowledge the contribution.
+If you want to report a bug or suggest an enhancement, it’s a good idea to file an issue to the `prioriactions` repository at GitHub. If you’ve found a bug, please file an [issue](https://github.com/prioriactions/prioriactions/issues) that illustrates the bug with a minimal [reprex](https://www.tidyverse.org/help/#reprex).
 
 ## Ask a question
 
-Using prioriactions and got stuck? Browse the documentation to see if you can find a solution. Still stuck? Post your question as an issue on GitHub. While we cannot offer user support, we'll try our best to address it, as questions often lead to better documentation or the discovery of bugs.
+Using `prioriactions` and got stuck? Browse the documentation to see if you can find a solution. Still stuck? Post your question as an [issue](https://github.com/prioriactions/prioriactions/issues) on GitHub. While we cannot offer user support, we'll try our best to address it, as questions often lead to better documentation or the discovery of bugs.
 
-If you want to ask a question in private, you can contact the package maintainer by emailing email.
+If you want to ask a question in private, you can contact to the package maintainer [José Salgado-Rojas](mailto:jose.salgroj@gmail.com).
 
-Propose an idea 💡
-Have an idea for a new feature in prioriactions? Take a look at the documentation and issue list to see if it isn't already included or suggested. If not, suggest your idea as an issue on GitHub. While we can't promise to implement every idea, it certainly helps to:
+## Propose an idea
 
-Explain in detail how your proposed feature would work.
-Keep the scope as narrow as possible to ensure feasibility.
-See below if you want to contribute code for your idea as well.
+Have an idea for a new feature in `prioriactions`? Take a look at the documentation and issue list to see if it isn't already included or suggested. If not, suggest your idea as an [issue](https://github.com/prioriactions/prioriactions/issues) on GitHub. While we can't promise to implement every idea, it certainly helps to:
 
-Report a bug 🐛
-Discovered a bug while using prioriactions? That's unfortunate! Please don't let others have the same experience and report it as an issue on GitHub so we can fix it. A good bug report makes it easier for us to address the problem, so please include the following details:
+- Explain in detail how your proposed feature would work.
+- Keep the scope as narrow as possible to ensure feasibility.
+- See below if you want to contribute code for your idea as well.
 
-Your operating system name and version (e.g., Mac OS 10.13.6).
-Any details about your local setup that might be helpful in troubleshooting.
-Detailed steps to reproduce the bug.
-Improve the documentation 📚
-Noticed a typo on the website? Think a function could use a better example? High-quality documentation makes all the difference, so your help in improving it is very welcome!
+## Code contributions
 
-The website
-The prioriactions website is generated with pkgdown. That means we don't have to write any HTML: the content is pulled together from documentation in the code, vignettes, Markdown files, the package DESCRIPTION, and _pkgdown.yml settings. If you know your way around pkgdown, you can propose a file change to improve the documentation. If not, report an issue, and we can point you in the right direction.
+Before making contributions to the package R or C++ code, make sure someone from the `prioriactions` team agrees that the change you suggest is needed.
 
-Function documentation
-Functions in prioriactions are described as comments near their code and are translated to documentation using roxygen2. If you want to improve a function's description:
+ - Fork the package and clone onto your computer. If you haven’t done this before, we recommend using `usethis::create_from_github("prioriactions/prioriactions", fork = TRUE)`.
 
-Go to the R/ directory in the code repository.
-Look for the file with the name of the function.
-Propose a file change to update the function documentation in the roxygen comments (starting with #').
-Contribute code 📝
-If you'd like to fix bugs or implement new functionality for prioriactions, that's awesome! 👏 Here's how you can get started:
+ - Install all development dependences with `devtools::install_dev_deps()`, and then make sure the package passes R CMD check by running `devtools::check()`. If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help before continuing.
 
-Have a look at the issue list and leave a comment on the things you want to work on.
-Fork this repository and clone it to your computer. If you're not familiar with this process, see this guide for more information.
-If you've forked and cloned the project before and it has been a while since you worked on it, pull changes from the original repository to your clone by using git pull upstream master.
-Open the RStudio project file (.Rproj).
-Make your changes:
-Write your code.
-Test your code (bonus points for adding unit tests).
-Document your code (see function documentation above).
-Check your code with devtools::check() and aim for 0 errors and warnings.
-Commit and push your changes.
-Submit a pull request.
-Development guidelines
-We try to follow the GitHub flow for development, and we appreciate your adherence to these guidelines when contributing.
+- Create a Git branch for your pull request (PR). We recommend using `usethis::pr_init("brief-description-of-change")`.
 
-Your contributions are valuable to the growth and improvement of prioriactions. Thank you for taking the time to make this project even better! 🙏 If you have any questions, feel free to reach out to us through the issues or by contacting the package maintainer via email.
+- Make your changes, commit to git, and then create a PR by running `usethis::pr_push()`, and following the prompts in your browser. The title of your PR should briefly describe the change. The body of your PR should contain Fixes #issue-number.
+
+- For user-facing changes, add a bullet to the top of NEWS.md (i.e. just below the first header). Follow the style described in https://style.tidyverse.org/news.html.
+
+

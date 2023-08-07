@@ -25,7 +25,7 @@ the mathematical model created by the problem() function."><meta property="og:im
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -49,6 +49,9 @@ the mathematical model created by the problem() function."><meta property="og:im
     </li>
     <li>
       <a href="../articles/objectives.html">Planning objectives</a>
+    </li>
+    <li>
+      <a href="../articles/benchmark.html">Solver benchmarks</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Study cases</li>
@@ -116,7 +119,8 @@ created using the <code><a href="problem.html">problem()</a></code> function.</p
 <dd><p><code>string</code>. Name of solver to use to
 solve the model. The following solvers are supported:
 <a href="https://www.gurobi.com/" class="external-link"><code>"gurobi"</code></a>(requires the <span class="pkg">gurobi</span> package),
-<a href="https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio" class="external-link"><code>"cplex"</code></a>(requires the <span class="pkg">Rcplex</span> package) and
+<a href="https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio" class="external-link"><code>"cplex"</code></a>(requires the <span class="pkg">Rcplex</span> package),
+<a href="https://https://github.com/coin-or/Cbc" class="external-link"><code>"cbc"</code></a>(requires the <span class="pkg">rcbc</span> package) and
 <a href="https://github.com/coin-or/SYMPHONY" class="external-link"><code>"symphony"</code></a>(requires the <span class="pkg">Rsymphony</span> package).
 We recommend using gurobi (for more information on how to obtain an academic license
 <a href="https://prioritizr.net/articles/gurobi_installation_guide.html" class="external-link">here</a>).</p></dd>
@@ -191,6 +195,15 @@ licenses. We recommend using this solver if the Gurobi solver is not available.
 Licenses are available for the IBM CPLEX software to academics at no cost
 <a href="https://www.ibm.com/products/ilog-cplex-optimization-studio" class="external-link">here</a>. This solver uses the
 <span class="pkg">Rcplex</span> package to solve problems.</p></dd>
+
+
+<dt><code>CBC solver</code></dt>
+<dd><p><a href="https://github.com/coin-or/Cbc" class="external-link"><em>CBC</em></a> is an
+open-source mixed integer linear programming solver written in C++. It is part of the
+Computational Infrastructure for Operations Research (COIN-OR) project
+interface. <span class="pkg">rcbc</span> package to solve problems and is now available only on Github.
+Please ensure that you closely adhere to the detailed installation instructions provided
+<a href="https://github.com/dirkschumacher/rcbc" class="external-link">here</a> for proper setup.</p></dd>
 
 
 <dt><code>Symphony solver</code></dt>

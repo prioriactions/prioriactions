@@ -24,7 +24,8 @@ created using the \code{problem()} function.}
 \item{solver}{\code{string}. Name of solver to use to
 solve the model. The following solvers are supported:
 \href{https://www.gurobi.com/}{\code{"gurobi"}}(requires the \pkg{gurobi} package),
-\href{https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio}{\code{"cplex"}}(requires the \pkg{Rcplex} package) and
+\href{https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio}{\code{"cplex"}}(requires the \pkg{Rcplex} package),
+\href{https://https://github.com/coin-or/Cbc}{\code{"cbc"}}(requires the \pkg{rcbc} package) and
 \href{https://github.com/coin-or/SYMPHONY}{\code{"symphony"}}(requires the \pkg{Rsymphony} package).
 We recommend using gurobi (for more information on how to obtain an academic license
 \href{https://prioritizr.net/articles/gurobi_installation_guide.html}{here}).}
@@ -85,6 +86,14 @@ licenses. We recommend using this solver if the Gurobi solver is not available.
 Licenses are available for the IBM CPLEX software to academics at no cost
 \href{https://www.ibm.com/products/ilog-cplex-optimization-studio}{here}. This solver uses the
 \pkg{Rcplex} package to solve problems.}
+
+\item{\verb{CBC solver}}{
+\href{https://github.com/coin-or/Cbc}{\emph{CBC}} is an
+open-source mixed integer linear programming solver written in C++. It is part of the
+Computational Infrastructure for Operations Research (COIN-OR) project
+interface. \pkg{rcbc} package to solve problems and is now available only on Github.
+Please ensure that you closely adhere to the detailed installation instructions provided
+\href{https://github.com/dirkschumacher/rcbc}{here} for proper setup.}
 
 \item{\verb{Symphony solver}}{
 \href{https://github.com/coin-or/SYMPHONY}{\emph{SYMPHONY}} is an

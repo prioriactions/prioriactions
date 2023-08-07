@@ -26,7 +26,7 @@ problem() and solve()."><meta property="og:image" content="https://prioriactions
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -50,6 +50,9 @@ problem() and solve()."><meta property="og:image" content="https://prioriactions
     </li>
     <li>
       <a href="../articles/objectives.html">Planning objectives</a>
+    </li>
+    <li>
+      <a href="../articles/benchmark.html">Solver benchmarks</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Study cases</li>
@@ -159,43 +162,45 @@ obtaining information about the group of solutions (including all <em>get</em> f
 <span class="r-out co"><span class="r-pr">#&gt;</span> Thread count: 16 physical cores, 16 logical processors, using up to 2 threads</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimize a model with 284 rows, 396 columns and 785 nonzeros</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model fingerprint: 0xf11c1fb5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model fingerprint: 0x81130bf7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 176 continuous, 220 integer (220 binary)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficient statistics:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Objective range  [1e+00, 1e+01]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   RHS range        [2e-01, 6e+00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   RHS range        [3e+00, 6e+00]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 964.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 168.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 195.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Presolve removed 250 rows and 282 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 0.00s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 0.02s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Presolved: 34 rows, 114 columns, 229 nonzeros</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 75.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 83.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 0 continuous, 114 integer (98 binary)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 69.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 81.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Root relaxation: objective 5.300000e+01, 27 iterations, 0.00 seconds (0.00 work units)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Root relaxation: objective 5.100000e+01, 27 iterations, 0.00 seconds (0.00 work units)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0   53.00000    0    6   69.00000   53.00000  23.2%     -    0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H    0     0                      60.0000000   53.00000  11.7%     -    0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *    0     0               0      57.0000000   57.00000  0.00%     -    0s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0   51.00000    0    6   81.00000   51.00000  37.0%     -    0s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H    0     0                      65.0000000   51.00000  21.5%     -    0s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H    0     0                      63.0000000   51.00000  19.0%     -    0s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H    0     0                      62.0000000   51.00000  17.7%     -    0s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *    0     0               0      55.0000000   55.00000  0.00%     -    0s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Cutting planes:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Gomory: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Cover: 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   MIR: 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (34 simplex iterations) in 0.00 seconds (0.00 work units)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (34 simplex iterations) in 0.04 seconds (0.00 work units)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Thread count was 2 (of 16 available processors)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Solution count 6: 57 60 69 ... 964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Solution count 8: 55 62 63 ... 964</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Best objective 5.700000000000e+01, best bound 5.700000000000e+01, gap 0.0000%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Best objective 5.500000000000e+01, best bound 5.500000000000e+01, gap 0.0000%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> *********************************</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  Iteration 2 of 3: Prop0.3</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> *********************************</span>
@@ -217,7 +222,7 @@ obtaining information about the group of solutions (including all <em>get</em> f
 <span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 964.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 445.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Presolve removed 250 rows and 277 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 0.00s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 0.01s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Presolved: 34 rows, 119 columns, 237 nonzeros</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 254.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 0 continuous, 119 integer (101 binary)</span>
@@ -243,7 +248,7 @@ obtaining information about the group of solutions (including all <em>get</em> f
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Zero half: 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Relax-and-lift: 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (52 simplex iterations) in 0.00 seconds (0.00 work units)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (52 simplex iterations) in 0.06 seconds (0.00 work units)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Thread count was 2 (of 16 available processors)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Solution count 7: 196 197 205 ... 964</span>
@@ -271,7 +276,7 @@ obtaining information about the group of solutions (including all <em>get</em> f
 <span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 964.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 601.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Presolve removed 250 rows and 277 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 0.00s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 0.01s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Presolved: 34 rows, 119 columns, 237 nonzeros</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 401.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 0 continuous, 119 integer (101 binary)</span>
@@ -294,7 +299,7 @@ obtaining information about the group of solutions (including all <em>get</em> f
 <span class="r-out co"><span class="r-pr">#&gt;</span>      0     0  359.50000    0   13  361.00000  359.50000  0.42%     -    0s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      0     0 infeasible    0       361.00000  361.00000  0.00%     -    0s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (93 simplex iterations) in 0.01 seconds (0.00 work units)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (93 simplex iterations) in 0.11 seconds (0.00 work units)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Thread count was 2 (of 16 available processors)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Solution count 9: 361 362 369 ... 964</span>
@@ -304,7 +309,7 @@ obtaining information about the group of solutions (including all <em>get</em> f
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="getCost.html">getCost</a></span><span class="op">(</span><span class="va">port</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   solution_name monitoring threat_1 threat_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       Prop0.1         30        2       25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       Prop0.1         28        2       25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       Prop0.3         98       26       72</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3       Prop0.5        186       65      110</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>

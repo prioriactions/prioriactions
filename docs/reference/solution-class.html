@@ -27,7 +27,7 @@ function."><meta property="og:image" content="https://prioriactions.github.io/pr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -51,6 +51,9 @@ function."><meta property="og:image" content="https://prioriactions.github.io/pr
     </li>
     <li>
       <a href="../articles/objectives.html">Planning objectives</a>
+    </li>
+    <li>
+      <a href="../articles/benchmark.html">Solver benchmarks</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Study cases</li>
@@ -164,43 +167,35 @@ function.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   RHS range        [1e+00, 5e+01]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 964.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Presolve removed 19990 rows and 5131 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 0.15s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 2.15s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Presolved: 9994 rows, 5165 columns, 20209 nonzeros</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 0 continuous, 5165 integer (5160 binary)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 868.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Root relaxation: objective 8.477969e+02, 7968 iterations, 0.46 seconds (1.09 work units)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Root relaxation: time limit, 4931 iterations, 2.74 seconds (0.42 work units)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0  847.79687    0 5133  868.00000  847.79687  2.33%     -    0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0  862.00000    0    1  868.00000  862.00000  0.69%     -    0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H    0     0                     865.0000000  862.00000  0.35%     -    0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H    0     0                     863.0000000  862.00000  0.12%     -    0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0     cutoff    0       863.00000  863.00000  0.00%     -    0s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0          -    0       868.00000 -51868.452  6076%     -    5s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Cutting planes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Cover: 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   RLT: 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (8025 simplex iterations) in 0.69 seconds (1.40 work units)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (4931 simplex iterations) in 5.01 seconds (0.67 work units)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Thread count was 2 (of 16 available processors)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Solution count 4: 863 865 868 964 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Solution count 2: 868 964 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal solution found (tolerance 0.00e+00)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Best objective 8.629999999999e+02, best bound 8.629999999999e+02, gap 0.0000%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Time limit reached</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Best objective 8.679999999999e+02, best bound -5.186845200000e+04, gap 6075.6281%</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Use class methods</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">s</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Solution overview</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   name: sol</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   objective value: 863</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   gap:  0%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   status:  Optimal solution (according to gap tolerance: 0)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   runtime: 0.688 sec</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   objective value: 868</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   gap:  6075.628%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   status:  Feasible solution (according to time limit: 5 sec)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   runtime: 5.012 sec</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

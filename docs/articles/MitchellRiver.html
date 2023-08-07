@@ -34,7 +34,7 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
-
+    
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -63,7 +63,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-
+     
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -75,6 +75,9 @@
     </li>
     <li>
       <a href="../articles/objectives.html">Planning objectives</a>
+    </li>
+    <li>
+      <a href="../articles/benchmark.html">Solver benchmarks</a>
     </li>
     <li class="divider">
     </li>
@@ -92,7 +95,7 @@
 <li>
   <a href="https://github.com/prioriactions/prioriactions/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-
+     
   </a>
 </li>
       </ul>
@@ -101,7 +104,7 @@
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
       </form>
-
+      
     </div>
 <!--/.nav-collapse -->
   </div>
@@ -109,21 +112,21 @@
 </div>
 <!--/.navbar -->
 
-
+      
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Mitchell River</h1>
-
-
+            
+      
       <small class="dont-index">Source: <a href="https://github.com/prioriactions/prioriactions/blob/HEAD/vignettes/MitchellRiver.Rmd" class="external-link"><code>vignettes/MitchellRiver.Rmd</code></a></small>
       <div class="hidden name"><code>MitchellRiver.Rmd</code></div>
 
     </div>
 
-
-
+    
+    
 <p>In this vignette, the <code>prioriactions</code> package is
 introduced in a real context, demonstrating part of its capabilities in
 order to familiarize the reader with it. The vignette is divided into
@@ -197,7 +200,7 @@ package installation:</p>
 <span></span>
 <span><span class="co"># plot sapefile</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mit_pu</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/MR3-1.png"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/MR3-1.png"></p>
 <p>After loading the instance’s data, we can plot different
 distributions of features or threats on the shapefile loaded. To do it,
 we can assign the values from tabular input to any of the fields in the
@@ -221,7 +224,7 @@ shapefile containing the distribution of native species and threats:</p>
 <span>                breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>,</span>
 <span>                   lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/MR4-1.jpg"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/MR4-1.jpg"></p>
 <p>Likewise, we can plot the distributions of any threats by applying
 the following instructions:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -243,7 +246,7 @@ the following instructions:</p>
 <span>                breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html" class="external-link">tm_borders</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"black"</span>, </span>
 <span>                   lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/MR5-1.jpg"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/MR5-1.jpg"></p>
 <p>To solve all the models, the solver will be configured with a stop
 criterion of 5% of <em>gap</em> (<code>gap_limit = 0.05</code>), which
 means that the solver will end its execution when it finds a solution
@@ -510,7 +513,7 @@ actions included in the optimal solution:</p>
 <span>                   <span class="va">plot_action2.base</span>, </span>
 <span>                   <span class="va">plot_action3.base</span>, </span>
 <span>                   <span class="va">plot_action4.base</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/MR15-1.jpg"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/MR15-1.jpg"></p>
 <p>Also, we can show the distribution of the sum of the actions (higher
 density of actions):</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
@@ -535,7 +538,7 @@ density of actions):</p>
 <span>                               lwd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">plot.base</span></span></code></pre></div>
-<p><img src="figures/MR16-1.jpg"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/MR16-1.jpg"></p>
 <p>We will use the results from this base model for comparisons with the
 following planning exercises.</p>
 </div>
@@ -719,7 +722,7 @@ different parameters of curves.</p>
 <span></span>
 <span><span class="co"># comparative with base model solution</span></span>
 <span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html" class="external-link">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.curve</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/MR19-1.jpg"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/MR19-1.jpg"></p>
 <p>Here, we display representations of the solution obtained for both,
 the base and curve models. As can be seen from these maps there are a
 greater number of sites with a larger concentration of management
@@ -918,7 +921,7 @@ function:</p>
 <span></span>
 <span><span class="co"># comparative with base model solution</span></span>
 <span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html" class="external-link">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.conn</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/MR22-1.jpg"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/MR22-1.jpg"></p>
 <p>As can be seen from the displayed maps, including the connectivity
 penalty in the objective function allows to find a more compact solution
 when compared to the one obtained by the base model.</p>
@@ -1169,7 +1172,7 @@ actions:</p>
 <span>                   <span class="va">plot_action2.conn_actions</span>, </span>
 <span>                   <span class="va">plot_action3.conn_actions</span>, </span>
 <span>                   <span class="va">plot_action4.conn_actions</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/MR24-1.jpg"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/MR24-1.jpg"></p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get action distribution</span></span>
 <span><span class="va">mit_pu</span><span class="op">$</span><span class="va">sum_actions.conn_actions</span> <span class="op">&lt;-</span> <span class="va">solution_actions.conn_actions</span><span class="op">$</span><span class="va">`1`</span> <span class="op">+</span></span>
@@ -1193,7 +1196,7 @@ actions:</p>
 <span></span>
 <span><span class="co"># comparative with base model solution</span></span>
 <span><span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html" class="external-link">tmap_arrange</a></span><span class="op">(</span><span class="va">plot.base</span>, <span class="va">plot.conn_actions</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/MR25-1.jpg"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/MR25-1.jpg"></p>
 <p>As we can see in this case, the inclusion of connectivity
 requirements between actions and, therefore, the attempt to minimize the
 connectivity penalty between them, produced a very different solution
@@ -1254,11 +1257,11 @@ suggested to use a longer resolution time.</p>
       </footer>
 </div>
 
-
+  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-
-
+    
+    
     apiKey: 'f00985ff93067595b4da97a65fe69f1a',
     indexName: 'prioriactions',
     inputSelector: 'input#search-input.form-control',

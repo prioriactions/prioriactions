@@ -34,7 +34,7 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
-
+    
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prioriactions</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -63,7 +63,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-
+     
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -75,6 +75,9 @@
     </li>
     <li>
       <a href="../articles/objectives.html">Planning objectives</a>
+    </li>
+    <li>
+      <a href="../articles/benchmark.html">Solver benchmarks</a>
     </li>
     <li class="divider">
     </li>
@@ -92,7 +95,7 @@
 <li>
   <a href="https://github.com/prioriactions/prioriactions/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-
+     
   </a>
 </li>
       </ul>
@@ -101,7 +104,7 @@
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
       </form>
-
+      
     </div>
 <!--/.nav-collapse -->
   </div>
@@ -109,26 +112,26 @@
 </div>
 <!--/.navbar -->
 
-
+      
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Planning objectives</h1>
-
-
+            
+      
       <small class="dont-index">Source: <a href="https://github.com/prioriactions/prioriactions/blob/HEAD/vignettes/objectives.Rmd" class="external-link"><code>vignettes/objectives.Rmd</code></a></small>
       <div class="hidden name"><code>objectives.Rmd</code></div>
 
     </div>
 
-
-
+    
+    
 <p>The <code>prioriactions</code> package allows to address to planning
 goals: <strong>recovery</strong> and <strong>conservation</strong>. In
 order to understand the difference between each of them, let us consider
 the following figures:</p>
-<p><img src="figures/PR1.png" style="width:60.0%"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/PR1.png" style="width:60.0%"></p>
 <p>According to the figure, for a conservation feature there are
 <strong>two</strong> planning units where it co-occurs with the threat
 it is sensitive to (and where, therefore, it can be impacted by the
@@ -289,7 +292,7 @@ instance are shown below:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/O5-1.png"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/O5-1.png"></p>
 </div>
 <div class="section level2">
 <h2 id="model-ii-recovery-and-conservation-targets">2) Model II: Recovery and conservation targets<a class="anchor" aria-label="anchor" href="#model-ii-recovery-and-conservation-targets"></a>
@@ -384,7 +387,7 @@ now impose the implementation of monitoring actions.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span>, <span class="st">"conservation"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/O7-1.png"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/O7-1.png"></p>
 <p>We can observe that, in this case, the units selected for
 <strong>conservation</strong> do not overlap with those selected for
 applying action 1 and action 2. When comparing this solution with the
@@ -449,7 +452,7 @@ function. Next we will modify this parameter in the model that uses only
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/O9-1.png"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/O9-1.png"></p>
 <p>We can notice that the selected actions are more connected compared
 to the solutions shown for the previous models.</p>
 </div>
@@ -509,7 +512,7 @@ using <strong>conservation targets</strong>.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span>, <span class="st">"conservation"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures/O11-1.png"></p>
+<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/O11-1.png"></p>
 <p>Note that in the last two models (those that incorporate connectivity
 requirements) the solutions differ. Because in both we have used the
 same parameters, it is inferred that the sites selected for the
@@ -543,11 +546,11 @@ different solutions.</p>
       </footer>
 </div>
 
-
+  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-
-
+    
+    
     apiKey: 'f00985ff93067595b4da97a65fe69f1a',
     indexName: 'prioriactions',
     inputSelector: 'input#search-input.form-control',
