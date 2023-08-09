@@ -147,35 +147,12 @@ the threat coincides with the index of the action used to abate it.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Solve the optimization model</span></span></span>
 <span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="solve.html">solve</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, time_limit <span class="op">=</span> <span class="fl">2</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (linux64)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CPU model: 12th Gen Intel(R) Core(TM) i5-1240P, instruction set [SSE2|AVX|AVX2]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Thread count: 16 physical cores, 16 logical processors, using up to 2 threads</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model fingerprint: 0x197c5e8d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 176 continuous, 10120 integer (10120 binary)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficient statistics:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Objective range  [3e-02, 3e+01]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   RHS range        [1e+00, 5e+01]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 964.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve removed 19990 rows and 5131 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 1.94s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 0 nodes (0 simplex iterations) in 2.02 seconds (0.17 work units)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Thread count was 1 (of 16 available processors)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Solution count 1: 964 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time limit reached</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Best objective 9.640000000000e+02, best bound -, gap -</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rcplex: num variables=10296 num constraints=29984</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># get connectivity penalty values</span></span></span>
 <span class="r-in"><span><span class="fu">getConnectivityPenalty</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   solution_name units threat_1 threat_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           sol     0        0        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           sol     0 2890.835 1518.804</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

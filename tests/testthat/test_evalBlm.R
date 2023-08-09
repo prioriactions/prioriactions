@@ -53,7 +53,7 @@ test_that("evaluate methods with random values", {
   expect_equal(length(port$data), 3)
   for (i in seq_along(port$data))
     expect_s3_class(port$data[[i]], "Solution")
-  expect_type(port$getBlms(), "double")
+  expect_type(port$getBlms(), "integer")
   expect_equal(port$getBlms(), blm_values)
   expect_equal(port$getNames(), paste0("Blm", blm_values))
 })

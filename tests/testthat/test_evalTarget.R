@@ -1,6 +1,6 @@
 test_that("evaluate methods with random values", {
   skip_on_cran()
-  skip_if_not_installed("Rcplex")
+  skip_if_no_commercial_solvers_installed()
 
   # simulate data
   status_pu <- sample(0:3, 10, replace = TRUE)
@@ -61,7 +61,7 @@ test_that("evaluate methods with random values", {
 
 test_that("evaluate solutions values", {
   skip_on_cran()
-  skip_if_not_installed("Rcplex")
+  skip_if_no_commercial_solvers_installed()
 
   # simulate data
   bound <- expand.grid(seq_len(10), seq_len(10))

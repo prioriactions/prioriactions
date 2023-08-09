@@ -1,6 +1,6 @@
 test_that("evaluate function whith porftolio object", {
   skip_on_cran()
-  skip_if_not_installed("Rcplex")
+  skip_if_no_commercial_solvers_installed()
 
   # create data
   data(sim_pu_data, sim_features_data, sim_dist_features_data,
@@ -46,7 +46,7 @@ test_that("evaluate function whith porftolio object", {
 
 test_that("evaluate function whith solution object", {
 
-  skip_if_not_installed("Rcplex")
+  skip_if_no_commercial_solvers_installed()
 
   # create data
   data(sim_pu_data, sim_features_data, sim_dist_features_data,

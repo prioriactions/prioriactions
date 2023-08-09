@@ -3,7 +3,7 @@
 #' Skip a test if no commercial solvers are installed.
 #'
 #' @param packages `character` vector containing the package dependencies
-#'   for commercial solvers. Defaults to `"gurobi"` and `"cplexAPI"`.
+#'   for commercial solvers. Defaults to `"gurobi"` and `"Rcplex"`.
 #'
 #' @return `logical` indicating success.
 skip_if_no_commercial_solvers_installed <- function(packages = c("gurobi", "Rcplex")) {

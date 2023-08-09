@@ -153,34 +153,14 @@ feasible solution (solution_limit = TRUE parameter in <code><a href="solve.html"
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Solve the optimization model</span></span></span>
 <span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="solve.html">solve</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, time_limit <span class="op">=</span> <span class="fl">2</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (linux64)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CPU model: 12th Gen Intel(R) Core(TM) i5-1240P, instruction set [SSE2|AVX|AVX2]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Thread count: 16 physical cores, 16 logical processors, using up to 2 threads</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model fingerprint: 0xac37cd06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 176 continuous, 10120 integer (10120 binary)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficient statistics:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Objective range  [1e+00, 7e+02]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   RHS range        [1e+00, 5e+01]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 964.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve removed 19990 rows and 5131 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 2.00s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 0 nodes (0 simplex iterations) in 2.07 seconds (0.18 work units)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Thread count was 1 (of 16 available processors)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Solution count 1: 964 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time limit reached</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Best objective 9.639999999999e+02, best bound -, gap -</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rcplex: num variables=10296 num constraints=29984</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># get solution gap</span></span></span>
 <span class="r-in"><span><span class="fu">getPerformance</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   solution_name objective_value gap solving_time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           sol             863   0         2.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                               status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Feasible solution (according to time limit: 2 sec)</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

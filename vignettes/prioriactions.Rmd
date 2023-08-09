@@ -1,5 +1,13 @@
 ---
 title: "Introduction to prioriactions"
+resource_files:
+  - figures/diagram_prioriactions.jpg
+  - figures/prioriactions_steps.png
+  - figures/P3-1.png
+  - figures/P5-1.png
+  - figures/P7-1.png
+  - figures/P16-1.png
+  - figures/P18-1.png
 output:
   rmarkdown::html_document
 fontsize: 11pt
@@ -12,7 +20,7 @@ vignette: >
 
 
 
-![](figures/diagram_prioriactions.jpg)
+![](../vignettes/figures/diagram_prioriactions.jpg)
 
 
 The `prioriactions` package is a new effort to bring exact modeling
@@ -55,7 +63,7 @@ group of functions is comprised of three clear steps:
 3) **Solve model**, using the `solve()` function. This function returns a [solution-class](https://prioriactions.github.io/prioriactions/reference/solution-class.html)
 object that contains information related to the solution.
 
-![](figures/prioriactions_steps.jpg){width=95%}
+![](../vignettes/figures/prioriactions_steps.png){width=95%}
 
 These three steps can be summarized using a single function: the **`prioriactions()`** function. This allows the input data validation, the creation of the mathematical model and its resolution in a single step, returning a [solution-class](https://prioriactions.github.io/prioriactions/reference/solution-class.html) object that contains information related to the solution. We recommend the three step scheme due this allows us to verify that all the steps are correct, and it can be helpful to check for errors without completely
 rerunning everything again. For example, note that [optimizationProblem-class](https://prioriactions.github.io/prioriactions/reference/optimizationProblem-class.html) object can take significant time to create
@@ -146,7 +154,7 @@ values(r) <- sim_pu_data$monitoring_cost
 plot(r)
 ```
 
-![](figures/P3-1.png)
+![](../vignettes/figures/P3-1.png)
 
 ### Features data
 
@@ -213,7 +221,7 @@ names(group_rasters) <- c("feature 1", "feature 2", "feature 3", "feature 4")
 plot(group_rasters)
 ```
 
-![](figures/P5-1.png)
+![](../vignettes/figures/P5-1.png)
 
 ### Threats data
 
@@ -290,7 +298,7 @@ names(group_rasters) <- c("threat 1", "threat 2")
 plot(group_rasters)
 ```
 
-![](figures/P7-1.png)
+![](../vignettes/figures/P7-1.png)
 
 ### Boundary data
 
@@ -604,7 +612,7 @@ names(group_rasters) <- c("action 1", "action 2")
 plot(group_rasters)
 ```
 
-![](figures/P16-1.png)
+![](../vignettes/figures/P16-1.png)
 
 ### `getSolutionBenefit()`
 
@@ -651,7 +659,7 @@ names(group_rasters) <- c("feature 1", "feature 2", "feature 3", "feature 4")
 plot(group_rasters)
 ```
 
-![](figures/P18-1.png)
+![](../vignettes/figures/P18-1.png)
 
 ### `getCost()`
 

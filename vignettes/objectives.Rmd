@@ -1,5 +1,11 @@
 ---
 title: "Planning objectives"
+resource_files:
+  - figures/PR1.png
+  - figures/O5-1.png
+  - figures/O7-1.png
+  - figures/O9-1.png
+  - figures/O11-1.png
 output:
   html_document
 fontsize: 11pt
@@ -14,7 +20,7 @@ vignette: >
 
 The `prioriactions` package allows to address to planning goals: **recovery** and **conservation**. In order to understand the difference between each of them, let us consider the following figures:
 
-![](figures/PR1.png){width=60%}
+![](../vignettes/figures/PR1.png){width=60%}
 
 According to the figure, for a conservation feature there are **two** planning units where it co-occurs with the threat it is sensitive to (and where, therefore, it can be impacted by the threat) and in **four** other units where the feature does not co-occur with the threat. Therefore, **recovery targets** could be achieved by prescribing management actions against the threat present in the two planning units where the feature co-occurs with that threat, while **conservation targets** could be achieved by selecting for conservation any of the planning units where the species does not co-occur with the threat. As we will show in this document, selecting planning units only for conservation purposes plays a crucial role in the conservation plan.
 
@@ -162,7 +168,7 @@ names(group_rasters) <- c("action 1", "action 2")
 plot(group_rasters)
 ```
 
-![](figures/O5-1.png)
+![](../vignettes/figures/O5-1.png)
 
 ## 2) Model II: Recovery and conservation targets
 
@@ -262,7 +268,7 @@ names(group_rasters) <- c("action 1", "action 2", "conservation")
 plot(group_rasters)
 ```
 
-![](figures/O7-1.png)
+![](../vignettes/figures/O7-1.png)
 
 We can observe that, in this case, the units selected for **conservation** do not overlap with those selected for applying action 1 and action 2. When comparing this solution with the one shown in the model I, we observe that in both cases the spatial distribution of the **recovery** actions is the same.
 
@@ -334,7 +340,7 @@ names(group_rasters) <- c("action 1", "action 2")
 plot(group_rasters)
 ```
 
-![](figures/O9-1.png)
+![](../vignettes/figures/O9-1.png)
 
 We can notice that the selected actions are more connected compared to the solutions shown for the previous models.
 
@@ -407,7 +413,7 @@ names(group_rasters) <- c("action 1", "action 2", "conservation")
 plot(group_rasters)
 ```
 
-![](figures/O11-1.png)
+![](../vignettes/figures/O11-1.png)
 
 Note that in the last two models (those that incorporate connectivity requirements) the solutions differ. Because in both we have used the same parameters, it is inferred that the sites selected for the conservation of species affect in a certain way the selection of units for **recovery targets**, which is why it is very important to carefully think about the planning objectives, as they might lead to different solutions.
 

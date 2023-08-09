@@ -1,5 +1,12 @@
 ---
 title: "Benefits and sensitivities"
+resource_files:
+  - figures/S3-1.png
+  - figures/S6-1.png
+  - figures/sensitivities1.png
+  - figures/sensitivities2.png
+  - figures/sensitivities3.png
+  - figures/S9-1.png
 output:
   rmarkdown::html_vignette
 fontsize: 11pt
@@ -177,7 +184,7 @@ names(group_rasters) <- c("feature 1", "feature 2", "feature 3", "feature 4")
 plot(group_rasters)
 ```
 
-![](figures/S3-1.png)
+![](../vignettes/figures/S3-1.png)
 
 The second model use a parameter of `curve = 3` in its construction, and therefore, the calculate of probability of persistence is not proportional.
 
@@ -295,7 +302,7 @@ values(group_rasters[[4]]) <- local_benefits.curve$`4`
 plot(group_rasters)
 ```
 
-![](figures/S6-1.png)
+![](../vignettes/figures/S6-1.png)
 
 As we can see, for the base case, features 1 and 3 add to the total benefit sites where their **probability of persistence** is 0.5. Whereas when we use `curve = 3`, all but one site that contribute to reaching the target have a probability value of 1. This effect will be more evident when there are more threats in the planning exercise.
 
@@ -311,11 +318,11 @@ So far we have worked with two important premises: 1) that threats exist or not 
 
 -   *d* : maximum probability of persistence of a features in absence of a given threat.
 
-![](figures/sensitivities1.png){width="60%"}
+![](../vignettes/figures/sensitivities1.png){width="60%"}
 
 Where the greater the intensity of the threat, lower **probability of persistence** of the feature. Thus, with the definition of these four parameters mentioned above, different response curves can be *fitted*:
 
-![](figures/sensitivities2.jpg)
+![](../vignettes/figures/sensitivities2.jpg)
 
 The latter are examples of the curves that could be fitted with these parameters; that can be customized by users according to their needs by using the four parameters detailed above. Note that each of the curves is a relationship between a feature and a particular threat, but what happens to the **probability of persistence** of a feature when it coexists with more than one threats?.
 
@@ -343,7 +350,7 @@ $$ Where $h_{ik}$ is the intensity of the threat $k$ in the unit $i$.
 
 In order to demonstrate the use of the package when we have continuous values of intensities, we use the same example considered for the models with binary threat intensities. Note that both examples will not be compared due to differences in potential benefits and therefore in the targets used. Also, we assume that we only have information about the sensitivity of feature 1 to both threats, whose **response curves** have been fitted as follow:
 
-![](figures/sensitivities3.jpg)
+![](../vignettes/figures/sensitivities3.jpg)
 
 Note the feature is sensitive to any intensity of threat-1, while this is less sensitive to threat 2, as its **probability of persistence** remains invariant until the threat reaches high intensity values.
 
@@ -496,7 +503,7 @@ values(group_rasters[[4]]) <- local_benefits.continuous$`4`
 plot(group_rasters)
 ```
 
-![](figures/S9-1.png)
+![](../vignettes/figures/S9-1.png)
 
 Note that the selected sites differ to a greater extent from those chosen in the base model with binary threat intensities. From the above, the effect that can bring with the use of sensitivities and intensities of continuous threats on the management of conservation actions is extracted.
 

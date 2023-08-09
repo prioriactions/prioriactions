@@ -6,5 +6,6 @@ library(prioriactions)
 require(gurobi)
 require(Rsymphony)
 require(Rcplex)
+require(rcbc)
 
 test_check("prioriactions")

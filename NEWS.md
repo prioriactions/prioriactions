@@ -6,6 +6,7 @@
 -   New **solver benchmarking** vignette is added.
 -   Now `blm` parameter in `problem()` is not rounded.
 -   Now the parameter `NodefileStart` is incorporated internally in the **gurobi** solver. Set in 0.5.
+-   Update vignettes.
 
 # prioriactions 0.4.2
 

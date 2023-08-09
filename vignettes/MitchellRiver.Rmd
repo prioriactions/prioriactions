@@ -1,5 +1,15 @@
 ---
 title: "Mitchell River"
+resource_files:
+  - figures/MR3-1.png
+  - figures/MR4-1.jpg
+  - figures/MR5-1.jpg
+  - figures/MR15-1.jpg
+  - figures/MR16-1.jpg
+  - figures/MR19-1.jpg
+  - figures/MR22-1.jpg
+  - figures/MR24-1.jpg
+  - figures/MR25-1.jpg
 output:
   rmarkdown::html_document
 fontsize: 11pt
@@ -72,7 +82,7 @@ mit_pu = raster::shapefile("data/Mitchell.shp")
 plot(mit_pu)
 ```
 
-![](figures/MR3-1.png)
+![](../vignettes/figures/MR3-1.png)
 
 After loading the instance’s data, we can plot different distributions of features or threats on the shapefile loaded. To do it, we can assign the values from tabular input to any of the fields in the shapefile containing the distribution of native species and threats:
 
@@ -98,7 +108,7 @@ tmap::tm_shape(mit_pu) +
                    lwd = 0.5)
 ```
 
-![](figures/MR4-1.jpg)
+![](../vignettes/figures/MR4-1.jpg)
 
 Likewise, we can plot the distributions of any threats by applying the following instructions:
 
@@ -124,7 +134,7 @@ tmap::tm_shape(mit_pu) +
                    lwd = 0.5)
 ```
 
-![](figures/MR5-1.jpg)
+![](../vignettes/figures/MR5-1.jpg)
 
 To solve all the models, the solver will be configured with a stop criterion of 5% of *gap* (`gap_limit = 0.05`), which means that the solver will end its execution when it finds a solution whose *gap* is at least 5%, indicating 0% that this solution is optimal. Similarly, there are other stopping criteria such as the time (`time_limit`), all available in the `solve()` reference. There is also the option of not using any stopping criteria that will make the solver run until it finds an optimal solution; however, this could take a long time period.
 
@@ -411,7 +421,7 @@ tmap::tmap_arrange(plot_action1.base,
                    plot_action4.base)
 ```
 
-![](figures/MR15-1.jpg)
+![](../vignettes/figures/MR15-1.jpg)
 
 Also, we can show the distribution of the sum of the actions (higher density of actions):
   
@@ -440,7 +450,7 @@ plot.base <- tmap::tm_shape(mit_pu) +
 plot.base
 ```
 
-![](figures/MR16-1.jpg)
+![](../vignettes/figures/MR16-1.jpg)
 
 We will use the results from this base model for comparisons with the following planning exercises.
 
@@ -625,7 +635,7 @@ plot.curve <- tmap::tm_shape(mit_pu) +
 tmap::tmap_arrange(plot.base, plot.curve)
 ```
 
-![](figures/MR19-1.jpg)
+![](../vignettes/figures/MR19-1.jpg)
 
 Here, we display representations of the solution obtained for both, the base and curve models. As can be seen from these maps there are a greater number of sites with a larger concentration of management actions compared to the previous model (for example, a greater number of units in green).
 
@@ -837,7 +847,7 @@ plot.conn <- tmap::tm_shape(mit_pu) +
 tmap::tmap_arrange(plot.base, plot.conn)
 ```
 
-![](figures/MR22-1.jpg)
+![](../vignettes/figures/MR22-1.jpg)
 
 As can be seen from the displayed maps, including the connectivity penalty in the objective function allows to find a more compact solution when compared to the one obtained by the base model.
 
@@ -1094,7 +1104,7 @@ tmap::tmap_arrange(plot_action1.conn_actions,
                    plot_action4.conn_actions)
 ```
 
-![](figures/MR24-1.jpg)
+![](../vignettes/figures/MR24-1.jpg)
 
 
 
@@ -1123,7 +1133,7 @@ plot.conn_actions <- tmap::tm_shape(mit_pu) +
 tmap::tmap_arrange(plot.base, plot.conn_actions)
 ```
 
-![](figures/MR25-1.jpg)
+![](../vignettes/figures/MR25-1.jpg)
 
 As we can see in this case, the inclusion of connectivity requirements between actions and, therefore, the attempt to minimize the connectivity penalty between them, produced a very different solution than the previous one. Actions are selected along the river network but concentrating to a greater extent on the source and mouth of the river. In addition, it is observed that there is no planning unit painted yellow (connectivity), this is due to the fact that all the selected units have at least one management action in it, the opposite of the previous case. Note that the *blm* and *blm_actions* values used have been set in an exaggerated way to more clearly verify the behavior of the models.
 

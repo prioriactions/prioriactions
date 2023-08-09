@@ -91,7 +91,7 @@ Licenses are available for the IBM CPLEX software to academics at no cost
 \href{https://github.com/coin-or/Cbc}{\emph{CBC}} is an
 open-source mixed integer linear programming solver written in C++. It is part of the
 Computational Infrastructure for Operations Research (COIN-OR) project
-interface. \pkg{rcbc} package to solve problems and is now available only on Github.
+interface. \pkg{rcbc} package to solve problems is now available only on Github.
 Please ensure that you closely adhere to the detailed installation instructions provided
 \href{https://github.com/dirkschumacher/rcbc}{here} for proper setup.}
 

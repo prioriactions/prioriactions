@@ -1,7 +1,8 @@
 ---
 title: "Solver benchmarks"
 resource_files:
-  - figures/sensitivities2.jpg
+  - figures/gap_vs_target.png
+  - figures/time_vs_target.png
 output:
   rmarkdown::html_vignette
 fontsize: 11pt
@@ -359,13 +360,10 @@ Contrary to the previous logs shown, `symphony` offers a minimalistic yet essent
 ```
 ## Results
 
-We have conducted 48 tests, encompassing three distinct models (models **(A)**, **(B)**, and **(C)**) and spanning four recovery targets (10%, 20%, 30%, and 40%). These tests were carried out across all four available solvers within the `prioriactions` framework, comprising two academic solvers(`gurobi` and `CPLEX`) and two non-academic alternatives (`CBC` and `symphony`).
+We have conducted 48 tests, encompassing three distinct models (models **(A)**, **(B)**, and **(C)**) and spanning four recovery targets (10%, 20%, 30%, and 40%). These tests were carried out across all four available solvers within the `prioriactions` framework, comprising two academic solvers (`gurobi` and `CPLEX`) and two non-academic alternatives (`CBC` and `symphony`).
 
-![](../inst/images/sensitivities1.png){width="60%"}
-
-
-![](../vignettes/figures/sensitivities2.jpg){width="60%"}
-
+![](../vignettes/figures/gap_vs_target.png){width="100%"}
+![](../vignettes/figures/time_vs_target.png){width="100%"}
 
 ### Academic solvers: `gurobi` vs `CPLEX`
 

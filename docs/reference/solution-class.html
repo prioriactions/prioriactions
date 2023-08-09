@@ -152,50 +152,17 @@ function.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Solve the optimization model</span></span></span>
 <span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="solve.html">solve</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">problem_model</span>, time_limit <span class="op">=</span> <span class="fl">5</span>, output_file <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (linux64)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CPU model: 12th Gen Intel(R) Core(TM) i5-1240P, instruction set [SSE2|AVX|AVX2]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Thread count: 16 physical cores, 16 logical processors, using up to 2 threads</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Optimize a model with 29984 rows, 10296 columns and 70085 nonzeros</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model fingerprint: 0xac37cd06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 176 continuous, 10120 integer (10120 binary)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficient statistics:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Matrix range     [5e-01, 2e+00]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Objective range  [1e+00, 7e+02]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Bounds range     [1e+00, 1e+00]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   RHS range        [1e+00, 5e+01]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 964.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve removed 19990 rows and 5131 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolve time: 2.15s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Presolved: 9994 rows, 5165 columns, 20209 nonzeros</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable types: 0 continuous, 5165 integer (5160 binary)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Found heuristic solution: objective 868.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Root relaxation: time limit, 4931 iterations, 2.74 seconds (0.42 work units)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Nodes    |    Current Node    |     Objective Bounds      |     Work</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0     0          -    0       868.00000 -51868.452  6076%     -    5s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Explored 1 nodes (4931 simplex iterations) in 5.01 seconds (0.67 work units)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Thread count was 2 (of 16 available processors)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Solution count 2: 868 964 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time limit reached</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Best objective 8.679999999999e+02, best bound -5.186845200000e+04, gap 6075.6281%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rcplex: num variables=10296 num constraints=29984</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Use class methods</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">s</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Solution overview</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   name: sol</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   objective value: 868</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   gap:  6075.628%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   status:  Feasible solution (according to time limit: 5 sec)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   runtime: 5.012 sec</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   objective value: 863</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   gap:  0%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   status:  Optimal solution (according to gap tolerance: 0)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   runtime: 2.76 sec</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

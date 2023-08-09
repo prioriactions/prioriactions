@@ -127,7 +127,7 @@
 
     
     
-<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/diagram_prioriactions.jpg"></p>
+<p><img src="../articles/figures/diagram_prioriactions.jpg"></p>
 <p>The <code>prioriactions</code> package is a new effort to bring exact
 modeling methods from operations research (OR) to conservation
 decision-making. Taking advantage of the benefits offered by these
@@ -215,7 +215,7 @@ created.</p></li>
 function. This function returns a <a href="https://prioriactions.github.io/prioriactions/reference/solution-class.html">solution-class</a>
 object that contains information related to the solution.</p></li>
 </ol>
-<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/prioriactions_steps.jpg" style="width:95.0%"></p>
+<p><img src="../articles/figures/prioriactions_steps.png" style="width:95.0%"></p>
 <p>These three steps can be summarized using a single function: the
 <strong><code><a href="../reference/prioriactions.html">prioriactions()</a></code></strong> function. This allows the
 input data validation, the creation of the mathematical model and its
@@ -312,7 +312,7 @@ to the monitoring costs of each planning unit.</p>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">10</span>, nrow<span class="op">=</span><span class="fl">10</span>, xmn<span class="op">=</span><span class="fl">0</span>, xmx<span class="op">=</span><span class="fl">10</span>, ymn<span class="op">=</span><span class="fl">0</span>, ymx<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">sim_pu_data</span><span class="op">$</span><span class="va">monitoring_cost</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/P3-1.png"></p>
+<p><img src="../articles/figures/P3-1.png"></p>
 </div>
 <div class="section level3">
 <h3 id="features-data">Features data<a class="anchor" aria-label="anchor" href="#features-data"></a>
@@ -371,7 +371,7 @@ line up perfectly. In this example, we assume binary values of amount
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"feature 1"</span>, <span class="st">"feature 2"</span>, <span class="st">"feature 3"</span>, <span class="st">"feature 4"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/P5-1.png"></p>
+<p><img src="../articles/figures/P5-1.png"></p>
 </div>
 <div class="section level3">
 <h3 id="threats-data">Threats data<a class="anchor" aria-label="anchor" href="#threats-data"></a>
@@ -433,7 +433,7 @@ vignette).</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"threat 1"</span>, <span class="st">"threat 2"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/P7-1.png"></p>
+<p><img src="../articles/figures/P7-1.png"></p>
 </div>
 <div class="section level3">
 <h3 id="boundary-data">Boundary data<a class="anchor" aria-label="anchor" href="#boundary-data"></a>
@@ -702,7 +702,7 @@ respectively.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"action 1"</span>, <span class="st">"action 2"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/P16-1.png"></p>
+<p><img src="../articles/figures/P16-1.png"></p>
 </div>
 <div class="section level3">
 <h3 id="getsolutionbenefit">
@@ -754,7 +754,7 @@ all the benefits achieved from each planning unit using the
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"feature 1"</span>, <span class="st">"feature 2"</span>, <span class="st">"feature 3"</span>, <span class="st">"feature 4"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">group_rasters</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../11.%20Prioriactions_repo/prioriactions/articles/figures/P18-1.png"></p>
+<p><img src="../articles/figures/P18-1.png"></p>
 </div>
 <div class="section level3">
 <h3 id="getcost">
