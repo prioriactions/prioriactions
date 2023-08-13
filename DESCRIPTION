@@ -107,7 +107,3 @@ Collate:
     'zzz.R'
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
-Remotes:
-  dirkschumacher/rcbc,
-  cran/Rcplex,
-  bioc::lpsymphony

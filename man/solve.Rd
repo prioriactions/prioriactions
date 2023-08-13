@@ -25,7 +25,7 @@ created using the \code{problem()} function.}
 solve the model. The following solvers are supported:
 \href{https://www.gurobi.com/}{\code{"gurobi"}}(requires the \pkg{gurobi} package),
 \href{https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio}{\code{"cplex"}}(requires the \pkg{Rcplex} package),
-\href{https://https://github.com/coin-or/Cbc}{\code{"cbc"}}(requires the \pkg{rcbc} package) and
+\href{https://github.com/coin-or/Cbc}{\code{"cbc"}}(requires the \pkg{rcbc} package) and
 \href{https://github.com/coin-or/SYMPHONY}{\code{"symphony"}}(requires the \pkg{Rsymphony} package).
 We recommend using gurobi (for more information on how to obtain an academic license
 \href{https://prioritizr.net/articles/gurobi_installation_guide.html}{here}).}

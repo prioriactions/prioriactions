@@ -15,7 +15,7 @@ NULL
 #'   solve the model. The following solvers are supported:
 #'   [`"gurobi"`](https://www.gurobi.com/)(requires the \pkg{gurobi} package),
 #'   [`"cplex"`](https://www.ibm.com/es-es/products/ilog-cplex-optimization-studio)(requires the \pkg{Rcplex} package),
-#'   [`"cbc"`](https://https://github.com/coin-or/Cbc)(requires the \pkg{rcbc} package) and
+#'   [`"cbc"`](https://github.com/coin-or/Cbc)(requires the \pkg{rcbc} package) and
 #'   [`"symphony"`](https://github.com/coin-or/SYMPHONY)(requires the \pkg{Rsymphony} package).
 #'   We recommend using gurobi (for more information on how to obtain an academic license
 #'   [here](https://prioritizr.net/articles/gurobi_installation_guide.html)).
