@@ -132,7 +132,7 @@ NULL
 
 #' @rdname problem
 #' @export
-problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve = 1, segments = 3) {
+problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve = 1, segments = 3, single_action = FALSE) {
 
   # assert that arguments are valid
   assertthat::assert_that(
@@ -142,6 +142,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
     assertthat::is.scalar(curve),
     is.finite(curve),
     assertthat::is.scalar(segments),
+    is.logical(single_action),
     is.finite(segments),
     is.numeric(budget),
     assertthat::is.scalar(budget))
@@ -255,6 +256,11 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
   }
   else{
     genconpow <- NULL
+  }
+
+  # add constraint single action
+  if(isTRUE(single_action)){
+    model = Create_constraint_only_one_action(model, x)
   }
 
   # create Optimization Problem object----------------------------------

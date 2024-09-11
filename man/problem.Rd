@@ -10,7 +10,8 @@ problem(
   budget = 0,
   blm = 0,
   curve = 1,
-  segments = 3
+  segments = 3,
+  single_action = FALSE
 )
 }
 \arguments{

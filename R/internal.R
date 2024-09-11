@@ -349,3 +349,69 @@ available_to_solve <- function(package = ""){
   }
 }
 
+
+#' Check if solvers are working
+#'
+#' Provides the status of solver. Being TRUE if it's working fine and FALSE in otherwise.
+#'
+#' @param package `character` object. Posible values: "gurobi", "cplex", and "symphony".
+#'
+#' @examples
+#' available_to_solve("cplex")
+#'
+
+#' @noRd
+Create_constraint_only_one_action <- function(m, x){
+  #We created a aux_vector for incorporate the one-specific constraint per PU
+  row_A <- nrow(m$A)
+  col_A <- ncol(m$A)
+  pu_vector <- x$getData("pu")
+  n_pu = length(unique(pu_vector$internal_id))
+  dist_vector <- x$getData("dist_threats")
+  n_rows = length(unique(dist_vector$internal_pu))
+  n_dist_threats = nrow(dist_vector)
+
+  model_aux <- m
+  matrix_aux <- MatrixExtra::emptySparse(nrow = n_rows, ncol = col_A)
+
+  for(i in 1:n_dist_threats){
+
+    if(i == 1){
+      it_i = dist_vector$internal_pu[i]
+      id_row = 1
+
+      #A matrix
+      matrix_aux[id_row, n_pu + i] <- 1
+
+      #rhs vector
+      model_aux$rhs[row_A + id_row] <- 1
+
+      #sense
+      model_aux$sense[row_A + id_row] <- "<="
+    }
+    else{
+      if(dist_vector$internal_pu[i] == it_i){
+
+        #A matrix
+        matrix_aux[id_row, n_pu + i] <- 1
+      }
+      else{
+        id_row = id_row + 1
+        it_i = dist_vector$internal_pu[i]
+
+        #A matrix
+        matrix_aux[id_row, n_pu + i] <- 1
+
+        #rhs vector
+        model_aux$rhs[row_A + id_row] <- 1
+
+        #sense
+        model_aux$sense[row_A + id_row] <- "<="
+      }
+    }
+  }
+
+  model_aux$A <- rbind(model_aux$A, matrix_aux)
+  return(model_aux)
+}
+
