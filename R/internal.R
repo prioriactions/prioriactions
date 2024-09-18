@@ -362,12 +362,14 @@ available_to_solve <- function(package = ""){
 
 #' @noRd
 Create_constraint_only_one_action <- function(m, x){
+
   #We created a aux_vector for incorporate the one-specific constraint per PU
   row_A <- nrow(m$A)
   col_A <- ncol(m$A)
   pu_vector <- x$getData("pu")
   n_pu = length(unique(pu_vector$internal_id))
   dist_vector <- x$getData("dist_threats")
+  dist_vector <- dist_vector[order(dist_vector$internal_pu), ]
   n_rows = length(unique(dist_vector$internal_pu))
   n_dist_threats = nrow(dist_vector)
 
@@ -375,7 +377,6 @@ Create_constraint_only_one_action <- function(m, x){
   matrix_aux <- MatrixExtra::emptySparse(nrow = n_rows, ncol = col_A)
 
   for(i in 1:n_dist_threats){
-
     if(i == 1){
       it_i = dist_vector$internal_pu[i]
       id_row = 1

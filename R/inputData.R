@@ -587,6 +587,7 @@ methods::setMethod(
     # dist_threats
     internal_id <- dplyr::inner_join(dist_threats, pu, by = c("pu" = "id"))$internal_id
     dist_threats$internal_pu <- internal_id
+    dist_threats <- dist_threats[order(dist_threats$internal_pu), ]
 
     internal_threat <- dplyr::inner_join(dist_threats, threats, by = c("threat" = "id"))$internal_id
     dist_threats$internal_threat <- internal_threat
