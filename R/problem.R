@@ -237,6 +237,7 @@ problem <- function(x, model_type = "minimizeCosts", budget = 0, blm = 0, curve 
   else if(model_type == "maximizeBenefits"){
     rcpp_objective_max_coverage(op, pu, features, dist_features, threats, dist_threats, boundary, blm, curve)
     rcpp_constraint_budget(op, pu, dist_threats, budget)
+    rcpp_constraint_target(op, pu, features, dist_features, dist_threats, threats, sensitivity, curve)
   }
   #Getting model from cpp----------------------------------------------
 
